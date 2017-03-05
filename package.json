@@ -1,0 +1,14 @@
+{
+  "name": "robots-supervisor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "restify": "^4.3.0"
+  }
+}
