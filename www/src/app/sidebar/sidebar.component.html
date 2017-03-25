@@ -1,13 +1,18 @@
 <h2>Robots :</h2>
 
 <ul class="list-group">
-  <li class="list-group-item" *ngFor="let robot of robots" (click)="selectRobot(robot)">
+  <li class="list-group-item"
+      *ngFor="let robot of robots"
+      [routerLink]="['/robot', robot.id]"
+      routerLinkActive="active">
     {{robot.id}}
     <span class="badge">{{robot.host}}</span>
   </li>
 </ul>
 
-<form class="well" (ngSubmit)="addRobot()" #newRobotForm="ngForm">
+<form class="well"
+      (ngSubmit)="addRobot()"
+      #newRobotForm="ngForm">
   <div class="form-group">
     <label>Identifiant :</label>
     <input type="text" class="form-control"

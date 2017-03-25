@@ -1,0 +1,9 @@
+Positions enregistrés :
+
+<md-button-toggle-group (change)="setPosition(group.value)" #group="mdButtonToggleGroup">
+  <md-button-toggle *ngFor="let position of servo.positions"
+                    [checked]="servo.currentPosition === position.value"
+                    [value]="position.value">
+    {{position.name}}
+  </md-button-toggle>
+</md-button-toggle-group>
