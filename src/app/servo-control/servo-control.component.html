@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-2 col-xl-1">
+    <label class="form-group has-float-label">
+      <input class="form-control"
+             type="number"
+             [min]="servo.minPosition"
+             [max]="servo.maxPosition"
+             placeholder="Position"
+             [(ngModel)]="servo.currentPosition"/>
+      <span>Position</span>
+    </label>
+  </div>
+
+  <div class="col-8 col-xl-4">
+    <input class="form-control"
+           type="range"
+           [min]="servo.minPosition"
+           [max]="servo.maxPosition"
+           [(ngModel)]="servo.currentPosition"/>
+  </div>
+
+  <div class="col-2 col-xl-1">
+    <label class="form-group has-float-label">
+      <input class="form-control"
+             type="number"
+             [min]="servo.minSpeed"
+             [max]="servo.maxSpeed"
+             placeholder="Vitesse"
+             [(ngModel)]="servo.currentSpeed">
+      <span>Vitesse</span>
+    </label>
+  </div>
+
+  <div class="col-12 col-xl-6">
+    <div class="btn-group" data-toggle="buttons">
+      <label class="btn btn-success"
+             *ngFor="let position of servo.positions"
+             [ngClass]="{active: position.value === servo.currentPosition}">
+        <input type="radio"
+               [checked]="position.value === servo.currentPosition"
+               [value]="position.value"
+               (click)="servo.currentPosition = position.value">
+        {{position.name}}
+      </label>
+    </div>
+  </div>
+</div>

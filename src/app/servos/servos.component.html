@@ -1,0 +1,9 @@
+<div class="card mt-3" *ngFor="let servo of servos">
+  <div class="card-block">
+    <h5 class="card-title">{{servo.name}}
+      <small>id: {{servo.id}}, min: {{servo.minPosition}}, max: {{servo.maxPosition}}</small>
+    </h5>
+
+    <app-servo-control [robot]="robot" [servo]="servo"></app-servo-control>
+  </div>
+</div>

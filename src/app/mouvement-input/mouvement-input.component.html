@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-3"
+       *ngFor="let field of fields">
+    <label class="form-group has-float-label">
+      <input class="form-control"
+             type="number"
+             [(ngModel)]="values[field]"
+             placeholder="{{field}}">
+      <span>{{field}}</span>
+    </label>
+  </div>
+
+  <div class="col">
+    <button class="btn btn-success btn-round" (click)="apply()">
+      <fa name="check"></fa>
+    </button>
+  </div>
+</div>

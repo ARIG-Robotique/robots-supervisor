@@ -1,0 +1,10 @@
+<div class="card-columns">
+  <div class="card" *ngFor="let mouvement of Mouvements">
+    <div class="card-block">
+      <h5 class="card-title">{{mouvement.name}}</h5>
+
+      <app-mouvement-input [robot]="robot" [type]="mouvement.type"
+                           [fields]="mouvement.fields"></app-mouvement-input>
+    </div>
+  </div>
+</div>

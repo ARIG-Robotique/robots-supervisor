@@ -1,0 +1,27 @@
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link"
+       [routerLink]="['./info']"
+       routerLinkActive="active">
+      Informations
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link"
+       [routerLink]="['./servos']"
+       routerLinkActive="active">
+      Servos
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link"
+       [routerLink]="['./mouvement']"
+       routerLinkActive="active">
+      Mouvement
+    </a>
+  </li>
+</ul>
+
+<div class="bg-faded p-3">
+  <router-outlet></router-outlet>
+</div>
