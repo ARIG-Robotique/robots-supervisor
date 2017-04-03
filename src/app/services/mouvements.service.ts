@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {Http, URLSearchParams, Response} from "@angular/http";
 import "rxjs/add/operator/toPromise";
 import {Robot} from "../models/Robot";
+import {RobotPosition} from "../models/RobotPosition";
 
 @Injectable()
 export class MouvementsService {
@@ -34,7 +35,7 @@ export class MouvementsService {
    * @param {Robot} robot
    * @returns {Promise<Position>}
    */
-  getPosition(robot:Robot, mock:boolean = false):Promise<Position> {
+  getPosition(robot:Robot, mock:boolean = false):Promise<RobotPosition> {
     if (mock) {
       return Promise.resolve({
         x: 500,
