@@ -1,0 +1,23 @@
+<div class="form-inline">
+  <label class="mr-2">Table</label>
+  <select class="form-control"
+          [(ngModel)]="currentTable">
+    <option *ngFor="let table of Tables"
+            [ngValue]="table">
+      {{table.name}}
+    </option>
+  </select>
+</div>
+
+<div class="map-container"
+     [style.width]="currentTable?.imageWidth + 'px'"
+     [style.height]="currentTable?.imageHeight + 'px'"
+     [style.backgroundImage]="'url(./assets/tables/' + currentTable?.name + '.png)'"
+>
+  <div class="map-robot"
+       [hidden]="!robotPosition"
+       [style.left]="robotPosition?.x / currentTable?.width * currentTable?.imageWidth + 'px'"
+       [style.top]="currentTable?.imageHeight - robotPosition?.y / currentTable?.height * currentTable?.imageHeight + 'px'"
+       [style.transform]="'rotate(' + (22.5-robotPosition?.angle) + 'deg)'"
+       ></div>
+</div>

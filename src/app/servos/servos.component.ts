@@ -2,7 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {Robot} from "../models/Robot";
 import {Servo} from "../models/Servo";
-import {RobotsService} from "../services/robots.service";
+import {ServosService} from "../services/servos.service";
 
 @Component({
   selector: 'app-servos',
@@ -16,7 +16,7 @@ export class ServosComponent implements OnInit {
   servos:Servo[];
 
   constructor(private route:ActivatedRoute,
-              private robotsService:RobotsService) {
+              private servosService:ServosService) {
   }
 
   ngOnInit() {
@@ -24,7 +24,7 @@ export class ServosComponent implements OnInit {
       this.robot = data['robot'];
       this.servos = [];
 
-      this.robotsService.getRobotServos(this.robot)
+      this.servosService.getServos(this.robot)
         .then((servos:Servo[]) => this.servos = servos);
     });
   }

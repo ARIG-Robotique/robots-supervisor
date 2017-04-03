@@ -18,6 +18,8 @@ import {MouvementsComponent} from "./mouvements/mouvements.component";
 import {RobotResolve} from "./resolvers/RobotResolve";
 import {AppRoutes} from "./app.routes";
 import {RobotInfoComponent} from "./robot-info/robot-info.component";
+import { MouvementMapComponent } from './mouvement-map/mouvement-map.component';
+import {MouvementsService} from "./services/mouvements.service";
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import {RobotInfoComponent} from "./robot-info/robot-info.component";
     MouvementInputComponent,
     ServosComponent,
     MouvementsComponent,
-    RobotInfoComponent
+    RobotInfoComponent,
+    MouvementMapComponent
   ],
   imports: [
     BrowserModule,
@@ -42,6 +45,7 @@ import {RobotInfoComponent} from "./robot-info/robot-info.component";
   providers: [
     RobotsService,
     ServosService,
+    MouvementsService,
     RobotResolve
   ],
   bootstrap: [AppComponent]

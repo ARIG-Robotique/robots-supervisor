@@ -1,6 +1,6 @@
 import {Component, OnInit, Input} from "@angular/core";
 import {Robot} from "../models/Robot";
-import {ServosService} from "../services/servos.service";
+import {MouvementsService} from "../services/mouvements.service";
 
 @Component({
   selector: 'app-mouvement-input',
@@ -15,7 +15,7 @@ export class MouvementInputComponent implements OnInit {
 
   values:any;
 
-  constructor(private servosService:ServosService) {
+  constructor(private mouvementsService:MouvementsService) {
     this.values = {};
   }
 
@@ -23,7 +23,7 @@ export class MouvementInputComponent implements OnInit {
   }
 
   apply() {
-    this.servosService.sendMouvement(this.robot, this.type, this.values);
+    this.mouvementsService.sendMouvement(this.robot, this.type, this.values);
   }
 
 }

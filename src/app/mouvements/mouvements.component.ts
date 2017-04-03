@@ -15,10 +15,11 @@ export class MouvementsComponent implements OnInit {
   Mouvements;
 
   constructor(private route:ActivatedRoute) {
-    this.Mouvements = Mouvements;
   }
 
   ngOnInit() {
+    this.Mouvements = Mouvements;
+
     this.route.parent.data.subscribe(data => {
       this.robot = data['robot'];
     });

@@ -2,7 +2,6 @@ import {Injectable} from "@angular/core";
 import {Robot} from "../models/Robot";
 import {Http, Response} from "@angular/http";
 import "rxjs/add/operator/toPromise";
-import {Servo} from "../models/Servo";
 
 @Injectable()
 export class RobotsService {
@@ -56,27 +55,7 @@ export class RobotsService {
   getRobotInfo(robot:Robot):Promise<any> {
     return this.http.get(`http://${robot.host}/robot`)
       .toPromise()
-      .then((response:Response) => {
-        return response.json();
-      });
+      .then((response:Response) => response.json());
   }
 
-  /**
-   * Retourne les servos d'un robot
-   * @param {Robot} robot
-   * @returns {Promise<Servo[]>}
-   */
-  getRobotServos(robot:Robot):Promise<Servo[]> {
-    return this.http.get(`http://${robot.host}/servos`)
-      .toPromise()
-      .then((response:Response) => {
-        return response.json().map((servo:Servo) => {
-          servo.minPosition = servo.minPosition || 500;
-          servo.maxPosition = servo.maxPosition || 2500;
-          servo.minSpeed = 0;
-          servo.maxSpeed = 50;
-          return servo;
-        });
-      });
-  }
 }
