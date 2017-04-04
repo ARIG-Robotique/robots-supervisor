@@ -5,7 +5,7 @@ import {RobotComponent} from "./robot/robot.component";
 import {HomeComponent} from "./home/home.component";
 import {RobotResolve} from "./resolvers/RobotResolve";
 import {RobotInfoComponent} from "./robot-info/robot-info.component";
-import {MouvementMapComponent} from "./mouvement-map/mouvement-map.component";
+import {MapComponent} from "./map/map.component";
 
 export const AppRoutes:Routes = [
   {
@@ -38,7 +38,7 @@ export const AppRoutes:Routes = [
       },
       {
         path: 'map',
-        component: MouvementMapComponent
+        component: MapComponent
       }
     ]
   }

@@ -6,6 +6,7 @@ $target-size: 50px;
 .map-container {
   position: relative;
   user-select: none;
+  background-size: 100% 100%;
 
   .map-drawer {
     position: absolute;

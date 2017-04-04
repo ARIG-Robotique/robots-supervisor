@@ -1,0 +1,34 @@
+<div class="map-container" #mapContainer
+     (mousedown)="mousedown($event)"
+     (mousemove)="mousemove($event)"
+     (mouseup)="mouseup($event)"
+     [style.width]="table?.width * table?.imageRatio + 'px'"
+     [style.height]="table?.height * table?.imageRatio + 'px'"
+     [style.backgroundImage]="'url(./assets/tables/' + table?.name + '.png)'"
+>
+  <svg class="map-drawer">
+    <line *ngIf="state.moving"
+          [attr.x1]="robotPosition?.x * table?.imageRatio"
+          [attr.y1]="(table?.height - robotPosition?.y) * table?.imageRatio"
+          [attr.x2]="robotPosition?.x  * table?.imageRatio + 100 * Math.cos(state.angle)"
+          [attr.y2]="(table?.height - robotPosition?.y) * table?.imageRatio - 100 * Math.sin(state.angle)"
+    ></line>
+  </svg>
+
+  <div class="map-robot"
+       [hidden]="!robotPosition"
+       [style.left]="robotPosition?.x  * table?.imageRatio + 'px'"
+       [style.top]="(table?.height - robotPosition?.y) * table?.imageRatio + 'px'"
+       [style.transform]="'rotate(' + (22.5-robotPosition?.angle) + 'deg)'"
+  ></div>
+
+  <div class="map-target"
+       [hidden]="!targetPosition"
+       [style.left]="targetPosition?.x  * table?.imageRatio + 'px'"
+       [style.top]="(table?.height - targetPosition?.y) * table?.imageRatio + 'px'"
+       [style.transform]="'rotate(' + (-targetPosition?.angle) + 'deg)'"
+  >
+    <fa name="crosshairs"></fa>
+    <fa name="arrow-right" class="map-target-arrow"></fa>
+  </div>
+</div>
