@@ -1,0 +1,8 @@
+# Ignore file to not include in build.
+.editorconfig
+.git/
+.gitignore
+.idea/
+node_modules/
+Makefile
+README.md
