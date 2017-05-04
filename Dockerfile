@@ -21,7 +21,7 @@ ADD src ${BUILD_WORK_DIR}/src/
 RUN cd ${BUILD_WORK_DIR} \
     && mkdir $HOME \
     && npm install \
-    && ng build \
+    && ng build --env=prod \
     && mv dist/* /app \
     && npm cache clean \
     && rm -rf ~/.npm \
