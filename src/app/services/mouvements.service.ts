@@ -25,9 +25,11 @@ export class MouvementsService {
       }
     }
 
-    return this.http.post(`http://${robot.host}/mouvement/${type}`, {}, {search})
+    return Promise.resolve(true);
+
+    /*return this.http.post(`http://${robot.host}/mouvement/${type}`, {}, {search})
       .toPromise()
-      .then(() => true);
+      .then(() => true);*/
   }
 
   /**

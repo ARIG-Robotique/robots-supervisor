@@ -2,30 +2,32 @@
      (mousedown)="mousedown($event)"
      (mousemove)="mousemove($event)"
      (mouseup)="mouseup($event)"
-     [style.width]="table?.width * table?.imageRatio + 'px'"
-     [style.height]="table?.height * table?.imageRatio + 'px'"
+     [style.width]="table?.width * table?.imageRatio * tableZoom + 'px'"
+     [style.height]="table?.height * table?.imageRatio * tableZoom + 'px'"
      [style.backgroundImage]="'url(./assets/tables/' + table?.name + '.png)'"
+     [style.transform]="'rotate(' + tableRotation +'deg)'"
+     [style.transformOrigin]="table?.height * table?.imageRatio / 2 * tableZoom + 'px ' + table?.height * table?.imageRatio / 2 * tableZoom + 'px'"
 >
   <svg class="map-drawer">
     <line *ngIf="state.moving"
-          [attr.x1]="robotPosition?.x * table?.imageRatio"
-          [attr.y1]="(table?.height - robotPosition?.y) * table?.imageRatio"
-          [attr.x2]="robotPosition?.x  * table?.imageRatio + 100 * Math.cos(state.angle)"
-          [attr.y2]="(table?.height - robotPosition?.y) * table?.imageRatio - 100 * Math.sin(state.angle)"
+          [attr.x1]="robotPosition?.x * table?.imageRatio * tableZoom"
+          [attr.y1]="(table?.height - robotPosition?.y) * table?.imageRatio * tableZoom"
+          [attr.x2]="robotPosition?.x  * table?.imageRatio * tableZoom + 100 * Math.cos(state.angle)"
+          [attr.y2]="(table?.height - robotPosition?.y) * table?.imageRatio * tableZoom - 100 * Math.sin(state.angle)"
     ></line>
   </svg>
 
   <div class="map-robot"
        [hidden]="!robotPosition"
-       [style.left]="robotPosition?.x  * table?.imageRatio + 'px'"
-       [style.top]="(table?.height - robotPosition?.y) * table?.imageRatio + 'px'"
+       [style.left]="robotPosition?.x  * table?.imageRatio * tableZoom + 'px'"
+       [style.top]="(table?.height - robotPosition?.y) * table?.imageRatio * tableZoom + 'px'"
        [style.transform]="'rotate(' + (22.5-robotPosition?.angle) + 'deg)'"
   ></div>
 
   <div class="map-target"
        [hidden]="!targetPosition"
-       [style.left]="targetPosition?.x  * table?.imageRatio + 'px'"
-       [style.top]="(table?.height - targetPosition?.y) * table?.imageRatio + 'px'"
+       [style.left]="targetPosition?.x  * table?.imageRatio * tableZoom + 'px'"
+       [style.top]="(table?.height - targetPosition?.y) * table?.imageRatio * tableZoom + 'px'"
        [style.transform]="'rotate(' + (-targetPosition?.angle) + 'deg)'"
   >
     <fa name="crosshairs"></fa>

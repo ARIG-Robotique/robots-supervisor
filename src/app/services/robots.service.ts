@@ -48,7 +48,7 @@ export class RobotsService {
   }
 
   /**
-   * Retourne les infos d'un robot&
+   * Retourne les infos d'un robot
    * @param {Robot} robot
    * @returns {Promise<any>}
    */

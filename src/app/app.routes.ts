@@ -6,6 +6,7 @@ import {HomeComponent} from "./home/home.component";
 import {RobotResolve} from "./resolvers/RobotResolve";
 import {RobotInfoComponent} from "./robot-info/robot-info.component";
 import {MapComponent} from "./map/map.component";
+import {CapteursComponent} from "./capteurs/capteurs.component";
 
 export const AppRoutes:Routes = [
   {
@@ -27,6 +28,10 @@ export const AppRoutes:Routes = [
       {
         path: 'info',
         component: RobotInfoComponent
+      },
+      {
+        path: 'capteurs',
+        component: CapteursComponent
       },
       {
         path: 'servos',

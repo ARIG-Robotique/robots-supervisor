@@ -21,6 +21,8 @@ import {RobotInfoComponent} from "./robot-info/robot-info.component";
 import {MouvementsService} from "./services/mouvements.service";
 import {MapComponent} from "./map/map.component";
 import {MapInputComponent} from "./map-input/map-input.component";
+import {CapteursService} from "./services/capteurs.service";
+import {CapteursComponent} from "./capteurs/capteurs.component";
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import {MapInputComponent} from "./map-input/map-input.component";
     MouvementsComponent,
     RobotInfoComponent,
     MapComponent,
-    MapInputComponent
+    MapInputComponent,
+    CapteursComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +51,8 @@ import {MapInputComponent} from "./map-input/map-input.component";
     RobotsService,
     ServosService,
     MouvementsService,
-    RobotResolve
+    RobotResolve,
+    CapteursService
   ],
   bootstrap: [AppComponent]
 })

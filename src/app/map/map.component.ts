@@ -14,22 +14,35 @@ import {IntervalObservable} from "rxjs/observable/IntervalObservable";
 })
 export class MapComponent implements OnInit {
 
-  Tables:Table[];
-  currentTable:Table;
+  Tables: Table[];
+  currentTable: Table;
 
-  robot:Robot;
-  robotPosition:RobotPosition;
+  robot: Robot;
+  robotPosition: RobotPosition;
 
-  targetPosition:RobotPosition;
+  targetPosition: RobotPosition;
 
-  Modes:any = [
-    {name: 'path', label:'path'},
-    {name: 'position', label:'direct'}
+  Modes: any = [
+    {name: 'path', label: 'path'},
+    {name: 'position', label: 'direct'}
   ];
-  currentMode:string = 'position';
+  currentMode: string = 'position';
 
-  constructor(private route:ActivatedRoute,
-              private mouvementsService:MouvementsService) {
+  Rotations: any = [
+    {angle: 0, label: '0°'},
+    {angle: 90, label: '90°'}
+  ];
+  currentRotation: number = 0;
+
+  Zooms: any = [
+    {level: 0.5, label: '50%'},
+    {level: 0.75, label: '75%'},
+    {level: 1.0, label: '100%'}
+  ];
+  currentZoom: number = 1.0;
+
+  constructor(private route: ActivatedRoute,
+              private mouvementsService: MouvementsService) {
   }
 
   ngOnInit() {
@@ -39,17 +52,22 @@ export class MapComponent implements OnInit {
     this.route.parent.data.subscribe(data => {
       this.robot = data['robot'];
 
-      this.mouvementsService.getPosition(this.robot)
-        .then((position:RobotPosition) => this.robotPosition = this.targetPosition = position);
+      this.fetch();
     });
 
     IntervalObservable.create(200).subscribe(() => {
-      this.mouvementsService.getPosition(this.robot)
-        .then((position:RobotPosition) => this.robotPosition = position);
+      if (this.robot) {
+        this.fetch();
+      }
     });
   }
 
-  positionChanged(position:RobotPosition) {
+  fetch() {
+    this.mouvementsService.getPosition(this.robot)
+      .then((position: RobotPosition) => this.robotPosition = position);
+  }
+
+  positionChanged(position: RobotPosition) {
     this.targetPosition = position;
 
     this.mouvementsService.sendMouvement(this.robot, this.currentMode, {
@@ -58,7 +76,7 @@ export class MapComponent implements OnInit {
     });
   }
 
-  angleChanged(position:RobotPosition) {
+  angleChanged(position: RobotPosition) {
     this.targetPosition = position;
 
     this.mouvementsService.sendMouvement(this.robot, 'orientation', {
