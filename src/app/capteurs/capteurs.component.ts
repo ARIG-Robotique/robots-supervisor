@@ -3,6 +3,7 @@ import {ActivatedRoute} from "@angular/router";
 import {Robot} from "../models/Robot";
 import {CapteursService} from "../services/capteurs.service";
 import {IntervalObservable} from "rxjs/observable/IntervalObservable";
+import {CodeursService} from "../services/codeurs.service";
 
 @Component({
   selector: 'app-robot-info',
@@ -14,9 +15,11 @@ export class CapteursComponent implements OnInit {
   robot: Robot;
 
   capteurs: any;
+  codeurs: any;
 
   constructor(private route: ActivatedRoute,
-              private capteursService: CapteursService) {
+              private capteursService: CapteursService,
+              private codeursService: CodeursService) {
   }
 
   ngOnInit() {
@@ -36,6 +39,9 @@ export class CapteursComponent implements OnInit {
   fetch() {
     this.capteursService.getCapteurs(this.robot)
       .then(capteurs => this.capteurs = capteurs);
+
+    this.codeursService.getCodeurs(this.robot)
+      .then(codeurs => this.codeurs = codeurs);
   }
 
 }

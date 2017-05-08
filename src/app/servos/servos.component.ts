@@ -3,6 +3,7 @@ import {ActivatedRoute} from "@angular/router";
 import {Robot} from "../models/Robot";
 import {Servo} from "../models/Servo";
 import {ServosService} from "../services/servos.service";
+import {IntervalObservable} from "rxjs/observable/IntervalObservable";
 
 @Component({
   selector: 'app-servos',
@@ -24,9 +25,19 @@ export class ServosComponent implements OnInit {
       this.robot = data['robot'];
       this.servos = [];
 
-      this.servosService.getServos(this.robot)
-        .then((servos:Servo[]) => this.servos = servos);
+      this.fetch();
     });
+
+    IntervalObservable.create(1000).subscribe(() => {
+      if (this.robot) {
+        //this.fetch();
+      }
+    });
+  }
+
+  fetch() {
+    this.servosService.getServos(this.robot)
+      .then((servos:Servo[]) => this.servos = servos);
   }
 
 }
