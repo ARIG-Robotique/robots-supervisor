@@ -39,9 +39,6 @@ export class CapteursComponent implements OnInit {
   fetch() {
     this.capteursService.getCapteurs(this.robot)
       .then(capteurs => this.capteurs = capteurs);
-
-    this.codeursService.getCodeurs(this.robot)
-      .then(codeurs => this.codeurs = codeurs);
   }
 
 }
