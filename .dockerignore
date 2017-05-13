@@ -6,3 +6,4 @@
 node_modules/
 Makefile
 README.md
+npm-debug.log

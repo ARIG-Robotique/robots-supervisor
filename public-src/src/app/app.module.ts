@@ -23,7 +23,7 @@ import {MapComponent} from "./map/map.component";
 import {MapInputComponent} from "./map-input/map-input.component";
 import {CapteursService} from "./services/capteurs.service";
 import {CapteursComponent} from "./capteurs/capteurs.component";
-import { SafeStylePipe } from './pipes/safe-style.pipe';
+import {SafeStylePipe} from "./pipes/safe-style.pipe";
 import {CodeursService} from "./services/codeurs.service";
 
 @NgModule({

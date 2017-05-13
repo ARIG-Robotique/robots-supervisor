@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "name": "robots-supervisor"
+    "name": "robots-supervisor-public"
   },
   "apps": [
     {
@@ -35,6 +35,14 @@
   ],
   "defaults": {
     "styleExt": "scss",
-    "component": {}
+    "component": {
+      "spec": false
+    },
+    "service": {
+      "spec": false
+    },
+    "pipe": {
+      "spec": false
+    }
   }
 }
