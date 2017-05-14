@@ -30,7 +30,10 @@
   ],
   "lint": [
     {
-      "project": "src/tsconfig.app.json"
+      "project": "src/tsconfig.app.json",
+      "exclude": [
+        "**/node_modules/**/*"
+      ]
     }
   ],
   "defaults": {

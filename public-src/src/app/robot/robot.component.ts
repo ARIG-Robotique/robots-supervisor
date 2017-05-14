@@ -1,7 +1,7 @@
-import {Component, OnInit} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
-import "rxjs/add/operator/switchMap";
-import {Robot} from "../models/Robot";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import 'rxjs/add/operator/switchMap';
+import {Robot} from '../models/Robot';
 
 @Component({
   selector: 'app-robot',
@@ -10,19 +10,15 @@ import {Robot} from "../models/Robot";
 })
 export class RobotComponent implements OnInit {
 
-  robot:Robot;
+  robot: Robot;
 
-  constructor(private route:ActivatedRoute) {
+  constructor(private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     this.route.data.subscribe(data => {
       this.robot = data['robot'];
-    })
-  }
-
-  refresh() {
-    alert('TODO');
+    });
   }
 
 }

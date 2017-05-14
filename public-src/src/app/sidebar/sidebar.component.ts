@@ -1,6 +1,6 @@
-import {Component, OnInit} from "@angular/core";
-import {Robot} from "../models/Robot";
-import {RobotsService} from "../services/robots.service";
+import {Component, OnInit} from '@angular/core';
+import {Robot} from '../models/Robot';
+import {RobotsService} from '../services/robots.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,11 +10,11 @@ import {RobotsService} from "../services/robots.service";
 })
 export class SidebarComponent implements OnInit {
 
-  robots:Robot[];
+  robots: Robot[];
 
-  newRobot:Robot = <Robot>{};
+  newRobot: Robot = <Robot>{};
 
-  constructor(private robotsService:RobotsService) {
+  constructor(private robotsService: RobotsService) {
   }
 
   ngOnInit() {
@@ -23,7 +23,7 @@ export class SidebarComponent implements OnInit {
 
   getRobots() {
     this.robotsService.getRobots()
-      .then((robots:Robot[]) => {
+      .then((robots: Robot[]) => {
         this.robots = robots;
       });
   }
@@ -36,7 +36,7 @@ export class SidebarComponent implements OnInit {
       });
   }
 
-  selectRobot(robot:Robot) {
+  selectRobot(robot: Robot) {
     this.robotsService.getRobotInfo(robot)
       .then((info) => {
         console.log(info);

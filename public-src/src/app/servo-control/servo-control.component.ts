@@ -1,7 +1,7 @@
-import {Component, OnInit, Input, DoCheck} from "@angular/core";
-import {Robot} from "../models/Robot";
-import {Servo} from "../models/Servo";
-import {ServosService} from "../services/servos.service";
+import {Component, OnInit, Input, DoCheck} from '@angular/core';
+import {Robot} from '../models/Robot';
+import {Servo} from '../models/Servo';
+import {ServosService} from '../services/servos.service';
 
 @Component({
   selector: 'app-servo-control',
@@ -10,13 +10,13 @@ import {ServosService} from "../services/servos.service";
 })
 export class ServoControlComponent implements OnInit, DoCheck {
 
-  @Input() servo:Servo;
-  @Input() robot:Robot;
+  @Input() servo: Servo;
+  @Input() robot: Robot;
 
-  previousPosition:number;
-  timeoutID:any;
+  previousPosition: number;
+  timeoutID: any;
 
-  constructor(private servosService:ServosService) {
+  constructor(private servosService: ServosService) {
   }
 
   ngOnInit() {

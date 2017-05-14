@@ -1,9 +1,8 @@
-import {Component, OnInit} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
-import {Robot} from "../models/Robot";
-import {Servo} from "../models/Servo";
-import {ServosService} from "../services/servos.service";
-import {IntervalObservable} from "rxjs/observable/IntervalObservable";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Robot} from '../models/Robot';
+import {Servo} from '../models/Servo';
+import {ServosService} from '../services/servos.service';
 
 @Component({
   selector: 'app-servos',
@@ -12,12 +11,12 @@ import {IntervalObservable} from "rxjs/observable/IntervalObservable";
 })
 export class ServosComponent implements OnInit {
 
-  robot:Robot;
+  robot: Robot;
 
-  servos:Servo[];
+  servos: Servo[];
 
-  constructor(private route:ActivatedRoute,
-              private servosService:ServosService) {
+  constructor(private route: ActivatedRoute,
+              private servosService: ServosService) {
   }
 
   ngOnInit() {
@@ -28,16 +27,16 @@ export class ServosComponent implements OnInit {
       this.fetch();
     });
 
-    IntervalObservable.create(1000).subscribe(() => {
-      if (this.robot) {
-        //this.fetch();
-      }
-    });
+    // IntervalObservable.create(1000).subscribe(() => {
+    //   if (this.robot) {
+    //     this.fetch();
+    //   }
+    // });
   }
 
   fetch() {
     this.servosService.getServos(this.robot)
-      .then((servos:Servo[]) => this.servos = servos);
+      .then((servos: Servo[]) => this.servos = servos);
   }
 
 }

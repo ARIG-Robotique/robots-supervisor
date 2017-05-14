@@ -1,7 +1,7 @@
-import {Component, OnInit} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
-import {Robot} from "../models/Robot";
-import {RobotsService} from "../services/robots.service";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Robot} from '../models/Robot';
+import {RobotsService} from '../services/robots.service';
 
 @Component({
   selector: 'app-robot-info',
@@ -10,12 +10,12 @@ import {RobotsService} from "../services/robots.service";
 })
 export class RobotInfoComponent implements OnInit {
 
-  robot:Robot;
+  robot: Robot;
 
-  robotInfo:any;
+  robotInfo: any;
 
-  constructor(private route:ActivatedRoute,
-              private robotsService:RobotsService) {
+  constructor(private route: ActivatedRoute,
+              private robotsService: RobotsService) {
   }
 
   ngOnInit() {

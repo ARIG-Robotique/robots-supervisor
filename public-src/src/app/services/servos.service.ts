@@ -1,13 +1,13 @@
-import {Injectable} from "@angular/core";
-import {Http, URLSearchParams, Response} from "@angular/http";
-import "rxjs/add/operator/toPromise";
-import {Servo} from "../models/Servo";
-import {Robot} from "../models/Robot";
+import {Injectable} from '@angular/core';
+import {Http, URLSearchParams, Response} from '@angular/http';
+import 'rxjs/add/operator/toPromise';
+import {Servo} from '../models/Servo';
+import {Robot} from '../models/Robot';
 
 @Injectable()
 export class ServosService {
 
-  constructor(private http:Http) {
+  constructor(private http: Http) {
   }
 
   /**
@@ -15,11 +15,11 @@ export class ServosService {
    * @param {Robot} robot
    * @returns {Promise<Servo[]>}
    */
-  getServos(robot:Robot):Promise<Servo[]> {
+  getServos(robot: Robot): Promise<Servo[]> {
     return this.http.get(`http://${robot.host}/servos`)
       .toPromise()
-      .then((response:Response) => {
-        return response.json().map((servo:Servo) => {
+      .then((response: Response) => {
+        return response.json().map((servo: Servo) => {
           servo.minPosition = servo.minPosition || 500;
           servo.maxPosition = servo.maxPosition || 2500;
           servo.minSpeed = 0;
@@ -37,8 +37,8 @@ export class ServosService {
    * @param {number} speed
    * @returns {Promise}
    */
-  setPosition(robot:Robot, servo:Servo, position:number, speed:number):Promise<boolean> {
-    let search = new URLSearchParams();
+  setPosition(robot: Robot, servo: Servo, position: number, speed: number): Promise<boolean> {
+    const search = new URLSearchParams();
     search.set('position', '' + Math.max(servo.minPosition, Math.min(servo.maxPosition, position)));
     search.set('speed', '' + Math.max(servo.minSpeed, Math.min(servo.maxSpeed, speed)));
 

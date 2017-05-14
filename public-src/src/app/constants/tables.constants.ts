@@ -1,6 +1,6 @@
-import {Table} from "../models/Table";
+import {Table} from '../models/Table';
 
-export const Tables:Table[] = [
+export const Tables: Table[] = [
   {
     name: 'officiel',
     width: 3000,

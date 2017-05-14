@@ -1,11 +1,11 @@
-import {Component, OnInit} from "@angular/core";
-import {Tables} from "../constants/tables.constants";
-import {Table} from "../models/Table";
-import {Robot} from "../models/Robot";
-import {RobotPosition} from "../models/RobotPosition";
-import {ActivatedRoute} from "@angular/router";
-import {MouvementsService} from "../services/mouvements.service";
-import {IntervalObservable} from "rxjs/observable/IntervalObservable";
+import {Component, OnInit} from '@angular/core';
+import {Tables} from '../constants/tables.constants';
+import {Table} from '../models/Table';
+import {Robot} from '../models/Robot';
+import {RobotPosition} from '../models/RobotPosition';
+import {ActivatedRoute} from '@angular/router';
+import {MouvementsService} from '../services/mouvements.service';
+import {IntervalObservable} from 'rxjs/observable/IntervalObservable';
 
 @Component({
   selector: 'app-map',
@@ -26,20 +26,21 @@ export class MapComponent implements OnInit {
     {name: 'path', label: 'path'},
     {name: 'position', label: 'direct'}
   ];
-  currentMode: string = 'position';
 
   Rotations: any = [
     {angle: 0, label: '0°'},
     {angle: 90, label: '90°'}
   ];
-  currentRotation: number = 0;
 
   Zooms: any = [
     {level: 0.5, label: '50%'},
     {level: 0.75, label: '75%'},
     {level: 1.0, label: '100%'}
   ];
-  currentZoom: number = 1.0;
+
+  currentMode = 'position';
+  currentRotation = 0;
+  currentZoom = 1.0;
 
   constructor(private route: ActivatedRoute,
               private mouvementsService: MouvementsService) {

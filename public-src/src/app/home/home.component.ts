@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {RobotsService} from "../services/robots.service";
+import {Component, OnInit} from '@angular/core';
+import {RobotsService} from '../services/robots.service';
 
 @Component({
   selector: 'app-home',
@@ -8,9 +8,10 @@ import {RobotsService} from "../services/robots.service";
 })
 export class HomeComponent implements OnInit {
 
-  echo:string;
+  echo: string;
 
-  constructor(private robotsService:RobotsService) { }
+  constructor(private robotsService: RobotsService) {
+  }
 
   ngOnInit() {
     this.robotsService.echo('test')

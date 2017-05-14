@@ -1,4 +1,4 @@
-export const Mouvements:any[] = [
+export const Mouvements: any[] = [
   {
     name: 'Aller à (path)',
     type: 'path',

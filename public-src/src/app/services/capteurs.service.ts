@@ -1,13 +1,12 @@
-import {Injectable} from "@angular/core";
-import {Http, URLSearchParams, Response} from "@angular/http";
-import "rxjs/add/operator/toPromise";
-import {Robot} from "../models/Robot";
-import {RobotPosition} from "../models/RobotPosition";
+import {Injectable} from '@angular/core';
+import {Http, Response} from '@angular/http';
+import 'rxjs/add/operator/toPromise';
+import {Robot} from '../models/Robot';
 
 @Injectable()
 export class CapteursService {
 
-  constructor(private http:Http) {
+  constructor(private http: Http) {
   }
 
   /**
@@ -15,10 +14,10 @@ export class CapteursService {
    * @param {Robot} robot
    * @returns {Promise<any>}
    */
-  getCapteurs(robot:Robot):Promise<any> {
+  getCapteurs(robot: Robot): Promise<any> {
     return this.http.get(`http://${robot.host}/capteurs`)
       .toPromise()
-      .then((response:Response) => response.json());
+      .then((response: Response) => response.json());
   }
 
 }

@@ -1,7 +1,7 @@
-import {Component, OnInit} from "@angular/core";
-import {Robot} from "../models/Robot";
-import {ActivatedRoute} from "@angular/router";
-import {Mouvements} from "../constants/mouvements.constants";
+import {Component, OnInit} from '@angular/core';
+import {Robot} from '../models/Robot';
+import {ActivatedRoute} from '@angular/router';
+import {Mouvements} from '../constants/mouvements.constants';
 
 @Component({
   selector: 'app-mouvements',
@@ -10,11 +10,11 @@ import {Mouvements} from "../constants/mouvements.constants";
 })
 export class MouvementsComponent implements OnInit {
 
-  robot:Robot;
+  robot: Robot;
 
   Mouvements;
 
-  constructor(private route:ActivatedRoute) {
+  constructor(private route: ActivatedRoute) {
   }
 
   ngOnInit() {
