@@ -7,30 +7,29 @@ RUN mkdir -p ${BUILD_WORK_DIR}
 
 # Installation des outils de build Angular CLI
 RUN mkdir $HOME \
-    && npm install -g @angular/cli
+    && npm install -g @angular/cli \
+    && npm cache clean \
+    && rm -rf ~/.npm \
+    && rm -rf /tmp/npm*
 
 # Ajout des sources de l'application
 ADD . ${BUILD_WORK_DIR}/
-
-# Installation des composants serveur
-RUN cd ${BUILD_WORK_DIR} \
-    && npm install
 
 # Build de l'application Angular
 RUN cd ${BUILD_WORK_DIR}/public-src \
     && npm install \
     && npm run build \
     && cd ${BUILD_WORK_DIR} \
-    && rm -rf ${BUILD_WORK_DIR}/public-src
-
-# Nettoyage NPM
-RUN npm cache clean \
+    && rm -rf ${BUILD_WORK_DIR}/public-src \
+    && npm cache clean \
     && rm -rf ~/.npm \
     && rm -rf /tmp/npm*
 
-# Déplacement de l'application construite
-RUN cd / \
+# Installation des composants serveur & Déplacement de l'application construite
+RUN cd ${BUILD_WORK_DIR} \
+    && npm install \
+    && cd / \
     && mv ${BUILD_WORK_DIR}/* /app
+    && cd /app
 
-RUN cd /app
-    && npm run start
+CMD ["npm", "start"]
