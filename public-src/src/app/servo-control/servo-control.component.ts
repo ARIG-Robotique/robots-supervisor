@@ -40,4 +40,8 @@ export class ServoControlComponent implements OnInit, DoCheck {
     this.servosService.setPosition(this.robot, this.servo, this.servo.currentPosition, this.servo.currentSpeed);
   }
 
+  incrementPosition(value: number) {
+    this.servo.currentPosition += value;
+  }
+
 }

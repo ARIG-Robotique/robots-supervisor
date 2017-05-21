@@ -1,47 +1,54 @@
-<div class="row">
-  <div class="col-4 col-xl-2">
-    <label class="form-group has-float-label">
-      <input class="form-control"
-             type="number"
-             [min]="servo.minPosition"
-             [max]="servo.maxPosition"
-             placeholder="Position"
-             [(ngModel)]="servo.currentPosition"/>
-      <span>Position</span>
-    </label>
-  </div>
-
-  <div class="col-6 col-xl-4">
+<div class="form-inline">
+  <label class="form-group has-float-label">
     <input class="form-control"
-           type="range"
+           type="number"
            [min]="servo.minPosition"
            [max]="servo.maxPosition"
+           placeholder="Position"
            [(ngModel)]="servo.currentPosition"/>
+    <span>Position</span>
+  </label>
+
+  <div class="btn-group">
+    <button class="btn btn-info" (click)="incrementPosition(-100)">
+      <fa name="minus"></fa>
+      100
+    </button>
+    <button class="btn btn-info" (click)="incrementPosition(-10)">
+      <fa name="minus"></fa>
+      10
+    </button>
+  </div>
+  <div class="btn-group">
+    <button class="btn btn-info" (click)="incrementPosition(10)">
+      <fa name="plus"></fa>
+      10
+    </button>
+    <button class="btn btn-info" (click)="incrementPosition(100)">
+      <fa name="plus"></fa>
+      100
+    </button>
   </div>
 
-  <div class="col-2 col-xl-1">
-    <label class="form-group has-float-label">
-      <input class="form-control"
-             type="number"
-             [min]="servo.minSpeed"
-             [max]="servo.maxSpeed"
-             placeholder="Vitesse"
-             [(ngModel)]="servo.currentSpeed">
-      <span>Vitesse</span>
-    </label>
-  </div>
-
-  <div class="col-12 col-xl-6">
-    <div class="btn-group" data-toggle="buttons">
-      <label class="btn btn-success"
-             *ngFor="let position of servo.positions"
-             [ngClass]="{active: position.value === servo.currentPosition}">
-        <input type="radio"
-               [checked]="position.value === servo.currentPosition"
-               [value]="position.value"
-               (click)="servo.currentPosition = position.value">
-        {{position.name}}
-      </label>
-    </div>
-  </div>
+  <label class="form-group has-float-label">
+    <input class="form-control"
+           type="number"
+           [min]="servo.minSpeed"
+           [max]="servo.maxSpeed"
+           placeholder="Vitesse"
+           [(ngModel)]="servo.currentSpeed">
+    <span>Vitesse</span>
+  </label>
 </div>
+<div class="btn-group" data-toggle="buttons">
+  <label class="btn btn-success"
+         *ngFor="let position of servo.positions"
+         [ngClass]="{active: position.value === servo.currentPosition}">
+    <input type="radio"
+           [checked]="position.value === servo.currentPosition"
+           [value]="position.value"
+           (click)="servo.currentPosition = position.value">
+    {{position.name}}
+  </label>
+</div>
+
