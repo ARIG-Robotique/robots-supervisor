@@ -1,2 +1,13 @@
+<button type="button" class="btn btn-success"
+        *ngIf="!capteurs?.numerique.Tirette"
+        (click)="setTirette(true)">
+  Mettre la tirette
+</button>
+<button type="button" class="btn btn-success"
+        *ngIf="capteurs?.numerique.Tirette"
+        (click)="setTirette(false)">
+  Enlever la tirette
+</button>
+
 <pre><code>{{capteurs | json}}</code></pre>
 <pre><code>{{codeurs | json}}</code></pre>
