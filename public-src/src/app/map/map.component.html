@@ -1,7 +1,6 @@
 <div class="row">
   <div class="col-9">
     <app-map-input [table]="currentTable"
-                   [tableRotation]="currentRotation"
                    [tableZoom]="currentZoom"
                    [robotPosition]="robotPosition"
                    (positionChanged)="positionChanged($event)"
@@ -18,15 +17,6 @@
             </option>
           </select>
           <span>table</span>
-        </label>
-
-        <label class="form-group has-float-label">
-          <select class="form-control" [(ngModel)]="currentRotation">
-            <option *ngFor="let rotation of Rotations" [ngValue]="rotation.angle">
-              {{rotation.label}}
-            </option>
-          </select>
-          <span>rotation</span>
         </label>
 
         <label class="form-group has-float-label">

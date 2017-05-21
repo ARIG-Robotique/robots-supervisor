@@ -1,7 +1,7 @@
-import {Injectable} from "@angular/core";
-import {Headers, Http, Response} from "@angular/http";
-import "rxjs/add/operator/toPromise";
-import {Robot} from "../models/Robot";
+import {Injectable} from '@angular/core';
+import {Headers, Http, Response} from '@angular/http';
+import 'rxjs/add/operator/toPromise';
+import {Robot} from '../models/Robot';
 
 @Injectable()
 export class CapteursService {

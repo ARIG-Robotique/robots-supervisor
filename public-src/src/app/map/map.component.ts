@@ -27,11 +27,6 @@ export class MapComponent implements OnInit {
     {name: 'position', label: 'direct'}
   ];
 
-  Rotations: any = [
-    {angle: 0, label: '0°'},
-    {angle: 90, label: '90°'}
-  ];
-
   Zooms: any = [
     {level: 0.5, label: '50%'},
     {level: 0.75, label: '75%'},
@@ -39,7 +34,6 @@ export class MapComponent implements OnInit {
   ];
 
   currentMode = 'position';
-  currentRotation = 0;
   currentZoom = 1.0;
 
   constructor(private route: ActivatedRoute,

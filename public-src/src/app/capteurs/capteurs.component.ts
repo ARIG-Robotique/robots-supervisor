@@ -4,7 +4,6 @@ import {Robot} from '../models/Robot';
 import {CapteursService} from '../services/capteurs.service';
 import {IntervalObservable} from 'rxjs/observable/IntervalObservable';
 import {CodeursService} from '../services/codeurs.service';
-import {RobotsService} from "../services/robots.service";
 
 @Component({
   selector: 'app-robot-info',
@@ -47,8 +46,8 @@ export class CapteursComponent implements OnInit {
 
   setTirette(present: boolean) {
     this.capteursService.setTirette(this.robot, present)
-      .then((present) => {
-        this.capteurs.numerique.Tirette = present;
+      .then((result) => {
+        this.capteurs.numerique.Tirette = result;
       });
   }
 
