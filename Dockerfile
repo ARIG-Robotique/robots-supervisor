@@ -32,4 +32,4 @@ RUN cd ${BUILD_WORK_DIR} \
     && mv ${BUILD_WORK_DIR}/* /app
     && cd /app
 
-CMD ["npm", "start"]
+CMD ["npm", "start", "prod"]
