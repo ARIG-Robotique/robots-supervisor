@@ -26,12 +26,6 @@ export class ServosComponent implements OnInit {
 
       this.fetch();
     });
-
-    // IntervalObservable.create(1000).subscribe(() => {
-    //   if (this.robot) {
-    //     this.fetch();
-    //   }
-    // });
   }
 
   fetch() {

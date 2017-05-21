@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Tables} from '../constants/tables.constants';
 import {Table} from '../models/Table';
 import {Robot} from '../models/Robot';
@@ -6,13 +6,14 @@ import {RobotPosition} from '../models/RobotPosition';
 import {ActivatedRoute} from '@angular/router';
 import {MouvementsService} from '../services/mouvements.service';
 import {IntervalObservable} from 'rxjs/observable/IntervalObservable';
+import {Subscription} from 'rxjs/Rx';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnDestroy {
 
   Tables: Table[];
   currentTable: Table;
@@ -36,6 +37,8 @@ export class MapComponent implements OnInit {
   currentMode = 'position';
   currentZoom = 1.0;
 
+  sub: Subscription;
+
   constructor(private route: ActivatedRoute,
               private mouvementsService: MouvementsService) {
   }
@@ -50,11 +53,15 @@ export class MapComponent implements OnInit {
       this.fetch();
     });
 
-    IntervalObservable.create(200).subscribe(() => {
+    this.sub = IntervalObservable.create(200).subscribe(() => {
       if (this.robot) {
         this.fetch();
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   fetch() {

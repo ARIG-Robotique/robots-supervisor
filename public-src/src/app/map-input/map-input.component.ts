@@ -181,11 +181,13 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
       imageLoader.onload = function () {
         this.image = new Konva.Image({
-          x: 0,
-          y: 0,
+          // FIXME - Transformer plus proprement l'image  
+          x: table.width * table.imageRatio,
+          y: table.height * table.imageRatio,
           image: imageLoader,
           width: table.width * table.imageRatio,
-          height: table.height * table.imageRatio
+          height: table.height * table.imageRatio,
+          rotation: 180
         });
 
         this.mainLayer.add(this.image);

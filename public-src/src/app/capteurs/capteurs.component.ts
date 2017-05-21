@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Robot} from '../models/Robot';
 import {CapteursService} from '../services/capteurs.service';
 import {IntervalObservable} from 'rxjs/observable/IntervalObservable';
+import {Subscription} from 'rxjs/Rx';
 import {CodeursService} from '../services/codeurs.service';
 
 @Component({
@@ -10,12 +11,14 @@ import {CodeursService} from '../services/codeurs.service';
   templateUrl: './capteurs.component.html',
   styleUrls: ['./capteurs.component.scss']
 })
-export class CapteursComponent implements OnInit {
+export class CapteursComponent implements OnInit, OnDestroy {
 
   robot: Robot;
 
   capteurs: any;
   codeurs: any;
+
+  sub: Subscription;
 
   constructor(private route: ActivatedRoute,
               private capteursService: CapteursService,
@@ -29,11 +32,15 @@ export class CapteursComponent implements OnInit {
       this.fetch();
     });
 
-    IntervalObservable.create(1000).subscribe(() => {
+    this.sub = IntervalObservable.create(1000).subscribe(() => {
       if (this.robot) {
         this.fetch();
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   fetch() {
