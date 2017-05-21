@@ -36,11 +36,13 @@ export class SidebarComponent implements OnInit {
       });
   }
 
-  selectRobot(robot: Robot) {
-    this.robotsService.getRobotInfo(robot)
-      .then((info) => {
-        console.log(info);
-      });
+  deleteRobot(robot: Robot) {
+    const ok = confirm('Etes-vous sûr ?');
+
+    if (ok) {
+      this.robotsService.deleteRobot(robot)
+        .then(() => this.getRobots);
+    }
   }
 
 }

@@ -54,6 +54,24 @@ export class RobotsService {
   }
 
   /**
+   * Supprime un robot
+   * @param {Robot} robot
+   * @returns {Promise<void>}
+   */
+  deleteRobot(robot: Robot): Promise<void> {
+    for (let i = 0; i < this.robots.length; i++) {
+      if (this.robots[i].id === robot.id) {
+        this.robots.splice(i, 1);
+        break;
+      }
+    }
+
+    localStorage.setItem('robots', JSON.stringify(this.robots));
+
+    return Promise.resolve();
+  }
+
+  /**
    * Retourne les infos d'un robot
    * @param {Robot} robot
    * @returns {Promise<any>}

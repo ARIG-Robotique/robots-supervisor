@@ -9,8 +9,9 @@
         *ngFor="let robot of robots"
         [routerLink]="['/robot', robot.id]"
         routerLinkActive="active">
-      {{robot.id}}
+      <span style="flex-grow: 1">{{robot.id}}</span>
       <span class="badge badge-default badge-pill">{{robot.host}}</span>
+      <fa name="close" class="ml-1" (click)="deleteRobot(robot)"></fa>
     </li>
   </ul>
 </div>
