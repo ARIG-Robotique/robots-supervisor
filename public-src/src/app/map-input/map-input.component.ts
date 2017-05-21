@@ -12,6 +12,7 @@ import {
 import {Table} from '../models/Table';
 import {RobotPosition} from '../models/RobotPosition';
 import * as Konva from 'konva';
+import {Point} from '../models/Point';
 
 @Component({
   selector: 'app-map-input',
@@ -40,6 +41,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   robot: Konva.Group;
   target: Konva.Group;
   director: Konva.Arrow;
+  points: Konva.Group;
 
   constructor() {
   }
@@ -68,20 +70,24 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     this.director = this.buildDirector();
     this.mainLayer.add(this.director);
 
+    this.points = new Konva.Group();
+    this.mainLayer.add(this.points);
+
     this.setZoom(this.tableZoom);
     this.setTable(this.table);
     this.moveTarget(this.targetPosition);
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['tableZoom']) {
+    if (changes['tableZoom'] && this.tableZoom) {
       this.setZoom(this.tableZoom);
     }
-    if (changes['table']) {
+    if (changes['table'] && this.table) {
       this.setTable(this.table);
     }
-    if (changes['robotPosition']) {
+    if (changes['robotPosition'] && this.robotPosition) {
       this.moveRobot(this.robotPosition);
+      this.drawPoints(this.robotPosition);
     }
   }
 
@@ -210,6 +216,35 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       });
       this.target.rotation(-position.angle);
       this.mainLayer.drawScene();
+    }
+  }
+
+  drawPoints(data: RobotPosition) {
+    if (this.stage) {
+      this.points.getChildren().each((item) => {
+        item.remove();
+        item.destroy();
+      });
+
+      data.pointsLidar.forEach((point) => {
+        this.points.add(new Konva.Circle({
+          x: point.x * this.table.imageRatio,
+          y: point.y * this.table.imageRatio,
+          radius: this.tableZoom * 4,
+          fill: 'black'
+        }));
+      });
+
+      data.pointsCapteurs.forEach((point) => {
+        this.points.add(new Konva.Circle({
+          x: point.x * this.table.imageRatio,
+          y: point.y * this.table.imageRatio,
+          radius: this.tableZoom * 4,
+          fill: 'black',
+          stroke: 'rgba(0, 0, 0, 0.5)',
+          strokeWidth: this.tableZoom * 20
+        }));
+      });
     }
   }
 
