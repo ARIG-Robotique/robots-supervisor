@@ -93,28 +93,23 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   buildRobot(): Konva.Group {
     const robot = new Konva.Group();
 
-    robot.add(new Konva.RegularPolygon({
-      x: 0,
-      y: 0,
-      sides: 8,
-      radius: 180,
-      rotation: 22.5,
-      fill: 'rgba(245, 32, 32, 0.7)'
-    }));
+    const imageLoader = new Image();
 
-    robot.add(new Konva.Arrow({
-      x: 165,
-      y: 0,
-      points: [0, 0, 25, 0],
-      fill: 'rgba(32, 245, 32, 0.7)',
-      pointerLength: 25,
-      pointerWidth: 100
-    }));
+    imageLoader.onload = function () {
+      robot.add(new Konva.Image({
+        x: -65,
+        y: -65,
+        image: imageLoader,
+        width: 130,
+        height: 130,
+        shadowColor: 'black',
+        shadowOpacity: 1,
+        shadowBlur: 20
+      }));
 
-    robot.scale({
-      x: this.table.imageRatio,
-      y: this.table.imageRatio
-    });
+    }.bind(this);
+
+    imageLoader.src = 'assets/robots/nerell.png';
 
     return robot;
   }
@@ -194,12 +189,11 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
       imageLoader.onload = function () {
         this.image = new Konva.Image({
-          x: table.width * table.imageRatio,
-          y: table.height * table.imageRatio,
+          x: 0,
+          y: 0,
           image: imageLoader,
           width: table.width * table.imageRatio,
-          height: table.height * table.imageRatio,
-          rotation: 180
+          height: table.height * table.imageRatio
         });
 
         this.mainLayer.add(this.image);
