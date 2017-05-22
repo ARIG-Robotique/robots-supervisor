@@ -7,7 +7,26 @@
         *ngIf="capteurs?.numerique.Tirette"
         (click)="setTirette(false)">
   Enlever la tirette
+</button><button type="button" class="btn btn-success"
+                 *ngIf="!capteurs?.numerique.AU"
+                 (click)="setAu(true)">
+  Enclencher l'AU
 </button>
+<button type="button" class="btn btn-success"
+        *ngIf="capteurs?.numerique.AU"
+        (click)="setAu(false)">
+  Claquer l'AU
+</button>
+<div class="btn-group">
+  <button type="button" class="btn btn-warning {{capteurs?.text.Equipe === 'JAUNE' ? 'btn-active' : ''}}"
+          (click)="setTeam('JAUNE')">
+    Jaune
+  </button>
+  <button type="button" class="btn btn-primary {{capteurs?.text.Equipe === 'BLEU' ? 'btn-active' : ''}}"
+          (click)="setTeam('BLEU')">
+    Bleu
+  </button>
+</div>
 
 <pre><code>{{capteurs | json}}</code></pre>
 <pre><code>{{codeurs | json}}</code></pre>

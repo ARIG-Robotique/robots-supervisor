@@ -58,4 +58,18 @@ export class CapteursComponent implements OnInit, OnDestroy {
       });
   }
 
+  setTeam(team: string) {
+    this.capteursService.setTeam(this.robot, team)
+      .then((result) => {
+        this.capteurs.text.Equipe = result;
+      });
+  }
+
+  setAu(present: boolean) {
+    this.capteursService.setAu(this.robot, present)
+      .then((result) => {
+        this.capteurs.numerique.AU = result;
+      });
+  }
+
 }

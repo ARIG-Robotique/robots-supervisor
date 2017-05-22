@@ -12,7 +12,6 @@ import {
 import {Table} from '../models/Table';
 import {RobotPosition} from '../models/RobotPosition';
 import * as Konva from 'konva';
-import {Point} from '../models/Point';
 
 @Component({
   selector: 'app-map-input',
@@ -98,10 +97,24 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       x: 0,
       y: 0,
       sides: 8,
-      radius: 50,
+      radius: 180,
       rotation: 22.5,
       fill: 'rgba(245, 32, 32, 0.7)'
     }));
+
+    robot.add(new Konva.Arrow({
+      x: 165,
+      y: 0,
+      points: [0, 0, 25, 0],
+      fill: 'rgba(32, 245, 32, 0.7)',
+      pointerLength: 25,
+      pointerWidth: 100
+    }));
+
+    robot.scale({
+      x: this.table.imageRatio,
+      y: this.table.imageRatio
+    });
 
     return robot;
   }
@@ -181,7 +194,6 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
       imageLoader.onload = function () {
         this.image = new Konva.Image({
-          // FIXME - Transformer plus proprement l'image  
           x: table.width * table.imageRatio,
           y: table.height * table.imageRatio,
           image: imageLoader,
@@ -206,7 +218,8 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         x: position.x * this.table.imageRatio,
         y: (this.table.height - position.y) * this.table.imageRatio
       });
-      this.robot.rotation(position.angle);
+      this.robot.rotation(-position.angle);
+      this.mainLayer.drawScene();
     }
   }
 
@@ -228,25 +241,31 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         item.destroy();
       });
 
-      data.pointsLidar.forEach((point) => {
-        this.points.add(new Konva.Circle({
-          x: point.x * this.table.imageRatio,
-          y: point.y * this.table.imageRatio,
-          radius: this.tableZoom * 4,
-          fill: 'black'
-        }));
-      });
+      if (data.pointsLidar) {
+        data.pointsLidar.forEach((point) => {
+          this.points.add(new Konva.Circle({
+            x: point.x * this.table.imageRatio,
+            y: point.y * this.table.imageRatio,
+            radius: this.tableZoom * 4,
+            fill: 'black'
+          }));
+        });
+      }
 
-      data.pointsCapteurs.forEach((point) => {
-        this.points.add(new Konva.Circle({
-          x: point.x * this.table.imageRatio,
-          y: point.y * this.table.imageRatio,
-          radius: this.tableZoom * 4,
-          fill: 'black',
-          stroke: 'rgba(0, 0, 0, 0.5)',
-          strokeWidth: this.tableZoom * 20
-        }));
-      });
+      if (data.pointsCapteurs) {
+        data.pointsCapteurs.forEach((point) => {
+          this.points.add(new Konva.Circle({
+            x: point.x * this.table.imageRatio,
+            y: point.y * this.table.imageRatio,
+            radius: this.tableZoom * 4,
+            fill: 'black',
+            stroke: 'rgba(0, 0, 0, 0.5)',
+            strokeWidth: this.tableZoom * 20
+          }));
+        });
+      }
+
+      this.mainLayer.drawScene();
     }
   }
 
@@ -296,8 +315,6 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
   mouseup(e) {
     const $event = e.evt;
-
-    this.robotPosition = {x: 300, y: 1600, angle: 90};
 
     if (this.state.moving) {
       this.targetPosition = {
