@@ -12,6 +12,7 @@ import {
 import {Table} from '../models/Table';
 import {RobotPosition} from '../models/RobotPosition';
 import * as Konva from 'konva';
+import {Point} from '../models/Point';
 
 @Component({
   selector: 'app-map-input',
@@ -19,6 +20,8 @@ import * as Konva from 'konva';
   styleUrls: ['./map-input.component.scss']
 })
 export class MapInputComponent implements OnChanges, AfterViewInit {
+
+  @Input() team: string;
 
   @Input() table: Table;
   @Input() tableZoom: number;
@@ -36,8 +39,9 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
   stage: Konva.Stage;
   mainLayer: Konva.Layer;
-  image: Konva.Image;
-  robot: Konva.Group;
+  tableImg: Konva.Image;
+  nerell: Konva.Group;
+  elfa: Konva.Group;
   target: Konva.Group;
   director: Konva.Arrow;
   points: Konva.Group;
@@ -60,8 +64,11 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     this.mainLayer = new Konva.Layer();
     this.stage.add(this.mainLayer);
 
-    this.robot = this.buildRobot();
-    this.mainLayer.add(this.robot);
+    this.nerell = this.buildNerell();
+    this.mainLayer.add(this.nerell);
+
+    this.elfa = this.buildElfa();
+    this.mainLayer.add(this.elfa);
 
     this.target = this.buildTarget();
     this.mainLayer.add(this.target);
@@ -85,12 +92,15 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       this.setTable(this.table);
     }
     if (changes['robotPosition'] && this.robotPosition) {
-      this.moveRobot(this.robotPosition);
+      this.moveNerell(this.robotPosition);
       this.drawPoints(this.robotPosition);
+    }
+    if (changes['team']) {
+      this.moveElfa();
     }
   }
 
-  buildRobot(): Konva.Group {
+  buildNerell(): Konva.Group {
     const robot = new Konva.Group();
 
     const imageLoader = new Image();
@@ -110,6 +120,30 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     }.bind(this);
 
     imageLoader.src = 'assets/robots/nerell.png';
+
+    return robot;
+  }
+
+  buildElfa(): Konva.Group {
+    const robot = new Konva.Group();
+
+    const imageLoader = new Image();
+
+    imageLoader.onload = function () {
+      robot.add(new Konva.Image({
+        x: -55,
+        y: -55,
+        image: imageLoader,
+        width: 110,
+        height: 110,
+        shadowColor: 'black',
+        shadowOpacity: 1,
+        shadowBlur: 20
+      }));
+
+    }.bind(this);
+
+    imageLoader.src = 'assets/robots/elfa.png';
 
     return robot;
   }
@@ -180,15 +214,15 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
   setTable(table: Table) {
     if (this.stage) {
-      if (this.image) {
-        this.image.remove();
-        this.image.destroy();
+      if (this.tableImg) {
+        this.tableImg.remove();
+        this.tableImg.destroy();
       }
 
       const imageLoader = new Image();
 
       imageLoader.onload = function () {
-        this.image = new Konva.Image({
+        this.tableImg = new Konva.Image({
           x: 0,
           y: 0,
           image: imageLoader,
@@ -196,23 +230,35 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
           height: table.height * table.imageRatio
         });
 
-        this.mainLayer.add(this.image);
-        this.image.moveToBottom();
+        this.mainLayer.add(this.tableImg);
+        this.tableImg.moveToBottom();
 
         this.setZoom(this.tableZoom);
       }.bind(this);
 
       imageLoader.src = 'assets/tables/' + table.name + '.png';
+
+      this.moveElfa();
     }
   }
 
-  moveRobot(position: RobotPosition) {
+  moveElfa() {
+    if (this.table && this.team) {
+      this.elfa.position({
+        x: this.table.elfa[this.team].x * this.table.imageRatio,
+        y: (this.table.height - this.table.elfa[this.team].y) * this.table.imageRatio
+      });
+      this.elfa.rotation(-this.table.elfa[this.team].a);
+    }
+  }
+
+  moveNerell(position: RobotPosition) {
     if (this.stage) {
-      this.robot.position({
+      this.nerell.position({
         x: position.x * this.table.imageRatio,
         y: (this.table.height - position.y) * this.table.imageRatio
       });
-      this.robot.rotation(-position.angle);
+      this.nerell.rotation(-position.angle);
       this.mainLayer.drawScene();
     }
   }

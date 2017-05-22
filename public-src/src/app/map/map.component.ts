@@ -7,6 +7,7 @@ import {ActivatedRoute} from '@angular/router';
 import {MouvementsService} from '../services/mouvements.service';
 import {IntervalObservable} from 'rxjs/observable/IntervalObservable';
 import {Subscription} from 'rxjs/Rx';
+import {CapteursService} from '../services/capteurs.service';
 
 @Component({
   selector: 'app-map',
@@ -19,6 +20,7 @@ export class MapComponent implements OnInit, OnDestroy {
   currentTable: Table;
 
   robot: Robot;
+  team: string;
   robotPosition: RobotPosition;
 
   targetPosition: RobotPosition;
@@ -40,6 +42,7 @@ export class MapComponent implements OnInit, OnDestroy {
   sub: Subscription;
 
   constructor(private route: ActivatedRoute,
+              private capteursService: CapteursService,
               private mouvementsService: MouvementsService) {
   }
 
@@ -49,6 +52,11 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.route.parent.data.subscribe(data => {
       this.robot = data['robot'];
+
+      this.capteursService.getCapteurs(this.robot)
+        .then((capteurs) => {
+          this.team = capteurs.text.Equipe;
+        });
 
       this.fetch();
     });
