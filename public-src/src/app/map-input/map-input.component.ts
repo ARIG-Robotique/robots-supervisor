@@ -285,7 +285,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         data.pointsLidar.forEach((point) => {
           this.points.add(new Konva.Circle({
             x: point.x * this.table.imageRatio,
-            y: point.y * this.table.imageRatio,
+            y: (this.table.height - point.y) * this.table.imageRatio,
             radius: this.tableZoom * 4,
             fill: 'black'
           }));
@@ -296,7 +296,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         data.pointsCapteurs.forEach((point) => {
           this.points.add(new Konva.Circle({
             x: point.x * this.table.imageRatio,
-            y: point.y * this.table.imageRatio,
+            y: (this.table.height - point.y) * this.table.imageRatio,
             radius: this.tableZoom * 4,
             fill: 'black',
             stroke: 'rgba(0, 0, 0, 0.5)',

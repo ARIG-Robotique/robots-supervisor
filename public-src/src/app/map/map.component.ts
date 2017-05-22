@@ -36,7 +36,7 @@ export class MapComponent implements OnInit, OnDestroy {
     {level: 1.0, label: '100%'}
   ];
 
-  currentMode = 'position';
+  currentMode = 'path';
   currentZoom = 1.0;
 
   sub: Subscription;
