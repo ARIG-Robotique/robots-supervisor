@@ -39,7 +39,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
   stage: Konva.Stage;
   mainLayer: Konva.Layer;
-  tableImg: Konva.Image;
+  background: Konva.Layer;
   nerell: Konva.Group;
   elfa: Konva.Group;
   target: Konva.Group;
@@ -51,6 +51,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    console.log('MapInput view init');
 
     this.stage = new Konva.Stage({
       container: this.mapContainer.nativeElement,
@@ -61,6 +62,9 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     this.stage.on('mousedown', this.mousedown.bind(this));
     this.stage.on('mousemove', this.mousemove.bind(this));
     this.stage.on('mouseup', this.mouseup.bind(this));
+
+    this.background = new Konva.Layer();
+    this.stage.add(this.background);
 
     this.mainLayer = new Konva.Layer();
     this.stage.add(this.mainLayer);
@@ -83,17 +87,20 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     this.mouvement = new Konva.Group();
     this.mainLayer.add(this.mouvement);
 
-    this.setZoom(this.tableZoom);
-    this.setTable(this.table);
+    this.setZoom();
     this.moveTarget(this.targetPosition);
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['tableZoom'] && this.tableZoom) {
-      this.setZoom(this.tableZoom);
+    if (changes['tableZoom']) {
+      this.setZoom();
     }
-    if (changes['table'] && this.table) {
-      this.setTable(this.table);
+    if (changes['table']) {
+      if (this.table) {
+        console.log('MapInput table change');
+      }
+      this.setTable();
+      this.moveElfa();
     }
     if (changes['robotPosition'] && this.robotPosition) {
       this.moveNerell(this.robotPosition);
@@ -103,6 +110,10 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       this.mainLayer.drawScene();
     }
     if (changes['team']) {
+      if (this.team) {
+        console.log('MapInput team change');
+      }
+      this.setTable();
       this.moveElfa();
     }
   }
@@ -216,47 +227,72 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     return director;
   }
 
-  setZoom(zoom: number) {
-    if (this.stage) {
-      this.stage.setWidth(this.table.width * this.table.imageRatio * zoom);
-      this.stage.setHeight(this.table.height * this.table.imageRatio * zoom);
+  setZoom() {
+    if (this.stage && this.tableZoom) {
+      this.stage.setWidth(this.table.width * this.table.imageRatio * this.tableZoom);
+      this.stage.setHeight(this.table.height * this.table.imageRatio * this.tableZoom);
 
-      this.mainLayer.scale({x: zoom, y: zoom});
+      this.mainLayer.scale({x: this.tableZoom, y: this.tableZoom});
+      this.background.scale({x: this.tableZoom, y: this.tableZoom});
     }
   }
 
-  setTable(table: Table) {
-    if (this.stage) {
-      if (this.tableImg) {
-        this.tableImg.remove();
-        this.tableImg.destroy();
-      }
-
-      const imageLoader = new Image();
-
-      imageLoader.onload = function () {
-        this.tableImg = new Konva.Image({
-          x: 0, y: 0,
-          image: imageLoader,
-          width: table.width * table.imageRatio,
-          height: table.height * table.imageRatio,
-          opacity: 0.8
-        });
-
-        this.mainLayer.add(this.tableImg);
-        this.tableImg.moveToBottom();
-
-        this.setZoom(this.tableZoom);
+  setTable() {
+    if (this.stage && this.table && this.team) {
+      var done = 0;
+      var checkDone = function() {
+        done++;
+        if (done === 2) {
+          this.background.drawScene();
+        }
       }.bind(this);
 
-      imageLoader.src = 'assets/tables/' + table.name + '.png';
+      this.background.getChildren().each(item => {
+        item.remove();
+        item.destroy();
+      });
 
-      this.moveElfa();
+      const tableLoader = new Image();
+
+      tableLoader.onload = function () {
+        const image = new Konva.Image({
+          x: 0, y: 0,
+          image: tableLoader,
+          width: this.table.width * this.table.imageRatio,
+          height: this.table.height * this.table.imageRatio
+        });
+
+        this.background.add(image);
+        image.moveToBottom();
+
+        checkDone();
+      }.bind(this);
+
+      tableLoader.src = 'assets/tables/' + this.table.name + '.png';
+
+      const maskLoader = new Image();
+
+      maskLoader.onload = function () {
+        const image = new Konva.Image({
+          x: 0, y: 0,
+          image: maskLoader,
+          width: this.table.width * this.table.imageRatio,
+          height: this.table.height * this.table.imageRatio,
+          opacity: 0.2
+        });
+
+        this.background.add(image);
+        image.moveToTop();
+
+        checkDone();
+      }.bind(this);
+
+      maskLoader.src = 'assets/pathMasks/' + this.table.name + '-' + this.team + '.png';
     }
   }
 
   moveElfa() {
-    if (this.elfa && this.team) {
+    if (this.elfa && this.team && this.table) {
       this.elfa.position({
         x: this.table.elfa[this.team].x * this.table.imageRatio,
         y: (this.table.height - this.table.elfa[this.team].y) * this.table.imageRatio
