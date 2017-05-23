@@ -243,6 +243,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       var checkDone = function() {
         done++;
         if (done === 2) {
+          this.setZoom();
           this.background.drawScene();
         }
       }.bind(this);
@@ -371,10 +372,10 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         data.collisions.forEach((rect) => {
           this.points.add(new Konva.Rect({
             x: rect.x * this.table.imageRatio,
-            y: (this.table.height - rect.y) * this.table.imageRatio,
+            y: (this.table.height - rect.y - rect.h) * this.table.imageRatio,
             width: rect.w * this.table.imageRatio,
             height: rect.h * this.table.imageRatio,
-            fill: 'rgba(0, 0, 0, 0.5)'
+            fill: 'rgba(0, 0, 0, 0.2)'
           }));
         });
       }
