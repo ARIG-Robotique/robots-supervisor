@@ -1,4 +1,5 @@
 import {Point} from './Point';
+import {Rect} from './Rect';
 
 export interface RobotPosition {
 
@@ -15,5 +16,6 @@ export interface RobotPosition {
 
   pointsLidar?: Point[];
   pointsCapteurs?: Point[];
+  collisions?: Rect[];
 
 }

@@ -12,6 +12,7 @@ import {
 import {Table} from '../../models/Table';
 import {RobotPosition} from '../../models/RobotPosition';
 import * as Konva from 'konva';
+import {Point} from '../../models/Point';
 
 @Component({
   selector: 'app-map-input',
@@ -42,7 +43,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   nerell: Konva.Group;
   elfa: Konva.Group;
   target: Konva.Group;
-  director: Konva.Arrow;
+  director: Konva.Group;
   points: Konva.Group;
 
   constructor() {
@@ -148,7 +149,9 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   }
 
   buildTarget(): Konva.Group {
-    const target = new Konva.Group();
+    const target = new Konva.Group({
+      visible: false
+    });
 
     target.add(new Konva.Line({
       x: 0,
@@ -158,15 +161,12 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       strokeWidth: 2
     }));
 
-    target.add(new Konva.Arrow({
+    target.add(new Konva.Line({
       x: -30,
       y: 0,
-      points: [0, 0, 75, 0],
+      points: [0, 0, 60, 0],
       stroke: '#5cb85c',
-      fill: '#5cb85c',
-      strokeWidth: 2,
-      pointerLength: 10,
-      pointerWidth: 10
+      strokeWidth: 2
     }));
 
     target.add(new Konva.Circle({
@@ -188,8 +188,12 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     return target;
   }
 
-  buildDirector(): Konva.Arrow {
-    return new Konva.Arrow({
+  buildDirector(): Konva.Group {
+    const director = new Konva.Group({
+      visible: false
+    });
+
+    director.add(new Konva.Arrow({
       x: 0,
       y: 0,
       points: [0, 0, 100, 0],
@@ -197,9 +201,20 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       fill: '#5cb85c',
       strokeWidth: 4,
       pointerLength: 10,
-      pointerWidth: 10,
-      visible: false
-    });
+      pointerWidth: 10
+    }));
+
+    director.add(new Konva.Text({
+      text: '',
+      x: 110,
+      y: -8,
+      align: 'center',
+      fontSize: 16,
+      fontStyle: 'bold',
+      fill: 'black'
+    }));
+
+    return director;
   }
 
   setZoom(zoom: number) {
@@ -264,13 +279,25 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
   moveTarget(position: RobotPosition) {
     if (this.stage) {
+      this.target.visible(true);
       this.target.position({
         x: position.x * this.table.imageRatio,
         y: (this.table.height - position.y) * this.table.imageRatio
       });
-      this.target.rotation(-position.angle);
       this.mainLayer.drawScene();
     }
+  }
+
+  moveDirector(position: Point, delta: Point) {
+    this.director.visible(true);
+    this.director.position(position);
+    this.director.rotation(-Math.atan2(delta.y, delta.x) / Math.PI * 180);
+
+    const text = this.director.getChildren((children) => children instanceof Konva.Text)[0];
+    text.text(-this.director.rotation().toFixed(1) + '°');
+    text.rotation(-this.director.rotation());
+
+    this.mainLayer.drawScene();
   }
 
   drawPoints(data: RobotPosition) {
@@ -300,6 +327,18 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
             fill: 'black',
             stroke: 'rgba(0, 0, 0, 0.5)',
             strokeWidth: this.tableZoom * 20
+          }));
+        });
+      }
+
+      if (data.collisions) {
+        data.collisions.forEach((rect) => {
+          this.points.add(new Konva.Rect({
+            x: rect.x * this.table.imageRatio,
+            y: (this.table.height - rect.y) * this.table.imageRatio,
+            width: rect.w * this.table.imageRatio,
+            height: rect.h * this.table.imageRatio,
+            fill: 'rgba(0, 0, 0, 0.5)'
           }));
         });
       }
@@ -341,13 +380,13 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       this.state.moving = Math.abs(this.state.startX - this.state.endX) > 10 || Math.abs(this.state.startY - this.state.endY) > 10;
 
       if (this.state.moving) {
-        this.director.visible(true);
-        this.director.position({
+        this.moveDirector({
           x: this.state.startX,
           y: this.state.startY
+        }, {
+          x: dx,
+          y: dy
         });
-        this.director.rotation(-Math.atan2(dy, dx) / Math.PI * 180);
-        this.mainLayer.drawScene();
       }
     }
   }
@@ -362,7 +401,12 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         angle: this.state.angle * 180 / Math.PI
       };
 
+      if (this.targetPosition.angle > 180) {
+        this.targetPosition.angle -= 360;
+      }
+
       this.angleChanged.emit(this.targetPosition);
+      this.target.visible(false);
 
     } else {
       this.targetPosition = {
@@ -373,6 +417,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
       this.positionChanged.emit(this.targetPosition);
       this.moveTarget(this.targetPosition);
+      this.director.visible(false);
     }
 
     this.state = {};
