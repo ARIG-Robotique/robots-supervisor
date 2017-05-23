@@ -1,12 +1,12 @@
 import {Routes} from '@angular/router';
-import {MouvementsComponent} from './mouvements/mouvements.component';
-import {ServosComponent} from './servos/servos.component';
-import {RobotComponent} from './robot/robot.component';
-import {HomeComponent} from './home/home.component';
+import {MouvementsComponent} from './views/mouvements/mouvements.component';
+import {ServosComponent} from './views/servos/servos.component';
+import {RobotComponent} from './views/robot/robot.component';
+import {HomeComponent} from './views/home/home.component';
 import {RobotResolve} from './resolvers/RobotResolve';
-import {RobotInfoComponent} from './robot-info/robot-info.component';
-import {MapComponent} from './map/map.component';
-import {CapteursComponent} from './capteurs/capteurs.component';
+import {RobotInfoComponent} from './views/robot-info/robot-info.component';
+import {MapComponent} from './views/map/map.component';
+import {CapteursComponent} from './views/capteurs/capteurs.component';
 
 export const AppRoutes: Routes = [
   {

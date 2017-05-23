@@ -1,6 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {Robot} from '../models/Robot';
-import {MouvementsService} from '../services/mouvements.service';
+import {Robot} from '../../models/Robot';
+import {MouvementsService} from '../../services/mouvements.service';
 
 @Component({
   selector: 'app-mouvement-input',

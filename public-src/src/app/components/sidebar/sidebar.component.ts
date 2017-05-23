@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Robot} from '../models/Robot';
-import {RobotsService} from '../services/robots.service';
+import {Robot} from '../../models/Robot';
+import {RobotsService} from '../../services/robots.service';
 
 @Component({
   selector: 'app-sidebar',

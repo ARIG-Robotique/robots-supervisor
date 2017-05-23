@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Robot} from '../models/Robot';
+import {Robot} from '../../models/Robot';
 import {ActivatedRoute} from '@angular/router';
-import {Mouvements} from '../constants/mouvements.constants';
+import {Mouvements} from '../../constants/mouvements.constants';
 
 @Component({
   selector: 'app-mouvements',

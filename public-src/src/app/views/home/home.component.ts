@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {RobotsService} from '../services/robots.service';
+import {RobotsService} from '../../services/robots.service';
 
 @Component({
   selector: 'app-home',

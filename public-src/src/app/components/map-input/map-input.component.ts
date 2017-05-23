@@ -9,10 +9,9 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import {Table} from '../models/Table';
-import {RobotPosition} from '../models/RobotPosition';
+import {Table} from '../../models/Table';
+import {RobotPosition} from '../../models/RobotPosition';
 import * as Konva from 'konva';
-import {Point} from '../models/Point';
 
 @Component({
   selector: 'app-map-input',

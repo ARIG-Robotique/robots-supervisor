@@ -1,10 +1,10 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {Robot} from '../models/Robot';
-import {CapteursService} from '../services/capteurs.service';
+import {Robot} from '../../models/Robot';
+import {CapteursService} from '../../services/capteurs.service';
 import {IntervalObservable} from 'rxjs/observable/IntervalObservable';
 import {Subscription} from 'rxjs/Rx';
-import {CodeursService} from '../services/codeurs.service';
+import {CodeursService} from '../../services/codeurs.service';
 
 @Component({
   selector: 'app-robot-info',

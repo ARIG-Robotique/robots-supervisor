@@ -1,13 +1,13 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Tables} from '../constants/tables.constants';
-import {Table} from '../models/Table';
-import {Robot} from '../models/Robot';
-import {RobotPosition} from '../models/RobotPosition';
+import {Tables} from '../../constants/tables.constants';
+import {Table} from '../../models/Table';
+import {Robot} from '../../models/Robot';
+import {RobotPosition} from '../../models/RobotPosition';
 import {ActivatedRoute} from '@angular/router';
-import {MouvementsService} from '../services/mouvements.service';
+import {MouvementsService} from '../../services/mouvements.service';
 import {IntervalObservable} from 'rxjs/observable/IntervalObservable';
 import {Subscription} from 'rxjs/Rx';
-import {CapteursService} from '../services/capteurs.service';
+import {CapteursService} from '../../services/capteurs.service';
 
 @Component({
   selector: 'app-map',
