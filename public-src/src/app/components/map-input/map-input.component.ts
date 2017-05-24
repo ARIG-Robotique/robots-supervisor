@@ -44,6 +44,8 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   elfa: Konva.Group;
   target: Konva.Group;
   director: Konva.Group;
+  crosshairLayer: Konva.Layer;
+  crosshair: Konva.Group;
   points: Konva.Group;
   mouvement: Konva.Group;
 
@@ -86,6 +88,12 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
     this.mouvement = new Konva.Group();
     this.mainLayer.add(this.mouvement);
+
+    this.crosshairLayer = new Konva.Layer();
+    this.stage.add(this.crosshairLayer);
+
+    this.crosshair = this.buildCrossHair();
+    this.crosshairLayer.add(this.crosshair);
 
     this.setZoom();
     this.moveTarget(this.targetPosition);
@@ -227,6 +235,34 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     return director;
   }
 
+  buildCrossHair() {
+    const crosshair = new Konva.Group();
+
+    crosshair.add(new Konva.Line({
+      x: -10, y: 0,
+      points: [0, 0, 20, 0],
+      stroke: 'black',
+      strokeWidth: 1
+    }));
+
+    crosshair.add(new Konva.Line({
+      x: 0, y: -10,
+      points: [0, 0, 0, 20],
+      stroke: 'black',
+      strokeWidth: 1
+    }));
+
+    crosshair.add(new Konva.Text({
+      x: 5, y: 5,
+      text: '0 : 0',
+      fontSize: 16,
+      fontStyle: 'bold',
+      fill: 'black'
+    }));
+
+    return crosshair;
+  }
+
   setZoom() {
     if (this.stage && this.tableZoom) {
       this.stage.setWidth(this.table.width * this.table.imageRatio * this.tableZoom);
@@ -240,7 +276,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   setTable() {
     if (this.stage && this.table && this.team) {
       var done = 0;
-      var checkDone = function() {
+      var checkDone = function () {
         done++;
         if (done === 2) {
           this.setZoom();
@@ -334,6 +370,18 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       text.rotation(-this.director.rotation());
 
       this.mainLayer.drawScene();
+    }
+  }
+
+  moveCrosshair(position: Point) {
+    if (this.crosshair) {
+      this.crosshair.position(position);
+
+      const text = this.crosshair.getChildren((children) => children instanceof Konva.Text)[0];
+      text.text((position.x / this.table.imageRatio / this.tableZoom).toFixed(0) + ':' +
+        (this.table.height - position.y / this.table.imageRatio / this.tableZoom).toFixed(0));
+
+      this.crosshairLayer.drawScene();
     }
   }
 
@@ -459,12 +507,12 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   mousemove(e) {
     const $event = e.evt;
 
+    const boundingRect = this.mapContainer.nativeElement.getBoundingClientRect();
+
+    this.state.endX = $event.clientX - boundingRect.left;
+    this.state.endY = $event.clientY - boundingRect.top;
+
     if (this.state.down) {
-      const boundingRect = this.mapContainer.nativeElement.getBoundingClientRect();
-
-      this.state.endX = $event.clientX - boundingRect.left;
-      this.state.endY = $event.clientY - boundingRect.top;
-
       const dx = this.state.endX - this.state.startX;
       const dy = this.state.startY - this.state.endY;
 
@@ -488,6 +536,11 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         });
       }
     }
+
+    this.moveCrosshair({
+      x: this.state.endX,
+      y: this.state.endY
+    });
   }
 
   mouseup(e) {

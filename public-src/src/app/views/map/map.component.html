@@ -60,16 +60,16 @@
         <h5 class="card-title">Mouvement en cours :</h5>
         <div class="row">
           <div class="col">
-            type: {{robotPosition?.targetMvt.type}}
+            type: {{robotPosition?.targetMvt?.type}}
           </div>
-          <div class="col" *ngIf="robotPosition?.targetMvt.type === 'PATH'">
-            path: {{robotPosition?.targetMvt.path | json}}
+          <div class="col" *ngIf="robotPosition?.targetMvt?.type === 'PATH'">
+            path: {{robotPosition?.targetMvt?.path | json}}
           </div>
-          <div class="col" *ngIf="robotPosition?.targetMvt.type === 'ROTATION'">
-            angle: {{robotPosition?.targetMvt.angle | number:'2.1-1'}}
+          <div class="col" *ngIf="robotPosition?.targetMvt?.type === 'ROTATION'">
+            angle: {{robotPosition?.targetMvt?.angle | number:'2.1-1'}}
           </div>
-          <div class="col" *ngIf="robotPosition?.targetMvt.type === 'TRANSLATION'">
-            distance: {{robotPosition?.targetMvt.distance | number:'4.0-0'}}
+          <div class="col" *ngIf="robotPosition?.targetMvt?.type === 'TRANSLATION'">
+            distance: {{robotPosition?.targetMvt?.distance | number:'4.0-0'}}
           </div>
         </div>
       </div>
