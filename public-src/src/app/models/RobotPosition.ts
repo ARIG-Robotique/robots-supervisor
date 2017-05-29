@@ -1,5 +1,6 @@
 import {Point} from './Point';
 import {Rect} from './Rect';
+import {Cercle} from './Cercle';
 
 interface Mouvement {
   type: string;
@@ -34,6 +35,6 @@ export interface RobotPosition {
 
   pointsLidar?: Point[];
   pointsCapteurs?: Point[];
-  collisions?: Rect[];
+  collisions?: Cercle[];
 
 }
