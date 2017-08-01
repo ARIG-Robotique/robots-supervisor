@@ -12,6 +12,6 @@ export interface Table {
   height: number;
   imageRatio: number;
 
-  elfa?: ConfigElfa
+  elfa?: ConfigElfa;
 
 }

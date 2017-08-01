@@ -275,8 +275,8 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
   setTable() {
     if (this.stage && this.table && this.team) {
-      var done = 0;
-      var checkDone = function () {
+      let done = 0;
+      const checkDone = function () {
         done++;
         if (done === 2) {
           this.setZoom();
@@ -436,7 +436,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         item.destroy();
       });
 
-      let points = [];
+      const points = [];
 
       if (data.targetMvt) {
         switch (data.targetMvt.type) {
@@ -543,8 +543,6 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   }
 
   mouseup(e) {
-    const $event = e.evt;
-
     if (this.state.moving) {
       this.targetPosition = {
         x: this.robotPosition.x,
