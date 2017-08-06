@@ -41,7 +41,7 @@ export class CapteursService {
    * @returns {Promise<string>}
    */
   setTeam(robot: Robot, team: string): Promise<string> {
-    let value = team === 'JAUNE';
+    const value = team === 'JAUNE';
     return this.http.post(`http://${robot.host}/capteurs/team`, value, {
       headers: new Headers({'Content-Type': 'application/json'})
     })
@@ -51,7 +51,7 @@ export class CapteursService {
 
   /**
    * Enlève ou met l'AU
-   * @param {Rovbot} robot
+   * @param {Robot} robot
    * @param {boolean} present
    * @returns {Promise<boolean>}
    */

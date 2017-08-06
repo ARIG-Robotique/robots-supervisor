@@ -1,6 +1,7 @@
-/node_modules
-
-/.idea
+# IDE
 *.iml
+.idea/
 
-/public
+# JS
+node_modules/
+dist/
