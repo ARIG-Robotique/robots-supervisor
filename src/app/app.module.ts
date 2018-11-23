@@ -12,7 +12,6 @@ import {ServoControlComponent} from './components/servo-control/servo-control.co
 import {ServosService} from './services/servos.service';
 import {MouvementInputComponent} from './components/mouvement-input/mouvement-input.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {AngularFontAwesomeModule} from 'angular-font-awesome/angular-font-awesome';
 import {ServosComponent} from './views/servos/servos.component';
 import {MouvementsComponent} from './views/mouvements/mouvements.component';
 import {RobotResolve} from './resolvers/RobotResolve';
@@ -24,6 +23,7 @@ import {MapInputComponent} from './components/map-input/map-input.component';
 import {CapteursService} from './services/capteurs.service';
 import {CapteursComponent} from './views/capteurs/capteurs.component';
 import {CodeursService} from './services/codeurs.service';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome'
 
 @NgModule({
   declarations: [
@@ -46,7 +46,7 @@ import {CodeursService} from './services/codeurs.service';
     HttpModule,
     RouterModule.forRoot(AppRoutes),
     NgbModule.forRoot(),
-    AngularFontAwesomeModule
+    FontAwesomeModule
   ],
   providers: [
     RobotsService,
