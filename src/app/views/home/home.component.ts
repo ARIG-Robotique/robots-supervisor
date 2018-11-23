@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.robotsService.echo('test')
-      .then((response) => this.echo = response);
+      .subscribe((response: string) => this.echo = response);
   }
 
 }

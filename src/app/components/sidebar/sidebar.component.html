@@ -1,6 +1,6 @@
 <div class="card">
   <h5 class="card-header">
-    <fa name="android"></fa>
+    <fa-icon icon="robot"></fa-icon>
     Robots
   </h5>
 
@@ -11,7 +11,7 @@
         routerLinkActive="active">
       <span style="flex-grow: 1">{{robot.id}}</span>
       <span class="badge badge-default badge-pill">{{robot.host}}</span>
-      <fa name="close" class="ml-1" (click)="deleteRobot(robot)"></fa>
+      <fa-icon icon="window-close" class="ml-1" (click)="deleteRobot(robot)"></fa-icon>
     </li>
   </ul>
 </div>
@@ -45,7 +45,7 @@
     <button type="submit"
             class="btn btn-success"
             [disabled]="!newRobotForm.form.valid">
-      <fa name="plus"></fa>
+      <fa-icon icon="plus"></fa-icon>
       Ajouter
     </button>
   </div>

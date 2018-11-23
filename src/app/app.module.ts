@@ -1,7 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {HttpModule} from '@angular/http';
 import {AppComponent} from './app.component';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {RouterModule} from '@angular/router';
@@ -12,7 +11,6 @@ import {ServoControlComponent} from './components/servo-control/servo-control.co
 import {ServosService} from './services/servos.service';
 import {MouvementInputComponent} from './components/mouvement-input/mouvement-input.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {AngularFontAwesomeModule} from 'angular-font-awesome/angular-font-awesome';
 import {ServosComponent} from './views/servos/servos.component';
 import {MouvementsComponent} from './views/mouvements/mouvements.component';
 import {RobotResolve} from './resolvers/RobotResolve';
@@ -24,6 +22,20 @@ import {MapInputComponent} from './components/map-input/map-input.component';
 import {CapteursService} from './services/capteurs.service';
 import {CapteursComponent} from './views/capteurs/capteurs.component';
 import {CodeursService} from './services/codeurs.service';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome'
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {library} from "@fortawesome/fontawesome-svg-core";
+import {
+  faArrowsAlt, faCheck,
+  faCogs,
+  faHeartbeat,
+  faInfoCircle,
+  faMap, faMinus,
+  faPlus,
+  faRobot,
+  faWindowClose
+} from "@fortawesome/free-solid-svg-icons";
+import {AuthInterceptor} from "./auth.interceptor";
 
 @NgModule({
   declarations: [
@@ -43,10 +55,11 @@ import {CodeursService} from './services/codeurs.service';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
+    FontAwesomeModule,
     RouterModule.forRoot(AppRoutes),
     NgbModule.forRoot(),
-    AngularFontAwesomeModule
+    FontAwesomeModule
   ],
   providers: [
     RobotsService,
@@ -54,9 +67,18 @@ import {CodeursService} from './services/codeurs.service';
     MouvementsService,
     RobotResolve,
     CapteursService,
-    CodeursService
+    CodeursService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
+  constructor() {
+    library.add(faRobot, faInfoCircle, faHeartbeat, faCogs, faMap, faWindowClose, faPlus, faMinus, faArrowsAlt, faCheck);
+  }
 }

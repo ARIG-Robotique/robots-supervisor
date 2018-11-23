@@ -45,7 +45,7 @@ export class CapteursComponent implements OnInit, OnDestroy {
 
   fetch() {
     this.capteursService.getCapteurs(this.robot)
-      .then(capteurs => this.capteurs = capteurs);
+      .subscribe(capteurs => this.capteurs = capteurs);
 
     // this.codeursService.getCodeurs(this.robot)
     //   .then(codeurs => this.codeurs = codeurs);
@@ -53,21 +53,21 @@ export class CapteursComponent implements OnInit, OnDestroy {
 
   setTirette(present: boolean) {
     this.capteursService.setTirette(this.robot, present)
-      .then((result) => {
+      .subscribe((result) => {
         this.capteurs.numerique.Tirette = result;
       });
   }
 
   setTeam(team: string) {
     this.capteursService.setTeam(this.robot, team)
-      .then((result) => {
+      .subscribe((result) => {
         this.capteurs.text.Equipe = result;
       });
   }
 
   setAu(present: boolean) {
     this.capteursService.setAu(this.robot, present)
-      .then((result) => {
+      .subscribe((result) => {
         this.capteurs.numerique.AU = result;
       });
   }
