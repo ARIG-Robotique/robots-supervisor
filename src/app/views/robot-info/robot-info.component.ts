@@ -23,7 +23,7 @@ export class RobotInfoComponent implements OnInit {
       this.robot = data['robot'];
 
       this.robotsService.getRobotInfo(this.robot)
-        .then(info => this.robotInfo = info);
+        .subscribe(info => this.robotInfo = info);
     });
   }
 

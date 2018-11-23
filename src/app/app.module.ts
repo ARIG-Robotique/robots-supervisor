@@ -1,7 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {HttpModule} from '@angular/http';
 import {AppComponent} from './app.component';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {RouterModule} from '@angular/router';
@@ -24,6 +23,7 @@ import {CapteursService} from './services/capteurs.service';
 import {CapteursComponent} from './views/capteurs/capteurs.component';
 import {CodeursService} from './services/codeurs.service';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome'
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -43,7 +43,7 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome'
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
     RouterModule.forRoot(AppRoutes),
     NgbModule.forRoot(),
     FontAwesomeModule

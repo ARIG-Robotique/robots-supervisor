@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
-import {Headers, Http, Response} from '@angular/http';
-import 'rxjs/add/operator/toPromise';
+
 import {Robot} from '../models/Robot';
+import {HttpClient} from "@angular/common/http";
 
 @Injectable()
 export class CapteursService {
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
   }
 
   /**
@@ -14,10 +14,8 @@ export class CapteursService {
    * @param {Robot} robot
    * @returns {Promise<any>}
    */
-  getCapteurs(robot: Robot): Promise<any> {
-    return this.http.get(`http://${robot.host}/capteurs`)
-      .toPromise()
-      .then((response: Response) => response.json());
+  getCapteurs(robot: Robot) {
+    return this.http.get(`http://${robot.host}/capteurs`);
   }
 
   /**
@@ -26,12 +24,8 @@ export class CapteursService {
    * @param {boolean} present
    * @returns {Promise<boolean>}
    */
-  setTirette(robot: Robot, present: boolean): Promise<boolean> {
-    return this.http.post(`http://${robot.host}/capteurs/tirette`, present, {
-      headers: new Headers({'Content-Type': 'application/json'})
-    })
-      .toPromise()
-      .then(() => present);
+  setTirette(robot: Robot, present: boolean) {
+    return this.http.post(`http://${robot.host}/capteurs/tirette`, present);
   }
 
   /**
@@ -40,13 +34,9 @@ export class CapteursService {
    * @param {string} team
    * @returns {Promise<string>}
    */
-  setTeam(robot: Robot, team: string): Promise<string> {
+  setTeam(robot: Robot, team: string) {
     const value = team === 'JAUNE';
-    return this.http.post(`http://${robot.host}/capteurs/team`, value, {
-      headers: new Headers({'Content-Type': 'application/json'})
-    })
-      .toPromise()
-      .then(() => team);
+    return this.http.post(`http://${robot.host}/capteurs/team`, value);
   }
 
   /**
@@ -55,12 +45,8 @@ export class CapteursService {
    * @param {boolean} present
    * @returns {Promise<boolean>}
    */
-  setAu(robot: Robot, present: boolean): Promise<boolean> {
-    return this.http.post(`http://${robot.host}/capteurs/au`, present, {
-      headers: new Headers({'Content-Type': 'application/json'})
-    })
-      .toPromise()
-      .then(() => present);
+  setAu(robot: Robot, present: boolean) {
+    return this.http.post(`http://${robot.host}/capteurs/au`, present);
   }
 
 }

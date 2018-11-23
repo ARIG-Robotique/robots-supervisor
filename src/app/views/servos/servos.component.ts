@@ -30,7 +30,7 @@ export class ServosComponent implements OnInit {
 
   fetch() {
     this.servosService.getServos(this.robot)
-      .then((servos: Servo[]) => this.servos = servos);
+      .subscribe((servos: Servo[]) => this.servos = servos);
   }
 
 }

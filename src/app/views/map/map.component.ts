@@ -54,8 +54,8 @@ export class MapComponent implements OnInit, OnDestroy {
       this.robot = data['robot'];
 
       this.capteursService.getCapteurs(this.robot)
-        .then((capteurs) => {
-          this.team = capteurs.text.Equipe;
+        .subscribe((capteurs) => {
+          // this.team = capteurs.text.Equipe;
         });
 
       this.fetch();
@@ -74,7 +74,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   fetch() {
     this.mouvementsService.getPosition(this.robot)
-      .then((position: RobotPosition) => this.robotPosition = position);
+      .subscribe((position: RobotPosition) => this.robotPosition = position);
   }
 
   positionChanged(position: RobotPosition) {

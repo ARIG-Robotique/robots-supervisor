@@ -1,15 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Robot} from '../models/Robot';
-import {Http, Response} from '@angular/http';
 import {environment as env} from '../../environments/environment';
-import 'rxjs/add/operator/toPromise';
+import {HttpClient} from "@angular/common/http";
+
 
 @Injectable()
 export class RobotsService {
 
   private robots: Robot[];
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
     const robots = localStorage.getItem('robots');
     if (robots) {
       this.robots = JSON.parse(robots);
@@ -18,10 +18,8 @@ export class RobotsService {
     }
   }
 
-  echo(name: string): Promise<string> {
-    return this.http.get(`${env.server}/echo/${name}`)
-      .toPromise()
-      .then((response: Response) => response.text());
+  echo(name: string) {
+    return this.http.get(`${env.server}/echo/${name}`);
   }
 
   /**
@@ -76,10 +74,8 @@ export class RobotsService {
    * @param {Robot} robot
    * @returns {Promise<any>}
    */
-  getRobotInfo(robot: Robot): Promise<any> {
-    return this.http.get(`http://${robot.host}/robot`)
-      .toPromise()
-      .then((response: Response) => response.json());
+  getRobotInfo(robot: Robot){
+    return this.http.get(`http://${robot.host}/robot`);
   }
 
 }
