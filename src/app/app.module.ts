@@ -23,10 +23,10 @@ import {CapteursService} from './services/capteurs.service';
 import {CapteursComponent} from './views/capteurs/capteurs.component';
 import {CodeursService} from './services/codeurs.service';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome'
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {
-  faArrowsAlt,
+  faArrowsAlt, faCheck,
   faCogs,
   faHeartbeat,
   faInfoCircle,
@@ -35,6 +35,7 @@ import {
   faRobot,
   faWindowClose
 } from "@fortawesome/free-solid-svg-icons";
+import {AuthInterceptor} from "./auth.interceptor";
 
 @NgModule({
   declarations: [
@@ -66,12 +67,18 @@ import {
     MouvementsService,
     RobotResolve,
     CapteursService,
-    CodeursService
+    CodeursService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor() {
-    library.add(faRobot, faInfoCircle, faHeartbeat, faCogs, faMap, faWindowClose, faPlus, faMinus, faArrowsAlt);
+    library.add(faRobot, faInfoCircle, faHeartbeat, faCogs, faMap, faWindowClose, faPlus, faMinus, faArrowsAlt, faCheck);
   }
 }

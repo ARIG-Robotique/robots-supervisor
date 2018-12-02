@@ -30,7 +30,15 @@ export class ServosComponent implements OnInit {
 
   fetch() {
     this.servosService.getServos(this.robot)
-      .subscribe((servos: Servo[]) => this.servos = servos);
+      .subscribe((servos: Servo[]) => {
+        this.servos = servos;
+        this.servos.forEach(servo => {
+          servo.minPosition = servo.minPosition || 500;
+          servo.maxPosition = servo.maxPosition || 2500;
+          servo.minSpeed = 0;
+          servo.maxSpeed = 50;
+        });
+      });
   }
 
 }
