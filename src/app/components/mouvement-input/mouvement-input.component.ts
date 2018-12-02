@@ -23,7 +23,7 @@ export class MouvementInputComponent implements OnInit {
   }
 
   apply() {
-    this.mouvementsService.sendMouvement(this.robot, this.type, this.values);
+    this.mouvementsService.sendMouvement(this.robot, this.type, this.values).subscribe(() => {});
   }
 
 }

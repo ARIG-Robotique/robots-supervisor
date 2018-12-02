@@ -16,10 +16,10 @@ export class MouvementsService {
    * @returns {Promise}
    */
   sendMouvement(robot: Robot, type: string, values: any) {
-    const search = new HttpParams();
+    let search = new HttpParams();
     for (const key in values) {
       if (values.hasOwnProperty(key)) {
-        search.set(key, values[key]);
+        search = search.set(key, values[key]);
       }
     }
 

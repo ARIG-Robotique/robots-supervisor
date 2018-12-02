@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Tables} from '../../constants/tables.constants';
 import {Table} from '../../models/Table';
 import {Robot} from '../../models/Robot';
@@ -83,7 +83,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.mouvementsService.sendMouvement(this.robot, this.currentMode, {
       x: position.x,
       y: position.y
-    });
+    }).subscribe(() => {});
   }
 
   angleChanged(position: RobotPosition) {
@@ -91,7 +91,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.mouvementsService.sendMouvement(this.robot, 'orientation', {
       angle: position.angle
-    });
+    }).subscribe(() => {});
   }
 
 }
