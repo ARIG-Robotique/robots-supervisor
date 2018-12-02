@@ -24,6 +24,17 @@ import {CapteursComponent} from './views/capteurs/capteurs.component';
 import {CodeursService} from './services/codeurs.service';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome'
 import {HttpClientModule} from "@angular/common/http";
+import {library} from "@fortawesome/fontawesome-svg-core";
+import {
+  faArrowsAlt,
+  faCogs,
+  faHeartbeat,
+  faInfoCircle,
+  faMap, faMinus,
+  faPlus,
+  faRobot,
+  faWindowClose
+} from "@fortawesome/free-solid-svg-icons";
 
 @NgModule({
   declarations: [
@@ -44,6 +55,7 @@ import {HttpClientModule} from "@angular/common/http";
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    FontAwesomeModule,
     RouterModule.forRoot(AppRoutes),
     NgbModule.forRoot(),
     FontAwesomeModule
@@ -59,4 +71,7 @@ import {HttpClientModule} from "@angular/common/http";
   bootstrap: [AppComponent]
 })
 export class AppModule {
+  constructor() {
+    library.add(faRobot, faInfoCircle, faHeartbeat, faCogs, faMap, faWindowClose, faPlus, faMinus, faArrowsAlt);
+  }
 }
