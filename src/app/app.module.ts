@@ -23,8 +23,8 @@ import {CapteursService} from './services/capteurs.service';
 import {CapteursComponent} from './views/capteurs/capteurs.component';
 import {CodeursService} from './services/codeurs.service';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome'
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {library} from "@fortawesome/fontawesome-svg-core";
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {library} from '@fortawesome/fontawesome-svg-core';
 import {
   faArrowsAlt, faCheck,
   faCogs,
@@ -34,8 +34,8 @@ import {
   faPlus,
   faRobot,
   faWindowClose
-} from "@fortawesome/free-solid-svg-icons";
-import {AuthInterceptor} from "./auth.interceptor";
+} from '@fortawesome/free-solid-svg-icons';
+import {AuthInterceptor} from './auth.interceptor';
 
 @NgModule({
   declarations: [
