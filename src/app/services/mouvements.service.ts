@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Robot} from '../models/Robot';
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpParams} from '@angular/common/http';
 
 @Injectable()
 export class MouvementsService {

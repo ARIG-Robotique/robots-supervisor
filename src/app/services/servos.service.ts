@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 
 import {Servo} from '../models/Servo';
 import {Robot} from '../models/Robot';
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpParams} from '@angular/common/http';
 
 @Injectable()
 export class ServosService {

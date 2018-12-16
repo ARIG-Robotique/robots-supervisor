@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Robot} from '../models/Robot';
 import {environment as env} from '../../environments/environment';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient} from '@angular/common/http';
 
 
 @Injectable()
@@ -74,7 +74,7 @@ export class RobotsService {
    * @param {Robot} robot
    * @returns {Promise<any>}
    */
-  getRobotInfo(robot: Robot){
+  getRobotInfo(robot: Robot) {
     return this.http.get(`http://${robot.host}/robot`);
   }
 
