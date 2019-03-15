@@ -7,11 +7,16 @@ import {RobotResolve} from './resolvers/RobotResolve';
 import {RobotInfoComponent} from './views/robot-info/robot-info.component';
 import {MapComponent} from './views/map/map.component';
 import {CapteursComponent} from './views/capteurs/capteurs.component';
+import {AdminComponent} from "./components/admin/admin.component";
 
 export const AppRoutes: Routes = [
   {
     path: '',
     component: HomeComponent
+  },
+  {
+    path: 'admin',
+    component: AdminComponent
   },
   {
     path: 'robot/:id',

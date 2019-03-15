@@ -1,6 +1,8 @@
+import {Execs} from './Execs';
+
 export interface Robot {
-
-  id?: string;
+  id?: number;
   host?: string;
-
+  execs: Execs[];
+  simulateur: boolean;
 }

@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {AppComponent} from './app.component';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
@@ -32,10 +32,15 @@ import {
   faInfoCircle,
   faMap, faMinus,
   faPlus,
+  faEdit,
   faRobot,
   faWindowClose
 } from '@fortawesome/free-solid-svg-icons';
 import {AuthInterceptor} from './auth.interceptor';
+import { AdminComponent } from './components/admin/admin.component';
+import localeFr from '@angular/common/locales/fr';
+import {registerLocaleData} from "@angular/common";
+registerLocaleData(localeFr);
 
 @NgModule({
   declarations: [
@@ -50,7 +55,8 @@ import {AuthInterceptor} from './auth.interceptor';
     RobotInfoComponent,
     MapComponent,
     MapInputComponent,
-    CapteursComponent
+    CapteursComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
@@ -73,12 +79,12 @@ import {AuthInterceptor} from './auth.interceptor';
       useClass: AuthInterceptor,
       multi: true,
     },
-
+    { provide: LOCALE_ID, useValue: "fr-FR" },
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor() {
-    library.add(faRobot, faInfoCircle, faHeartbeat, faCogs, faMap, faWindowClose, faPlus, faMinus, faArrowsAlt, faCheck);
+    library.add(faRobot, faInfoCircle, faHeartbeat, faCogs, faMap, faWindowClose, faPlus, faMinus, faArrowsAlt, faCheck, faEdit);
   }
 }

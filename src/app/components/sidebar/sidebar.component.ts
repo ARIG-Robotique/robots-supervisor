@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Robot} from '../../models/Robot';
 import {RobotsService} from '../../services/robots.service';
 
@@ -10,39 +10,35 @@ import {RobotsService} from '../../services/robots.service';
 })
 export class SidebarComponent implements OnInit {
 
-  robots: Robot[];
+  @Input()
+  robot: Robot;
 
-  newRobot: Robot = <Robot>{};
+  @Output()
+  actionRobot: EventEmitter<any> = new EventEmitter();
 
   constructor(private robotsService: RobotsService) {
   }
 
   ngOnInit() {
-    this.getRobots();
-  }
-
-  getRobots() {
-    this.robotsService.getRobots()
-      .then((robots: Robot[]) => {
-        this.robots = robots;
-      });
   }
 
   addRobot() {
-    this.robotsService.addRobot(this.newRobot)
-      .then(() => {
-        this.getRobots();
-        this.newRobot = <Robot>{};
-      });
-  }
-
-  deleteRobot(robot: Robot) {
-    const ok = confirm('Etes-vous sûr ?');
-
-    if (ok) {
-      this.robotsService.deleteRobot(robot)
-        .then(() => this.getRobots);
+    if (this.robot.id) {
+      this.robotsService.modifyRobot(this.robot)
+        .subscribe((robot: Robot) => {
+          this.actionRobot.emit({
+            action: 'add',
+            data: robot
+          });
+        });
+    } else {
+      this.robotsService.addRobot(this.robot)
+        .subscribe((robot: Robot) => {
+          this.actionRobot.emit({
+            action: 'add',
+            data: robot
+          });
+        });
     }
   }
-
 }
