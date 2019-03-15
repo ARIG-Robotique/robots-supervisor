@@ -1,21 +1,3 @@
-<div class="card">
-  <h5 class="card-header">
-    <fa-icon icon="robot"></fa-icon>
-    Robots
-  </h5>
-
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item justify-content-between"
-        *ngFor="let robot of robots"
-        [routerLink]="['/robot', robot.id]"
-        routerLinkActive="active">
-      <span style="flex-grow: 1">{{robot.id}}</span>
-      <span class="badge badge-default badge-pill">{{robot.host}}</span>
-      <fa-icon icon="window-close" class="ml-1" (click)="deleteRobot(robot)"></fa-icon>
-    </li>
-  </ul>
-</div>
-
 <form class="card mt-3"
       (ngSubmit)="addRobot()"
       #newRobotForm="ngForm">
@@ -23,12 +5,12 @@
 
   <div class="card-block">
     <div class="form-group">
-      <label>Identifiant</label>
+      <label>Nom</label>
       <input type="text"
              class="form-control"
              name="id"
              required
-             [(ngModel)]="newRobot.id">
+             [(ngModel)]="robot.name">
     </div>
 
     <div class="form-group">
@@ -39,14 +21,42 @@
              required
              pattern="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+:[0-9]+$"
              placeholder="0.0.0.0:8080"
-             [(ngModel)]="newRobot.host">
+             [(ngModel)]="robot.host">
+    </div>
+
+
+    <div class="form-group">
+      <label>Répertoire de logs</label>
+      <input type="text"
+             class="form-control"
+             name="directory"
+             required
+             placeholder="répertoire de logs"
+             [(ngModel)]="robot.dir">
+    </div>
+
+    <div class="form-check">
+      <input type="checkbox"
+             class="form-check-input"
+             name="simulateur"
+             placeholder="Simulateur"
+             [(ngModel)]="robot.simulateur">
+      <label class="form-check-label">Simulateur?</label>
     </div>
 
     <button type="submit"
+            *ngIf="!robot.id"
             class="btn btn-success"
             [disabled]="!newRobotForm.form.valid">
       <fa-icon icon="plus"></fa-icon>
       Ajouter
+    </button>
+    <button type="submit"
+            *ngIf="robot.id"
+            class="btn btn-success"
+            [disabled]="!newRobotForm.form.valid">
+      <fa-icon icon="edit"></fa-icon>
+      Valider
     </button>
   </div>
 </form>

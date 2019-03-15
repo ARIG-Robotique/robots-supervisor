@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {Robot} from '../models/Robot';
 import {environment as env} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
+import {httpurl} from "../constants/httpurl.constants";
+import {Observable} from "rxjs";
 
 
 @Injectable()
@@ -10,12 +12,6 @@ export class RobotsService {
   private robots: Robot[];
 
   constructor(private http: HttpClient) {
-    const robots = localStorage.getItem('robots');
-    if (robots) {
-      this.robots = JSON.parse(robots);
-    } else {
-      this.robots = [];
-    }
   }
 
   echo(name: string) {
@@ -27,7 +23,7 @@ export class RobotsService {
    * @param {string} id
    * @returns {Promise<Robot>}
    */
-  getRobot(id: any): Promise<Robot> {
+  getRobot(id: number): Promise<Robot> {
     return Promise.resolve(this.robots.find((robot: Robot) => robot.id === id));
   }
 
@@ -35,8 +31,8 @@ export class RobotsService {
    * Retourne tous les robots
    * @returns {Promise<Robot[]>}
    */
-  getRobots(): Promise<Robot[]> {
-    return Promise.resolve(this.robots);
+  getRobots(): Observable<Robot[]> {
+    return this.http.get<Robot[]>(httpurl.robot);
   }
 
   /**
@@ -44,29 +40,23 @@ export class RobotsService {
    * @param {Robot} robot
    * @returns {Promise<Robot>}
    */
-  addRobot(robot: Robot): Promise<Robot> {
-    this.robots.push(robot);
-    localStorage.setItem('robots', JSON.stringify(this.robots));
-
-    return Promise.resolve(robot);
+  addRobot(robot: Robot): Observable<Robot> {
+    const url = httpurl.robot;
+    return this.http.post<Robot>(url, robot);
   }
 
   /**
-   * Supprime un robot
-   * @param {Robot} robot
-   * @returns {Promise<void>}
+   * Modifier un robot
+   * @param robot
    */
-  deleteRobot(robot: Robot): Promise<void> {
-    for (let i = 0; i < this.robots.length; i++) {
-      if (this.robots[i].id === robot.id) {
-        this.robots.splice(i, 1);
-        break;
-      }
-    }
+  modifyRobot(robot: Robot): Observable<Robot> {
+    const url = httpurl.robotAction.replace(':id', robot.id.toString());
+    return this.http.put<Robot>(url, robot);
+  }
 
-    localStorage.setItem('robots', JSON.stringify(this.robots));
-
-    return Promise.resolve();
+  deleteRobot(robotId: number) {
+    const url = httpurl.robotAction.replace(':id', robotId.toString());
+    return this.http.delete(url);
   }
 
   /**
@@ -76,6 +66,20 @@ export class RobotsService {
    */
   getRobotInfo(robot: Robot) {
     return this.http.get(`http://${robot.host}/robot`);
+  }
+
+  /**
+   * Retourne les informations complètes d'un robot
+   * @param robotId
+   */
+  getRobotFullInfo(robotId: number): Observable<Robot> {
+    const url = httpurl.robotFullInfo.replace(':robotId', robotId.toString());
+    return this.http.get<Robot>(url);
+  }
+
+  deleteRobotExec(execId) {
+    const url = httpurl.robotExec.replace(':id', execId);
+    return this.http.delete(url);
   }
 
 }
