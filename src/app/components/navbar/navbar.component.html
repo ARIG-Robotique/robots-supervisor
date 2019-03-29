@@ -1,0 +1,31 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-primary justify-content-end">
+  <a class="navbar-brand" href="#">{{title}}</a>
+  <span class="ml-auto"></span>
+  <a [routerLink]="['/admin']" class="btn btn-outline-dark">
+    <fa-icon icon="user"></fa-icon>
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse flex-grow-0" id="navbarSupportedContent">
+    <ul class="navbar-nav text-right container-fluid">
+      <div ngbDropdown>
+        <span class="btn btn-outline-dark" id="dropdownConfig" ngbDropdownToggle><fa-icon icon="robot"></fa-icon></span>
+        <div ngbDropdownMenu aria-labelledby="dropdownConfig" class="menu-dropdown">
+          <div *ngFor="let robot of robots" ngbDropdownItem class="robot-item">
+            <input type="checkbox" [(ngModel)]="robot.checked" (change)="selectRobot($event, robot)">
+            <span>{{robot.name}}</span>
+            <div>
+              <button class="btn btn-logs" ngbTooltip="Copier logs" placement="top" (click)="copyLogs(robot)">
+                <fa-icon icon="copy"></fa-icon>
+              </button>
+              <button class="btn btn-logs" ngbTooltip="Importer logs" placement="top" (click)="importLogs(robot)">
+                <fa-icon icon="database"></fa-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ul>
+  </div>
+</nav>

@@ -26,7 +26,8 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome'
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {
-  faArrowsAlt, faCheck,
+  faArrowsAlt,
+  faCheck,
   faCogs,
   faHeartbeat,
   faInfoCircle,
@@ -34,12 +35,17 @@ import {
   faPlus,
   faEdit,
   faRobot,
-  faWindowClose
+  faWindowClose,
+  faUser
 } from '@fortawesome/free-solid-svg-icons';
 import {AuthInterceptor} from './auth.interceptor';
-import { AdminComponent } from './components/admin/admin.component';
+import {AdminComponent} from './components/admin/admin.component';
 import localeFr from '@angular/common/locales/fr';
 import {registerLocaleData} from "@angular/common";
+import {NavbarComponent} from './components/navbar/navbar.component';
+import {faCopy} from "@fortawesome/free-solid-svg-icons/faCopy";
+import {faDatabase} from "@fortawesome/free-solid-svg-icons/faDatabase";
+
 registerLocaleData(localeFr);
 
 @NgModule({
@@ -56,7 +62,8 @@ registerLocaleData(localeFr);
     MapComponent,
     MapInputComponent,
     CapteursComponent,
-    AdminComponent
+    AdminComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -79,12 +86,12 @@ registerLocaleData(localeFr);
       useClass: AuthInterceptor,
       multi: true,
     },
-    { provide: LOCALE_ID, useValue: "fr-FR" },
+    {provide: LOCALE_ID, useValue: "fr-FR"},
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor() {
-    library.add(faRobot, faInfoCircle, faHeartbeat, faCogs, faMap, faWindowClose, faPlus, faMinus, faArrowsAlt, faCheck, faEdit);
+    library.add(faRobot, faInfoCircle, faHeartbeat, faCogs, faMap, faWindowClose, faPlus, faMinus, faArrowsAlt, faCheck, faEdit, faCopy, faDatabase, faUser);
   }
 }

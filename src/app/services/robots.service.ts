@@ -82,4 +82,14 @@ export class RobotsService {
     return this.http.delete(url);
   }
 
+  copyLogs(robotId: number) {
+    const url= httpurl.copyLogs.replace(':id', robotId.toString());
+    return this.http.get(url);
+  }
+
+  importLogs(robotId: number) {
+    const url= httpurl.importLogs.replace(':id', robotId.toString());
+    return this.http.get(url);
+  }
+
 }
