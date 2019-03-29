@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-3 col-xl-2">
-    <app-sidebar [robot]="selectedRobot || {}"></app-sidebar>
+    <app-sidebar [robot]="selectedRobot || {}" (actionRobot)="addedRobot($event)"></app-sidebar>
   </div>
 
   <div class="col-3 col-xl-2 robot-list">

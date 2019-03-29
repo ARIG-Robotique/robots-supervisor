@@ -54,4 +54,8 @@ export class AdminComponent implements OnInit {
         console.log(result);
       });
   }
+
+  addedRobot(event) {
+    this.getRobots();
+  }
 }

@@ -1,0 +1,21 @@
+.menu-dropdown {
+  width: 400px;
+  .robot-item {
+    display: flex;
+    justify-content: space-between;
+
+    input[type="checkbox"] {
+      margin: 15px 10px;
+    }
+
+    span {
+      margin: 10px 0;
+    }
+
+    .btn-logs {
+      margin: 5px;
+    }
+
+  }
+}
+

@@ -5,4 +5,5 @@ export interface Robot {
   host?: string;
   execs: Execs[];
   simulateur: boolean;
+  checked: boolean;
 }
