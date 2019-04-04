@@ -8,14 +8,10 @@ import {RobotsService} from '../../services/robots.service';
 })
 export class HomeComponent implements OnInit {
 
-  echo: string;
-
   constructor(private robotsService: RobotsService) {
   }
 
   ngOnInit() {
-    this.robotsService.echo('test')
-      .subscribe((response: string) => this.echo = response);
   }
 
 }

@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Robot} from "../../models/Robot";
 import {RobotsService} from "../../services/robots.service";
 import {NgbDropdownConfig} from "@ng-bootstrap/ng-bootstrap";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-navbar',
@@ -9,10 +10,12 @@ import {NgbDropdownConfig} from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ['./navbar.component.scss'],
   providers: [NgbDropdownConfig] // add NgbDropdownConfig to the component providers
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   title = 'Robots supervisor';
   robots: Robot[];
   selectedRobot: Robot[] = [];
+
+  robotsSubscription: Subscription;
 
   constructor(config: NgbDropdownConfig,
               private robotsService: RobotsService) {
@@ -25,10 +28,12 @@ export class NavbarComponent implements OnInit {
   }
 
   getRobots() {
-    this.robotsService.getRobots()
+    this.robotsSubscription = this.robotsService.getRobotObservable()
       .subscribe((robots: Robot[]) => {
         this.robots = robots;
       });
+
+    this.robotsService.getRobots();
   }
 
   selectRobot(event, robot: Robot) {
@@ -41,6 +46,8 @@ export class NavbarComponent implements OnInit {
     } else {
       this.selectedRobot = this.selectedRobot.filter(r => r.checked);
     }
+
+    this.robotsService.notifySelectedRobot(this.selectedRobot);
   }
 
   copyLogs(robot: Robot) {
@@ -57,4 +64,10 @@ export class NavbarComponent implements OnInit {
       });
   }
 
+  ngOnDestroy(): void {
+    if (this.robotsSubscription) {
+      this.robotsSubscription.unsubscribe();
+      this.robotsSubscription = null;
+    }
+  }
 }

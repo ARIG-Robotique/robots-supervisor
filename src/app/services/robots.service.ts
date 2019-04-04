@@ -1,17 +1,30 @@
 import {Injectable} from '@angular/core';
 import {Robot} from '../models/Robot';
-import {environment as env} from '../../environments/environment';
+import {environment, environment as env} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {httpurl} from "../constants/httpurl.constants";
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 
 
 @Injectable()
 export class RobotsService {
 
-  private robots: Robot[];
+  private dataStore : {
+    robots: Robot[],
+    selectedRobots: Robot[]
+  };
+
+  private robotBehavior: BehaviorSubject<Robot[]>;
+  private selectedRobotBehavior: BehaviorSubject<Robot[]>;
 
   constructor(private http: HttpClient) {
+    this.dataStore = {
+      robots: [],
+      selectedRobots: []
+    };
+
+    this.robotBehavior = new BehaviorSubject<Robot[]>(null);
+    this.selectedRobotBehavior = new BehaviorSubject<Robot[]>(null);
   }
 
   echo(name: string) {
@@ -24,15 +37,24 @@ export class RobotsService {
    * @returns {Promise<Robot>}
    */
   getRobot(id: number): Promise<Robot> {
-    return Promise.resolve(this.robots.find((robot: Robot) => robot.id === id));
+    return null;
+    // return Promise.resolve(this.robots.find((robot: Robot) => robot.id === id));
   }
 
   /**
    * Retourne tous les robots
    * @returns {Promise<Robot[]>}
    */
-  getRobots(): Observable<Robot[]> {
-    return this.http.get<Robot[]>(httpurl.robot);
+  getRobots(): void {
+    this.http.get<Robot[]>(this.completetUrl(httpurl.robot))
+      .subscribe((robots: Robot[]) => {
+        this.dataStore.robots = robots;
+        this.robotBehavior.next(this.dataStore.robots);
+      });
+  }
+
+  getRobotObservable(): Observable<Robot[]> {
+    return this.robotBehavior.asObservable();
   }
 
   /**
@@ -41,7 +63,7 @@ export class RobotsService {
    * @returns {Promise<Robot>}
    */
   addRobot(robot: Robot): Observable<Robot> {
-    const url = httpurl.robot;
+    const url = this.completetUrl(httpurl.robot);
     return this.http.post<Robot>(url, robot);
   }
 
@@ -50,12 +72,12 @@ export class RobotsService {
    * @param robot
    */
   modifyRobot(robot: Robot): Observable<Robot> {
-    const url = httpurl.robotAction.replace(':id', robot.id.toString());
+    const url = this.completetUrl(httpurl.robotAction.replace(':id', robot.id.toString()));
     return this.http.put<Robot>(url, robot);
   }
 
   deleteRobot(robotId: number) {
-    const url = httpurl.robotAction.replace(':id', robotId.toString());
+    const url = this.completetUrl(httpurl.robotAction.replace(':id', robotId.toString()));
     return this.http.delete(url);
   }
 
@@ -64,7 +86,7 @@ export class RobotsService {
    * @param {Robot} robot
    * @returns {Promise<any>}
    */
-  getRobotInfo(robot: Robot) {
+  getRobotInfo(robot: Robot): Observable<any> {
     return this.http.get(`http://${robot.host}/robot`);
   }
 
@@ -73,23 +95,34 @@ export class RobotsService {
    * @param robotId
    */
   getRobotFullInfo(robotId: number): Observable<Robot> {
-    const url = httpurl.robotFullInfo.replace(':robotId', robotId.toString());
+    const url = this.completetUrl(httpurl.robotFullInfo.replace(':robotId', robotId.toString()));
     return this.http.get<Robot>(url);
   }
 
   deleteRobotExec(execId) {
-    const url = httpurl.robotExec.replace(':id', execId);
+    const url = this.completetUrl(httpurl.robotExec.replace(':id', execId));
     return this.http.delete(url);
   }
 
   copyLogs(robotId: number) {
-    const url= httpurl.copyLogs.replace(':id', robotId.toString());
+    const url= this.completetUrl(httpurl.copyLogs.replace(':id', robotId.toString()));
     return this.http.get(url);
   }
 
   importLogs(robotId: number) {
-    const url= httpurl.importLogs.replace(':id', robotId.toString());
+    const url= this.completetUrl(httpurl.importLogs.replace(':id', robotId.toString()));
     return this.http.get(url);
   }
 
+  notifySelectedRobot(robots: Robot[]) {
+    this.selectedRobotBehavior.next(robots);
+  }
+
+  getNotifySelectedRobotObservable(): Observable<Robot[]> {
+    return this.selectedRobotBehavior.asObservable();
+  }
+
+  private completetUrl(req: string) {
+    return environment.server + req;
+  }
 }
