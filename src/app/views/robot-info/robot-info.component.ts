@@ -10,21 +10,28 @@ import {RobotsService} from '../../services/robots.service';
 })
 export class RobotInfoComponent implements OnInit {
 
-  robot: Robot;
-
-  robotInfo: any;
+  robots: Robot[];
 
   constructor(private route: ActivatedRoute,
               private robotsService: RobotsService) {
   }
 
   ngOnInit() {
-    this.route.parent.data.subscribe(data => {
-      this.robot = data['robot'];
+    this.robotsService.getNotifySelectedRobotObservable()
+      .subscribe((robots: Robot[]) => {
+        if (robots != null) {
+          this.robots = robots;
+          console.log('robot infos', this.robots);
+          this.robots.forEach((robot) => this.getRobotInfo(robot));
+        }
+      });
+  }
 
-      this.robotsService.getRobotInfo(this.robot)
-        .subscribe(info => this.robotInfo = info);
-    });
+  private getRobotInfo(robot: Robot): void {
+    this.robotsService.getRobotInfo(robot)
+      .subscribe((infos: any) => {
+        robot.infos = infos;
+      });
   }
 
 }

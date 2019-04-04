@@ -6,4 +6,7 @@ export interface Robot {
   execs: Execs[];
   simulateur: boolean;
   checked: boolean;
+
+  infos: any;
+  capteurs: any;
 }

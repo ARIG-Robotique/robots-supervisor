@@ -19,11 +19,8 @@ export const AppRoutes: Routes = [
     component: AdminComponent
   },
   {
-    path: 'robot/:id',
+    path: 'robot',
     component: RobotComponent,
-    resolve: {
-      robot: RobotResolve
-    },
     children: [
       {
         path: '',

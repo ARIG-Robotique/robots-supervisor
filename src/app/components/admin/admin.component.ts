@@ -1,17 +1,20 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Robot} from "../../models/Robot";
 import {RobotsService} from "../../services/robots.service";
 import {Execs} from "../../models/Execs";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit, OnDestroy {
 
   robots: Robot[];
   selectedRobot: Robot;
+
+  robotsSubscription: Subscription;
 
   constructor(private robotsService: RobotsService) {
   }
@@ -21,7 +24,7 @@ export class AdminComponent implements OnInit {
   }
 
   getRobots() {
-    this.robotsService.getRobots()
+    this.robotsSubscription = this.robotsService.getRobotObservable()
       .subscribe((robots: Robot[]) => {
         this.robots = robots;
       });
@@ -57,5 +60,12 @@ export class AdminComponent implements OnInit {
 
   addedRobot(event) {
     this.getRobots();
+  }
+
+  ngOnDestroy(): void {
+    if (this.robotsSubscription) {
+      this.robotsSubscription.unsubscribe();
+      this.robotsSubscription = null;
+    }
   }
 }

@@ -6,11 +6,7 @@ import {environment} from "../environments/environment";
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const urlReq = req.clone({ url: this.updateUrl(req.url), withCredentials: true,  headers: req.headers.append('Content-type', 'application/json')});
+    const urlReq = req.clone({ url: req.url, withCredentials: true,  headers: req.headers.append('Content-type', 'application/json')});
     return next.handle(urlReq);
-  }
-
-  private updateUrl(req: string) {
-    return environment.server + req;
   }
 }
