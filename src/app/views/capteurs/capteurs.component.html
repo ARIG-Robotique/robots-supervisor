@@ -1,32 +1,43 @@
-<button type="button" class="btn btn-success"
-        *ngIf="!capteurs?.numerique.Tirette"
-        (click)="setTirette(true)">
-  Mettre la tirette
-</button>
-<button type="button" class="btn btn-success"
-        *ngIf="capteurs?.numerique.Tirette"
-        (click)="setTirette(false)">
-  Enlever la tirette
-</button><button type="button" class="btn btn-success"
-                 *ngIf="!capteurs?.numerique.AU"
-                 (click)="setAu(true)">
-  Enclencher l'AU
-</button>
-<button type="button" class="btn btn-success"
-        *ngIf="capteurs?.numerique.AU"
-        (click)="setAu(false)">
-  Claquer l'AU
-</button>
-<div class="btn-group">
-  <button type="button" class="btn btn-warning {{capteurs?.text.Equipe === 'JAUNE' ? 'btn-active' : ''}}"
-          (click)="setTeam('JAUNE')">
-    Jaune
-  </button>
-  <button type="button" class="btn btn-primary {{capteurs?.text.Equipe === 'BLEU' ? 'btn-active' : ''}}"
-          (click)="setTeam('BLEU')">
-    Bleu
-  </button>
+<div class="robot__capteurs" *ngIf="robots && robots.length > 0">
+  <div *ngFor="let robot of robots">
+    <span>{{robot.name}}</span>
+    <div *ngIf="robot.capteurs">
+      <div>
+        <button type="button" class="btn btn-success"
+                *ngIf="!robot.capteurs?.numerique.Tirette"
+                (click)="setTirette(true)">
+          Mettre la tirette
+        </button>
+        <button type="button" class="btn btn-success"
+                *ngIf="robot.capteurs?.numerique.Tirette"
+                (click)="setTirette(false)">
+          Enlever la tirette
+        </button>
+        <button type="button" class="btn btn-success"
+                *ngIf="!robot.capteurs?.numerique.AU"
+                (click)="setAu(true)">
+          Enclencher l'AU
+        </button>
+        <button type="button" class="btn btn-success"
+                *ngIf="robot.capteurs?.numerique.AU"
+                (click)="setAu(false)">
+          Claquer l'AU
+        </button>
+        <div class="btn-group">
+          <button type="button" class="btn btn-warning {{robot.capteurs?.text.Equipe === 'JAUNE' ? 'btn-active' : ''}}"
+                  (click)="setTeam('JAUNE')">
+            Jaune
+          </button>
+          <button type="button" class="btn btn-primary {{robot.capteurs?.text.Equipe === 'BLEU' ? 'btn-active' : ''}}"
+                  (click)="setTeam('BLEU')">
+            Bleu
+          </button>
+        </div>
+      </div>
+      <div>
+        <pre><code>{{robot.capteurs | json }}</code></pre>
+      </div>
+    </div>
+  </div>
 </div>
 
-<pre><code>{{capteurs | json}}</code></pre>
-<pre><code>{{codeurs | json}}</code></pre>
