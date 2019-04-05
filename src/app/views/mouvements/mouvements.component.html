@@ -1,10 +1,15 @@
-<div class="card-columns">
-  <div class="card" *ngFor="let mouvement of Mouvements">
-    <div class="card-block">
-      <h5 class="card-title">{{mouvement.name}}</h5>
+<div>
+  <div *ngFor="let robot of robots" class="card robot__mouvements_card">
+    <div class="card-header"><h4>{{robot.name}}</h4></div>
+    <div class="card-columns">
+      <div class="card robot__mouvements_card-mouvement" *ngFor="let mouvement of robot.mouvements">
+        <div class="card-block">
+          <h5 class="card-title">{{mouvement.name}}</h5>
 
-      <app-mouvement-input [robot]="robot" [type]="mouvement.type"
-                           [fields]="mouvement.fields"></app-mouvement-input>
+          <app-mouvement-input [robot]="robot" [type]="mouvement.type"
+                               [fields]="mouvement.fields"></app-mouvement-input>
+        </div>
+      </div>
     </div>
   </div>
 </div>
