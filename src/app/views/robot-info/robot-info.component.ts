@@ -2,29 +2,19 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Robot} from '../../models/Robot';
 import {RobotsService} from '../../services/robots.service';
+import {RobotTabComponent} from "../robot/robotTab.component";
 
 @Component({
   selector: 'app-robot-info',
   templateUrl: './robot-info.component.html',
   styleUrls: ['./robot-info.component.scss']
 })
-export class RobotInfoComponent implements OnInit {
+export class RobotInfoComponent extends RobotTabComponent {
 
   robots: Robot[];
 
-  constructor(private route: ActivatedRoute,
-              private robotsService: RobotsService) {
-  }
-
-  ngOnInit() {
-    this.robotsService.getNotifySelectedRobotObservable()
-      .subscribe((robots: Robot[]) => {
-        if (robots != null) {
-          this.robots = robots;
-          console.log('robot infos', this.robots);
-          this.robots.forEach((robot) => this.getRobotInfo(robot));
-        }
-      });
+  constructor(protected robotsService: RobotsService) {
+    super(robotsService);
   }
 
   private getRobotInfo(robot: Robot): void {
@@ -32,6 +22,10 @@ export class RobotInfoComponent implements OnInit {
       .subscribe((infos: any) => {
         robot.infos = infos;
       });
+  }
+
+  protected afterFetchedRobots() {
+    this.robots.forEach((robot) => this.getRobotInfo(robot));
   }
 
 }

@@ -1,0 +1,12 @@
+.robot__servos {
+  display: flex;
+  justify-content: space-between;
+
+  .robot__servos_servo {
+    padding: 5px;
+  }
+
+  .robot__servos_card {
+    margin: 5px;
+  }
+}

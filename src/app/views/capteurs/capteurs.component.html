@@ -1,6 +1,6 @@
 <div class="robot__capteurs" *ngIf="robots && robots.length > 0">
   <div *ngFor="let robot of robots">
-    <span>{{robot.name}}</span>
+    <h4>{{robot.name}}</h4>
     <div *ngIf="robot.capteurs">
       <div>
         <button type="button" class="btn btn-success"
