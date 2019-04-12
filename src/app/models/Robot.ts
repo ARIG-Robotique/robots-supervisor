@@ -1,5 +1,6 @@
 import {Execs} from './Execs';
 import {Servo} from "./Servo";
+import {RobotPosition} from "./RobotPosition";
 
 export interface Robot {
   id?: number;
@@ -12,4 +13,7 @@ export interface Robot {
   capteurs: any;
   servos: Servo[];
   mouvements: any;
+  team: string;
+
+  position: RobotPosition;
 }
