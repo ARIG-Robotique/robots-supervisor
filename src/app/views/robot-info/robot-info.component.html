@@ -1,4 +1,7 @@
 <div class="robot__infos" *ngIf="robots && robots.length > 0">
-   <h4>{{robot.name}}</h4>
-    <pre *ngFor="let robot of robots"><code>{{robot | json}}</code></pre>
+  <div *ngFor="let robot of robots">
+    <h4>{{robot.name}}</h4>
+    <pre><code>{{robot | json}}</code></pre>
+  </div>
+
 </div>

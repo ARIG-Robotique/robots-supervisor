@@ -1,29 +1,23 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {RobotTabComponent} from "../robot/robotTab.component";
+import {Component} from "@angular/core";
+import {RobotsService} from "../../services/robots.service";
+import {Table} from "../../models/Table";
+import {IntervalObservable} from "rxjs-compat/observable/IntervalObservable";
 import {Tables} from '../../constants/tables.constants';
-import {Table} from '../../models/Table';
-import {Robot} from '../../models/Robot';
-import {RobotPosition} from '../../models/RobotPosition';
-import {ActivatedRoute} from '@angular/router';
-import {MouvementsService} from '../../services/mouvements.service';
-import {IntervalObservable} from 'rxjs/observable/IntervalObservable';
-import {Subscription} from 'rxjs/Rx';
-import {CapteursService} from '../../services/capteurs.service';
+import {CapteursService} from "../../services/capteurs.service";
+import {Robot} from "../../models/Robot";
+import {MouvementsService} from "../../services/mouvements.service";
+import {RobotPosition} from "../../models/RobotPosition";
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class MapComponent implements OnInit, OnDestroy {
+export class MapComponent extends RobotTabComponent {
 
   Tables: Table[];
   currentTable: Table;
-
-  robot: Robot;
-  team: string;
-  robotPosition: RobotPosition;
-
-  targetPosition: RobotPosition;
 
   Modes: any = [
     {name: 'path', label: 'path'},
@@ -39,59 +33,48 @@ export class MapComponent implements OnInit, OnDestroy {
   currentMode = 'path';
   currentZoom = 1.0;
 
-  sub: Subscription;
-
-  constructor(private route: ActivatedRoute,
-              private capteursService: CapteursService,
-              private mouvementsService: MouvementsService) {
+  constructor(protected robotsService: RobotsService,
+              private mouvementsService: MouvementsService,
+              private capteursService: CapteursService) {
+    super(robotsService);
   }
 
-  ngOnInit() {
+  protected afterFetchedRobots() {
     this.Tables = Tables;
     this.currentTable = Tables[0];
 
-    this.route.parent.data.subscribe(data => {
-      this.robot = data['robot'];
-
-      this.capteursService.getCapteurs(this.robot)
+    this.robots.forEach(robot => {
+      this.capteursService.getCapteurs(robot)
         .subscribe((capteurs: any) => {
-          this.team = capteurs.text.Equipe;
+          robot.capteurs = capteurs;
+          robot.team = capteurs.text.Equipe;
         });
-
-      this.fetch();
-    });
-
-    this.sub = IntervalObservable.create(200).subscribe(() => {
-      if (this.robot) {
-        this.fetch();
-      }
+      this.subs.push(IntervalObservable.create(200).subscribe(() => {
+        this.fetch(robot);
+      }));
     });
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
+  fetch(robot: Robot) {
+    this.mouvementsService.getPosition(robot)
+      .subscribe((position: RobotPosition) => robot.position = position);
   }
 
-  fetch() {
-    this.mouvementsService.getPosition(this.robot)
-      .subscribe((position: RobotPosition) => this.robotPosition = position);
-  }
 
   positionChanged(position: RobotPosition) {
-    this.targetPosition = position;
-
-    this.mouvementsService.sendMouvement(this.robot, this.currentMode, {
-      x: position.x,
-      y: position.y
-    }).subscribe(() => {});
+    // this.targetPosition = position;
+    //
+    // this.mouvementsService.sendMouvement(this.robot, this.currentMode, {
+    //   x: position.x,
+    //   y: position.y
+    // }).subscribe(() => {});
   }
 
   angleChanged(position: RobotPosition) {
-    this.targetPosition = position;
-
-    this.mouvementsService.sendMouvement(this.robot, 'orientation', {
-      angle: position.angle
-    }).subscribe(() => {});
+    // this.targetPosition = position;
+    //
+    // this.mouvementsService.sendMouvement(this.robot, 'orientation', {
+    //   angle: position.angle
+    // }).subscribe(() => {});
   }
-
 }

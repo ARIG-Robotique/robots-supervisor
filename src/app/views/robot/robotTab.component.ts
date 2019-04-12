@@ -1,9 +1,9 @@
 import {Robot} from "../../models/Robot";
 import {Subscription} from "rxjs";
 import {RobotsService} from "../../services/robots.service";
-import {OnInit} from "@angular/core";
+import {OnDestroy, OnInit} from "@angular/core";
 
-export abstract class RobotTabComponent implements OnInit {
+export abstract class RobotTabComponent implements OnInit, OnDestroy {
   robots: Robot[];
   subs: Subscription[] = [];
 
@@ -20,5 +20,12 @@ export abstract class RobotTabComponent implements OnInit {
           this.afterFetchedRobots();
         }
       });
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach((sub: Subscription) => {
+      sub.unsubscribe();
+    });
+    this.subs = [];
   }
 }

@@ -1,18 +1,19 @@
 import {
   AfterViewInit,
-  Component,
-  ElementRef,
+  Component, ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   Output,
   SimpleChanges,
   ViewChild
-} from '@angular/core';
-import {Table} from '../../models/Table';
-import {RobotPosition} from '../../models/RobotPosition';
-import * as Konva from 'konva';
-import {Point} from '../../models/Point';
+} from "@angular/core";
+import {Table} from "../../models/Table";
+import {RobotEvent} from "../../models/robotEvent";
+import * as Konva from "konva";
+import {RobotPosition} from "../../models/RobotPosition";
+import {Point} from "../../models/Point";
+import {Robot} from "../../models/Robot";
 
 @Component({
   selector: 'app-map-input',
@@ -20,22 +21,17 @@ import {Point} from '../../models/Point';
   styleUrls: ['./map-input.component.scss']
 })
 export class MapInputComponent implements OnChanges, AfterViewInit {
-
-  @Input() team: string;
-
   @Input() table: Table;
   @Input() tableZoom: number;
+  @Input() robots: Robot[];
 
-  @Input() robotPosition: RobotPosition;
-
-  @Output() positionChanged = new EventEmitter<RobotPosition>();
-  @Output() angleChanged = new EventEmitter<RobotPosition>();
+  @Output() positionChanged = new EventEmitter<RobotEvent>();
+  @Output() angleChanged = new EventEmitter<RobotEvent>();
 
   @ViewChild('mapContainer') mapContainer: ElementRef;
 
-  targetPosition: RobotPosition = {x: 0, y: 0, angle: 0};
-
   state: any = {};
+  targetPosition: RobotPosition = {x: 0, y: 0, angle: 0};
 
   stage: Konva.Stage;
   mainLayer: Konva.Layer;
@@ -49,10 +45,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   points: Konva.Group;
   mouvement: Konva.Group;
 
-  constructor() {
-  }
-
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     console.log('MapInput view init');
 
     this.stage = new Konva.Stage({
@@ -99,31 +92,86 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     this.moveTarget(this.targetPosition);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['tableZoom']) {
-      this.setZoom();
-    }
-    if (changes['table']) {
-      if (this.table) {
-        console.log('MapInput table change');
-      }
-      this.setTable();
-      this.moveElfa();
-    }
-    if (changes['robotPosition'] && this.robotPosition) {
-      this.moveNerell(this.robotPosition);
-      this.drawPoints(this.robotPosition);
-      this.drawMouvement(this.robotPosition);
+  ngOnChanges(changes: SimpleChanges): void {
+  }
 
-      this.mainLayer.drawScene();
-    }
-    if (changes['team']) {
-      if (this.team) {
-        console.log('MapInput team change');
+  mousedown(e) {
+    const $event = e.evt;
+
+    const boundingRect = this.mapContainer.nativeElement.getBoundingClientRect();
+
+    this.state.startX = $event.clientX - boundingRect.left;
+    this.state.startY = $event.clientY - boundingRect.top;
+    this.state.down = true;
+  }
+
+  mousemove(e) {
+    const $event = e.evt;
+
+    const boundingRect = this.mapContainer.nativeElement.getBoundingClientRect();
+
+    this.state.endX = $event.clientX - boundingRect.left;
+    this.state.endY = $event.clientY - boundingRect.top;
+
+    if (this.state.down) {
+      const dx = this.state.endX - this.state.startX;
+      const dy = this.state.startY - this.state.endY;
+
+      this.state.angle = Math.atan2(dy, dx);
+      if (this.state.angle < 0) {
+        this.state.angle += 2 * Math.PI;
       }
-      this.setTable();
-      this.moveElfa();
+      if (this.state.angle > 2 * Math.PI) {
+        this.state.angle -= 2 * Math.PI;
+      }
+
+      this.state.moving = Math.abs(this.state.startX - this.state.endX) > 10 || Math.abs(this.state.startY - this.state.endY) > 10;
+
+      if (this.state.moving) {
+        this.moveDirector({
+          x: this.state.startX,
+          y: this.state.startY
+        }, {
+          x: dx,
+          y: dy
+        });
+      }
     }
+
+    this.moveCrosshair({
+      x: this.state.endX,
+      y: this.state.endY
+    });
+  }
+
+  mouseup(e) {
+    if (this.state.moving) {
+      this.targetPosition = {
+        x: this.robots[0].position.x,
+        y: this.robots[0].position.y,
+        angle: this.state.angle * 180 / Math.PI
+      };
+
+      if (this.targetPosition.angle > 180) {
+        this.targetPosition.angle -= 360;
+      }
+
+      this.angleChanged.emit(this.targetPosition);
+      this.target.visible(false);
+
+    } else {
+      this.targetPosition = {
+        x: this.state.startX / this.table.imageRatio / this.tableZoom,
+        y: this.table.height - this.state.startY / this.table.imageRatio / this.tableZoom,
+        angle: this.robots[0].position.angle
+      };
+
+      this.positionChanged.emit(this.targetPosition);
+      this.moveTarget(this.targetPosition);
+      this.director.visible(false);
+    }
+
+    this.state = {};
   }
 
   buildNerell(): Konva.Group {
@@ -273,81 +321,6 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     }
   }
 
-  setTable() {
-    if (this.stage && this.table && this.team) {
-      let done = 0;
-      const checkDone = function () {
-        done++;
-        if (done === 2) {
-          this.setZoom();
-          this.background.drawScene();
-        }
-      }.bind(this);
-
-      this.background.getChildren().each(item => {
-        item.remove();
-        item.destroy();
-      });
-
-      const tableLoader = new Image();
-
-      tableLoader.onload = function () {
-        const image = new Konva.Image({
-          x: 0, y: 0,
-          image: tableLoader,
-          width: this.table.width * this.table.imageRatio,
-          height: this.table.height * this.table.imageRatio
-        });
-
-        this.background.add(image);
-        image.moveToBottom();
-
-        checkDone();
-      }.bind(this);
-
-      tableLoader.src = 'assets/tables/' + this.table.name + '.png';
-
-      const maskLoader = new Image();
-
-      maskLoader.onload = function () {
-        const image = new Konva.Image({
-          x: 0, y: 0,
-          image: maskLoader,
-          width: this.table.width * this.table.imageRatio,
-          height: this.table.height * this.table.imageRatio,
-          opacity: 0.2
-        });
-
-        this.background.add(image);
-        image.moveToTop();
-
-        checkDone();
-      }.bind(this);
-
-      maskLoader.src = 'assets/pathMasks/' + this.table.name + '-' + this.team + '.png';
-    }
-  }
-
-  moveElfa() {
-    if (this.elfa && this.team && this.table) {
-      this.elfa.position({
-        x: this.table.elfa[this.team].x * this.table.imageRatio,
-        y: (this.table.height - this.table.elfa[this.team].y) * this.table.imageRatio
-      });
-      this.elfa.rotation(-this.table.elfa[this.team].a);
-    }
-  }
-
-  moveNerell(position: RobotPosition) {
-    if (this.nerell && this.table) {
-      this.nerell.position({
-        x: position.x * this.table.imageRatio,
-        y: (this.table.height - position.y) * this.table.imageRatio
-      });
-      this.nerell.rotation(-position.angle);
-    }
-  }
-
   moveTarget(position: RobotPosition) {
     if (this.target && this.table) {
       this.target.visible(true);
@@ -384,192 +357,4 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       this.crosshairLayer.drawScene();
     }
   }
-
-  drawPoints(data: RobotPosition) {
-    if (this.points && this.table) {
-      this.points.getChildren().each((item) => {
-        item.remove();
-        item.destroy();
-      });
-
-      if (data.pointsLidar) {
-        data.pointsLidar.forEach((point) => {
-          this.points.add(new Konva.Circle({
-            x: point.x * this.table.imageRatio,
-            y: (this.table.height - point.y) * this.table.imageRatio,
-            radius: this.tableZoom * 4,
-            fill: 'black'
-          }));
-        });
-      }
-
-      if (data.pointsCapteurs) {
-        data.pointsCapteurs.forEach((point) => {
-          this.points.add(new Konva.Circle({
-            x: point.x * this.table.imageRatio,
-            y: (this.table.height - point.y) * this.table.imageRatio,
-            radius: this.tableZoom * 4,
-            fill: 'black',
-            stroke: 'rgba(0, 0, 0, 0.5)',
-            strokeWidth: this.tableZoom * 20
-          }));
-        });
-      }
-
-      if (data.collisions) {
-        data.collisions.forEach((cercle) => {
-          this.points.add(new Konva.Circle({
-            x: cercle.centre.x * this.table.imageRatio,
-            y: (this.table.height - cercle.centre.y) * this.table.imageRatio,
-            radius: cercle.rayon * this.table.imageRatio,
-            fill: 'rgba(0, 0, 0, 0.2)'
-          }));
-        });
-      }
-    }
-  }
-
-  drawMouvement(data: RobotPosition) {
-    if (this.mouvement && this.table) {
-      this.mouvement.getChildren().each((item) => {
-        item.remove();
-        item.destroy();
-      });
-
-      const points = [];
-
-      if (data.targetMvt) {
-        switch (data.targetMvt.type) {
-          case 'PATH':
-            data.targetMvt.path.forEach(point => {
-              points.push(
-                point.x * this.table.imageRatio,
-                (this.table.height - point.y) * this.table.imageRatio,
-              );
-            });
-
-            this.mouvement.add(new Konva.Arrow({
-              x: 0, y: 0,
-              points: points,
-              stroke: 'red',
-              fill: 'red',
-              strokeWidth: 2,
-              pointerLength: 5,
-              pointerWidth: 5
-            }));
-            break;
-
-          case 'ROTATION':
-            this.mouvement.add(new Konva.Arrow({
-              x: data.x * this.table.imageRatio,
-              y: (this.table.height - data.y) * this.table.imageRatio,
-              rotation: -data.targetMvt.toAngle,
-              points: [0, 0, 100, 0],
-              stroke: 'red',
-              fill: 'red',
-              strokeWidth: 4,
-              pointerLength: 10,
-              pointerWidth: 10
-            }));
-            break;
-
-          case 'TRANSLATION':
-            points.push(
-              data.targetMvt.fromPoint.x * this.table.imageRatio,
-              (this.table.height - data.targetMvt.fromPoint.y) * this.table.imageRatio,
-              data.targetMvt.toPoint.x * this.table.imageRatio,
-              (this.table.height - data.targetMvt.toPoint.y) * this.table.imageRatio
-            );
-
-            this.mouvement.add(new Konva.Line({
-              x: 0, y: 0,
-              points: points,
-              stroke: 'red',
-              strokeWidth: 4
-            }));
-            break;
-        }
-      }
-    }
-  }
-
-  mousedown(e) {
-    const $event = e.evt;
-
-    const boundingRect = this.mapContainer.nativeElement.getBoundingClientRect();
-
-    this.state.startX = $event.clientX - boundingRect.left;
-    this.state.startY = $event.clientY - boundingRect.top;
-    this.state.down = true;
-  }
-
-  mousemove(e) {
-    const $event = e.evt;
-
-    const boundingRect = this.mapContainer.nativeElement.getBoundingClientRect();
-
-    this.state.endX = $event.clientX - boundingRect.left;
-    this.state.endY = $event.clientY - boundingRect.top;
-
-    if (this.state.down) {
-      const dx = this.state.endX - this.state.startX;
-      const dy = this.state.startY - this.state.endY;
-
-      this.state.angle = Math.atan2(dy, dx);
-      if (this.state.angle < 0) {
-        this.state.angle += 2 * Math.PI;
-      }
-      if (this.state.angle > 2 * Math.PI) {
-        this.state.angle -= 2 * Math.PI;
-      }
-
-      this.state.moving = Math.abs(this.state.startX - this.state.endX) > 10 || Math.abs(this.state.startY - this.state.endY) > 10;
-
-      if (this.state.moving) {
-        this.moveDirector({
-          x: this.state.startX,
-          y: this.state.startY
-        }, {
-          x: dx,
-          y: dy
-        });
-      }
-    }
-
-    this.moveCrosshair({
-      x: this.state.endX,
-      y: this.state.endY
-    });
-  }
-
-  mouseup(e) {
-    if (this.state.moving) {
-      this.targetPosition = {
-        x: this.robotPosition.x,
-        y: this.robotPosition.y,
-        angle: this.state.angle * 180 / Math.PI
-      };
-
-      if (this.targetPosition.angle > 180) {
-        this.targetPosition.angle -= 360;
-      }
-
-      this.angleChanged.emit(this.targetPosition);
-      this.target.visible(false);
-
-    } else {
-      this.targetPosition = {
-        x: this.state.startX / this.table.imageRatio / this.tableZoom,
-        y: this.table.height - this.state.startY / this.table.imageRatio / this.tableZoom,
-        angle: this.robotPosition.angle
-      };
-
-      this.positionChanged.emit(this.targetPosition);
-      this.moveTarget(this.targetPosition);
-      this.director.visible(false);
-    }
-
-    this.state = {};
-  }
-
 }

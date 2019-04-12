@@ -2,95 +2,94 @@
   <div class="col-9">
     <app-map-input [table]="currentTable"
                    [tableZoom]="currentZoom"
-                   [robotPosition]="robotPosition"
-                   [team]="team"
+                   [robots]="robots"
                    (positionChanged)="positionChanged($event)"
                    (angleChanged)="angleChanged($event)"></app-map-input>
   </div>
 
-  <div class="col-3">
-    <div class="card">
-      <div class="card-block">
-        <label class="form-group has-float-label">
-          <select class="form-control" [(ngModel)]="currentTable">
-            <option *ngFor="let table of Tables" [ngValue]="table">
-              {{table.name}}
-            </option>
-          </select>
-          <span>table</span>
-        </label>
+  <!--<div class="col-3">-->
+    <!--<div class="card">-->
+      <!--<div class="card-block">-->
+        <!--<label class="form-group has-float-label">-->
+          <!--<select class="form-control" [(ngModel)]="currentTable">-->
+            <!--<option *ngFor="let table of Tables" [ngValue]="table">-->
+              <!--{{table.name}}-->
+            <!--</option>-->
+          <!--</select>-->
+          <!--<span>table</span>-->
+        <!--</label>-->
 
-        <label class="form-group has-float-label">
-          <select class="form-control" [(ngModel)]="currentZoom">
-            <option *ngFor="let zoom of Zooms" [ngValue]="zoom.level">
-              {{zoom.label}}
-            </option>
-          </select>
-          <span>zoom</span>
-        </label>
+        <!--<label class="form-group has-float-label">-->
+          <!--<select class="form-control" [(ngModel)]="currentZoom">-->
+            <!--<option *ngFor="let zoom of Zooms" [ngValue]="zoom.level">-->
+              <!--{{zoom.label}}-->
+            <!--</option>-->
+          <!--</select>-->
+          <!--<span>zoom</span>-->
+        <!--</label>-->
 
-        <label class="form-group has-float-label">
-          <select class="form-control" [(ngModel)]="currentMode">
-            <option *ngFor="let mode of Modes" [ngValue]="mode.name">
-              {{mode.label}}
-            </option>
-          </select>
-          <span>mode</span>
-        </label>
-      </div>
+        <!--<label class="form-group has-float-label">-->
+          <!--<select class="form-control" [(ngModel)]="currentMode">-->
+            <!--<option *ngFor="let mode of Modes" [ngValue]="mode.name">-->
+              <!--{{mode.label}}-->
+            <!--</option>-->
+          <!--</select>-->
+          <!--<span>mode</span>-->
+        <!--</label>-->
+      <!--</div>-->
 
-      <div class="card-block pt-0">
-        <h5 class="card-title">Position actuelle :</h5>
-        <div class="row">
-          <div class="col">
-            x: {{robotPosition?.x | number:'4.0-0'}}
-          </div>
+      <!--<div class="card-block pt-0">-->
+        <!--<h5 class="card-title">Position actuelle :</h5>-->
+        <!--<div class="row">-->
+          <!--<div class="col">-->
+            <!--x: {{robotPosition?.x | number:'4.0-0'}}-->
+          <!--</div>-->
 
-          <div class="col">
-            y: {{robotPosition?.y | number:'4.0-0'}}
-          </div>
+          <!--<div class="col">-->
+            <!--y: {{robotPosition?.y | number:'4.0-0'}}-->
+          <!--</div>-->
 
-          <div class="col">
-            angle: {{robotPosition?.angle | number:'2.1-1'}}
-          </div>
-        </div>
-      </div>
+          <!--<div class="col">-->
+            <!--angle: {{robotPosition?.angle | number:'2.1-1'}}-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
 
-      <div class="card-block pt-0">
-        <h5 class="card-title">Mouvement en cours :</h5>
-        <div class="row">
-          <div class="col">
-            type: {{robotPosition?.targetMvt?.type}}
-          </div>
-          <div class="col" *ngIf="robotPosition?.targetMvt?.type === 'PATH'">
-            path: {{robotPosition?.targetMvt?.path | json}}
-          </div>
-          <div class="col" *ngIf="robotPosition?.targetMvt?.type === 'ROTATION'">
-            angle: {{robotPosition?.targetMvt?.angle | number:'2.1-1'}}
-          </div>
-          <div class="col" *ngIf="robotPosition?.targetMvt?.type === 'TRANSLATION'">
-            distance: {{robotPosition?.targetMvt?.distance | number:'4.0-0'}}
-          </div>
-        </div>
-      </div>
+      <!--<div class="card-block pt-0">-->
+        <!--<h5 class="card-title">Mouvement en cours :</h5>-->
+        <!--<div class="row">-->
+          <!--<div class="col">-->
+            <!--type: {{robotPosition?.targetMvt?.type}}-->
+          <!--</div>-->
+          <!--<div class="col" *ngIf="robotPosition?.targetMvt?.type === 'PATH'">-->
+            <!--path: {{robotPosition?.targetMvt?.path | json}}-->
+          <!--</div>-->
+          <!--<div class="col" *ngIf="robotPosition?.targetMvt?.type === 'ROTATION'">-->
+            <!--angle: {{robotPosition?.targetMvt?.angle | number:'2.1-1'}}-->
+          <!--</div>-->
+          <!--<div class="col" *ngIf="robotPosition?.targetMvt?.type === 'TRANSLATION'">-->
+            <!--distance: {{robotPosition?.targetMvt?.distance | number:'4.0-0'}}-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
 
-      <div class="card-block pt-0">
-        <h5 class="card-title">Position demandée :</h5>
-        <div class="row">
-          <div class="col">
-            x: {{targetPosition?.x | number:'4.0-0'}}
-          </div>
+      <!--<div class="card-block pt-0">-->
+        <!--<h5 class="card-title">Position demandée :</h5>-->
+        <!--<div class="row">-->
+          <!--<div class="col">-->
+            <!--x: {{targetPosition?.x | number:'4.0-0'}}-->
+          <!--</div>-->
 
-          <div class="col">
-            y: {{targetPosition?.y | number:'4.0-0'}}
-          </div>
+          <!--<div class="col">-->
+            <!--y: {{targetPosition?.y | number:'4.0-0'}}-->
+          <!--</div>-->
 
-          <div class="col">
-            angle: {{targetPosition?.angle | number:'2.1-1'}}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+          <!--<div class="col">-->
+            <!--angle: {{targetPosition?.angle | number:'2.1-1'}}-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
 
 </div>
