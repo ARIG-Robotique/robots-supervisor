@@ -5,31 +5,31 @@
       <div>
         <button type="button" class="btn btn-success"
                 *ngIf="!robot.capteurs?.numerique.Tirette"
-                (click)="setTirette(true)">
+                (click)="setTirette(robot, true)">
           Mettre la tirette
         </button>
         <button type="button" class="btn btn-success"
                 *ngIf="robot.capteurs?.numerique.Tirette"
-                (click)="setTirette(false)">
+                (click)="setTirette(robot, false)">
           Enlever la tirette
         </button>
         <button type="button" class="btn btn-success"
                 *ngIf="!robot.capteurs?.numerique.AU"
-                (click)="setAu(true)">
+                (click)="setAu(robot, true)">
           Enclencher l'AU
         </button>
         <button type="button" class="btn btn-success"
                 *ngIf="robot.capteurs?.numerique.AU"
-                (click)="setAu(false)">
+                (click)="setAu(robot, false)">
           Claquer l'AU
         </button>
         <div class="btn-group">
           <button type="button" class="btn btn-warning {{robot.capteurs?.text.Equipe === 'JAUNE' ? 'btn-active' : ''}}"
-                  (click)="setTeam('JAUNE')">
+                  (click)="setTeam(robot, 'JAUNE')">
             Jaune
           </button>
           <button type="button" class="btn btn-primary {{robot.capteurs?.text.Equipe === 'BLEU' ? 'btn-active' : ''}}"
-                  (click)="setTeam('BLEU')">
+                  (click)="setTeam(robot, 'BLEU')">
             Bleu
           </button>
         </div>
