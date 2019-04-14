@@ -1,5 +1,5 @@
 import {RobotTabComponent} from "../robot/robotTab.component";
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {RobotsService} from "../../services/robots.service";
 import {Table} from "../../models/Table";
 import {IntervalObservable} from "rxjs-compat/observable/IntervalObservable";
@@ -14,7 +14,7 @@ import {RobotPosition} from "../../models/RobotPosition";
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class MapComponent extends RobotTabComponent {
+export class MapComponent extends RobotTabComponent implements OnInit {
 
   Tables: Table[];
   currentTable: Table;
@@ -39,10 +39,13 @@ export class MapComponent extends RobotTabComponent {
     super(robotsService);
   }
 
-  protected afterFetchedRobots() {
+  preOnInit() {
+    console.log('map preOnInit');
     this.Tables = Tables;
     this.currentTable = Tables[0];
+  }
 
+  protected afterFetchedRobots() {
     this.robots.forEach(robot => {
       this.capteursService.getCapteurs(robot)
         .subscribe((capteurs: any) => {

@@ -16,9 +16,6 @@ export class CapteursComponent implements OnInit, OnDestroy {
 
   robots: Robot[];
 
-  capteurs: any;
-  codeurs: any;
-
   subs: Subscription[] = [];
 
   constructor(private route: ActivatedRoute,
@@ -60,30 +57,27 @@ export class CapteursComponent implements OnInit, OnDestroy {
   fetch(robot: Robot) {
     this.capteursService.getCapteurs(robot)
       .subscribe(capteurs => robot.capteurs = capteurs);
-
-    // this.codeursService.getCodeurs(this.robot)
-    //   .then(codeurs => this.codeurs = codeurs);
   }
 
-  setTirette(present: boolean) {
-    // this.capteursService.setTirette(this.robot, present)
-    //   .subscribe((result) => {
-    //     this.capteurs.numerique.Tirette = result;
-    //   });
+  setTirette(robot: Robot, present: boolean) {
+    this.capteursService.setTirette(robot, present)
+      .subscribe((result) => {
+        robot.capteurs.numerique.Tirette = result;
+      });
   }
 
-  setTeam(team: string) {
-    // this.capteursService.setTeam(this.robot, team)
-    //   .subscribe((result) => {
-    //     this.capteurs.text.Equipe = result;
-    //   });
+  setTeam(robot: Robot, team: string) {
+    this.capteursService.setTeam(robot, team)
+      .subscribe((result) => {
+        robot.capteurs.text.Equipe = result;
+      });
   }
 
-  setAu(present: boolean) {
-    // this.capteursService.setAu(this.robot, present)
-    //   .subscribe((result) => {
-    //     this.capteurs.numerique.AU = result;
-    //   });
+  setAu(robot: Robot, present: boolean) {
+    this.capteursService.setAu(robot, present)
+      .subscribe((result) => {
+        robot.capteurs.numerique.AU = result;
+      });
   }
 
 }

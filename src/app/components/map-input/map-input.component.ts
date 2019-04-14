@@ -48,6 +48,9 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   ngAfterViewInit(): void {
     console.log('MapInput view init');
 
+  }
+
+  setStage() {
     this.stage = new Konva.Stage({
       container: this.mapContainer.nativeElement,
       width: this.table.width * this.table.imageRatio,
@@ -93,6 +96,215 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes['tableZoom']) {
+      this.setZoom();
+    }
+    if (changes['table']) {
+      if (this.table) {
+        console.log('MapInput table change');
+      }
+      this.setStage();
+      this.setTable();
+      this.moveElfa();
+    }
+    if (changes['robotPosition'] && this.robots[0].position) {
+      this.moveNerell(this.robots[0].position);
+      this.drawPoints(this.robots[0].position);
+      this.drawMouvement(this.robots[0].position);
+
+      this.mainLayer.drawScene();
+    }
+    if (changes['team']) {
+      if (this.robots[0].team) {
+        console.log('MapInput team change');
+      }
+      this.setTable();
+      this.moveElfa();
+    }
+  }
+
+  setTable() {
+    if (this.stage && this.table && this.robots[0].team) {
+      console.log('setTable');
+      let done = 0;
+      const checkDone = function () {
+        done++;
+        if (done === 2) {
+          this.setZoom();
+          this.background.drawScene();
+        }
+      }.bind(this);
+
+      this.background.getChildren().each(item => {
+        item.remove();
+        item.destroy();
+      });
+
+      const tableLoader = new Image();
+
+      tableLoader.onload = function () {
+        const image = new Konva.Image({
+          x: 0, y: 0,
+          image: tableLoader,
+          width: this.table.width * this.table.imageRatio,
+          height: this.table.height * this.table.imageRatio
+        });
+
+        this.background.add(image);
+        image.moveToBottom();
+
+        checkDone();
+      }.bind(this);
+
+      tableLoader.src = 'assets/tables/' + this.table.name + '.png';
+
+      const maskLoader = new Image();
+
+      maskLoader.onload = function () {
+        const image = new Konva.Image({
+          x: 0, y: 0,
+          image: maskLoader,
+          width: this.table.width * this.table.imageRatio,
+          height: this.table.height * this.table.imageRatio,
+          opacity: 0.2
+        });
+
+        this.background.add(image);
+        image.moveToTop();
+
+        checkDone();
+      }.bind(this);
+
+      maskLoader.src = 'assets/pathMasks/' + this.table.name + '-' + this.robots[0].team + '.png';
+    }
+  }
+
+  moveNerell(position: RobotPosition) {
+    if (this.nerell && this.table) {
+      this.nerell.position({
+        x: position.x * this.table.imageRatio,
+        y: (this.table.height - position.y) * this.table.imageRatio
+      });
+      this.nerell.rotation(-position.angle);
+    }
+  }
+
+  moveElfa() {
+    if (this.elfa && this.robots[0].team && this.table) {
+      this.elfa.position({
+        x: this.table.elfa[this.robots[0].team].x * this.table.imageRatio,
+        y: (this.table.height - this.table.elfa[this.robots[0].team].y) * this.table.imageRatio
+      });
+      this.elfa.rotation(-this.table.elfa[this.robots[0].team].a);
+    }
+  }
+
+  drawPoints(data: RobotPosition) {
+    if (this.points && this.table) {
+      this.points.getChildren().each((item) => {
+        item.remove();
+        item.destroy();
+      });
+
+      if (data.pointsLidar) {
+        data.pointsLidar.forEach((point) => {
+          this.points.add(new Konva.Circle({
+            x: point.x * this.table.imageRatio,
+            y: (this.table.height - point.y) * this.table.imageRatio,
+            radius: this.tableZoom * 4,
+            fill: 'black'
+          }));
+        });
+      }
+
+      if (data.pointsCapteurs) {
+        data.pointsCapteurs.forEach((point) => {
+          this.points.add(new Konva.Circle({
+            x: point.x * this.table.imageRatio,
+            y: (this.table.height - point.y) * this.table.imageRatio,
+            radius: this.tableZoom * 4,
+            fill: 'black',
+            stroke: 'rgba(0, 0, 0, 0.5)',
+            strokeWidth: this.tableZoom * 20
+          }));
+        });
+      }
+
+      if (data.collisions) {
+        data.collisions.forEach((cercle) => {
+          this.points.add(new Konva.Circle({
+            x: cercle.centre.x * this.table.imageRatio,
+            y: (this.table.height - cercle.centre.y) * this.table.imageRatio,
+            radius: cercle.rayon * this.table.imageRatio,
+            fill: 'rgba(0, 0, 0, 0.2)'
+          }));
+        });
+      }
+    }
+  }
+
+  drawMouvement(data: RobotPosition) {
+    if (this.mouvement && this.table) {
+      this.mouvement.getChildren().each((item) => {
+        item.remove();
+        item.destroy();
+      });
+
+      const points = [];
+
+      if (data.targetMvt) {
+        switch (data.targetMvt.type) {
+          case 'PATH':
+            data.targetMvt.path.forEach(point => {
+              points.push(
+                point.x * this.table.imageRatio,
+                (this.table.height - point.y) * this.table.imageRatio,
+              );
+            });
+
+            this.mouvement.add(new Konva.Arrow({
+              x: 0, y: 0,
+              points: points,
+              stroke: 'red',
+              fill: 'red',
+              strokeWidth: 2,
+              pointerLength: 5,
+              pointerWidth: 5
+            }));
+            break;
+
+          case 'ROTATION':
+            this.mouvement.add(new Konva.Arrow({
+              x: data.x * this.table.imageRatio,
+              y: (this.table.height - data.y) * this.table.imageRatio,
+              rotation: -data.targetMvt.toAngle,
+              points: [0, 0, 100, 0],
+              stroke: 'red',
+              fill: 'red',
+              strokeWidth: 4,
+              pointerLength: 10,
+              pointerWidth: 10
+            }));
+            break;
+
+          case 'TRANSLATION':
+            points.push(
+              data.targetMvt.fromPoint.x * this.table.imageRatio,
+              (this.table.height - data.targetMvt.fromPoint.y) * this.table.imageRatio,
+              data.targetMvt.toPoint.x * this.table.imageRatio,
+              (this.table.height - data.targetMvt.toPoint.y) * this.table.imageRatio
+            );
+
+            this.mouvement.add(new Konva.Line({
+              x: 0, y: 0,
+              points: points,
+              stroke: 'red',
+              strokeWidth: 4
+            }));
+            break;
+        }
+      }
+    }
   }
 
   mousedown(e) {
