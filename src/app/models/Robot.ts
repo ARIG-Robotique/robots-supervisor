@@ -8,8 +8,10 @@ export interface Robot {
   execs: Execs[];
   simulateur: boolean;
   checked: boolean;
-  infos: any;
+  dir: string;
+  name: string;
 
+  infos: any;
   capteurs: any;
   servos: Servo[];
   mouvements: any;

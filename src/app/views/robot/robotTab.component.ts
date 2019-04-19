@@ -12,7 +12,8 @@ export abstract class RobotTabComponent implements OnInit, OnDestroy {
 
   protected abstract afterFetchedRobots();
 
-  preOnInit(){};
+  preOnInit() {
+  };
 
   ngOnInit(): void {
     this.preOnInit();
