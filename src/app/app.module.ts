@@ -71,7 +71,7 @@ registerLocaleData(localeFr);
     FormsModule,
     HttpClientModule,
     FontAwesomeModule,
-    RouterModule.forRoot(AppRoutes),
+    RouterModule.forRoot(AppRoutes, {useHash: true}),
     NgbModule.forRoot(),
     FontAwesomeModule
   ],

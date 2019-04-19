@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/simulateur",
+            "outputPath": "dist",
             "preserveSymlinks": true,
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -46,7 +46,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ]
-            },
+            }
           }
         },
         "serve": {
