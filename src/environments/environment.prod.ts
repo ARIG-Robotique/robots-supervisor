@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  server: 'http://127.0.0.1:80/'
+  server: 'http://reader.arig.local/'
 };
