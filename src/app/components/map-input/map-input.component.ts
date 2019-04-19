@@ -7,13 +7,13 @@ import {
   Output,
   SimpleChanges,
   ViewChild
-} from "@angular/core";
-import {Table} from "../../models/Table";
-import {RobotEvent} from "../../models/robotEvent";
-import * as Konva from "konva";
-import {RobotPosition} from "../../models/RobotPosition";
-import {Point} from "../../models/Point";
-import {Robot} from "../../models/Robot";
+} from '@angular/core';
+import {Table} from '../../models/Table';
+import {RobotEvent} from '../../models/robotEvent';
+import * as Konva from 'konva';
+import {RobotPosition} from '../../models/RobotPosition';
+import {Point} from '../../models/Point';
+import {Robot} from '../../models/Robot';
 
 @Component({
   selector: 'app-map-input',

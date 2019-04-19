@@ -1,6 +1,6 @@
 import {Execs} from './Execs';
-import {Servo} from "./Servo";
-import {RobotPosition} from "./RobotPosition";
+import {Servo} from './Servo';
+import {RobotPosition} from './RobotPosition';
 
 export interface Robot {
   id?: number;
