@@ -22,29 +22,30 @@ import {MapInputComponent} from './components/map-input/map-input.component';
 import {CapteursService} from './services/capteurs.service';
 import {CapteursComponent} from './views/capteurs/capteurs.component';
 import {CodeursService} from './services/codeurs.service';
-import {FontAwesomeModule} from '@fortawesome/angular-fontawesome'
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {
   faArrowsAlt,
   faCheck,
   faCogs,
+  faEdit,
   faHeartbeat,
   faInfoCircle,
-  faMap, faMinus,
+  faMap,
+  faMinus,
   faPlus,
-  faEdit,
   faRobot,
-  faWindowClose,
-  faUser
+  faUser,
+  faWindowClose
 } from '@fortawesome/free-solid-svg-icons';
 import {AuthInterceptor} from './auth.interceptor';
 import {AdminComponent} from './components/admin/admin.component';
 import localeFr from '@angular/common/locales/fr';
-import {registerLocaleData} from "@angular/common";
+import {registerLocaleData} from '@angular/common';
 import {NavbarComponent} from './components/navbar/navbar.component';
-import {faCopy} from "@fortawesome/free-solid-svg-icons/faCopy";
-import {faDatabase} from "@fortawesome/free-solid-svg-icons/faDatabase";
+import {faCopy} from '@fortawesome/free-solid-svg-icons/faCopy';
+import {faDatabase} from '@fortawesome/free-solid-svg-icons/faDatabase';
 
 registerLocaleData(localeFr);
 
@@ -86,12 +87,27 @@ registerLocaleData(localeFr);
       useClass: AuthInterceptor,
       multi: true,
     },
-    {provide: LOCALE_ID, useValue: "fr-FR"},
+    {provide: LOCALE_ID, useValue: 'fr-FR'},
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor() {
-    library.add(faRobot, faInfoCircle, faHeartbeat, faCogs, faMap, faWindowClose, faPlus, faMinus, faArrowsAlt, faCheck, faEdit, faCopy, faDatabase, faUser);
+    library.add(
+      faRobot,
+      faInfoCircle,
+      faHeartbeat,
+      faCogs,
+      faMap,
+      faWindowClose,
+      faPlus,
+      faMinus,
+      faArrowsAlt,
+      faCheck,
+      faEdit,
+      faCopy,
+      faDatabase,
+      faUser
+    );
   }
 }

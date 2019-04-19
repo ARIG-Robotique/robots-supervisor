@@ -1,23 +1,20 @@
-import {RobotTabComponent} from "../robot/robotTab.component";
-import {Component, OnInit, ViewChild} from "@angular/core";
-import {RobotsService} from "../../services/robots.service";
-import {Table} from "../../models/Table";
-import {IntervalObservable} from "rxjs-compat/observable/IntervalObservable";
+import {RobotTabComponent} from '../robot/robotTab.component';
+import {Component, OnInit} from '@angular/core';
+import {RobotsService} from '../../services/robots.service';
+import {Table} from '../../models/Table';
+import {IntervalObservable} from 'rxjs-compat/observable/IntervalObservable';
 import {Tables} from '../../constants/tables.constants';
-import {CapteursService} from "../../services/capteurs.service";
-import {Robot} from "../../models/Robot";
-import {MouvementsService} from "../../services/mouvements.service";
-import {RobotPosition} from "../../models/RobotPosition";
-import {MapInputComponent} from "../../components/map-input/map-input.component";
+import {CapteursService} from '../../services/capteurs.service';
+import {Robot} from '../../models/Robot';
+import {MouvementsService} from '../../services/mouvements.service';
+import {RobotPosition} from '../../models/RobotPosition';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class MapComponent extends RobotTabComponent implements OnInit {
-
-  @ViewChild(MapInputComponent) mapinputComponent: MapInputComponent;
+export class MapComponent extends RobotTabComponent {
 
   Tables: Table[];
   currentTable: Table;

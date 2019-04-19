@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Robot} from '../../models/Robot';
 import {RobotsService} from '../../services/robots.service';
-import {RobotTabComponent} from "../robot/robotTab.component";
+import {RobotTabComponent} from '../robot/robotTab.component';
 
 @Component({
   selector: 'app-robot-info',

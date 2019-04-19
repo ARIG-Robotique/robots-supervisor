@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Robot} from "../../models/Robot";
-import {RobotsService} from "../../services/robots.service";
-import {Execs} from "../../models/Execs";
-import {Subscription} from "rxjs";
+import {Robot} from '../../models/Robot';
+import {RobotsService} from '../../services/robots.service';
+import {Execs} from '../../models/Execs';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-admin',

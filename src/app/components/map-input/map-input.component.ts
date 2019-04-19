@@ -8,11 +8,11 @@ import {
   Output,
   SimpleChanges,
   ViewChild
-} from "@angular/core";
-import {Table} from "../../models/Table";
-import * as Konva from "konva";
-import {RobotPosition} from "../../models/RobotPosition";
-import {Point} from "../../models/Point";
+} from '@angular/core';
+import {Table} from '../../models/Table';
+import * as Konva from 'konva';
+import {RobotPosition} from '../../models/RobotPosition';
+import {Point} from '../../models/Point';
 
 @Component({
   selector: 'app-map-input',

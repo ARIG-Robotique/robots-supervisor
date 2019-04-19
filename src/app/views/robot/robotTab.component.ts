@@ -1,7 +1,7 @@
-import {Robot} from "../../models/Robot";
-import {Subscription} from "rxjs";
-import {RobotsService} from "../../services/robots.service";
-import {OnDestroy, OnInit} from "@angular/core";
+import {Robot} from '../../models/Robot';
+import {Subscription} from 'rxjs';
+import {RobotsService} from '../../services/robots.service';
+import {OnDestroy, OnInit} from '@angular/core';
 
 export abstract class RobotTabComponent implements OnInit, OnDestroy {
   robots: Robot[];
