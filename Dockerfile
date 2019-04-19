@@ -1,31 +1,24 @@
-FROM node:10-alpine as builder
+FROM node:10-alpine
+
+EXPOSE 80
 
 ENV NODE_ENV dev
 
-RUN mkdir -p /build
-
-WORKDIR /build
-
-COPY . .
-
-RUN npm install \
-  && npm run build
-
-
-
-FROM node:10-alpine
-
-RUN mkdir /app
+RUN mkdir -p /app
 
 WORKDIR /app
-
-COPY --from=builder /build/dist/simulateur .
 
 RUN npm install -g http-server \
     && npm cache clean --force \
     && rm -rf ~/.npm \
     && rm -rf /tmp/npm*
 
-EXPOSE 80
+COPY . .
 
-CMD ["http-server", "-r", "-p 80"]
+RUN npm install \
+    && npm run build \
+    && npm cache clean --force \
+    && rm -rf ~/.npm \
+    && rm -rf /tmp/npm*
+
+CMD ["http-server", "./dist", "-p 80"]
