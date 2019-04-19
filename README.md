@@ -11,7 +11,6 @@ Monitoring et réglage des robots.
 ## Pour développer en local :
 
 ```bash
-$ npm install -g @angular/cli
 $ npm install
 $ npm run start
 ```
