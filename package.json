@@ -6,7 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --watch",
-    "build": "ng build --base-href /app/ --deploy-url /app/ --output-path ../public --environment prod --target=production",
+    "build": "ng build --prod",
     "lint": "ng lint"
   },
   "dependencies": {
