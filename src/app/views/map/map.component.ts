@@ -1,5 +1,5 @@
 import {RobotTabComponent} from "../robot/robotTab.component";
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, ViewChild} from "@angular/core";
 import {RobotsService} from "../../services/robots.service";
 import {Table} from "../../models/Table";
 import {IntervalObservable} from "rxjs-compat/observable/IntervalObservable";
@@ -8,6 +8,7 @@ import {CapteursService} from "../../services/capteurs.service";
 import {Robot} from "../../models/Robot";
 import {MouvementsService} from "../../services/mouvements.service";
 import {RobotPosition} from "../../models/RobotPosition";
+import {MapInputComponent} from "../../components/map-input/map-input.component";
 
 @Component({
   selector: 'app-map',
@@ -16,8 +17,15 @@ import {RobotPosition} from "../../models/RobotPosition";
 })
 export class MapComponent extends RobotTabComponent implements OnInit {
 
+  @ViewChild(MapInputComponent) mapinputComponent: MapInputComponent;
+
   Tables: Table[];
   currentTable: Table;
+
+  team: string;
+  robotPosition: RobotPosition;
+
+  targetPosition: RobotPosition;
 
   Modes: any = [
     {name: 'path', label: 'path'},
@@ -49,8 +57,9 @@ export class MapComponent extends RobotTabComponent implements OnInit {
     this.robots.forEach(robot => {
       this.capteursService.getCapteurs(robot)
         .subscribe((capteurs: any) => {
+          console.log(capteurs);
           robot.capteurs = capteurs;
-          robot.team = capteurs.text.Equipe;
+          this.team = capteurs.text.Equipe;
         });
       this.subs.push(IntervalObservable.create(200).subscribe(() => {
         this.fetch(robot);
@@ -60,24 +69,27 @@ export class MapComponent extends RobotTabComponent implements OnInit {
 
   fetch(robot: Robot) {
     this.mouvementsService.getPosition(robot)
-      .subscribe((position: RobotPosition) => robot.position = position);
+      .subscribe((position: RobotPosition) => {
+        this.robotPosition = position;
+      });
   }
 
-
   positionChanged(position: RobotPosition) {
-    // this.targetPosition = position;
-    //
-    // this.mouvementsService.sendMouvement(this.robot, this.currentMode, {
-    //   x: position.x,
-    //   y: position.y
-    // }).subscribe(() => {});
+    this.targetPosition = position;
+
+    this.mouvementsService.sendMouvement(this.robots[0], this.currentMode, {
+      x: position.x,
+      y: position.y
+    }).subscribe(() => {
+    });
   }
 
   angleChanged(position: RobotPosition) {
-    // this.targetPosition = position;
-    //
-    // this.mouvementsService.sendMouvement(this.robot, 'orientation', {
-    //   angle: position.angle
-    // }).subscribe(() => {});
+    this.targetPosition = position;
+
+    this.mouvementsService.sendMouvement(this.robots[0], 'orientation', {
+      angle: position.angle
+    }).subscribe(() => {
+    });
   }
 }
