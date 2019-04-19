@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
-  Component, ElementRef,
+  Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -9,11 +10,9 @@ import {
   ViewChild
 } from "@angular/core";
 import {Table} from "../../models/Table";
-import {RobotEvent} from "../../models/robotEvent";
 import * as Konva from "konva";
 import {RobotPosition} from "../../models/RobotPosition";
 import {Point} from "../../models/Point";
-import {Robot} from "../../models/Robot";
 
 @Component({
   selector: 'app-map-input',
@@ -21,12 +20,15 @@ import {Robot} from "../../models/Robot";
   styleUrls: ['./map-input.component.scss']
 })
 export class MapInputComponent implements OnChanges, AfterViewInit {
+  @Input() team: string;
+
   @Input() table: Table;
   @Input() tableZoom: number;
-  @Input() robots: Robot[];
 
-  @Output() positionChanged = new EventEmitter<RobotEvent>();
-  @Output() angleChanged = new EventEmitter<RobotEvent>();
+  @Input() robotPosition: RobotPosition;
+
+  @Output() positionChanged = new EventEmitter<RobotPosition>();
+  @Output() angleChanged = new EventEmitter<RobotPosition>();
 
   @ViewChild('mapContainer') mapContainer: ElementRef;
 
@@ -99,32 +101,30 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     if (changes['tableZoom']) {
       this.setZoom();
     }
-    if (changes['table']) {
-      if (this.table) {
-        console.log('MapInput table change');
-      }
+
+    if (changes['table'] && this.table) {
       this.setStage();
       this.setTable();
-      this.moveElfa();
+      // this.moveElfa();
     }
-    if (changes['robotPosition'] && this.robots[0].position) {
-      this.moveNerell(this.robots[0].position);
-      this.drawPoints(this.robots[0].position);
-      this.drawMouvement(this.robots[0].position);
+
+    if (changes['team'] && this.team) {
+      this.setTable();
+      // this.moveElfa();
+    }
+
+    if (changes['robotPosition'] && this.robotPosition) {
+      this.moveNerell(this.robotPosition);
+      this.drawPoints(this.robotPosition);
+      this.drawMouvement(this.robotPosition);
 
       this.mainLayer.drawScene();
     }
-    if (changes['team']) {
-      if (this.robots[0].team) {
-        console.log('MapInput team change');
-      }
-      this.setTable();
-      this.moveElfa();
-    }
+
   }
 
   setTable() {
-    if (this.stage && this.table && this.robots[0].team) {
+    if (this.stage && this.table && this.team && this.team !== 'UNKNOWN') {
       console.log('setTable');
       let done = 0;
       const checkDone = function () {
@@ -175,7 +175,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         checkDone();
       }.bind(this);
 
-      maskLoader.src = 'assets/pathMasks/' + this.table.name + '-' + this.robots[0].team + '.png';
+      maskLoader.src = 'assets/pathMasks/' + this.table.name + '-' + this.team + '.png';
     }
   }
 
@@ -190,12 +190,12 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   }
 
   moveElfa() {
-    if (this.elfa && this.robots[0].team && this.table) {
+    if (this.elfa && this.team && this.table) {
       this.elfa.position({
-        x: this.table.elfa[this.robots[0].team].x * this.table.imageRatio,
-        y: (this.table.height - this.table.elfa[this.robots[0].team].y) * this.table.imageRatio
+        x: this.table.elfa[this.team].x * this.table.imageRatio,
+        y: (this.table.height - this.table.elfa[this.team].y) * this.table.imageRatio
       });
-      this.elfa.rotation(-this.table.elfa[this.robots[0].team].a);
+      this.elfa.rotation(-this.table.elfa[this.team].a);
     }
   }
 
@@ -359,8 +359,8 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   mouseup(e) {
     if (this.state.moving) {
       this.targetPosition = {
-        x: this.robots[0].position.x,
-        y: this.robots[0].position.y,
+        x: this.robotPosition.x,
+        y: this.robotPosition.y,
         angle: this.state.angle * 180 / Math.PI
       };
 
@@ -375,7 +375,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       this.targetPosition = {
         x: this.state.startX / this.table.imageRatio / this.tableZoom,
         y: this.table.height - this.state.startY / this.table.imageRatio / this.tableZoom,
-        angle: this.robots[0].position.angle
+        angle: this.robotPosition.angle
       };
 
       this.positionChanged.emit(this.targetPosition);

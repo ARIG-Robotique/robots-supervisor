@@ -2,7 +2,8 @@
   <div class="col-9" *ngIf="robots">
     <app-map-input [table]="currentTable"
                    [tableZoom]="currentZoom"
-                   [robots]="robots"
+                   [robotPosition]="robotPosition"
+                   [team]="team"
                    (positionChanged)="positionChanged($event)"
                    (angleChanged)="angleChanged($event)"></app-map-input>
   </div>
