@@ -2,14 +2,14 @@ import {Injectable} from '@angular/core';
 import {Robot} from '../models/Robot';
 import {environment, environment as env} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
-import {httpurl} from "../constants/httpurl.constants";
-import {BehaviorSubject, Observable} from "rxjs";
+import {httpurl} from '../constants/httpurl.constants';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 
 @Injectable()
 export class RobotsService {
 
-  private dataStore : {
+  private dataStore: {
     robots: Robot[],
     selectedRobots: Robot[]
   };
@@ -105,12 +105,12 @@ export class RobotsService {
   }
 
   copyLogs(robotId: number) {
-    const url= this.completetUrl(httpurl.copyLogs.replace(':id', robotId.toString()));
+    const url = this.completetUrl(httpurl.copyLogs.replace(':id', robotId.toString()));
     return this.http.get(url);
   }
 
   importLogs(robotId: number) {
-    const url= this.completetUrl(httpurl.importLogs.replace(':id', robotId.toString()));
+    const url = this.completetUrl(httpurl.importLogs.replace(':id', robotId.toString()));
     return this.http.get(url);
   }
 

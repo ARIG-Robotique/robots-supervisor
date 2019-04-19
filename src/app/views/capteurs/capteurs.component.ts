@@ -5,7 +5,7 @@ import {CapteursService} from '../../services/capteurs.service';
 import {IntervalObservable} from 'rxjs/observable/IntervalObservable';
 import {Subscription} from 'rxjs/Rx';
 import {CodeursService} from '../../services/codeurs.service';
-import {RobotsService} from "../../services/robots.service";
+import {RobotsService} from '../../services/robots.service';
 
 @Component({
   selector: 'app-robot-capteur',
