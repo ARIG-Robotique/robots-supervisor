@@ -23,7 +23,7 @@ import {CapteursService} from './services/capteurs.service';
 import {CapteursComponent} from './views/capteurs/capteurs.component';
 import {CodeursService} from './services/codeurs.service';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {
   faArrowsAlt,
@@ -39,7 +39,6 @@ import {
   faUser,
   faWindowClose
 } from '@fortawesome/free-solid-svg-icons';
-import {AuthInterceptor} from './auth.interceptor';
 import {AdminComponent} from './components/admin/admin.component';
 import localeFr from '@angular/common/locales/fr';
 import {registerLocaleData} from '@angular/common';
@@ -72,7 +71,7 @@ registerLocaleData(localeFr);
     HttpClientModule,
     FontAwesomeModule,
     RouterModule.forRoot(AppRoutes, {useHash: true}),
-    NgbModule.forRoot(),
+    NgbModule,
     FontAwesomeModule
   ],
   providers: [
@@ -82,11 +81,6 @@ registerLocaleData(localeFr);
     RobotResolve,
     CapteursService,
     CodeursService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
-    },
     {provide: LOCALE_ID, useValue: 'fr-FR'},
   ],
   bootstrap: [AppComponent]
