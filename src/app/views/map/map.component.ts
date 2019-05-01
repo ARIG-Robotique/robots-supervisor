@@ -39,7 +39,7 @@ export class MapComponent extends RobotTabComponent implements OnInit {
   ];
 
   currentMode = 'path';
-  currentZoom = 1.0;
+  currentZoom = 0.75;
 
   constructor(protected robotsService: RobotsService,
               private mouvementsService: MouvementsService,

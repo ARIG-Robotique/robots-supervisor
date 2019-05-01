@@ -6,7 +6,7 @@
              [min]="servo.minPosition"
              [max]="servo.maxPosition"
              placeholder="Position"
-             [(ngModel)]="servo.currentPosition"/>
+             [formControl]="position"/>
       <span>Position</span>
     </label>
 
@@ -43,13 +43,13 @@
   </div>
   <div class="btn-group" data-toggle="buttons">
     <label class="btn btn-success"
-           *ngFor="let position of servo.positions"
-           [ngClass]="{active: position.value === servo.currentPosition}">
+           *ngFor="let pos of servo.positions"
+           [ngClass]="{active: pos.value === position.value}">
       <input type="radio"
-             [checked]="position.value === servo.currentPosition"
-             [value]="position.value"
-             (click)="servo.currentPosition = position.value">
-      {{position.name}}
+             [checked]="pos.value === position.value"
+             [value]="pos.value"
+             (click)="setPosition(pos.value)">
+      {{pos.name}}
     </label>
   </div>
 </div>

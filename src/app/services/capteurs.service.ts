@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 
 import {Robot} from '../models/Robot';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable()
 export class CapteursService {
@@ -25,7 +25,9 @@ export class CapteursService {
    * @returns {Promise<boolean>}
    */
   setTirette(robot: Robot, present: boolean) {
-    return this.http.post(`http://${robot.host}/capteurs/tirette`, present ? 1 : 0);
+    return this.http.post(`http://${robot.host}/capteurs/tirette`, present, {
+      headers: new HttpHeaders().append('Content-Type', 'application/json')
+    });
   }
 
   /**
@@ -35,8 +37,10 @@ export class CapteursService {
    * @returns {Promise<string>}
    */
   setTeam(robot: Robot, team: string) {
-    const value = team === 'JAUNE' ? 1 : 0;
-    return this.http.post(`http://${robot.host}/capteurs/team`, value);
+    const value = team === 'JAUNE';
+    return this.http.post(`http://${robot.host}/capteurs/team`, value, {
+      headers: new HttpHeaders().append('Content-Type', 'application/json')
+    });
   }
 
   /**
@@ -46,7 +50,9 @@ export class CapteursService {
    * @returns {Promise<boolean>}
    */
   setAu(robot: Robot, present: boolean) {
-    return this.http.post(`http://${robot.host}/capteurs/au`, present ? 1 : 0);
+    return this.http.post(`http://${robot.host}/capteurs/au`, present, {
+      headers: new HttpHeaders().append('Content-Type', 'application/json')
+    });
   }
 
 }

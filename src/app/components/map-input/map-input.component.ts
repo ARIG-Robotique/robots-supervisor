@@ -39,7 +39,6 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   mainLayer: Konva.Layer;
   background: Konva.Layer;
   nerell: Konva.Group;
-  elfa: Konva.Group;
   target: Konva.Group;
   director: Konva.Group;
   crosshairLayer: Konva.Layer;
@@ -72,9 +71,6 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     this.nerell = this.buildNerell();
     this.mainLayer.add(this.nerell);
 
-    this.elfa = this.buildElfa();
-    this.mainLayer.add(this.elfa);
-
     this.target = this.buildTarget();
     this.mainLayer.add(this.target);
 
@@ -105,12 +101,10 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     if (changes['table'] && this.table) {
       this.setStage();
       this.setTable();
-      // this.moveElfa();
     }
 
     if (changes['team'] && this.team) {
       this.setTable();
-      // this.moveElfa();
     }
 
     if (changes['robotPosition'] && this.robotPosition) {
@@ -186,16 +180,6 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         y: (this.table.height - position.y) * this.table.imageRatio
       });
       this.nerell.rotation(-position.angle);
-    }
-  }
-
-  moveElfa() {
-    if (this.elfa && this.team && this.table) {
-      this.elfa.position({
-        x: this.table.elfa[this.team].x * this.table.imageRatio,
-        y: (this.table.height - this.table.elfa[this.team].y) * this.table.imageRatio
-      });
-      this.elfa.rotation(-this.table.elfa[this.team].a);
     }
   }
 
@@ -405,29 +389,6 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     }.bind(this);
 
     imageLoader.src = 'assets/robots/nerell.png';
-
-    return robot;
-  }
-
-  buildElfa(): Konva.Group {
-    const robot = new Konva.Group();
-
-    const imageLoader = new Image();
-
-    imageLoader.onload = function () {
-      robot.add(new Konva.Image({
-        x: -55, y: -55,
-        image: imageLoader,
-        width: 110,
-        height: 110,
-        shadowColor: 'black',
-        shadowOpacity: 1,
-        shadowBlur: 20
-      }));
-
-    }.bind(this);
-
-    imageLoader.src = 'assets/robots/elfa.png';
 
     return robot;
   }

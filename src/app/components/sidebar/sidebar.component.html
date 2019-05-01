@@ -19,13 +19,23 @@
              class="form-control"
              name="host"
              required
-             pattern="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+:[0-9]+$"
+             pattern="^.+:[0-9]+$"
              placeholder="0.0.0.0:8080"
              [(ngModel)]="robot.host">
     </div>
 
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox"
+             class="custom-control-input"
+             name="simulateur"
+             placeholder="Simulateur"
+             id="new-robot-simu"
+             [(ngModel)]="robot.simulateur">
+      <label class="custom-control-label" for="new-robot-simu">Simulateur?</label>
+    </div>
 
-    <div class="form-group">
+
+    <div class="form-group" *ngIf="robot.simulateur">
       <label>Répertoire de logs</label>
       <input type="text"
              class="form-control"
@@ -33,15 +43,6 @@
              required
              placeholder="répertoire de logs"
              [(ngModel)]="robot.dir">
-    </div>
-
-    <div class="form-check">
-      <input type="checkbox"
-             class="form-check-input"
-             name="simulateur"
-             placeholder="Simulateur"
-             [(ngModel)]="robot.simulateur">
-      <label class="form-check-label">Simulateur?</label>
     </div>
 
     <button type="submit"

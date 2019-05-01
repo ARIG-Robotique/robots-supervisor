@@ -1,47 +1,43 @@
-import {Component, OnInit, Input, DoCheck} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Robot} from '../../models/Robot';
 import {Servo} from '../../models/Servo';
 import {ServosService} from '../../services/servos.service';
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-servo-control',
   templateUrl: './servo-control.component.html',
   styleUrls: ['./servo-control.component.scss']
 })
-export class ServoControlComponent implements OnInit, DoCheck {
+export class ServoControlComponent implements OnInit {
 
   @Input() servo: Servo;
   @Input() robot: Robot;
 
-  previousPosition: number;
-  timeoutID: any;
+  position = new FormControl(1500, {
+    updateOn: 'blur'
+  });
 
   constructor(private servosService: ServosService) {
   }
 
   ngOnInit() {
-    this.previousPosition = this.servo.currentPosition;
+    this.setPosition(this.servo.currentPosition);
+
+    this.position.valueChanges
+      .subscribe((position) => {
+        this.setPosition(position);
+      });
   }
 
-  ngDoCheck() {
-    if (this.previousPosition !== this.servo.currentPosition) {
-      this.previousPosition = this.servo.currentPosition;
-
-      if (this.timeoutID) {
-        window.clearTimeout(this.timeoutID);
-      }
-      this.timeoutID = window.setTimeout(() => {
-        this.setPosition();
-      }, 500);
-    }
-  }
-
-  setPosition() {
-    this.servosService.setPosition(this.robot, this.servo, this.servo.currentPosition, this.servo.currentSpeed);
+  setPosition(position: number) {
+    this.position.setValue(position, {emitEvent: false});
+    this.servosService.setPosition(this.robot, this.servo, position, this.servo.currentSpeed)
+      .subscribe();
   }
 
   incrementPosition(value: number) {
-    this.servo.currentPosition += value;
+    this.setPosition(this.position.value + value);
   }
 
 }

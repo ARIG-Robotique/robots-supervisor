@@ -31,12 +31,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.robotsSubscription = this.robotsService.getRobotObservable()
       .subscribe((robots: Robot[]) => {
         this.robots = robots;
+
+        if (robots && robots.length === 1) {
+          robots[0].checked = true;
+          this.selectRobot(robots[0]);
+        }
       });
 
     this.robotsService.getRobots();
   }
 
-  selectRobot(event, robot: Robot) {
+  selectRobot(robot: Robot) {
     if (robot.checked) {
       if (this.selectedRobot.length > 2) {
         this.selectedRobot[0].checked = false;

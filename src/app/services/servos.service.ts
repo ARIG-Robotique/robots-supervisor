@@ -28,9 +28,9 @@ export class ServosService {
    * @returns {Promise}
    */
   setPosition(robot: Robot, servo: Servo, position: number, speed: number) {
-    const search = new HttpParams();
-    search.set('position', '' + Math.max(servo.minPosition, Math.min(servo.maxPosition, position)));
-    search.set('speed', '' + Math.max(servo.minSpeed, Math.min(servo.maxSpeed, speed)));
+    const search = new HttpParams()
+      .set('position', '' + Math.max(servo.minPosition, Math.min(servo.maxPosition, position)))
+      .set('speed', '' + Math.max(servo.minSpeed, Math.min(servo.maxSpeed, speed)));
 
     return this.http.post(`http://${robot.host}/servos/${servo.id}`, {}, {params: search});
   }
