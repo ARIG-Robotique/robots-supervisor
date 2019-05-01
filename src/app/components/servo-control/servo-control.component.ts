@@ -22,7 +22,7 @@ export class ServoControlComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.setPosition(this.servo.currentPosition);
+    this.position.setValue(this.servo.currentPosition, {emitEvent: false});
 
     this.position.valueChanges
       .subscribe((position) => {
