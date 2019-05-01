@@ -35,7 +35,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
     if (ok) {
       this.robotsService.deleteRobot(robot.id)
-        .subscribe(() => this.getRobots());
+        .subscribe(() => this.robotsService.getRobots());
     }
   }
 
@@ -59,7 +59,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   addedRobot(event) {
-    this.getRobots();
+    this.robotsService.getRobots();
   }
 
   ngOnDestroy(): void {
