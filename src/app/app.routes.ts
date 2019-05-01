@@ -2,8 +2,6 @@ import {Routes} from '@angular/router';
 import {MouvementsComponent} from './views/mouvements/mouvements.component';
 import {ServosComponent} from './views/servos/servos.component';
 import {RobotComponent} from './views/robot/robot.component';
-import {HomeComponent} from './views/home/home.component';
-import {RobotResolve} from './resolvers/RobotResolve';
 import {RobotInfoComponent} from './views/robot-info/robot-info.component';
 import {MapComponent} from './views/map/map.component';
 import {CapteursComponent} from './views/capteurs/capteurs.component';
@@ -12,11 +10,8 @@ import {AdminComponent} from './components/admin/admin.component';
 export const AppRoutes: Routes = [
   {
     path: '',
-    component: HomeComponent
-  },
-  {
-    path: 'admin',
-    component: AdminComponent
+    redirectTo: 'robot',
+    pathMatch: 'full'
   },
   {
     path: 'robot',
@@ -48,5 +43,9 @@ export const AppRoutes: Routes = [
         component: MapComponent
       }
     ]
+  },
+  {
+    path: 'admin',
+    component: AdminComponent
   }
 ];
