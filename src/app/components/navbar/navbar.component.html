@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-primary justify-content-end">
   <a class="navbar-brand" [routerLink]="['/']">{{title}}</a>
   <span class="ml-auto"></span>
-  <a [routerLink]="['/admin']" class="btn btn-outline-dark">
+  <a [routerLink]="['/admin']" class="btn btn-primary">
     <fa-icon icon="user"></fa-icon>
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
@@ -10,7 +10,7 @@
   <div class="collapse navbar-collapse flex-grow-0" id="navbarSupportedContent">
     <ul class="navbar-nav text-right container-fluid">
       <div ngbDropdown>
-        <span class="btn btn-outline-dark" id="dropdownConfig" ngbDropdownToggle><fa-icon icon="robot"></fa-icon></span>
+        <span class="btn btn-primary" id="dropdownConfig" ngbDropdownToggle><fa-icon icon="robot"></fa-icon></span>
         <div ngbDropdownMenu aria-labelledby="dropdownConfig" class="menu-dropdown">
           <div *ngFor="let robot of robots" ngbDropdownItem class="robot-item">
             <input type="checkbox" [(ngModel)]="robot.checked" (change)="selectRobot($event, robot)">
