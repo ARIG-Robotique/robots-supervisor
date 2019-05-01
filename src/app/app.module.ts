@@ -45,6 +45,8 @@ import {registerLocaleData} from '@angular/common';
 import {NavbarComponent} from './components/navbar/navbar.component';
 import {faCopy} from '@fortawesome/free-solid-svg-icons/faCopy';
 import {faDatabase} from '@fortawesome/free-solid-svg-icons/faDatabase';
+import {ToastrModule} from "ngx-toastr";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 registerLocaleData(localeFr);
 
@@ -73,7 +75,8 @@ registerLocaleData(localeFr);
     FontAwesomeModule,
     RouterModule.forRoot(AppRoutes, {useHash: true}),
     NgbModule,
-    FontAwesomeModule
+    BrowserAnimationsModule,
+    ToastrModule.forRoot() // ToastrModule added
   ],
   providers: [
     RobotsService,

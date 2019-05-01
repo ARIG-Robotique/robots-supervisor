@@ -35,7 +35,10 @@ export class AdminComponent implements OnInit, OnDestroy {
 
     if (ok) {
       this.robotsService.deleteRobot(robot.id)
-        .subscribe(() => this.robotsService.getRobots());
+        .subscribe(() => {
+          this.selectedRobot = null;
+          this.robotsService.getRobots();
+        });
     }
   }
 
@@ -53,8 +56,8 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   deleteExec(exec: Execs) {
     this.robotsService.deleteRobotExec(exec.id)
-      .subscribe((result) => {
-        console.log(result);
+      .subscribe(() => {
+        this.selectRobot(this.selectedRobot);
       });
   }
 

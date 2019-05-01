@@ -3,6 +3,7 @@ import {Robot} from '../../models/Robot';
 import {RobotsService} from '../../services/robots.service';
 import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
 import {Subscription} from 'rxjs';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-navbar',
@@ -18,7 +19,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   robotsSubscription: Subscription;
 
   constructor(config: NgbDropdownConfig,
-              private robotsService: RobotsService) {
+              private robotsService: RobotsService,
+              private toastService: ToastrService) {
     config.placement = 'bottom-right';
     config.autoClose = false;
   }
@@ -58,14 +60,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
   copyLogs(robot: Robot) {
     this.robotsService.copyLogs(robot.id)
       .subscribe(() => {
-        // TODO : toast notif
+        this.toastService.success('Les logs sont copiés!');
+      }, () => {
+        this.toastService.error('Erreur lors de copie des logs');
       });
   }
 
   importLogs(robot: Robot) {
     this.robotsService.importLogs(robot.id)
       .subscribe(() => {
-        // tODO: toast
+        this.toastService.success('Les logs sont importés');
+      }, () => {
+        this.toastService.error('Erreur lors de l\'import des logs');
       });
   }
 
