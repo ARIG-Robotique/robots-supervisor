@@ -25,7 +25,7 @@ export class CapteursService {
    * @returns {Promise<boolean>}
    */
   setTirette(robot: Robot, present: boolean) {
-    return this.http.post(`http://${robot.host}/capteurs/tirette`, present);
+    return this.http.post(`http://${robot.host}/capteurs/tirette`, present ? 1 : 0);
   }
 
   /**
@@ -35,7 +35,7 @@ export class CapteursService {
    * @returns {Promise<string>}
    */
   setTeam(robot: Robot, team: string) {
-    const value = team === 'JAUNE';
+    const value = team === 'JAUNE' ? 1 : 0;
     return this.http.post(`http://${robot.host}/capteurs/team`, value);
   }
 
@@ -46,7 +46,7 @@ export class CapteursService {
    * @returns {Promise<boolean>}
    */
   setAu(robot: Robot, present: boolean) {
-    return this.http.post(`http://${robot.host}/capteurs/au`, present);
+    return this.http.post(`http://${robot.host}/capteurs/au`, present ? 1 : 0);
   }
 
 }

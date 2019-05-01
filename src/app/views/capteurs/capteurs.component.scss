@@ -1,4 +1,10 @@
+@import '../../../variables';
+
 .robot__capteurs {
   display: flex;
   justify-content: space-between;
+}
+
+.btn-violet {
+  background-color: $violet;
 }

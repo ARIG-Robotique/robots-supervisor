@@ -124,7 +124,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   }
 
   setTable() {
-    if (this.stage && this.table && this.team && this.team !== 'UNKNOWN') {
+    if (this.stage && this.table && this.team) {
       console.log('setTable');
       let done = 0;
       const checkDone = function () {
