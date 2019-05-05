@@ -1,5 +1,4 @@
 import {Point} from './Point';
-import {Rect} from './Rect';
 import {Cercle} from './Cercle';
 
 interface Mouvement {
@@ -25,7 +24,7 @@ export interface RobotPosition {
   y: number;
   angle: number;
 
-  matchTime:number;
+  matchTime: number;
 
   targetX?: number;
   targetY?: number;

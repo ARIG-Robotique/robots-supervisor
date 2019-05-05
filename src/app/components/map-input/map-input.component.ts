@@ -8,11 +8,12 @@ import {
   Output,
   SimpleChanges,
   ViewChild
-} from "@angular/core";
-import {Table} from "../../models/Table";
-import * as Konva from "konva";
-import {RobotPosition} from "../../models/RobotPosition";
-import {Point} from "../../models/Point";
+} from '@angular/core';
+import {Table} from '../../models/Table';
+import * as Konva from 'konva';
+import {RobotPosition} from '../../models/RobotPosition';
+import {Point} from '../../models/Point';
+import {Constants} from '../../constants/constants';
 
 @Component({
   selector: 'app-map-input',
@@ -33,7 +34,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   @ViewChild('mapContainer') mapContainer: ElementRef;
 
   state: any = {};
-  targetPosition: RobotPosition = {x: 0, y: 0, angle: 0};
+  targetPosition: RobotPosition = {x: 0, y: 0, angle: 0, matchTime: Constants.matchTime};
 
   stage: Konva.Stage;
   mainLayer: Konva.Layer;
@@ -160,7 +161,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
           image: maskLoader,
           width: this.table.width * this.table.imageRatio,
           height: this.table.height * this.table.imageRatio,
-          opacity: 0.2
+          opacity: 0.05
         });
 
         this.background.add(image);
@@ -340,12 +341,13 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     });
   }
 
-  mouseup(e) {
+  mouseup() {
     if (this.state.moving) {
       this.targetPosition = {
         x: this.robotPosition.x,
         y: this.robotPosition.y,
-        angle: this.state.angle * 180 / Math.PI
+        angle: this.state.angle * 180 / Math.PI,
+        matchTime: this.robotPosition.matchTime
       };
 
       if (this.targetPosition.angle > 180) {
@@ -359,7 +361,8 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       this.targetPosition = {
         x: this.state.startX / this.table.imageRatio / this.tableZoom,
         y: this.table.height - this.state.startY / this.table.imageRatio / this.tableZoom,
-        angle: this.robotPosition.angle
+        angle: this.robotPosition.angle,
+        matchTime: this.robotPosition.matchTime
       };
 
       this.positionChanged.emit(this.targetPosition);
@@ -379,8 +382,8 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       robot.add(new Konva.Image({
         x: -65, y: -65,
         image: imageLoader,
-        width: 130,
-        height: 130,
+        width: Constants.robotSize.width,
+        height: Constants.robotSize.height,
         shadowColor: 'black',
         shadowOpacity: 1,
         shadowBlur: 20
