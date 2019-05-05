@@ -105,6 +105,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     }
 
     if (changes['team'] && this.team) {
+      this.robotPosition = this.team === 'JAUNE' ? Constants.robot.configInitJaune : Constants.robot.configInitViolet;
       this.setTable();
     }
 
@@ -382,8 +383,8 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       robot.add(new Konva.Image({
         x: -65, y: -65,
         image: imageLoader,
-        width: Constants.robotSize.width,
-        height: Constants.robotSize.height,
+        width: Constants.robot.size.width,
+        height: Constants.robot.size.height,
         shadowColor: 'black',
         shadowOpacity: 1,
         shadowBlur: 20

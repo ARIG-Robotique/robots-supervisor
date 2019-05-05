@@ -9,6 +9,7 @@ import {Robot} from "../../models/Robot";
 import {MouvementsService} from "../../services/mouvements.service";
 import {RobotPosition} from "../../models/RobotPosition";
 import {MapInputComponent} from "../../components/map-input/map-input.component";
+import {Constants} from "../../constants/constants";
 
 @Component({
   selector: 'app-map',
@@ -51,6 +52,7 @@ export class MapComponent extends RobotTabComponent implements OnInit {
     console.log('map preOnInit');
     this.Tables = Tables;
     this.currentTable = Tables[0];
+    this.robotPosition = Constants.robot.configInitJaune;
   }
 
   protected afterFetchedRobots() {
