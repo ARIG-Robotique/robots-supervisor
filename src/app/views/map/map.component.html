@@ -1,8 +1,5 @@
 <div class="row">
   <div class="col-9" *ngIf="robots">
-    <div class="col-9">
-      <h1>Match time : {{robotPosition.matchTime}}</h1>
-    </div>
     <app-map-input [table]="currentTable"
                    [tableZoom]="currentZoom"
                    [robotPosition]="robotPosition"
@@ -40,6 +37,15 @@
           </select>
           <span>mode</span>
         </label>
+      </div>
+
+      <div class="card-block pt-0">
+        <h5 class="card-title">Match time :</h5>
+        <div class="row">
+          <div class="col">
+            {{robotPosition.matchTime}}
+          </div>
+        </div>
       </div>
 
       <div class="card-block pt-0">
