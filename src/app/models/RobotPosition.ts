@@ -24,7 +24,7 @@ export interface RobotPosition {
   y: number;
   angle: number;
 
-  matchTime: number;
+  matchTime?:number;
 
   targetX?: number;
   targetY?: number;

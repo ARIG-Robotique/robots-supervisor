@@ -187,10 +187,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
   drawPoints(data: RobotPosition) {
     if (this.points && this.table) {
-      this.points.getChildren().each((item) => {
-        item.remove();
-        item.destroy();
-      });
+      this.points.removeChildren();
 
       if (data.pointsLidar) {
         data.pointsLidar.forEach((point) => {
@@ -231,10 +228,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
   drawMouvement(data: RobotPosition) {
     if (this.mouvement && this.table) {
-      this.mouvement.getChildren().each((item) => {
-        item.remove();
-        item.destroy();
-      });
+      this.mouvement.removeChildren();
 
       const points = [];
 
