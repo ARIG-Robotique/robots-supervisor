@@ -48,8 +48,8 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   mouvement: Konva.Group;
 
   ngAfterViewInit(): void {
-    console.log('MapInput view init');
-
+    this.team = this.team ? this.team : 'JAUNE';
+    this.setTable();
   }
 
   setStage() {
@@ -195,7 +195,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
             x: point.x * this.table.imageRatio,
             y: (this.table.height - point.y) * this.table.imageRatio,
             radius: this.tableZoom * 4,
-            fill: 'black'
+            fill: 'white'
           }));
         });
       }
@@ -206,7 +206,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
             x: point.x * this.table.imageRatio,
             y: (this.table.height - point.y) * this.table.imageRatio,
             radius: this.tableZoom * 4,
-            fill: 'black',
+            fill: 'white',
             stroke: 'rgba(0, 0, 0, 0.5)',
             strokeWidth: this.tableZoom * 20
           }));
@@ -448,7 +448,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       align: 'center',
       fontSize: 16,
       fontStyle: 'bold',
-      fill: 'black'
+      fill: 'white'
     }));
 
     return director;
@@ -460,14 +460,14 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     crosshair.add(new Konva.Line({
       x: -10, y: 0,
       points: [0, 0, 20, 0],
-      stroke: 'black',
+      stroke: 'white',
       strokeWidth: 1
     }));
 
     crosshair.add(new Konva.Line({
       x: 0, y: -10,
       points: [0, 0, 0, 20],
-      stroke: 'black',
+      stroke: 'white',
       strokeWidth: 1
     }));
 
@@ -476,7 +476,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       text: '0 : 0',
       fontSize: 16,
       fontStyle: 'bold',
-      fill: 'black'
+      fill: 'white'
     }));
 
     return crosshair;
