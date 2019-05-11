@@ -13,10 +13,13 @@
         <span class="btn btn-primary" id="dropdownConfig" ngbDropdownToggle><fa-icon icon="robot"></fa-icon></span>
         <div ngbDropdownMenu aria-labelledby="dropdownConfig" class="menu-dropdown">
           <div *ngFor="let robot of robots" ngbDropdownItem class="robot-item">
-            <input type="checkbox" [(ngModel)]="robot.checked" (change)="selectRobot(robot)" id="robot-{{robot.id}}">
-            <label for="robot-{{robot.id}}">{{robot.name}}</label>
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" [(ngModel)]="robot.checked" (change)="selectRobot(robot)" id="robot-{{robot.id}}">
+              <label for="robot-{{robot.id}}">{{robot.name}}</label>
+            </div>
             <div>
-              <button class="btn btn-logs" ngbTooltip="Copier logs" placement="top" (click)="copyLogs(robot)" *ngIf="!robot.simulateur">
+              <button class="btn btn-logs" ngbTooltip="Copier logs" placement="top" (click)="copyLogs(robot)"
+                      *ngIf="!robot.simulateur">
                 <fa-icon icon="copy"></fa-icon>
               </button>
               <button class="btn btn-logs" ngbTooltip="Importer logs" placement="top" (click)="importLogs(robot)">
