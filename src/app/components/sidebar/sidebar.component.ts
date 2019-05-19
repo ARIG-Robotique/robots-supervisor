@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Robot} from '../../models/Robot';
 import {RobotsService} from '../../services/robots.service';
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-sidebar',
@@ -40,5 +41,15 @@ export class SidebarComponent implements OnInit {
           });
         });
     }
+  }
+
+  editableLogDir(robot: Robot) {
+
+    const editable = !(robot.simulateur && environment.production);
+    if (!editable) {
+      robot.dir = '/logs/simulateur';
+    }
+
+    return editable;
   }
 }

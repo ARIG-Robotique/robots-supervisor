@@ -3,6 +3,7 @@ import {Robot} from '../../models/Robot';
 import {RobotsService} from '../../services/robots.service';
 import {Execs} from '../../models/Execs';
 import {Subscription} from 'rxjs';
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-admin',
@@ -27,6 +28,10 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.robotsSubscription = this.robotsService.getRobotObservable()
       .subscribe((robots: Robot[]) => {
         this.robots = robots;
+
+        if (this.selectedRobot == null && this.robots && this.robots.length > 0) {
+          this.selectRobot(this.robots[0]);
+        }
       });
   }
 
@@ -57,7 +62,9 @@ export class AdminComponent implements OnInit, OnDestroy {
   deleteExec(exec: Execs) {
     this.robotsService.deleteRobotExec(exec.id)
       .subscribe(() => {
-        this.selectRobot(this.selectedRobot);
+        const robot = this.robots.filter(r => r.id === this.selectedRobot.id)[0];
+        this.selectedRobot = null;
+        this.selectRobot(robot);
       });
   }
 

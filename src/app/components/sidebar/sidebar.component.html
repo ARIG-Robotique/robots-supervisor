@@ -58,7 +58,8 @@
       <input type="text"
              class="form-control"
              name="directory"
-             [required]="'robot.simulateur'"
+             [disabled]="!editableLogDir(robot)"
+             [required]="editableLogDir(robot)"
              placeholder="répertoire de logs"
              [(ngModel)]="robot.dir">
     </div>
