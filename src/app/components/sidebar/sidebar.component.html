@@ -24,6 +24,24 @@
              [(ngModel)]="robot.host">
     </div>
 
+    <div class="form-group"  *ngIf="!robot.simulateur">
+      <label>Login</label>
+      <input type="text"
+             class="form-control"
+             name="login"
+             [required]="!robot.simulateur"
+             [(ngModel)]="robot.login">
+    </div>
+
+    <div class="form-group"  *ngIf="!robot.simulateur">
+      <label>Mot de passe</label>
+      <input type="password"
+             class="form-control"
+             name="pwd"
+             [required]="!robot.simulateur"
+             [(ngModel)]="robot.pwd">
+    </div>
+
     <div class="custom-control custom-checkbox">
       <input type="checkbox"
              class="custom-control-input"

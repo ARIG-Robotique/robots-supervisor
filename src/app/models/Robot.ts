@@ -10,6 +10,8 @@ export interface Robot {
   checked: boolean;
   dir: string;
   name: string;
+  login: string;
+  pwd: string;
 
   infos: any;
   capteurs: any;

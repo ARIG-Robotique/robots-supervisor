@@ -18,10 +18,6 @@
               <label for="robot-{{robot.id}}">{{robot.name}}</label>
             </div>
             <div>
-              <button class="btn btn-logs" ngbTooltip="Copier logs" placement="top" (click)="copyLogs(robot)"
-                      *ngIf="!robot.simulateur">
-                <fa-icon icon="copy"></fa-icon>
-              </button>
               <button class="btn btn-logs" ngbTooltip="Importer logs" placement="top" (click)="importLogs(robot)">
                 <fa-icon icon="database"></fa-icon>
               </button>
