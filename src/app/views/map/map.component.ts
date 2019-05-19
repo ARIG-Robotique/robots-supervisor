@@ -94,4 +94,9 @@ export class MapComponent extends RobotTabComponent implements OnInit {
     }).subscribe(() => {
     });
   }
+
+  onTableChange(newTable) {
+    this.currentTable = Tables.filter(table => table.name === newTable)[0];
+    this.currentZoom = this.currentZoom === 0.75 ? 1 : 0.75;
+  }
 }

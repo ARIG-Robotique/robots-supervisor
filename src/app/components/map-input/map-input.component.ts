@@ -120,8 +120,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   }
 
   setTable() {
-    if (this.stage && this.table && this.team) {
-      console.log('setTable');
+    if (this.stage && this.table) {
       let done = 0;
       const checkDone = function () {
         done++;
@@ -171,7 +170,10 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         checkDone();
       }.bind(this);
 
-      maskLoader.src = 'assets/pathMasks/' + this.table.name + '-' + this.team + '.png';
+
+      if (this.table.name !== 'test') {
+        maskLoader.src = 'assets/pathMasks/' + this.table.name + '-' + this.team + '.png';
+      }
     }
   }
 
@@ -484,6 +486,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
   setZoom() {
     if (this.stage && this.tableZoom) {
+      // FIXME: probl de l'affichage du map
       this.stage.setWidth(this.table.width * this.table.imageRatio * this.tableZoom);
       this.stage.setHeight(this.table.height * this.table.imageRatio * this.tableZoom);
 

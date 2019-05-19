@@ -17,6 +17,6 @@ export const Tables: Table[] = [
     name: 'test',
     width: 1300,
     height: 2000,
-    imageRatio: 459 / 1500
+    imageRatio: 459 / 700
   }
 ];
