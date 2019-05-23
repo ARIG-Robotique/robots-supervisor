@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Robot} from '../../models/Robot';
 import {RobotsService} from '../../services/robots.service';
-import {environment} from "../../../environments/environment";
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-sidebar',

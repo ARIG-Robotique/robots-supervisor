@@ -3,7 +3,7 @@ import {Robot} from '../../models/Robot';
 import {RobotsService} from '../../services/robots.service';
 import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
 import {Subscription} from 'rxjs';
-import {ToastrService} from "ngx-toastr";
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-navbar',

@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Robot} from '../../models/Robot';
 import {Servo} from '../../models/Servo';
 import {ServosService} from '../../services/servos.service';
-import {FormControl} from "@angular/forms";
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-servo-control',

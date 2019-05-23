@@ -1,15 +1,15 @@
-import {RobotTabComponent} from "../robot/robotTab.component";
-import {Component, OnInit, ViewChild} from "@angular/core";
-import {RobotsService} from "../../services/robots.service";
-import {Table} from "../../models/Table";
-import {IntervalObservable} from "rxjs-compat/observable/IntervalObservable";
+import {RobotTabComponent} from '../robot/robotTab.component';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {RobotsService} from '../../services/robots.service';
+import {Table} from '../../models/Table';
+import {IntervalObservable} from 'rxjs-compat/observable/IntervalObservable';
 import {Tables} from '../../constants/tables.constants';
-import {CapteursService} from "../../services/capteurs.service";
-import {Robot} from "../../models/Robot";
-import {MouvementsService} from "../../services/mouvements.service";
-import {RobotPosition} from "../../models/RobotPosition";
-import {MapInputComponent} from "../../components/map-input/map-input.component";
-import {Constants} from "../../constants/constants";
+import {CapteursService} from '../../services/capteurs.service';
+import {Robot} from '../../models/Robot';
+import {MouvementsService} from '../../services/mouvements.service';
+import {RobotPosition} from '../../models/RobotPosition';
+import {MapInputComponent} from '../../components/map-input/map-input.component';
+import {Constants} from '../../constants/constants';
 
 @Component({
   selector: 'app-map',

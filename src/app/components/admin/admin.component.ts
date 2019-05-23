@@ -3,7 +3,7 @@ import {Robot} from '../../models/Robot';
 import {RobotsService} from '../../services/robots.service';
 import {Execs} from '../../models/Execs';
 import {Subscription} from 'rxjs';
-import {environment} from "../../../environments/environment";
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-admin',
