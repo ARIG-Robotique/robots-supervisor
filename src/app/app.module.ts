@@ -48,7 +48,7 @@ import {faDatabase} from '@fortawesome/free-solid-svg-icons/faDatabase';
 import {ToastrModule} from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ActionneursComponent} from "./views/actionneurs/actionneurs.component";
-import {ActionneursService} from "./services/ActionneursService";
+import {ActionneursService} from "./services/actionneurs.service";
 
 registerLocaleData(localeFr);
 

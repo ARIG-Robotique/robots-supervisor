@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Robot} from '../../models/Robot';
 import {RobotsService} from '../../services/robots.service';
-import {ActionneursService} from "../../services/ActionneursService";
+import {ActionneursService} from "../../services/actionneurs.service";
 import {ESide} from "../../models/ESide";
 import {EActionneurState} from "../../models/EActionneurState";
 

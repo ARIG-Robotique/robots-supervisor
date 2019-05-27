@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ESide} from "../models/ESide";
 import {EActionneurState} from "../models/EActionneurState";
 import {Robot} from "../models/Robot";
@@ -12,11 +12,15 @@ export class ActionneursService {
   }
 
   ev(robot: Robot, side: ESide, state: EActionneurState): Observable<any> {
-    return this.http.post(`http://${robot.host}/actionneurs/ev/${side}`, state);
+    return this.http.post(`http://${robot.host}/actionneurs/ev/${side}`, state, {
+      headers: new HttpHeaders().append('Content-Type', 'application/json')
+    });
   }
 
   pompe(robot: Robot, side: ESide, state: EActionneurState): Observable<any> {
-    return this.http.post(`http://${robot.host}/actionneurs/pompe/${side}`, state);
+    return this.http.post(`http://${robot.host}/actionneurs/pompe/${side}`, state, {
+      headers: new HttpHeaders().append('Content-Type', 'application/json')
+    });
   }
 
 }

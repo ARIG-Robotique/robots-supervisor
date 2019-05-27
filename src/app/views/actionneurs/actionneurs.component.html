@@ -20,15 +20,15 @@
       <li class="list-group-item">
         EV droite :
         <div class="btn-group">
-          <button type="button" class="btn btn-success" (click)="setPompe(robot, ESide.DROITE, EActionneurState.ON)">AIR</button>
-          <button type="button" class="btn btn-danger" (click)="setPompe(robot, ESide.DROITE, EActionneurState.OFF)">VIDE</button>
+          <button type="button" class="btn btn-success" (click)="setEv(robot, ESide.DROITE, EActionneurState.ON)">AIR</button>
+          <button type="button" class="btn btn-danger" (click)="setEv(robot, ESide.DROITE, EActionneurState.OFF)">VIDE</button>
         </div>
       </li>
       <li class="list-group-item">
         EV gauche :
         <div class="btn-group">
-          <button type="button" class="btn btn-success" (click)="setPompe(robot, ESide.GAUCHE, EActionneurState.ON)">AIR</button>
-          <button type="button" class="btn btn-danger" (click)="setPompe(robot, ESide.GAUCHE, EActionneurState.OFF)">VIDE</button>
+          <button type="button" class="btn btn-success" (click)="setEv(robot, ESide.GAUCHE, EActionneurState.ON)">AIR</button>
+          <button type="button" class="btn btn-danger" (click)="setEv(robot, ESide.GAUCHE, EActionneurState.OFF)">VIDE</button>
         </div>
       </li>
     </ul>
