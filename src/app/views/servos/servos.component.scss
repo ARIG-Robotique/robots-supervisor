@@ -1,12 +1,11 @@
 .robot__servos {
-  display: flex;
-  justify-content: space-between;
-
   .robot__servos_servo {
     padding: 5px;
+    display: flex;
   }
 
   .robot__servos_card {
     margin: 5px;
+    flex-basis: 100%;
   }
 }

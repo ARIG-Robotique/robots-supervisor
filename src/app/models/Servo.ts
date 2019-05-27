@@ -16,5 +16,24 @@ export interface Servo {
   minSpeed: number;
   maxSpeed: number;
   positions: ServoPos[];
+}
 
+export interface ServoResponse {
+  key: string,
+  value: ServoPairResponse[]
+}
+
+export interface ServoPairResponse {
+  key: Servo,
+  value: Servo
+}
+
+export interface ServoGroup {
+  name: string,
+  servos: ServoPair[]
+}
+
+export interface ServoPair {
+  left: Servo,
+  right: Servo
 }

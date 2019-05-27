@@ -1,14 +1,26 @@
 <div class="robot__servos">
   <div *ngFor="let robot of robots" class="robot__servos_card">
-    <div class="card">
-      <h4 class="card-header">{{robot.name}}</h4>
-      <div class="card mt-3 robot__servos_servo" *ngFor="let servo of robot.servos">
-        <div class="card-block">
-          <h5 class="card-title">{{servo.name}}
-            <small>id: {{servo.id}}, min: {{servo.minPosition}}, max: {{servo.maxPosition}}</small>
+    <h4 class="card-header">{{robot.name}}</h4>
+    <div class="card " *ngFor="let servoGroup of servosGroups">
+      <h4 class="card-header">{{servoGroup.name}}</h4>
+
+      <div *ngFor="let servoPair of servoGroup.servos" class="robot__servos_servo">
+        <div class="card-block robot__servos_card">
+          <h5 class="card-title">{{servoPair.left.name}}
+            <small>id: {{servoPair.left.id}}, min: {{servoPair.left.minPosition}},
+              max: {{servoPair.left.maxPosition}}</small>
           </h5>
 
-          <app-servo-control [robot]="robot" [servo]="servo"></app-servo-control>
+          <app-servo-control [robot]="robot" [servo]="servoPair.left"></app-servo-control>
+        </div>
+
+        <div class="card-block robot__servos_card">
+          <h5 class="card-title">{{servoPair.right.name}}
+            <small>id: {{servoPair.right.id}}, min: {{servoPair.right.minPosition}},
+              max: {{servoPair.right.maxPosition}}</small>
+          </h5>
+
+          <app-servo-control [robot]="robot" [servo]="servoPair.right"></app-servo-control>
         </div>
       </div>
     </div>
