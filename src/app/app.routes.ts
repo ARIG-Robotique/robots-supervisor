@@ -6,6 +6,7 @@ import {RobotInfoComponent} from './views/robot-info/robot-info.component';
 import {MapComponent} from './views/map/map.component';
 import {CapteursComponent} from './views/capteurs/capteurs.component';
 import {AdminComponent} from './components/admin/admin.component';
+import {ActionneursComponent} from "./views/actionneurs/actionneurs.component";
 
 export const AppRoutes: Routes = [
   {
@@ -33,6 +34,10 @@ export const AppRoutes: Routes = [
       {
         path: 'servos',
         component: ServosComponent
+      },
+      {
+        path: 'actionneurs',
+        component: ActionneursComponent
       },
       {
         path: 'mouvement',

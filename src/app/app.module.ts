@@ -47,6 +47,8 @@ import {faCopy} from '@fortawesome/free-solid-svg-icons/faCopy';
 import {faDatabase} from '@fortawesome/free-solid-svg-icons/faDatabase';
 import {ToastrModule} from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ActionneursComponent} from "./views/actionneurs/actionneurs.component";
+import {ActionneursService} from "./services/ActionneursService";
 
 registerLocaleData(localeFr);
 
@@ -60,6 +62,7 @@ registerLocaleData(localeFr);
     MouvementInputComponent,
     ServosComponent,
     MouvementsComponent,
+    ActionneursComponent,
     RobotInfoComponent,
     MapComponent,
     MapInputComponent,
@@ -85,6 +88,7 @@ registerLocaleData(localeFr);
     RobotResolve,
     CapteursService,
     CodeursService,
+    ActionneursService,
     {provide: LOCALE_ID, useValue: 'fr-FR'},
   ],
   bootstrap: [AppComponent]
