@@ -113,22 +113,21 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       this.moveNerell(this.robotPosition);
       this.drawPoints(this.robotPosition);
       this.drawMouvement(this.robotPosition);
-
-      this.mainLayer.drawScene();
     }
 
+    this.mainLayer.drawScene();
   }
 
   setTable() {
     if (this.stage && this.table) {
       let done = 0;
-      const checkDone = function () {
+      const checkDone = () => {
         done++;
         if (done === 2) {
           this.setZoom();
           this.background.drawScene();
         }
-      }.bind(this);
+      };
 
       this.background.getChildren().each(item => {
         item.remove();
@@ -137,7 +136,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
       const tableLoader = new Image();
 
-      tableLoader.onload = function () {
+      tableLoader.onload = () => {
         const image = new Konva.Image({
           x: 0, y: 0,
           image: tableLoader,
@@ -149,13 +148,13 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         image.moveToBottom();
 
         checkDone();
-      }.bind(this);
+      };
 
       tableLoader.src = 'assets/tables/' + this.table.name + '.png';
 
       const maskLoader = new Image();
 
-      maskLoader.onload = function () {
+      maskLoader.onload = () => {
         const image = new Konva.Image({
           x: 0, y: 0,
           image: maskLoader,
@@ -168,7 +167,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         image.moveToTop();
 
         checkDone();
-      }.bind(this);
+      };
 
 
       if (this.table.name !== 'test') {
