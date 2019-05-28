@@ -18,14 +18,9 @@ export interface Servo {
   positions: ServoPos[];
 }
 
-export interface ServoResponse {
+export interface ServosResponse {
   key: string,
-  value: ServoPairResponse[]
-}
-
-export interface ServoPairResponse {
-  key: Servo,
-  value: Servo
+  value: Servo[][]
 }
 
 export interface ServoGroup {

@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Robot} from '../../models/Robot';
-import {Servo, ServoGroup, ServoPair, ServoPairResponse, ServoResponse} from '../../models/Servo';
+import {Servo, ServoGroup, ServoPair, ServosResponse} from '../../models/Servo';
 import {ServosService} from '../../services/servos.service';
 import {RobotsService} from '../../services/robots.service';
 import {RobotTabComponent} from '../robot/robotTab.component';
@@ -23,16 +23,13 @@ export class ServosComponent extends RobotTabComponent {
 
   fetch(robot: Robot) {
     this.servosService.getServos(robot)
-      .subscribe((servosResponse: ServoResponse) => {
+      .subscribe((servosResponse: ServosResponse) => {
         const servos: Servo[] = [];
         this.servosGroups = [];
         Object.keys(servosResponse)
-          .forEach(key => {
+          .forEach((key: string) => {
 
-            const servoGroup: {
-              name: string,
-              servos: ServoPair[]
-            } = {
+            const servoGroup: ServoGroup = {
               name: '',
               servos: []
             };
@@ -41,16 +38,13 @@ export class ServosComponent extends RobotTabComponent {
 
             this.servosGroups.push(servoGroup);
 
-            const servoPairs: ServoPairResponse[] = servosResponse[key];
+            const servoPairs: Servo[][] = servosResponse[key];
 
-            servoPairs.forEach((pair: ServoPairResponse) => {
-              const right = this.complteServo(pair.value);
-              const left = this.complteServo(pair.key);
+            servoPairs.forEach((pairs: Servo[]) => {
+              const right = this.complteServo(pairs[1]);
+              const left = this.complteServo(pairs[0]);
 
-              const servoPair: {
-                left: Servo,
-                right: Servo,
-              } = {
+              const servoPair: ServoPair = {
                 left: left,
                 right: right
               };
