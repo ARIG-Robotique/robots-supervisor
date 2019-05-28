@@ -20,4 +20,8 @@ export interface Robot {
   team: string;
 
   position: RobotPosition;
+
+  // UI attribute
+  copying: boolean;
+  message: string;
 }

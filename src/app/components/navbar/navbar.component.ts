@@ -59,26 +59,32 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   importLogs(robot: Robot) {
     const robotId = robot.id;
+    robot.copying = true;
+    robot.message = '';
     if (robot.simulateur) {
-      this.importLog(robotId);
+      this.importLog(robot);
     } else {
+      robot.message = 'copie les logs';
       this.robotsService.copyLogs(robotId)
         .subscribe(() => {
           this.toastService.success('Les logs sont copiés!');
-          this.importLog(robotId);
+          this.importLog(robot);
         }, () => {
+          robot.copying = false;
           this.toastService.error('Erreur lors de copie des logs');
         });
     }
 
   }
 
-  private importLog(robotId: number): void {
-
-    this.robotsService.importLogs(robotId)
+  private importLog(robot: Robot): void {
+    robot.message = 'importe les logs';
+    this.robotsService.importLogs(robot.id)
       .subscribe(() => {
+        robot.copying = false;
         this.toastService.success('Les logs sont importés');
       }, () => {
+        robot.copying = false;
         this.toastService.error('Erreur lors de l\'import des logs');
       });
   }
