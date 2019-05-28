@@ -96,7 +96,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['tableZoom']) {
-      this.setZoom();
+      this.setTable();
     }
 
     if (changes['table'] && this.table) {
@@ -485,7 +485,6 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
   setZoom() {
     if (this.stage && this.tableZoom) {
-      // FIXME: probl de l'affichage du map
       this.stage.setWidth(this.table.width * this.table.imageRatio * this.tableZoom);
       this.stage.setHeight(this.table.height * this.table.imageRatio * this.tableZoom);
 
