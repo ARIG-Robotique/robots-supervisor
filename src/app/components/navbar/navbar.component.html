@@ -17,7 +17,8 @@
               <input type="checkbox" [(ngModel)]="robot.checked" (change)="selectRobot(robot)" id="robot-{{robot.id}}">
               <label for="robot-{{robot.id}}">{{robot.name}}</label>
             </div>
-            <div class="spinner" *ngIf="robot.copying">{{robot.message}}</div>
+            <div class="spinner" *ngIf="robot.copying"></div>
+            <div *ngIf="robot.copying">{{robot.message}}</div>
             <div>
               <button class="btn btn-logs" ngbTooltip="Importer logs" placement="top" (click)="importLogs(robot)" [disabled]="robot.copying">
                 <fa-icon icon="database"></fa-icon>
