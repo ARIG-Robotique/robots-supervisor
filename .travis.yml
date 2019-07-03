@@ -3,8 +3,10 @@ node_js:
   - "10.13.0"
 
 before_script:
-  - npm install -g @angular/cli
-
+- npm install -g @angular/cli
 script:
   - ng lint
   - ng build --prod
+notifications:
+  slack:
+    secure: MPPwM65wU0QL56EKEV6kmO/JtAWdQUbInUDoxSiGzGVzlAx8gIHRjguaKpbfiTEnxCNHIK7GLxKY4spz27bWv/gp3rFBTudeRpXtPy0r0FbAvHkdQ1YOx60Y8zWaKqk/R5MaPvaPiseCTuwgDl1hBLloF11rXwAcCLGvnus1dh6HSTs1wFhHlTYE5/mTsfR/93Ma+iLYkWK7DOSRhiWWHlr0ea0lLxGhGP2dYzltv2Am+kSwFH/9A7qdXjviLaycnDAfKOVnBSKpu6WBEfqNS9kK0ru4VnPhs/Ae9+l6LJtsbXjZylgWBCpUfmj4gS5Ie3T4vMJZW+JQICge+1comjIHaPg6XcxRZxrylgqyRhNbcv5qNjucNCRquUFGRDRwVqeYe3WdFPi6BOuJ7HQkcLA2KG8YLpZpWvUPhPpQWL0z0CsflLCNgmw80wnojHGXbew5ZcwURIMJ8rII4U65XEEYMQxUhqaxUrYBNfg266yjw+k+iaFoFYSupxNsd7/r/5JputOiunfljxYtef9XSr1tqjbUrHZXTAYC9efe5qhyJ+X8H8NlntsULPwCUMlkVlxXzp2yGjUoh6i3uBqKTP/8qAnKYl3oYEJa2iRXsr8cPG92UxZKX2HQ9nXwwW9ltcob5owQPvL73ccCDmyjCqrlIWHEGjn7eBC4tV91Dk4=
