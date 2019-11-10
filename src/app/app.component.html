@@ -1,15 +1,9 @@
-<div>
-  <div>
-  <app-navbar></app-navbar>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-12">
-        <router-outlet></router-outlet>
-      </div>
-    </div>
-  </div>
-  </div>
-  <footer class="page-footer bg-success text-white mt-5">
-    <p class="text-center p-4 m-0">Copyright &copy; ARIG Robotique {{ currentYear }}</p>
-  </footer>
+<app-navbar></app-navbar>
+
+<div class="m-3">
+  <router-outlet></router-outlet>
 </div>
+
+<footer class="page-footer bg-success text-white mt-5">
+  <p class="text-center p-4 m-0">Copyright &copy; ARIG Robotique {{ currentYear }}</p>
+</footer>

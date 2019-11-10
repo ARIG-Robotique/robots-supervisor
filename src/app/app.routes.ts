@@ -5,52 +5,56 @@ import {RobotComponent} from './views/robot/robot.component';
 import {RobotInfoComponent} from './views/robot-info/robot-info.component';
 import {MapComponent} from './views/map/map.component';
 import {CapteursComponent} from './views/capteurs/capteurs.component';
-import {AdminComponent} from './components/admin/admin.component';
-import {ActionneursComponent} from "./views/actionneurs/actionneurs.component";
+import {AdminComponent} from './views/admin/admin.component';
+import {ActionneursComponent} from './views/actionneurs/actionneurs.component';
+import {HomeComponent} from './views/home/home.component';
+import {RobotResolve} from './resolvers/RobotResolve';
 
 export const AppRoutes: Routes = [
   {
-    path: '',
-    redirectTo: 'robot',
-    pathMatch: 'full'
+    path     : '',
+    component: HomeComponent,
   },
   {
-    path: 'robot',
+    path     : 'robot/:idRobot',
     component: RobotComponent,
-    children: [
+    resolve  : {
+      robot: RobotResolve,
+    },
+    children : [
       {
-        path: '',
+        path      : '',
         redirectTo: 'info',
-        pathMatch: 'full'
+        pathMatch : 'full'
       },
       {
-        path: 'info',
+        path     : 'info',
         component: RobotInfoComponent
       },
       {
-        path: 'capteurs',
+        path     : 'capteurs',
         component: CapteursComponent
       },
       {
-        path: 'servos',
+        path     : 'servos',
         component: ServosComponent
       },
       {
-        path: 'actionneurs',
+        path     : 'actionneurs',
         component: ActionneursComponent
       },
       {
-        path: 'mouvement',
+        path     : 'mouvement',
         component: MouvementsComponent
       },
       {
-        path: 'map',
+        path     : 'map',
         component: MapComponent
       }
     ]
   },
   {
-    path: 'admin',
+    path     : 'admin',
     component: AdminComponent
   }
 ];

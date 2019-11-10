@@ -1,35 +1,14 @@
 import {Robot} from '../../models/Robot';
-import {Subscription} from 'rxjs';
-import {RobotsService} from '../../services/robots.service';
-import {OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {AbstractComponent} from '../../components/abstract.component';
 
-export abstract class RobotTabComponent implements OnInit, OnDestroy {
-  robots: Robot[];
-  subs: Subscription[] = [];
+export abstract class RobotTabComponent extends  AbstractComponent {
 
-  constructor(protected robotsService: RobotsService) {
+  robot: Robot;
+
+  constructor(private route: ActivatedRoute) {
+    super();
+    this.robot = this.route.snapshot.data['robot'];
   }
 
-  protected abstract afterFetchedRobots();
-
-  preOnInit() {
-  }
-
-  ngOnInit(): void {
-    this.preOnInit();
-    this.robotsService.getNotifySelectedRobotObservable()
-      .subscribe((robots: Robot[]) => {
-        if (robots !== null) {
-          this.robots = robots;
-          this.afterFetchedRobots();
-        }
-      });
-  }
-
-  ngOnDestroy() {
-    this.subs.forEach((sub: Subscription) => {
-      sub.unsubscribe();
-    });
-    this.subs = [];
-  }
 }

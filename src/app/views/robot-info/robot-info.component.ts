@@ -1,31 +1,27 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {Robot} from '../../models/Robot';
 import {RobotsService} from '../../services/robots.service';
 import {RobotTabComponent} from '../robot/robotTab.component';
+import {Observable} from 'rxjs';
+import {RobotInfo} from '../../models/RobotInfo';
+import {switchMap} from 'rxjs/operators';
 
 @Component({
-  selector: 'app-robot-info',
+  selector   : 'app-robot-info',
   templateUrl: './robot-info.component.html',
-  styleUrls: ['./robot-info.component.scss']
+  styleUrls  : ['./robot-info.component.scss']
 })
-export class RobotInfoComponent extends RobotTabComponent {
+export class RobotInfoComponent extends RobotTabComponent implements OnInit {
 
-  robots: Robot[];
+  robotInfos$: Observable<RobotInfo>;
 
-  constructor(protected robotsService: RobotsService) {
-    super(robotsService);
+  constructor(route: ActivatedRoute,
+              private robotsService: RobotsService) {
+    super(route);
   }
 
-  private getRobotInfo(robot: Robot): void {
-    this.robotsService.getRobotInfo(robot)
-      .subscribe((infos: any) => {
-        robot.infos = infos;
-      });
-  }
-
-  protected afterFetchedRobots() {
-    this.robots.forEach((robot) => this.getRobotInfo(robot));
+  ngOnInit(): void {
+    this.robotInfos$ = this.robotsService.getRobotInfo(this.robot);
   }
 
 }

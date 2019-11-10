@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-
 import {Robot} from '../models/Robot';
 import {HttpClient} from '@angular/common/http';
+import {Codeurs} from '../models/Codeurs';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class CodeursService {
@@ -11,11 +12,9 @@ export class CodeursService {
 
   /**
    * Retourne les infos des codeurs
-   * @param {Robot} robot
-   * @returns {Promise<any>}
    */
-  getCodeurs(robot: Robot) {
-    return this.http.get(`http://${robot.host}/codeurs`);
+  getCodeurs(robot: Robot): Observable<Codeurs> {
+    return this.http.get<Codeurs>(`http://${robot.host}/codeurs`);
   }
 
 }

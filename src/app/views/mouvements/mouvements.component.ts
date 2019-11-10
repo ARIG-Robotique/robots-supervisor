@@ -1,23 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {Mouvements} from '../../constants/mouvements.constants';
+import {Component} from '@angular/core';
 import {RobotTabComponent} from '../robot/robotTab.component';
-import {RobotsService} from '../../services/robots.service';
+import {ActivatedRoute} from '@angular/router';
+import {Mouvements} from '../../constants/mouvements.constants';
 
 @Component({
-  selector: 'app-mouvements',
+  selector   : 'app-mouvements',
   templateUrl: './mouvements.component.html',
-  styleUrls: ['./mouvements.component.scss']
+  styleUrls  : ['./mouvements.component.scss']
 })
 export class MouvementsComponent extends RobotTabComponent {
 
-  constructor(protected robotsService: RobotsService) {
-    super(robotsService);
-  }
+  Mouvements = Mouvements;
 
-  protected afterFetchedRobots() {
-    this.robots.forEach(robot => {
-      robot.mouvements = Mouvements;
-    });
+  constructor(route: ActivatedRoute) {
+    super(route);
   }
 
 }

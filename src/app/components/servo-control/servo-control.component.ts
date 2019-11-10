@@ -9,35 +9,30 @@ import {FormControl} from '@angular/forms';
   templateUrl: './servo-control.component.html',
   styleUrls: ['./servo-control.component.scss']
 })
-export class ServoControlComponent implements OnInit {
+export class ServoControlComponent {
 
   @Input() servo: Servo;
   @Input() robot: Robot;
 
-  position = new FormControl(1500, {
-    updateOn: 'blur'
-  });
-
   constructor(private servosService: ServosService) {
   }
 
-  ngOnInit() {
-    this.position.setValue(this.servo.currentPosition, {emitEvent: false});
+  setPosition() {
+    let ok = true;
+    if (this.servo.currentPosition < this.servo.minPosition || this.servo.currentPosition > this.servo.maxPosition) {
+      ok = confirm(`La position est en dehors de la plage [${this.servo.minPosition}, ${this.servo.maxPosition}]. Continuer ?`);
+    }
 
-    this.position.valueChanges
-      .subscribe((position) => {
-        this.setPosition(position);
-      });
-  }
-
-  setPosition(position: number) {
-    this.position.setValue(position, {emitEvent: false});
-    this.servosService.setPosition(this.robot, this.servo, position, this.servo.currentSpeed)
-      .subscribe();
+    if (ok) {
+      this.servosService.setPosition(this.robot, this.servo, this.servo.currentPosition, this.servo.currentSpeed).subscribe();
+    } else {
+      this.servo.currentPosition = Math.max(this.servo.minPosition, Math.min(this.servo.maxPosition, this.servo.currentPosition));
+    }
   }
 
   incrementPosition(value: number) {
-    this.setPosition(this.position.value + value);
+    this.servo.currentPosition = this.servo.currentPosition + value;
+    this.setPosition();
   }
 
 }

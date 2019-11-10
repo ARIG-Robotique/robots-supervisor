@@ -1,32 +1,32 @@
 import {RobotTabComponent} from '../robot/robotTab.component';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {RobotsService} from '../../services/robots.service';
-import {Table} from '../../models/Table';
-import {IntervalObservable} from 'rxjs-compat/observable/IntervalObservable';
 import {Tables} from '../../constants/tables.constants';
 import {CapteursService} from '../../services/capteurs.service';
-import {Robot} from '../../models/Robot';
 import {MouvementsService} from '../../services/mouvements.service';
-import {RobotPosition} from '../../models/RobotPosition';
 import {MapInputComponent} from '../../components/map-input/map-input.component';
-import {Constants} from '../../constants/constants';
+import {Position} from '../../models/Position';
+import {ActivatedRoute} from '@angular/router';
+import {interval} from 'rxjs';
+import {switchMap, takeUntil} from 'rxjs/operators';
+import {MapPosition} from '../../models/MapPosition';
 
 @Component({
-  selector: 'app-map',
+  selector   : 'app-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss']
+  styleUrls  : ['./map.component.scss']
 })
 export class MapComponent extends RobotTabComponent implements OnInit {
 
-  @ViewChild(MapInputComponent) mapinputComponent: MapInputComponent;
+  @ViewChild(MapInputComponent, {static: false}) mapinputComponent: MapInputComponent;
 
-  Tables: Table[];
-  currentTable: Table;
+  Tables = Tables;
+  currentTable = Tables[0];
 
   team: string;
-  robotPosition: RobotPosition;
+  robotPosition: Position;
 
-  targetPosition: RobotPosition;
+  targetPosition: MapPosition;
 
   Modes: any = [
     {name: 'path', label: 'path'},
@@ -42,61 +42,48 @@ export class MapComponent extends RobotTabComponent implements OnInit {
   currentMode = 'path';
   currentZoom = 0.75;
 
-  constructor(protected robotsService: RobotsService,
+  constructor(route: ActivatedRoute,
+              protected robotsService: RobotsService,
               private mouvementsService: MouvementsService,
               private capteursService: CapteursService) {
-    super(robotsService);
+    super(route);
   }
 
-  preOnInit() {
-    console.log('map preOnInit');
-    this.Tables = Tables;
-    this.currentTable = Tables[0];
-    this.robotPosition = Constants.robot.configInitJaune;
-  }
+  ngOnInit(): void {
+    this.capteursService.getCapteurs(this.robot)
+      .subscribe(capteurs => {
+        this.team = capteurs.text.Equipe;
+      });
 
-  protected afterFetchedRobots() {
-    this.robots.forEach(robot => {
-      this.capteursService.getCapteurs(robot)
-        .subscribe((capteurs: any) => {
-          console.log(capteurs);
-          robot.capteurs = capteurs;
-          this.team = capteurs.text.Equipe;
-        });
-      this.subs.push(IntervalObservable.create(200).subscribe(() => {
-        this.fetch(robot);
-      }));
-    });
-  }
-
-  fetch(robot: Robot) {
-    this.mouvementsService.getPosition(robot)
-      .subscribe((position: RobotPosition) => {
-        this.robotPosition = position;
+    interval(200)
+      .pipe(
+        takeUntil(this.ngDestroy$),
+        switchMap(() => this.mouvementsService.getPosition(this.robot))
+      )
+      .subscribe({
+        next : position => this.robotPosition = position,
+        error: () => this.robotPosition = null,
       });
   }
 
-  positionChanged(position: RobotPosition) {
+  positionChanged(position: MapPosition) {
     this.targetPosition = position;
 
-    this.mouvementsService.sendMouvement(this.robots[0], this.currentMode, {
+    this.mouvementsService.sendMouvement(this.robot, this.currentMode, {
       x: position.x,
       y: position.y
-    }).subscribe(() => {
-    });
+    }).subscribe();
   }
 
-  angleChanged(position: RobotPosition) {
+  angleChanged(position: MapPosition) {
     this.targetPosition = position;
 
-    this.mouvementsService.sendMouvement(this.robots[0], 'orientation', {
+    this.mouvementsService.sendMouvement(this.robot, 'orientation', {
       angle: position.angle
-    }).subscribe(() => {
-    });
+    }).subscribe();
   }
 
   onTableChange(newTable) {
     this.currentTable = Tables.filter(table => table.name === newTable)[0];
-    this.currentZoom = this.currentZoom === 0.75 ? 1 : 0.75;
   }
 }

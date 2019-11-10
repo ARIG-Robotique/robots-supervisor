@@ -1,82 +1,73 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {Robot} from '../../models/Robot';
 import {CapteursService} from '../../services/capteurs.service';
-import {IntervalObservable} from 'rxjs/observable/IntervalObservable';
-import {Subscription} from 'rxjs/Rx';
-import {CodeursService} from '../../services/codeurs.service';
-import {RobotsService} from '../../services/robots.service';
+import {BehaviorSubject, timer} from 'rxjs';
+import {RobotTabComponent} from '../robot/robotTab.component';
+import {Capteurs} from '../../models/Capteurs';
+import {switchMap, takeUntil} from 'rxjs/operators';
 
 @Component({
-  selector: 'app-robot-capteur',
+  selector   : 'app-robot-capteur',
   templateUrl: './capteurs.component.html',
-  styleUrls: ['./capteurs.component.scss']
+  styleUrls  : ['./capteurs.component.scss']
 })
-export class CapteursComponent implements OnInit, OnDestroy {
+export class CapteursComponent extends RobotTabComponent implements OnInit {
 
-  robots: Robot[];
+  capteurs$ = new BehaviorSubject<Capteurs>(null);
 
-  subs: Subscription[] = [];
-
-  constructor(private route: ActivatedRoute,
-              private robotsService: RobotsService,
-              private capteursService: CapteursService,
-              private codeursService: CodeursService) {
+  constructor(route: ActivatedRoute,
+              private capteursService: CapteursService) {
+    super(route);
   }
 
   ngOnInit() {
-    this.robotsService.getNotifySelectedRobotObservable()
-      .subscribe((robots: Robot[]) => {
-        if (robots !== null) {
-          this.robots = robots;
-          this.robots.forEach((robot: Robot) => {
-            this.fetch(robot);
-            this.subs.push(IntervalObservable.create(1000).subscribe(() => {
-              this.fetch(robot);
-            }));
-          });
-        }
-      });
-    // this.route.parent.data.subscribe(data => {
-    //   this.robot = data['robot'];
-    //
-    //   this.fetch();
-    // });
-
-    // this.sub = IntervalObservable.create(1000).subscribe(() => {
-    //   if (this.robot) {
-    //     this.fetch();
-    //   }
-    // });
-  }
-
-  ngOnDestroy() {
-    this.subs.forEach((sub) => sub.unsubscribe());
-  }
-
-  fetch(robot: Robot) {
-    this.capteursService.getCapteurs(robot)
-      .subscribe(capteurs => robot.capteurs = capteurs);
-  }
-
-  setTirette(robot: Robot, present: boolean) {
-    this.capteursService.setTirette(robot, present)
-      .subscribe((result) => {
-        robot.capteurs.numerique.Tirette = result;
+    timer(0, 1000)
+      .pipe(
+        takeUntil(this.ngDestroy$),
+        switchMap(() => this.capteursService.getCapteurs(this.robot))
+      )
+      .subscribe({
+        next : capteurs => this.capteurs$.next(capteurs),
+        error: () => this.capteurs$.next(null),
       });
   }
 
-  setTeam(robot: Robot, team: string) {
-    this.capteursService.setTeam(robot, team)
+  setTirette(present: boolean) {
+    this.capteursService.setTirette(this.robot, present)
       .subscribe((result) => {
-        robot.capteurs.text.Equipe = result;
+        this.capteurs$.next({
+          ...this.capteurs$.value,
+          numerique: {
+            ...this.capteurs$.value.numerique,
+            Tirette: present,
+          }
+        });
       });
   }
 
-  setAu(robot: Robot, present: boolean) {
-    this.capteursService.setAu(robot, present)
+  setTeam(team: string) {
+    this.capteursService.setTeam(this.robot, team)
       .subscribe((result) => {
-        robot.capteurs.numerique.AU = result;
+        this.capteurs$.next({
+          ...this.capteurs$.value,
+          text: {
+            ...this.capteurs$.value.text,
+            Equipe: team,
+          }
+        });
+      });
+  }
+
+  setAu(present: boolean) {
+    this.capteursService.setAu(this.robot, present)
+      .subscribe((result) => {
+        this.capteurs$.next({
+          ...this.capteurs$.value,
+          numerique: {
+            ...this.capteurs$.value.numerique,
+            AU: present,
+          }
+        });
       });
   }
 

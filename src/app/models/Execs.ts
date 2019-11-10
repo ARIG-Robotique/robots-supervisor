@@ -6,8 +6,4 @@ export class Execs {
   dateEnd: Date;
 
   numberExec: string;
-
-  creationDate: Date;
-
-  updatedOn: Date;
 }

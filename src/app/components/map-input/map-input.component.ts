@@ -10,15 +10,16 @@ import {
   ViewChild
 } from '@angular/core';
 import {Table} from '../../models/Table';
-import * as Konva from 'konva';
-import {RobotPosition} from '../../models/RobotPosition';
+import Konva from 'konva';
 import {Point} from '../../models/Point';
 import {Constants} from '../../constants/constants';
+import {Position} from '../../models/Position';
+import {MapPosition} from '../../models/MapPosition';
 
 @Component({
-  selector: 'app-map-input',
+  selector   : 'app-map-input',
   templateUrl: './map-input.component.html',
-  styleUrls: ['./map-input.component.scss']
+  styleUrls  : ['./map-input.component.scss']
 })
 export class MapInputComponent implements OnChanges, AfterViewInit {
   @Input() team: string;
@@ -26,15 +27,15 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   @Input() table: Table;
   @Input() tableZoom: number;
 
-  @Input() robotPosition: RobotPosition;
+  @Input() robotPosition: Partial<Position>;
 
-  @Output() positionChanged = new EventEmitter<RobotPosition>();
-  @Output() angleChanged = new EventEmitter<RobotPosition>();
+  @Output() positionChanged = new EventEmitter<MapPosition>();
+  @Output() angleChanged = new EventEmitter<MapPosition>();
 
-  @ViewChild('mapContainer') mapContainer: ElementRef;
+  @ViewChild('mapContainer', {static: false}) mapContainer: ElementRef;
 
   state: any = {};
-  targetPosition: RobotPosition = {x: 0, y: 0, angle: 0, matchTime: Constants.matchTime};
+  targetPosition: MapPosition = {x: 0, y: 0, angle: 0};
 
   stage: Konva.Stage;
   mainLayer: Konva.Layer;
@@ -55,8 +56,8 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   setStage() {
     this.stage = new Konva.Stage({
       container: this.mapContainer.nativeElement,
-      width: this.table.width * this.table.imageRatio,
-      height: this.table.height * this.table.imageRatio
+      width    : this.table.width * this.table.imageRatio,
+      height   : this.table.height * this.table.imageRatio
     });
 
     this.stage.on('mousedown', this.mousedown.bind(this));
@@ -115,7 +116,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       this.drawMouvement(this.robotPosition);
     }
 
-    this.mainLayer.drawScene();
+    this.mainLayer.draw();
   }
 
   setTable() {
@@ -125,7 +126,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         done++;
         if (done === 2) {
           this.setZoom();
-          this.background.drawScene();
+          this.background.draw();
         }
       };
 
@@ -138,9 +139,9 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
       tableLoader.onload = () => {
         const image = new Konva.Image({
-          x: 0, y: 0,
-          image: tableLoader,
-          width: this.table.width * this.table.imageRatio,
+          x     : 0, y: 0,
+          image : tableLoader,
+          width : this.table.width * this.table.imageRatio,
           height: this.table.height * this.table.imageRatio
         });
 
@@ -156,10 +157,10 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
       maskLoader.onload = () => {
         const image = new Konva.Image({
-          x: 0, y: 0,
-          image: maskLoader,
-          width: this.table.width * this.table.imageRatio,
-          height: this.table.height * this.table.imageRatio,
+          x      : 0, y: 0,
+          image  : maskLoader,
+          width  : this.table.width * this.table.imageRatio,
+          height : this.table.height * this.table.imageRatio,
           opacity: 0.05
         });
 
@@ -176,7 +177,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     }
   }
 
-  moveNerell(position: RobotPosition) {
+  moveNerell(position: Partial<Position>) {
     if (this.nerell && this.table) {
       this.nerell.position({
         x: position.x * this.table.imageRatio,
@@ -186,48 +187,49 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     }
   }
 
-  drawPoints(data: RobotPosition) {
+  drawPoints(data: Partial<Position>) {
     if (this.points && this.table) {
       this.points.removeChildren();
 
       if (data.pointsLidar) {
         data.pointsLidar.forEach((point) => {
           this.points.add(new Konva.Circle({
-            x: point.x * this.table.imageRatio,
-            y: (this.table.height - point.y) * this.table.imageRatio,
+            x     : point.x * this.table.imageRatio,
+            y     : (this.table.height - point.y) * this.table.imageRatio,
             radius: this.tableZoom * 4,
-            fill: 'white'
-          }));
-        });
-      }
-
-      if (data.pointsCapteurs) {
-        data.pointsCapteurs.forEach((point) => {
-          this.points.add(new Konva.Circle({
-            x: point.x * this.table.imageRatio,
-            y: (this.table.height - point.y) * this.table.imageRatio,
-            radius: this.tableZoom * 4,
-            fill: 'white',
-            stroke: 'rgba(0, 0, 0, 0.5)',
-            strokeWidth: this.tableZoom * 20
+            fill  : 'white'
           }));
         });
       }
 
       if (data.collisions) {
-        data.collisions.forEach((cercle) => {
-          this.points.add(new Konva.Circle({
-            x: cercle.centre.x * this.table.imageRatio,
-            y: (this.table.height - cercle.centre.y) * this.table.imageRatio,
-            radius: cercle.rayon * this.table.imageRatio,
-            fill: 'rgba(0, 0, 0, 0.2)'
-          }));
+        data.collisions.forEach((collision) => {
+          switch (collision.type) {
+            case 'CERCLE':
+              this.points.add(new Konva.Circle({
+                x     : collision.centre.x * this.table.imageRatio,
+                y     : (this.table.height - collision.centre.y) * this.table.imageRatio,
+                radius: collision.rayon * this.table.imageRatio,
+                fill  : 'rgba(0, 0, 0, 0.2)'
+              }));
+              break;
+
+            case 'RECTANGLE':
+              this.points.add(new Konva.Rect({
+                x     : collision.x * this.table.imageRatio,
+                y     : (this.table.height - collision.y) * this.table.imageRatio,
+                width : collision.w * this.table.imageRatio,
+                height: collision.h * this.table.imageRatio,
+                fill  : 'rgba(0, 0, 0, 0.2)'
+              }));
+              break;
+          }
         });
       }
     }
   }
 
-  drawMouvement(data: RobotPosition) {
+  drawMouvement(data: Partial<Position>) {
     if (this.mouvement && this.table) {
       this.mouvement.removeChildren();
 
@@ -244,27 +246,27 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
             });
 
             this.mouvement.add(new Konva.Arrow({
-              x: 0, y: 0,
-              points: points,
-              stroke: 'red',
-              fill: 'red',
-              strokeWidth: 2,
+              x            : 0, y: 0,
+              points       : points,
+              stroke       : 'red',
+              fill         : 'red',
+              strokeWidth  : 2,
               pointerLength: 5,
-              pointerWidth: 5
+              pointerWidth : 5
             }));
             break;
 
           case 'ROTATION':
             this.mouvement.add(new Konva.Arrow({
-              x: data.x * this.table.imageRatio,
-              y: (this.table.height - data.y) * this.table.imageRatio,
-              rotation: -data.targetMvt.toAngle,
-              points: [0, 0, 100, 0],
-              stroke: 'red',
-              fill: 'red',
-              strokeWidth: 4,
+              x            : data.x * this.table.imageRatio,
+              y            : (this.table.height - data.y) * this.table.imageRatio,
+              rotation     : -data.targetMvt.toAngle,
+              points       : [0, 0, 100, 0],
+              stroke       : 'red',
+              fill         : 'red',
+              strokeWidth  : 4,
               pointerLength: 10,
-              pointerWidth: 10
+              pointerWidth : 10
             }));
             break;
 
@@ -277,9 +279,9 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
             );
 
             this.mouvement.add(new Konva.Line({
-              x: 0, y: 0,
-              points: points,
-              stroke: 'red',
+              x          : 0, y: 0,
+              points     : points,
+              stroke     : 'red',
               strokeWidth: 4
             }));
             break;
@@ -340,10 +342,9 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   mouseup() {
     if (this.state.moving) {
       this.targetPosition = {
-        x: this.robotPosition.x,
-        y: this.robotPosition.y,
-        angle: this.state.angle * 180 / Math.PI,
-        matchTime: this.robotPosition.matchTime
+        x    : this.robotPosition.x,
+        y    : this.robotPosition.y,
+        angle: this.state.angle * 180 / Math.PI
       };
 
       if (this.targetPosition.angle > 180) {
@@ -355,10 +356,9 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
     } else {
       this.targetPosition = {
-        x: this.state.startX / this.table.imageRatio / this.tableZoom,
-        y: this.table.height - this.state.startY / this.table.imageRatio / this.tableZoom,
-        angle: this.robotPosition.angle,
-        matchTime: this.robotPosition.matchTime
+        x    : this.state.startX / this.table.imageRatio / this.tableZoom,
+        y    : this.table.height - this.state.startY / this.table.imageRatio / this.tableZoom,
+        angle: this.robotPosition.angle
       };
 
       this.positionChanged.emit(this.targetPosition);
@@ -376,13 +376,13 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
     imageLoader.onload = function () {
       robot.add(new Konva.Image({
-        x: -65, y: -65,
-        image: imageLoader,
-        width: Constants.robot.size.width,
-        height: Constants.robot.size.height,
-        shadowColor: 'black',
+        x            : -65, y: -65,
+        image        : imageLoader,
+        width        : Constants.robot.size.width,
+        height       : Constants.robot.size.height,
+        shadowColor  : 'black',
         shadowOpacity: 1,
-        shadowBlur: 20
+        shadowBlur   : 20
       }));
 
     }.bind(this);
@@ -398,30 +398,30 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     });
 
     target.add(new Konva.Line({
-      x: 0, y: -30,
-      points: [0, 0, 0, 60],
-      stroke: '#5cb85c',
+      x          : 0, y: -30,
+      points     : [0, 0, 0, 60],
+      stroke     : '#5cb85c',
       strokeWidth: 2
     }));
 
     target.add(new Konva.Line({
-      x: -30, y: 0,
-      points: [0, 0, 60, 0],
-      stroke: '#5cb85c',
+      x          : -30, y: 0,
+      points     : [0, 0, 60, 0],
+      stroke     : '#5cb85c',
       strokeWidth: 2
     }));
 
     target.add(new Konva.Circle({
-      x: 0, y: 0,
-      radius: 10,
-      stroke: '#5cb85c',
+      x          : 0, y: 0,
+      radius     : 10,
+      stroke     : '#5cb85c',
       strokeWidth: 2
     }));
 
     target.add(new Konva.Circle({
-      x: 0, y: 0,
-      radius: 20,
-      stroke: '#5cb85c',
+      x          : 0, y: 0,
+      radius     : 20,
+      stroke     : '#5cb85c',
       strokeWidth: 2
     }));
 
@@ -434,22 +434,22 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     });
 
     director.add(new Konva.Arrow({
-      x: 0, y: 0,
-      points: [0, 0, 100, 0],
-      stroke: '#5cb85c',
-      fill: '#5cb85c',
-      strokeWidth: 4,
+      x            : 0, y: 0,
+      points       : [0, 0, 100, 0],
+      stroke       : '#5cb85c',
+      fill         : '#5cb85c',
+      strokeWidth  : 4,
       pointerLength: 10,
-      pointerWidth: 10
+      pointerWidth : 10
     }));
 
     director.add(new Konva.Text({
-      text: '',
-      x: 120, y: -8,
-      align: 'center',
-      fontSize: 16,
+      text     : '',
+      x        : 120, y: -8,
+      align    : 'center',
+      fontSize : 16,
       fontStyle: 'bold',
-      fill: 'white'
+      fill     : 'white'
     }));
 
     return director;
@@ -459,25 +459,25 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     const crosshair = new Konva.Group();
 
     crosshair.add(new Konva.Line({
-      x: -10, y: 0,
-      points: [0, 0, 20, 0],
-      stroke: 'white',
+      x          : -10, y: 0,
+      points     : [0, 0, 20, 0],
+      stroke     : 'white',
       strokeWidth: 1
     }));
 
     crosshair.add(new Konva.Line({
-      x: 0, y: -10,
-      points: [0, 0, 0, 20],
-      stroke: 'white',
+      x          : 0, y: -10,
+      points     : [0, 0, 0, 20],
+      stroke     : 'white',
       strokeWidth: 1
     }));
 
     crosshair.add(new Konva.Text({
-      x: 5, y: 5,
-      text: '0 : 0',
-      fontSize: 16,
+      x        : 5, y: 5,
+      text     : '0 : 0',
+      fontSize : 16,
       fontStyle: 'bold',
-      fill: 'white'
+      fill     : 'white'
     }));
 
     return crosshair;
@@ -485,22 +485,22 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
   setZoom() {
     if (this.stage && this.tableZoom) {
-      this.stage.setWidth(this.table.width * this.table.imageRatio * this.tableZoom);
-      this.stage.setHeight(this.table.height * this.table.imageRatio * this.tableZoom);
+      this.stage.width(this.table.width * this.table.imageRatio * this.tableZoom);
+      this.stage.height(this.table.height * this.table.imageRatio * this.tableZoom);
 
       this.mainLayer.scale({x: this.tableZoom, y: this.tableZoom});
       this.background.scale({x: this.tableZoom, y: this.tableZoom});
     }
   }
 
-  moveTarget(position: RobotPosition) {
+  moveTarget(position: MapPosition) {
     if (this.target && this.table) {
       this.target.visible(true);
       this.target.position({
         x: position.x * this.table.imageRatio,
         y: (this.table.height - position.y) * this.table.imageRatio
       });
-      this.mainLayer.drawScene();
+      this.mainLayer.draw();
     }
   }
 
@@ -510,11 +510,11 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       this.director.position(position);
       this.director.rotation(-Math.atan2(delta.y, delta.x) / Math.PI * 180);
 
-      const text = this.director.getChildren((children) => children instanceof Konva.Text)[0];
+      const text = this.director.getChildren((children) => children instanceof Konva.Text)[0] as Konva.Text;
       text.text(-this.director.rotation().toFixed(1) + '°');
       text.rotation(-this.director.rotation());
 
-      this.mainLayer.drawScene();
+      this.mainLayer.draw();
     }
   }
 
@@ -522,11 +522,11 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     if (this.crosshair) {
       this.crosshair.position(position);
 
-      const text = this.crosshair.getChildren((children) => children instanceof Konva.Text)[0];
+      const text = this.crosshair.getChildren((children) => children instanceof Konva.Text)[0] as Konva.Text;
       text.text((position.x / this.table.imageRatio / this.tableZoom).toFixed(0) + ':' +
         (this.table.height - position.y / this.table.imageRatio / this.tableZoom).toFixed(0));
 
-      this.crosshairLayer.drawScene();
+      this.crosshairLayer.draw();
     }
   }
 }

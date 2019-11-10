@@ -1,0 +1,90 @@
+<form (ngSubmit)="addRobot()" #newRobotForm="ngForm">
+
+  <div class="modal-header">
+    <h4 class="modal-title">{{robot?.id ? 'Éditer un robot' : 'Ajouter un robot'}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox"
+             class="custom-control-input"
+             name="simulateur"
+             placeholder="Simulateur"
+             id="new-robot-simu"
+             [(ngModel)]="robot.simulateur"
+             (ngModelChange)="onChangeSimulateur()">
+      <label class="custom-control-label" for="new-robot-simu">Simulateur?</label>
+    </div>
+
+    <div class="form-group">
+      <label>Nom</label>
+      <input type="text"
+             class="form-control"
+             name="id"
+             required
+             [(ngModel)]="robot.name">
+    </div>
+
+    <div class="form-group">
+      <label>Hôte</label>
+      <input type="text"
+             class="form-control"
+             name="host"
+             required
+             pattern="^.+:[0-9]+$"
+             placeholder="0.0.0.0:8080"
+             [(ngModel)]="robot.host">
+    </div>
+
+    <div class="form-group" *ngIf="!robot.simulateur">
+      <label>Login</label>
+      <input type="text"
+             class="form-control"
+             name="login"
+             [required]="!robot.simulateur"
+             [(ngModel)]="robot.login">
+    </div>
+
+    <div class="form-group" *ngIf="!robot.simulateur">
+      <label>Mot de passe</label>
+      <input type="password"
+             class="form-control"
+             name="pwd"
+             [required]="!robot.simulateur"
+             [(ngModel)]="robot.pwd">
+    </div>
+
+    <div class="form-group" *ngIf="robot.simulateur">
+      <label>Répertoire de logs</label>
+      <input type="text"
+             class="form-control"
+             name="directory"
+             [disabled]="!editableLogDir"
+             [required]="editableLogDir"
+             placeholder="répertoire de logs"
+             [(ngModel)]="robot.dir">
+    </div>
+
+
+    <div class="modal-footer">
+      <button type="submit"
+              *ngIf="!robot.id"
+              class="btn btn-success"
+              [disabled]="!newRobotForm.form.valid">
+        <fa-icon icon="plus"></fa-icon>
+        Ajouter
+      </button>
+      <button type="submit"
+              *ngIf="robot.id"
+              class="btn btn-success"
+              [disabled]="!newRobotForm.form.valid">
+        <fa-icon icon="edit"></fa-icon>
+        Valider
+      </button>
+    </div>
+  </div>
+
+</form>

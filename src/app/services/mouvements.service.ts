@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Robot} from '../models/Robot';
 import {HttpClient, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {Position} from '../models/Position';
 
 @Injectable()
 export class MouvementsService {
@@ -10,29 +12,23 @@ export class MouvementsService {
 
   /**
    * Envoie une commande de mouvement
-   * @param {Robot} robot
-   * @param {string} type
-   * @param {object.<string, number>} values
-   * @returns {Promise}
    */
   sendMouvement(robot: Robot, type: string, values: any) {
-    let search = new HttpParams();
+    let params = new HttpParams();
     for (const key in values) {
       if (values.hasOwnProperty(key)) {
-        search = search.set(key, values[key]);
+        params = params.set(key, values[key]);
       }
     }
 
-    return this.http.post(`http://${robot.host}/mouvement/${type}`, {}, {params: search});
+    return this.http.post(`http://${robot.host}/mouvement/${type}`, {}, {params: params});
   }
 
   /**
    * Retourne la position du robot
-   * @param {Robot} robot
-   * @returns {Promise<Position>}
    */
-  getPosition(robot: Robot) {
-    return this.http.get(`http://${robot.host}/mouvement`);
+  getPosition(robot: Robot): Observable<Position> {
+    return this.http.get<Position>(`http://${robot.host}/mouvement`);
   }
 
 }

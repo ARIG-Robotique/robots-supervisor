@@ -1,8 +1,8 @@
 export const httpurl = {
-  robot: '/robot',
+  robot      : '/robot',
   robotAction: '/robot/:id',
-  robotFullInfo: '/robot/:robotId/full',
-  robotExec: '/exec/:id',
-  copyLogs: '/robot/:id/copyLogs',
-  importLogs: '/robot/:id/importLogs'
+  robotExecs : '/robot/:robotId/execs',
+  exec       : '/exec/:id',
+  copyLogs   : '/robot/:id/copyLogs',
+  importLogs : '/robot/:id/importLogs'
 };

@@ -1,18 +1,30 @@
-<div class="row">
-  <div class="col-3"
-       *ngFor="let field of fields">
-    <label class="form-group has-float-label">
-      <input class="form-control mb-0"
-             type="number"
-             [(ngModel)]="values[field]"
-             placeholder="{{field}}">
-      <span>{{field}}</span>
-    </label>
+<div class="row no-gutters">
+  <div class="col-3 d-flex justify-content-center align-items-center">
+    <div class="mouvement-icon m-2">
+      <fa-icon [icon]="icon"></fa-icon>
+    </div>
   </div>
+  <div class="col-9">
+    <div class="card-body p-2">
+      <h5 class="card-title">{{name}}</h5>
 
-  <div class="col">
-    <button class="btn btn-success btn-round" (click)="apply()">
-      <fa-icon icon="check"></fa-icon>
-    </button>
+      <div class="form-inline d-inline-flex">
+        <div *ngFor="let field of fields"
+             class="form-group has-float-label">
+          <input class="form-control form-control-sm mr-1"
+                 style="width: 90px"
+                 type="number"
+                 [(ngModel)]="values[field]"
+                 placeholder="{{field}}">
+          <span>{{field}}</span>
+        </div>
+
+        <button class="btn btn-success btn-sm btn-round" (click)="apply()">
+          <fa-icon icon="check"></fa-icon>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
+
+

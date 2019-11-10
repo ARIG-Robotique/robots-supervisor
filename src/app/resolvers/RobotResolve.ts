@@ -10,7 +10,7 @@ export class RobotResolve implements Resolve<Robot> {
   }
 
   resolve(route: ActivatedRouteSnapshot) {
-    return this.robotsService.getRobot(route.params['id']);
+    return this.robotsService.getRobot(route.params['idRobot']);
   }
 
 }

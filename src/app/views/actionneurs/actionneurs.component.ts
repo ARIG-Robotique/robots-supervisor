@@ -1,44 +1,34 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {Robot} from '../../models/Robot';
 import {RobotsService} from '../../services/robots.service';
-import {ActionneursService} from "../../services/actionneurs.service";
-import {ESide} from "../../models/ESide";
-import {EActionneurState} from "../../models/EActionneurState";
+import {ActionneursService} from '../../services/actionneurs.service';
+import {ESide} from '../../models/ESide';
+import {EActionneurState} from '../../models/EActionneurState';
+import {RobotTabComponent} from '../robot/robotTab.component';
 
 @Component({
-  selector: 'app-robot-actionneurs',
+  selector   : 'app-robot-actionneurs',
   templateUrl: './actionneurs.component.html',
-  styleUrls: ['./actionneurs.component.scss']
+  styleUrls  : ['./actionneurs.component.scss']
 })
-export class ActionneursComponent implements OnInit {
-
-  robots: Robot[];
+export class ActionneursComponent extends RobotTabComponent {
 
   ESide = ESide;
   EActionneurState = EActionneurState;
 
-  constructor(private route: ActivatedRoute,
+  constructor(route: ActivatedRoute,
               private robotsService: RobotsService,
               private actionneursService: ActionneursService) {
+    super(route);
   }
 
-  ngOnInit() {
-    this.robotsService.getNotifySelectedRobotObservable()
-      .subscribe((robots: Robot[]) => {
-        if (robots !== null) {
-          this.robots = robots;
-        }
-      });
-  }
-
-  setEv(robot: Robot, side: ESide, state: EActionneurState) {
-    this.actionneursService.ev(robot, side, state)
+  setEv(side: ESide, state: EActionneurState) {
+    this.actionneursService.ev(this.robot, side, state)
       .subscribe();
   }
 
-  setPompe(robot: Robot, side: ESide, state: EActionneurState) {
-    this.actionneursService.pompe(robot, side, state)
+  setPompe(side: ESide, state: EActionneurState) {
+    this.actionneursService.pompe(this.robot, side, state)
       .subscribe();
   }
 

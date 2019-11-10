@@ -1,32 +1,15 @@
-<nav class="navbar navbar-expand-sm navbar-dark bg-primary justify-content-end">
-  <a class="navbar-brand" [routerLink]="['/']">{{title}}</a>
+<nav class="navbar navbar-dark bg-primary">
+  <a class="navbar-brand" [routerLink]="['/']">Robots supervisor</a>
+
+  <ul class="navbar-nav">
+    <li class="nav-item" *ngFor="let robot of robots$ | async" routerLinkActive="active">
+      <a class="nav-link" [routerLink]="['robot', robot.id]">{{robot.name}}</a>
+    </li>
+  </ul>
+
   <span class="ml-auto"></span>
+
   <a [routerLink]="['/admin']" class="btn btn-primary">
     <fa-icon icon="user"></fa-icon>
   </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse flex-grow-0" id="navbarSupportedContent">
-    <ul class="navbar-nav text-right container-fluid">
-      <div ngbDropdown>
-        <span class="btn btn-primary" id="dropdownConfig" ngbDropdownToggle><fa-icon icon="robot"></fa-icon></span>
-        <div ngbDropdownMenu aria-labelledby="dropdownConfig" class="menu-dropdown">
-          <div *ngFor="let robot of robots" ngbDropdownItem class="robot-item">
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" [(ngModel)]="robot.checked" (change)="selectRobot(robot)" id="robot-{{robot.id}}">
-              <label for="robot-{{robot.id}}">{{robot.name}}</label>
-            </div>
-            <div class="spinner" *ngIf="robot.copying"></div>
-            <div *ngIf="robot.copying">{{robot.message}}</div>
-            <div>
-              <button class="btn btn-logs" ngbTooltip="Importer logs" placement="top" (click)="importLogs(robot)" [disabled]="robot.copying">
-                <fa-icon icon="database"></fa-icon>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </ul>
-  </div>
 </nav>

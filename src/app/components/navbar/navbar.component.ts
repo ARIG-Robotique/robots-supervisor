@@ -1,99 +1,27 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Robot} from '../../models/Robot';
-import {RobotsService} from '../../services/robots.service';
+import {Component, OnInit} from '@angular/core';
 import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
-import {Subscription} from 'rxjs';
-import {ToastrService} from 'ngx-toastr';
+import {Observable} from 'rxjs';
+import {AbstractComponent} from '../abstract.component';
+import {Store} from '@ngrx/store';
+import {selectRobots} from '../../store/robots.selector';
+import {Robot} from '../../models/Robot';
 
 @Component({
-  selector: 'app-navbar',
+  selector   : 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss'],
-  providers: [NgbDropdownConfig] // add NgbDropdownConfig to the component providers
+  styleUrls  : ['./navbar.component.scss'],
+  providers  : [NgbDropdownConfig],
 })
-export class NavbarComponent implements OnInit, OnDestroy {
-  title = 'Robots supervisor';
-  robots: Robot[];
-  selectedRobot: Robot[] = [];
+export class NavbarComponent extends AbstractComponent implements OnInit {
 
-  robotsSubscription: Subscription;
+  robots$: Observable<Robot[]>;
 
-  constructor(config: NgbDropdownConfig,
-              private robotsService: RobotsService,
-              private toastService: ToastrService) {
-    config.placement = 'bottom-right';
-    config.autoClose = false;
+  constructor(private store: Store<any>) {
+    super();
   }
 
   ngOnInit() {
-    this.getRobots();
+    this.robots$ = this.store.select(selectRobots);
   }
 
-  getRobots() {
-    this.robotsSubscription = this.robotsService.getRobotObservable()
-      .subscribe((robots: Robot[]) => {
-        this.robots = robots;
-
-        if (robots && robots.length === 1) {
-          robots[0].checked = true;
-          this.selectRobot(robots[0]);
-        }
-      });
-
-    this.robotsService.getRobots();
-  }
-
-  selectRobot(robot: Robot) {
-    if (robot.checked) {
-      if (this.selectedRobot.length > 2) {
-        this.selectedRobot[0].checked = false;
-        this.selectedRobot.shift();
-      }
-      this.selectedRobot.push(robot);
-    } else {
-      this.selectedRobot = this.selectedRobot.filter(r => r.checked);
-    }
-
-    this.robotsService.notifySelectedRobot(this.selectedRobot);
-  }
-
-  importLogs(robot: Robot) {
-    const robotId = robot.id;
-    robot.copying = true;
-    robot.message = '';
-    if (robot.simulateur) {
-      this.importLog(robot);
-    } else {
-      robot.message = 'copie les logs';
-      this.robotsService.copyLogs(robotId)
-        .subscribe(() => {
-          this.toastService.success('Les logs sont copiés!');
-          this.importLog(robot);
-        }, () => {
-          robot.copying = false;
-          this.toastService.error('Erreur lors de copie des logs');
-        });
-    }
-
-  }
-
-  private importLog(robot: Robot): void {
-    robot.message = 'importe les logs';
-    this.robotsService.importLogs(robot.id)
-      .subscribe(() => {
-        robot.copying = false;
-        this.toastService.success('Les logs sont importés');
-      }, () => {
-        robot.copying = false;
-        this.toastService.error('Erreur lors de l\'import des logs');
-      });
-  }
-
-
-  ngOnDestroy(): void {
-    if (this.robotsSubscription) {
-      this.robotsSubscription.unsubscribe();
-      this.robotsSubscription = null;
-    }
-  }
 }

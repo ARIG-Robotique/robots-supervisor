@@ -1,43 +1,35 @@
-<div class="robot__capteurs" *ngIf="robots && robots.length > 0">
-  <div *ngFor="let robot of robots">
-    <h4>{{robot.name}}</h4>
-    <div *ngIf="robot.capteurs">
-      <div>
-        <button type="button" class="btn btn-success"
-                *ngIf="!robot.capteurs?.numerique.Tirette"
-                (click)="setTirette(robot, true)">
-          Mettre la tirette
-        </button>
-        <button type="button" class="btn btn-success"
-                *ngIf="robot.capteurs?.numerique.Tirette"
-                (click)="setTirette(robot, false)">
-          Enlever la tirette
-        </button>
-        <button type="button" class="btn btn-success"
-                *ngIf="!robot.capteurs?.numerique.AU"
-                (click)="setAu(robot, true)">
-          Enclencher l'AU
-        </button>
-        <button type="button" class="btn btn-success"
-                *ngIf="robot.capteurs?.numerique.AU"
-                (click)="setAu(robot, false)">
-          Claquer l'AU
-        </button>
-        <div class="btn-group">
-          <button type="button" class="btn btn-warning {{robot.capteurs?.text.Equipe === 'JAUNE' ? 'btn-active' : ''}}"
-                  (click)="setTeam(robot, 'JAUNE')">
-            Jaune
-          </button>
-          <button type="button" class="btn btn-primary btn-violet {{robot.capteurs?.text.Equipe === 'VIOLET' ? 'btn-active' : ''}}"
-                  (click)="setTeam(robot, 'VIOLET')">
-            Violet
-          </button>
-        </div>
-      </div>
-      <div>
-        <pre><code>{{robot.capteurs | json }}</code></pre>
-      </div>
-    </div>
+<div class="btn-group">
+  <button type="button" class="btn btn-success"
+          *ngIf="!(capteurs$ | async)?.numerique.Tirette"
+          (click)="setTirette( true)">
+    Mettre la tirette
+  </button>
+  <button type="button" class="btn btn-success"
+          *ngIf="(capteurs$ | async)?.numerique.Tirette"
+          (click)="setTirette(false)">
+    Enlever la tirette
+  </button>
+  <button type="button" class="btn btn-success"
+          *ngIf="!(capteurs$ | async)?.numerique.AU"
+          (click)="setAu(true)">
+    Enclencher l'AU
+  </button>
+  <button type="button" class="btn btn-success"
+          *ngIf="(capteurs$ | async)?.numerique.AU"
+          (click)="setAu(false)">
+    Claquer l'AU
+  </button>
+  <div class="btn-group">
+    <button type="button" class="btn btn-jaune {{(capteurs$ | async)?.text.Equipe === 'JAUNE' ? 'btn-active' : ''}}"
+            (click)="setTeam('JAUNE')">
+      Jaune
+    </button>
+    <button type="button"
+            class="btn btn-primary btn-violet {{(capteurs$ | async)?.text.Equipe === 'VIOLET' ? 'btn-active' : ''}}"
+            (click)="setTeam('VIOLET')">
+      Violet
+    </button>
   </div>
 </div>
 
+<pre class="mt-3"><code>{{capteurs$ | async | json }}</code></pre>

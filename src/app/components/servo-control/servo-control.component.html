@@ -1,55 +1,62 @@
-<div>
-  <div class="form-inline">
-    <label class="form-group has-float-label">
-      <input class="form-control"
+<h6 class="pb-2">
+  {{servo.name}}
+  <small>id: {{servo.id}}, min: {{servo.minPosition}}, max: {{servo.maxPosition}}</small>
+</h6>
+
+<div class="form-inline d-inline-flex">
+  <div class="form-group has-float-label mr-1">
+    <div class="input-group">
+      <input class="form-control form-control-sm"
+             style="width: 70px"
              type="number"
-             [min]="servo.minPosition"
-             [max]="servo.maxPosition"
              placeholder="Position"
-             [formControl]="position"/>
-      <span>Position</span>
-    </label>
-
-    <div class="btn-group">
-      <button class="btn btn-info" (click)="incrementPosition(-100)">
-        <fa-icon icon="minus"></fa-icon>
-        100
-      </button>
-      <button class="btn btn-info" (click)="incrementPosition(-10)">
-        <fa-icon icon="minus"></fa-icon>
-        10
-      </button>
+             [(ngModel)]="servo.currentPosition"
+             (keydown.enter)="setPosition()"/>
+      <div class="input-group-append">
+        <button class="btn btn-sm btn-outline-secondary" type="button"
+                (click)="setPosition()">
+          <fa-icon icon="check"></fa-icon>
+        </button>
+      </div>
     </div>
-    <div class="btn-group">
-      <button class="btn btn-info" (click)="incrementPosition(10)">
-        <fa-icon icon="plus"></fa-icon>
-        10
-      </button>
-      <button class="btn btn-info" (click)="incrementPosition(100)">
-        <fa-icon icon="plus"></fa-icon>
-        100
-      </button>
-    </div>
+    <span>Position</span>
+  </div>
 
-    <label class="form-group has-float-label">
-      <input class="form-control"
-             type="number"
-             [min]="servo.minSpeed"
-             [max]="servo.maxSpeed"
-             placeholder="Vitesse"
-             [(ngModel)]="servo.currentSpeed">
-      <span>Vitesse</span>
-    </label>
+  <div class="btn-group mr-1">
+    <button class="btn btn-info btn-sm" (click)="incrementPosition(-100)">
+      <fa-icon icon="minus"></fa-icon>
+      100
+    </button>
+    <button class="btn btn-info btn-sm" (click)="incrementPosition(-10)">
+      <fa-icon icon="minus"></fa-icon>
+      10
+    </button>
   </div>
-  <div class="btn-group" data-toggle="buttons">
-    <label class="btn btn-success"
-           *ngFor="let pos of servo.positions"
-           [ngClass]="{active: pos.value === position.value}">
-      <input type="radio"
-             [checked]="pos.value === position.value"
-             [value]="pos.value"
-             (click)="setPosition(pos.value)">
-      {{pos.name}}
-    </label>
+  <div class="btn-group mr-1">
+    <button class="btn btn-info btn-sm" (click)="incrementPosition(10)">
+      <fa-icon icon="plus"></fa-icon>
+      10
+    </button>
+    <button class="btn btn-info btn-sm" (click)="incrementPosition(100)">
+      <fa-icon icon="plus"></fa-icon>
+      100
+    </button>
   </div>
+
+  <div class="form-group has-float-label mr-1">
+    <input class="form-control form-control-sm"
+           style="width: 70px"
+           type="number"
+           size="5"
+           placeholder="Vitesse"
+           [(ngModel)]="servo.currentSpeed">
+    <span>Vitesse</span>
+  </div>
+</div>
+
+<div class="btn-group btn-group-toggle d-inline-block" ngbRadioGroup name="positionList"
+     [(ngModel)]="servo.currentPosition" (ngModelChange)="setPosition()">
+  <label ngbButtonLabel class="btn-success btn-sm" *ngFor="let pos of servo.positions">
+    <input ngbButton type="radio" [value]="pos.value"> {{pos.name}}
+  </label>
 </div>

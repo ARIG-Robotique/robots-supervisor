@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-
-import {Servo} from '../models/Servo';
+import {Servo, Servos} from '../models/Servo';
 import {Robot} from '../models/Robot';
 import {HttpClient, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class ServosService {
@@ -12,25 +12,18 @@ export class ServosService {
 
   /**
    * Retourne les servos d'un robot
-   * @param {Robot} robot
-   * @returns {Promise<Servo[]>}
    */
-  getServos(robot: Robot) {
-    return this.http.get(`http://${robot.host}/servos`);
+  getServos(robot: Robot): Observable<Servos> {
+    return this.http.get<Servos>(`http://${robot.host}/servos`);
   }
 
   /**
    * Envoie une commande déplacement de servo
-   * @param {Robot} robot
-   * @param {Servo} servo
-   * @param {number} position
-   * @param {number} speed
-   * @returns {Promise}
    */
-  setPosition(robot: Robot, servo: Servo, position: number, speed: number) {
+  setPosition(robot: Robot, servo: Servo, position: number, speed: number): Observable<unknown> {
     const search = new HttpParams()
-      .set('position', '' + Math.max(servo.minPosition, Math.min(servo.maxPosition, position)))
-      .set('speed', '' + Math.max(servo.minSpeed, Math.min(servo.maxSpeed, speed)));
+      .set('position', '' + position)
+      .set('speed', '' + speed);
 
     return this.http.post(`http://${robot.host}/servos/${servo.id}`, {}, {params: search});
   }
