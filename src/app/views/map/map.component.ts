@@ -1,4 +1,3 @@
-import {RobotTabComponent} from '../robot/robotTab.component';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {RobotsService} from '../../services/robots.service';
 import {Tables} from '../../constants/tables.constants';
@@ -10,13 +9,17 @@ import {ActivatedRoute} from '@angular/router';
 import {interval} from 'rxjs';
 import {switchMap, takeUntil} from 'rxjs/operators';
 import {MapPosition} from '../../models/MapPosition';
+import {Robot} from '../../models/Robot';
+import {AbstractComponent} from '../../components/abstract.component';
 
 @Component({
   selector   : 'app-map',
   templateUrl: './map.component.html',
   styleUrls  : ['./map.component.scss']
 })
-export class MapComponent extends RobotTabComponent implements OnInit {
+export class MapComponent extends AbstractComponent implements OnInit {
+
+  robot: Robot;
 
   @ViewChild(MapInputComponent, {static: false}) mapinputComponent: MapInputComponent;
 
@@ -42,11 +45,12 @@ export class MapComponent extends RobotTabComponent implements OnInit {
   currentMode = 'path';
   currentZoom = 0.75;
 
-  constructor(route: ActivatedRoute,
+  constructor(private route: ActivatedRoute,
               protected robotsService: RobotsService,
               private mouvementsService: MouvementsService,
               private capteursService: CapteursService) {
-    super(route);
+    super();
+    this.robot = this.route.snapshot.data['robot'];
   }
 
   ngOnInit(): void {

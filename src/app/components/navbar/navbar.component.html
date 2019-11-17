@@ -9,6 +9,24 @@
 
   <span class="ml-auto"></span>
 
+  <div class="form-inline" *ngIf="selectedRobot">
+    <span class="navbar-brand">{{selectedRobot.nom}} ({{selectedRobot.version}})</span>
+    <a class="btn btn-outline-secondary"
+       [routerLink]="['/robot', selectedRobot.id, 'controls']"
+       routerLinkActive="active">
+      <fa-icon [icon]="['fac', 'joystick']"></fa-icon>
+      Controles
+    </a>
+    <a class="btn btn-outline-secondary"
+       [routerLink]="['/robot', selectedRobot.id, 'map']"
+       routerLinkActive="active">
+      <fa-icon icon="map"></fa-icon>
+      Carte
+    </a>
+  </div>
+
+  <span class="ml-auto"></span>
+
   <a [routerLink]="['/admin']" class="btn btn-primary">
     <fa-icon icon="user"></fa-icon>
   </a>

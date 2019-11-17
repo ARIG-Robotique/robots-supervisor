@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ServosService} from '../../services/servos.service';
-import {RobotTabComponent} from '../robot/robotTab.component';
 import {Observable, timer} from 'rxjs';
 import {ServoGroup} from '../../models/Servo';
 import {catchError, map, switchMap} from 'rxjs/operators';
@@ -11,13 +10,16 @@ import {EActionneurState} from 'app/models/EActionneurState';
 import {Mouvements} from 'app/constants/mouvements.constants';
 import {CapteursService} from '../../services/capteurs.service';
 import {Capteurs} from '../../models/Capteurs';
+import {Robot} from '../../models/Robot';
+import {AbstractComponent} from '../../components/abstract.component';
 
 @Component({
   templateUrl: './controls.component.html',
   styleUrls  : ['./controls.component.scss']
 })
-export class ControlsComponent extends RobotTabComponent implements OnInit {
+export class ControlsComponent extends AbstractComponent implements OnInit {
 
+  robot: Robot;
   servos$: Observable<ServoGroup[]>;
   capteurs$: Observable<unknown | Capteurs>;
 
@@ -25,11 +27,12 @@ export class ControlsComponent extends RobotTabComponent implements OnInit {
   EActionneurState = EActionneurState;
   Mouvements = Mouvements;
 
-  constructor(route: ActivatedRoute,
+  constructor(private route: ActivatedRoute,
               private actionneursService: ActionneursService,
               private servosService: ServosService,
               private capteursService: CapteursService) {
-    super(route);
+    super();
+    this.robot = this.route.snapshot.data['robot'];
   }
 
   ngOnInit(): void {

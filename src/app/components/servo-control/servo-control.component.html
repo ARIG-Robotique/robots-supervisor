@@ -16,7 +16,7 @@
         <span>Position</span>
       </label>
       <div class="input-group-append">
-        <button class="btn btn-sm btn-outline-secondary" type="button"
+        <button class="btn btn-sm btn-secondary" type="button"
                 (click)="setPosition()">
           <fa-icon icon="check"></fa-icon>
         </button>
@@ -58,7 +58,7 @@
 
 <div class="btn-group btn-group-toggle d-inline-block" ngbRadioGroup name="positionList"
      [(ngModel)]="servo.currentPosition" (ngModelChange)="setPosition()">
-  <label ngbButtonLabel class="btn-success btn-sm" *ngFor="let pos of servo.positions">
+  <label ngbButtonLabel class="btn-outline-secondary btn-sm" *ngFor="let pos of servo.positions">
     <input ngbButton type="radio" [value]="pos.value"> {{pos.name}}
   </label>
 </div>

@@ -42,22 +42,22 @@
       </h5>
 
       <div class="btn-group">
-        <button type="button" class="btn btn-success"
+        <button type="button" class="btn btn-secondary"
                 *ngIf="!(capteurs$ | async)?.numerique.Tirette"
                 (click)="setTirette(true)">
           Mettre la tirette
         </button>
-        <button type="button" class="btn btn-success"
+        <button type="button" class="btn btn-secondary"
                 *ngIf="(capteurs$ | async)?.numerique.Tirette"
                 (click)="setTirette(false)">
           Enlever la tirette
         </button>
-        <button type="button" class="btn btn-success"
+        <button type="button" class="btn btn-secondary"
                 *ngIf="!(capteurs$ | async)?.numerique.AU"
                 (click)="setAu(true)">
           Enclencher l'AU
         </button>
-        <button type="button" class="btn btn-success"
+        <button type="button" class="btn btn-secondary"
                 *ngIf="(capteurs$ | async)?.numerique.AU"
                 (click)="setAu(false)">
           Claquer l'AU
@@ -85,7 +85,7 @@
         <li class="list-group-item p-2">
           Pompe droite :
           <div class="btn-group">
-            <button type="button" class="btn btn-success" (click)="setPompe(ESide.DROITE, EActionneurState.ON)">
+            <button type="button" class="btn btn-info" (click)="setPompe(ESide.DROITE, EActionneurState.ON)">
               ON
             </button>
             <button type="button" class="btn btn-danger" (click)="setPompe(ESide.DROITE, EActionneurState.OFF)">
@@ -96,7 +96,7 @@
         <li class="list-group-item p-2">
           Pompe gauche :
           <div class="btn-group">
-            <button type="button" class="btn btn-success" (click)="setPompe(ESide.GAUCHE, EActionneurState.ON)">
+            <button type="button" class="btn btn-info" (click)="setPompe(ESide.GAUCHE, EActionneurState.ON)">
               ON
             </button>
             <button type="button" class="btn btn-danger" (click)="setPompe(ESide.GAUCHE, EActionneurState.OFF)">
@@ -107,7 +107,7 @@
         <li class="list-group-item p-2">
           EV droite :
           <div class="btn-group">
-            <button type="button" class="btn btn-success" (click)="setEv(ESide.DROITE, EActionneurState.ON)">
+            <button type="button" class="btn btn-info" (click)="setEv(ESide.DROITE, EActionneurState.ON)">
               AIR
             </button>
             <button type="button" class="btn btn-danger" (click)="setEv(ESide.DROITE, EActionneurState.OFF)">
@@ -118,7 +118,7 @@
         <li class="list-group-item p-2">
           EV gauche :
           <div class="btn-group">
-            <button type="button" class="btn btn-success" (click)="setEv(ESide.GAUCHE, EActionneurState.ON)">
+            <button type="button" class="btn btn-info" (click)="setEv(ESide.GAUCHE, EActionneurState.ON)">
               AIR
             </button>
             <button type="button" class="btn btn-danger" (click)="setEv(ESide.GAUCHE, EActionneurState.OFF)">

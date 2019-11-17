@@ -4,7 +4,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppComponent} from './app.component';
 import {AddRobotModalComponent} from './components/add-robot-modal/add-robot-modal.component';
 import {RouterModule} from '@angular/router';
-import {RobotComponent} from './views/robot/robot.component';
 import {RobotsService} from './services/robots.service';
 import {HomeComponent} from './views/home/home.component';
 import {ServoControlComponent} from './components/servo-control/servo-control.component';
@@ -69,7 +68,6 @@ registerLocaleData(localeFr);
     MapInputComponent,
     MouvementInputComponent,
     NavbarComponent,
-    RobotComponent,
     ServoControlComponent,
   ],
   imports        : [

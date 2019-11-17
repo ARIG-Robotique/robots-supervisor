@@ -6,6 +6,7 @@ import {httpurl} from '../constants/httpurl.constants';
 import {Observable} from 'rxjs';
 import {RobotInfo} from '../models/RobotInfo';
 import {Execs} from '../models/Execs';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class RobotsService {
@@ -39,7 +40,10 @@ export class RobotsService {
   }
 
   getRobotInfo(robot: Robot): Observable<RobotInfo> {
-    return this.http.get<RobotInfo>(`http://${robot.host}/robot`);
+    return this.http.get<RobotInfo>(`http://${robot.host}/robot`)
+      .pipe(
+        map(infos => ({...infos, id: robot.id}))
+      );
   }
 
   getRobotExecs(robotId: number): Observable<Execs[]> {

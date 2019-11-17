@@ -1,6 +1,5 @@
 import {Routes} from '@angular/router';
 import {ControlsComponent} from './views/controls/controls.component';
-import {RobotComponent} from './views/robot/robot.component';
 import {MapComponent} from './views/map/map.component';
 import {AdminComponent} from './views/admin/admin.component';
 import {HomeComponent} from './views/home/home.component';
@@ -13,7 +12,6 @@ export const AppRoutes: Routes = [
   },
   {
     path     : 'robot/:idRobot',
-    component: RobotComponent,
     resolve  : {
       robot: RobotResolve,
     },
