@@ -1,14 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {Table} from '../../models/Table';
 import Konva from 'konva';
 import {Point} from '../../models/Point';
@@ -22,20 +12,19 @@ import {MapPosition} from '../../models/MapPosition';
   styleUrls  : ['./map-input.component.scss']
 })
 export class MapInputComponent implements OnChanges, AfterViewInit {
+
   @Input() team: string;
-
   @Input() table: Table;
-  @Input() tableZoom: number;
-
-  @Input() robotPosition: Partial<Position>;
+  @Input() robotPosition: Partial<Position> = {x: 0, y: 0, angle: 0};
 
   @Output() positionChanged = new EventEmitter<MapPosition>();
   @Output() angleChanged = new EventEmitter<MapPosition>();
 
-  @ViewChild('mapContainer', {static: false}) mapContainer: ElementRef;
+  @ViewChild('mapContainer', {static: true}) mapContainer: ElementRef;
 
   state: any = {};
   targetPosition: MapPosition = {x: 0, y: 0, angle: 0};
+  tableZoom = 0.85;
 
   stage: Konva.Stage;
   mainLayer: Konva.Layer;
@@ -49,15 +38,10 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   mouvement: Konva.Group;
 
   ngAfterViewInit(): void {
-    this.team = this.team ? this.team : 'JAUNE';
-    this.setTable();
-  }
-
-  setStage() {
     this.stage = new Konva.Stage({
       container: this.mapContainer.nativeElement,
-      width    : this.table.width * this.table.imageRatio,
-      height   : this.table.height * this.table.imageRatio
+      width    : this.table.width * this.table.imageRatio * this.tableZoom,
+      height   : this.table.height * this.table.imageRatio * this.tableZoom,
     });
 
     this.stage.on('mousedown', this.mousedown.bind(this));
@@ -91,58 +75,59 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     this.crosshair = this.buildCrossHair();
     this.crosshairLayer.add(this.crosshair);
 
-    this.setZoom();
+    this.mainLayer.scale({x: this.tableZoom, y: this.tableZoom});
+    this.background.scale({x: this.tableZoom, y: this.tableZoom});
+
     this.moveTarget(this.targetPosition);
+    this.moveNerell(this.robotPosition);
+    this.drawPoints(this.robotPosition);
+    this.drawMouvement(this.robotPosition);
+
+    this.mainLayer.draw();
+
+    this.setTable(this.table, this.team);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['tableZoom']) {
-      this.setTable();
+    if (changes['table'] || changes['team']) {
+      this.setTable(this.table, this.team);
     }
 
-    if (changes['table'] && this.table) {
-      this.setStage();
-      this.setTable();
-    }
-
-    if (changes['team'] && this.team) {
-      this.robotPosition = this.team === 'JAUNE' ? Constants.robot.configInitJaune : Constants.robot.configInitViolet;
-      this.setTable();
-    }
-
-    if (changes['robotPosition'] && this.robotPosition) {
+    if (changes['robotPosition']) {
       this.moveNerell(this.robotPosition);
       this.drawPoints(this.robotPosition);
       this.drawMouvement(this.robotPosition);
-    }
 
-    this.mainLayer.draw();
+      if (this.stage) {
+        this.mainLayer.draw();
+      }
+    }
   }
 
-  setTable() {
-    if (this.stage && this.table) {
+  setTable(table: Table, team: string) {
+    if (table && team && this.stage) {
       let done = 0;
       const checkDone = () => {
         done++;
         if (done === 2) {
-          this.setZoom();
-          this.background.draw();
+          this.stage.width(this.table.width * this.table.imageRatio * this.tableZoom);
+          this.stage.height(this.table.height * this.table.imageRatio * this.tableZoom);
+
+          this.stage.draw();
         }
       };
 
-      this.background.getChildren().each(item => {
-        item.remove();
-        item.destroy();
-      });
+      this.background.removeChildren();
 
       const tableLoader = new Image();
 
       tableLoader.onload = () => {
         const image = new Konva.Image({
-          x     : 0, y: 0,
+          x     : 0,
+          y     : 0,
           image : tableLoader,
-          width : this.table.width * this.table.imageRatio,
-          height: this.table.height * this.table.imageRatio
+          width : table.width * table.imageRatio,
+          height: table.height * table.imageRatio
         });
 
         this.background.add(image);
@@ -151,34 +136,36 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         checkDone();
       };
 
-      tableLoader.src = 'assets/tables/' + this.table.name + '.png';
-
-      const maskLoader = new Image();
-
-      maskLoader.onload = () => {
-        const image = new Konva.Image({
-          x      : 0, y: 0,
-          image  : maskLoader,
-          width  : this.table.width * this.table.imageRatio,
-          height : this.table.height * this.table.imageRatio,
-          opacity: 0.05
-        });
-
-        this.background.add(image);
-        image.moveToTop();
-
-        checkDone();
-      };
-
+      tableLoader.src = 'assets/tables/' + table.name + '.png';
 
       if (this.table.name !== 'test') {
-        maskLoader.src = 'assets/pathMasks/' + this.table.name + '-' + this.team + '.png';
+        const maskLoader = new Image();
+
+        maskLoader.onload = () => {
+          const image = new Konva.Image({
+            x      : 0,
+            y      : 0,
+            image  : maskLoader,
+            width  : table.width * table.imageRatio,
+            height : table.height * table.imageRatio,
+            opacity: 0.05
+          });
+
+          this.background.add(image);
+          image.moveToTop();
+
+          checkDone();
+        };
+
+        maskLoader.src = 'assets/pathMasks/' + table.name + '-' + team + '.png';
+      } else {
+        checkDone();
       }
     }
   }
 
   moveNerell(position: Partial<Position>) {
-    if (this.nerell && this.table) {
+    if (position && this.stage) {
       this.nerell.position({
         x: position.x * this.table.imageRatio,
         y: (this.table.height - position.y) * this.table.imageRatio
@@ -188,7 +175,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   }
 
   drawPoints(data: Partial<Position>) {
-    if (this.points && this.table) {
+    if (data && this.stage) {
       this.points.removeChildren();
 
       if (data.pointsLidar) {
@@ -230,10 +217,10 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   }
 
   drawMouvement(data: Partial<Position>) {
-    if (this.mouvement && this.table) {
+    if (data && this.stage) {
       this.mouvement.removeChildren();
 
-      const points = [];
+      let points = [];
 
       if (data.targetMvt) {
         switch (data.targetMvt.type) {
@@ -246,7 +233,8 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
             });
 
             this.mouvement.add(new Konva.Arrow({
-              x            : 0, y: 0,
+              x            : 0,
+              y            : 0,
               points       : points,
               stroke       : 'red',
               fill         : 'red',
@@ -279,7 +267,8 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
             );
 
             this.mouvement.add(new Konva.Line({
-              x          : 0, y: 0,
+              x          : 0,
+              y          : 0,
               points     : points,
               stroke     : 'red',
               strokeWidth: 4
@@ -333,10 +322,16 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       }
     }
 
-    this.moveCrosshair({
-      x: this.state.endX,
-      y: this.state.endY
-    });
+    if (this.state.moving) {
+      this.crosshair.visible(false);
+      this.crosshairLayer.draw();
+    } else {
+      this.crosshair.visible(true);
+      this.moveCrosshair({
+        x: this.state.endX,
+        y: this.state.endY
+      });
+    }
   }
 
   mouseup() {
@@ -351,8 +346,9 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         this.targetPosition.angle -= 360;
       }
 
-      this.angleChanged.emit(this.targetPosition);
       this.target.visible(false);
+
+      this.angleChanged.emit(this.targetPosition);
 
     } else {
       this.targetPosition = {
@@ -361,15 +357,16 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         angle: this.robotPosition.angle
       };
 
-      this.positionChanged.emit(this.targetPosition);
       this.moveTarget(this.targetPosition);
       this.director.visible(false);
+
+      this.positionChanged.emit(this.targetPosition);
     }
 
     this.state = {};
   }
 
-  buildNerell(): Konva.Group {
+  private buildNerell(): Konva.Group {
     const robot = new Konva.Group();
 
     const imageLoader = new Image();
@@ -392,7 +389,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     return robot;
   }
 
-  buildTarget(): Konva.Group {
+  private buildTarget(): Konva.Group {
     const target = new Konva.Group({
       visible: false
     });
@@ -428,13 +425,14 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     return target;
   }
 
-  buildDirector(): Konva.Group {
+  private buildDirector(): Konva.Group {
     const director = new Konva.Group({
       visible: false
     });
 
     director.add(new Konva.Arrow({
-      x            : 0, y: 0,
+      x            : 0,
+      y            : 0,
       points       : [0, 0, 100, 0],
       stroke       : '#5cb85c',
       fill         : '#5cb85c',
@@ -445,7 +443,8 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
     director.add(new Konva.Text({
       text     : '',
-      x        : 120, y: -8,
+      x        : 120,
+      y        : -8,
       align    : 'center',
       fontSize : 16,
       fontStyle: 'bold',
@@ -455,25 +454,28 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     return director;
   }
 
-  buildCrossHair() {
+  private buildCrossHair() {
     const crosshair = new Konva.Group();
 
     crosshair.add(new Konva.Line({
-      x          : -10, y: 0,
+      x          : -10,
+      y          : 0,
       points     : [0, 0, 20, 0],
       stroke     : 'white',
       strokeWidth: 1
     }));
 
     crosshair.add(new Konva.Line({
-      x          : 0, y: -10,
+      x          : 0,
+      y          : -10,
       points     : [0, 0, 0, 20],
       stroke     : 'white',
       strokeWidth: 1
     }));
 
     crosshair.add(new Konva.Text({
-      x        : 5, y: 5,
+      x        : 5,
+      y        : 5,
       text     : '0 : 0',
       fontSize : 16,
       fontStyle: 'bold',
@@ -483,23 +485,14 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     return crosshair;
   }
 
-  setZoom() {
-    if (this.stage && this.tableZoom) {
-      this.stage.width(this.table.width * this.table.imageRatio * this.tableZoom);
-      this.stage.height(this.table.height * this.table.imageRatio * this.tableZoom);
-
-      this.mainLayer.scale({x: this.tableZoom, y: this.tableZoom});
-      this.background.scale({x: this.tableZoom, y: this.tableZoom});
-    }
-  }
-
   moveTarget(position: MapPosition) {
-    if (this.target && this.table) {
+    if (this.target) {
       this.target.visible(true);
       this.target.position({
         x: position.x * this.table.imageRatio,
         y: (this.table.height - position.y) * this.table.imageRatio
       });
+
       this.mainLayer.draw();
     }
   }
@@ -507,7 +500,10 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   moveDirector(position: Point, delta: Point) {
     if (this.director) {
       this.director.visible(true);
-      this.director.position(position);
+      this.director.position({
+        x: position.x / this.tableZoom,
+        y: position.y / this.tableZoom,
+      });
       this.director.rotation(-Math.atan2(delta.y, delta.x) / Math.PI * 180);
 
       const text = this.director.getChildren((children) => children instanceof Konva.Text)[0] as Konva.Text;

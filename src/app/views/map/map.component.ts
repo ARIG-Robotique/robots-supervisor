@@ -1,13 +1,12 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RobotsService} from '../../services/robots.service';
 import {Tables} from '../../constants/tables.constants';
 import {CapteursService} from '../../services/capteurs.service';
 import {MouvementsService} from '../../services/mouvements.service';
-import {MapInputComponent} from '../../components/map-input/map-input.component';
 import {Position} from '../../models/Position';
 import {ActivatedRoute} from '@angular/router';
 import {interval} from 'rxjs';
-import {switchMap, takeUntil} from 'rxjs/operators';
+import {catchError, switchMap, takeUntil} from 'rxjs/operators';
 import {MapPosition} from '../../models/MapPosition';
 import {Robot} from '../../models/Robot';
 import {AbstractComponent} from '../../components/abstract.component';
@@ -19,31 +18,20 @@ import {AbstractComponent} from '../../components/abstract.component';
 })
 export class MapComponent extends AbstractComponent implements OnInit {
 
-  robot: Robot;
-
-  @ViewChild(MapInputComponent, {static: false}) mapinputComponent: MapInputComponent;
-
   Tables = Tables;
-  currentTable = Tables[0];
-
-  team: string;
-  robotPosition: Position;
-
-  targetPosition: MapPosition;
 
   Modes: any = [
     {name: 'path', label: 'path'},
     {name: 'position', label: 'direct'}
   ];
 
-  Zooms: any = [
-    {level: 0.5, label: '50%'},
-    {level: 0.75, label: '75%'},
-    {level: 1.0, label: '100%'}
-  ];
+  robot: Robot;
+  team: string = 'JAUNE';
 
   currentMode = 'path';
-  currentZoom = 0.75;
+  currentTable = Tables[0];
+  robotPosition: Position;
+  targetPosition: MapPosition;
 
   constructor(private route: ActivatedRoute,
               protected robotsService: RobotsService,
@@ -62,12 +50,10 @@ export class MapComponent extends AbstractComponent implements OnInit {
     interval(200)
       .pipe(
         takeUntil(this.ngDestroy$),
-        switchMap(() => this.mouvementsService.getPosition(this.robot))
+        switchMap(() => this.mouvementsService.getPosition(this.robot)),
+        catchError(() => null)
       )
-      .subscribe({
-        next : position => this.robotPosition = position,
-        error: () => this.robotPosition = null,
-      });
+      .subscribe(position => this.robotPosition = position as Position);
   }
 
   positionChanged(position: MapPosition) {
@@ -75,7 +61,7 @@ export class MapComponent extends AbstractComponent implements OnInit {
 
     this.mouvementsService.sendMouvement(this.robot, this.currentMode, {
       x: position.x,
-      y: position.y
+      y: position.y,
     }).subscribe();
   }
 
@@ -83,11 +69,8 @@ export class MapComponent extends AbstractComponent implements OnInit {
     this.targetPosition = position;
 
     this.mouvementsService.sendMouvement(this.robot, 'orientation', {
-      angle: position.angle
+      angle: position.angle,
     }).subscribe();
   }
 
-  onTableChange(newTable) {
-    this.currentTable = Tables.filter(table => table.name === newTable)[0];
-  }
 }
