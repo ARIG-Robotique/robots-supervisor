@@ -1,12 +1,10 @@
-@import 'variables';
+@import 'styles/variables';
+@import 'styles/bt-variables';
 @import '~bootstrap/scss/bootstrap';
 @import '~bootstrap-float-label/bootstrap-float-label.css';
+@import 'styles/bt-overrides';
 @import '~ngx-toastr/toastr-bs4-alert';
-@import "~font-awesome/css/font-awesome.css";
 
-body {
-  overflow-y: scroll;
-}
 
 .btn-round {
   border-radius: 50%;
@@ -19,17 +17,5 @@ body {
     width: 1.7rem;
     height: 1.7rem;
     padding: 0.2rem 0;
-  }
-}
-
-.has-float-label {
-  label, > span {
-    top: -0.5rem;
-    font-size: 90%;
-  }
-
-  .form-control:placeholder-shown:not(:focus) + * {
-    top: 0.55rem;
-    font-size: inherit;
   }
 }

@@ -1,42 +1,15 @@
 <ul class="nav nav-pills">
   <li class="nav-item">
-    <a class="nav-link"
-       [routerLink]="['./info']"
-       routerLinkActive="active">
-      <fa-icon icon="info-circle"></fa-icon>
-      Informations
+    <a class="nav-link disabled">
+      {{(robotInfos$ | async)?.nom}} ({{(robotInfos$ | async)?.version}})
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link"
-       [routerLink]="['./capteurs']"
+       [routerLink]="['./controls']"
        routerLinkActive="active">
-      <fa-icon icon="heartbeat"></fa-icon>
-      Capteurs
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link"
-       [routerLink]="['./servos']"
-       routerLinkActive="active">
-      <fa-icon icon="cogs"></fa-icon>
-      Servos
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link"
-       [routerLink]="['./mouvement']"
-       routerLinkActive="active">
-      <fa-icon icon="arrows-alt"></fa-icon>
-      Mouvement
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link"
-       [routerLink]="['./actionneurs']"
-       routerLinkActive="active">
-      <fa-icon icon="arrows-alt"></fa-icon>
-      Actionneurs
+      <fa-icon [icon]="['fac', 'joystick']"></fa-icon>
+      Controles
     </a>
   </li>
   <li class="nav-item">

@@ -1,3 +1,5 @@
-body {
-  min-height: 100vh;
+@import '../styles/variables';
+
+.page-content {
+  height: $page-content-height;
 }

@@ -11,23 +11,20 @@ import {ServoControlComponent} from './components/servo-control/servo-control.co
 import {ServosService} from './services/servos.service';
 import {MouvementInputComponent} from './components/mouvement-input/mouvement-input.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {ServosComponent} from './views/servos/servos.component';
-import {MouvementsComponent} from './views/mouvements/mouvements.component';
+import {ControlsComponent} from './views/controls/controls.component';
 import {RobotResolve} from './resolvers/RobotResolve';
 import {AppRoutes} from './app.routes';
-import {RobotInfoComponent} from './views/robot-info/robot-info.component';
 import {MouvementsService} from './services/mouvements.service';
 import {MapComponent} from './views/map/map.component';
 import {MapInputComponent} from './components/map-input/map-input.component';
 import {CapteursService} from './services/capteurs.service';
-import {CapteursComponent} from './views/capteurs/capteurs.component';
 import {CodeursService} from './services/codeurs.service';
 import {FaIconLibrary, FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {HttpClientModule} from '@angular/common/http';
 import {
   faArrowLeft,
-  faArrowsAlt,
   faArrowRight,
+  faArrowsAlt,
   faCheck,
   faCogs,
   faEdit,
@@ -51,31 +48,29 @@ import {faCopy} from '@fortawesome/free-solid-svg-icons/faCopy';
 import {faDatabase} from '@fortawesome/free-solid-svg-icons/faDatabase';
 import {ToastrModule} from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ActionneursComponent} from './views/actionneurs/actionneurs.component';
 import {ActionneursService} from './services/actionneurs.service';
 import {Store, StoreModule} from '@ngrx/store';
 import {robotsReducer} from './store/robots.reducer';
 import {loadRobots} from './store/robots.actions';
+import arrowFromTop from '../assets/icons/arrowFromTop.json';
+import arrowToTop from '../assets/icons/arrowToTop.json';
+import joystick from '../assets/icons/joystick.json';
 
 registerLocaleData(localeFr);
 
 @NgModule({
   declarations   : [
-    ActionneursComponent,
+    AddRobotModalComponent,
     AdminComponent,
     AppComponent,
-    CapteursComponent,
+    ControlsComponent,
     HomeComponent,
     MapComponent,
     MapInputComponent,
     MouvementInputComponent,
-    MouvementsComponent,
     NavbarComponent,
     RobotComponent,
-    RobotInfoComponent,
     ServoControlComponent,
-    ServosComponent,
-    AddRobotModalComponent,
   ],
   imports        : [
     BrowserModule,
@@ -106,27 +101,10 @@ export class AppModule {
   constructor(library: FaIconLibrary,
               store: Store<any>,
               robotsService: RobotsService) {
-    const arrowToTop = {
-      prefix  : 'fac',
-      iconName: 'arrow-to-top',
-      icon    : [
-        384, 512, [], '',
-        'M24 32h336c13.3 0 24 10.7 24 24v24c0 13.3-10.7 24-24 24H24C10.7 104 0 93.3 0 80V56c0-13.3 10.7-24 24-24zm66.4 280.5l65.6-65.6V456c0 13.3 10.7 24 24 24h24c13.3 0 24-10.7 24-24V246.9l65.6 65.6c9.4 9.4 24.6 9.4 33.9 0l17-17c9.4-9.4 9.4-24.6 0-33.9L209 126.1c-9.4-9.4-24.6-9.4-33.9 0L39.5 261.6c-9.4 9.4-9.4 24.6 0 33.9l17 17c9.4 9.4 24.6 9.4 33.9 0z'
-      ]
-    };
-
-    const arrowFromTop = {
-      prefix  : 'fac',
-      iconName: 'arrow-from-top',
-      icon    : [
-        384, 512, [], '',
-        'M24 32h336c13.3 0 24 10.7 24 24v24c0 13.3-10.7 24-24 24H24C10.7 104 0 93.3 0 80V56c0-13.3 10.7-24 24-24zm269.6 263.5L228 361.1V152c0-13.3-10.7-24-24-24h-24c-13.3 0-24 10.7-24 24v209.1l-65.6-65.6c-9.4-9.4-24.6-9.4-33.9 0l-17 17c-9.4 9.4-9.4 24.6 0 33.9L175 481.9c9.4 9.4 24.6 9.4 33.9 0l135.5-135.5c9.4-9.4 9.4-24.6 0-33.9l-17-17c-9.3-9.4-24.5-9.4-33.8 0z'
-      ]
-    };
-
     library.addIcons(
       arrowToTop as any,
       arrowFromTop as any,
+      joystick as any,
       faRobot,
       faInfoCircle,
       faHeartbeat,

@@ -4,14 +4,17 @@
 </h6>
 
 <div class="form-inline d-inline-flex">
-  <div class="form-group has-float-label mr-1">
+  <div class="form-group  mr-1">
     <div class="input-group">
+      <label class="has-float-label">
       <input class="form-control form-control-sm"
              style="width: 70px"
              type="number"
              placeholder="Position"
              [(ngModel)]="servo.currentPosition"
              (keydown.enter)="setPosition()"/>
+        <span>Position</span>
+      </label>
       <div class="input-group-append">
         <button class="btn btn-sm btn-outline-secondary" type="button"
                 (click)="setPosition()">
@@ -19,7 +22,6 @@
         </button>
       </div>
     </div>
-    <span>Position</span>
   </div>
 
   <div class="btn-group mr-1">
@@ -43,7 +45,7 @@
     </button>
   </div>
 
-  <div class="form-group has-float-label mr-1">
+  <label class="form-group has-float-label mr-1">
     <input class="form-control form-control-sm"
            style="width: 70px"
            type="number"
@@ -51,7 +53,7 @@
            placeholder="Vitesse"
            [(ngModel)]="servo.currentSpeed">
     <span>Vitesse</span>
-  </div>
+  </label>
 </div>
 
 <div class="btn-group btn-group-toggle d-inline-block" ngbRadioGroup name="positionList"

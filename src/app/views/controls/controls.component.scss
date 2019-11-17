@@ -1,0 +1,14 @@
+@import '../../../styles/variables';
+
+.controls-list {
+  height: $page-block-height;
+  overflow: auto;
+}
+
+.btn-jaune {
+  background: gold;
+}
+
+.btn-violet {
+  background-color: $violet;
+}
