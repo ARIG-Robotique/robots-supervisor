@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Robot} from '../../models/Robot';
 import {RobotsService} from '../../services/robots.service';
-import {Execs} from '../../models/Execs';
+import {Exec} from '../../models/Exec';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {AbstractComponent} from '../../components/abstract.component';
 import {map, switchMap, tap} from 'rxjs/operators';
@@ -21,7 +21,7 @@ import {ToastrService} from 'ngx-toastr';
 export class AdminComponent extends AbstractComponent implements OnInit, OnDestroy {
 
   robots$: Observable<RobotUI[]>;
-  execs$ = new BehaviorSubject<Execs[]>([]);
+  execs$ = new BehaviorSubject<Exec[]>([]);
   selectedRobot: RobotUI = null;
 
   constructor(private store: Store<any>,
@@ -96,7 +96,7 @@ export class AdminComponent extends AbstractComponent implements OnInit, OnDestr
       });
   }
 
-  deleteExec(exec: Execs) {
+  deleteExec(exec: Exec) {
     this.robotsService.deleteRobotExec(exec.id)
       .subscribe(() => {
         this.execs$.next(this.execs$.value.filter(e => e !== exec));

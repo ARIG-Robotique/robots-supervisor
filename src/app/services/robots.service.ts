@@ -5,7 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {httpurl} from '../constants/httpurl.constants';
 import {Observable} from 'rxjs';
 import {RobotInfo} from '../models/RobotInfo';
-import {Execs} from '../models/Execs';
+import {Exec} from '../models/Exec';
 import {map} from 'rxjs/operators';
 
 @Injectable()
@@ -14,8 +14,8 @@ export class RobotsService {
   constructor(private http: HttpClient) {
   }
 
-  getRobot(robotId: number): Observable<Robot> {
-    const url = this.completetUrl(httpurl.robotAction.replace(':id', robotId.toString()));
+  getRobot(idRobot: number): Observable<Robot> {
+    const url = this.completetUrl(httpurl.robotAction.replace(':id', idRobot.toString()));
     return this.http.get<Robot>(url);
   }
 
@@ -34,8 +34,8 @@ export class RobotsService {
     return this.http.put<Robot>(url, robot);
   }
 
-  deleteRobot(robotId: number): Observable<unknown> {
-    const url = this.completetUrl(httpurl.robotAction.replace(':id', robotId.toString()));
+  deleteRobot(idRobot: number): Observable<unknown> {
+    const url = this.completetUrl(httpurl.robotAction.replace(':id', idRobot.toString()));
     return this.http.delete(url);
   }
 
@@ -46,23 +46,23 @@ export class RobotsService {
       );
   }
 
-  getRobotExecs(robotId: number): Observable<Execs[]> {
-    const url = this.completetUrl(httpurl.robotExecs.replace(':robotId', robotId.toString()));
-    return this.http.get<Execs[]>(url);
+  getRobotExecs(idRobot: number): Observable<Exec[]> {
+    const url = this.completetUrl(httpurl.robotExecs.replace(':id', idRobot.toString()));
+    return this.http.get<Exec[]>(url);
   }
 
-  deleteRobotExec(execId): Observable<unknown> {
-    const url = this.completetUrl(httpurl.exec.replace(':id', execId));
+  deleteRobotExec(idExec: string): Observable<unknown> {
+    const url = this.completetUrl(httpurl.exec.replace(':id', idExec));
     return this.http.delete(url);
   }
 
-  copyLogs(robotId: number): Observable<unknown> {
-    const url = this.completetUrl(httpurl.copyLogs.replace(':id', robotId.toString()));
+  copyLogs(idRobot: number): Observable<unknown> {
+    const url = this.completetUrl(httpurl.copyLogs.replace(':id', idRobot.toString()));
     return this.http.get(url);
   }
 
-  importLogs(robotId: number): Observable<unknown> {
-    const url = this.completetUrl(httpurl.importLogs.replace(':id', robotId.toString()));
+  importLogs(idRobot: number): Observable<unknown> {
+    const url = this.completetUrl(httpurl.importLogs.replace(':id', idRobot.toString()));
     return this.http.get(url);
   }
 

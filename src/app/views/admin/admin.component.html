@@ -48,7 +48,7 @@
       <ul class="list-group list-group-flush">
         <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
             *ngFor="let exec of execs$ | async">
-          {{exec.numberExec}} - du {{exec.dateStart | date: 'medium'}}
+          {{exec.id}} - du {{exec.dateStart | date: 'medium'}}
           <i>au</i> {{exec.dateEnd | date: 'medium'}}
 
           <span class="ml-auto"></span>
