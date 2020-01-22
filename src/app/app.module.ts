@@ -54,12 +54,15 @@ import {loadRobots} from './store/robots.actions';
 import arrowFromTop from '../assets/icons/arrowFromTop.json';
 import arrowToTop from '../assets/icons/arrowToTop.json';
 import joystick from '../assets/icons/joystick.json';
+import {ImportLogsModalComponent} from './components/import-logs-modal/import-logs-modal.component';
+import {RobotsUiService} from './services/robots-ui.service';
 
 registerLocaleData(localeFr);
 
 @NgModule({
   declarations   : [
     AddRobotModalComponent,
+    ImportLogsModalComponent,
     AdminComponent,
     AppComponent,
     ControlsComponent,
@@ -91,9 +94,10 @@ registerLocaleData(localeFr);
     RobotResolve,
     RobotsService,
     ServosService,
+    RobotsUiService,
   ],
   bootstrap      : [AppComponent],
-  entryComponents: [AddRobotModalComponent],
+  entryComponents: [AddRobotModalComponent, ImportLogsModalComponent],
 })
 export class AppModule {
   constructor(library: FaIconLibrary,

@@ -4,5 +4,6 @@ export const httpurl = {
   robotExecs : '/robot/:id/execs',
   exec       : '/exec/:id',
   copyLogs   : '/robot/:id/copyLogs',
-  importLogs : '/robot/:id/importLogs'
+  importLogs : '/robot/:id/importLogs',
+  ws         : '/ws',
 };

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ServosService} from '../../services/servos.service';
-import {Observable, timer} from 'rxjs';
+import {Observable, timer, of} from 'rxjs';
 import {ServoGroup} from '../../models/Servo';
 import {catchError, map, shareReplay, switchMap} from 'rxjs/operators';
 import {ActionneursService} from '../../services/actionneurs.service';
@@ -43,14 +43,15 @@ export class ControlsComponent extends AbstractComponent implements OnInit {
             name,
             servos: servos[name],
           }))
-        })
+        }),
+        catchError(() => of(null))
       );
 
     this.capteurs$ = timer(0, 1000)
       .pipe(
         switchMap(() => this.capteursService.getCapteurs(this.robot)),
         shareReplay(1),
-        catchError(() => null)
+        catchError(() => of(null))
       );
   }
 

@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  server: '/api'
+  server    : '/api',
+  wsServer  : 'TODO',
 };

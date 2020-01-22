@@ -1,16 +1,16 @@
 <nav class="navbar navbar-dark bg-primary">
   <a class="navbar-brand" [routerLink]="['/']">ARIG :: Robots supervisor</a>
 
-  <ul class="navbar-nav">
-    <li class="nav-item" *ngFor="let robot of robots$ | async" routerLinkActive="active">
+  <ul class="navbar-nav flex-row">
+    <li class="nav-item ml-2" *ngFor="let robot of robots$ | async" routerLinkActive="active">
       <a class="nav-link" [routerLink]="['robot', robot.id, 'controls']">{{robot.name}}</a>
     </li>
   </ul>
 
   <span class="ml-auto"></span>
 
-  <div class="form-inline" *ngIf="selectedRobot">
-    <span class="navbar-brand">{{selectedRobot.nom}} ({{selectedRobot.version}})</span>
+  <div class="form-inline" *ngIf="selectedRobot && selectedRobotInfo">
+    <span class="navbar-brand">{{selectedRobotInfo.nom}} ({{selectedRobotInfo.version}})</span>
     <a class="btn btn-outline-secondary"
        [routerLink]="['/robot', selectedRobot.id, 'controls']"
        routerLinkActive="active">
@@ -23,6 +23,11 @@
       <fa-icon icon="map"></fa-icon>
       Carte
     </a>
+    <button type="button" class="btn btn-info ml-2"
+            ngbTooltip="Importer logs"
+            (click)="importLogs(selectedRobot)">
+      <fa-icon icon="database"></fa-icon>
+    </button>
   </div>
 
   <span class="ml-auto"></span>

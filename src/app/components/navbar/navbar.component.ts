@@ -9,6 +9,7 @@ import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {RobotInfo} from '../../models/RobotInfo';
 import {filter, map, switchMap} from 'rxjs/operators';
 import {RobotsService} from '../../services/robots.service';
+import {RobotsUiService} from '../../services/robots-ui.service';
 
 @Component({
   selector   : 'app-navbar',
@@ -19,12 +20,14 @@ import {RobotsService} from '../../services/robots.service';
 export class NavbarComponent extends AbstractComponent implements OnInit {
 
   robots$: Observable<Robot[]>;
-  selectedRobot: RobotInfo;
+  selectedRobot: Robot;
+  selectedRobotInfo: RobotInfo;
 
   constructor(private store: Store<any>,
               private route: ActivatedRoute,
               private router: Router,
-              private robotsService: RobotsService) {
+              private robotsService: RobotsService,
+              private robotsUiService: RobotsUiService) {
     super();
   }
 
@@ -51,6 +54,7 @@ export class NavbarComponent extends AbstractComponent implements OnInit {
       .pipe(
         map(([idRobot, robots]) => robots.find(r => r.id === idRobot)),
         switchMap(robot => {
+          this.selectedRobot = robot;
           if (robot) {
             return this.robotsService.getRobotInfo(robot);
           } else {
@@ -58,7 +62,11 @@ export class NavbarComponent extends AbstractComponent implements OnInit {
           }
         })
       )
-      .subscribe(infos => this.selectedRobot = infos);
+      .subscribe(infos => this.selectedRobotInfo = infos);
+  }
+
+  importLogs(robot: Robot) {
+    this.robotsUiService.importLogs(robot);
   }
 
 }

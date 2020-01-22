@@ -26,7 +26,7 @@ export class MapComponent extends AbstractComponent implements OnInit {
   ];
 
   robot: Robot;
-  team: string = 'JAUNE';
+  team = 'JAUNE';
 
   currentMode = 'path';
   currentTable = Tables[0];

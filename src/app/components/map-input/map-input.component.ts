@@ -220,7 +220,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     if (data && this.stage) {
       this.mouvement.removeChildren();
 
-      let points = [];
+      const points = [];
 
       if (data.targetMvt) {
         switch (data.targetMvt.type) {

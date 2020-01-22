@@ -17,13 +17,6 @@
             [ngClass]="{'active': selectedRobot && robot.id === selectedRobot.id}">
           {{robot.name}}
 
-          <span class="badge" *ngIf="!robot.copying">{{robot.host}}</span>
-
-          <span class="badge" *ngIf="robot.copying">
-            <span class="spinner"></span>
-            {{robot.message}}
-          </span>
-
           <span class="ml-auto"></span>
 
           <span (click)="$event.stopPropagation()">
