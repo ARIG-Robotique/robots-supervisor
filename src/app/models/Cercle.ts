@@ -1,7 +1,7 @@
 import {Point} from './Point';
 
 export interface Cercle {
-  type: 'CERCLE';
+  type: 'CIRCLE';
   centre: Point;
   rayon: number;
 }

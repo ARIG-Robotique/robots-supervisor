@@ -56,6 +56,8 @@ import arrowToTop from '../assets/icons/arrowToTop.json';
 import joystick from '../assets/icons/joystick.json';
 import {ImportLogsModalComponent} from './components/import-logs-modal/import-logs-modal.component';
 import {RobotsUiService} from './services/robots-ui.service';
+import {ExecsService} from './services/execs.service';
+import {PathsModalComponent} from './components/paths-modal/paths-modal.component';
 
 registerLocaleData(localeFr);
 
@@ -72,6 +74,7 @@ registerLocaleData(localeFr);
     MouvementInputComponent,
     NavbarComponent,
     ServoControlComponent,
+    PathsModalComponent,
   ],
   imports        : [
     BrowserModule,
@@ -95,9 +98,14 @@ registerLocaleData(localeFr);
     RobotsService,
     ServosService,
     RobotsUiService,
+    ExecsService,
   ],
   bootstrap      : [AppComponent],
-  entryComponents: [AddRobotModalComponent, ImportLogsModalComponent],
+  entryComponents: [
+    AddRobotModalComponent,
+    ImportLogsModalComponent,
+    PathsModalComponent,
+  ],
 })
 export class AppModule {
   constructor(library: FaIconLibrary,

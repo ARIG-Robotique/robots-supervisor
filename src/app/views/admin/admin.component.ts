@@ -7,6 +7,7 @@ import {AbstractComponent} from '../../components/abstract.component';
 import {Store} from '@ngrx/store';
 import {selectRobots} from '../../store/robots.selector';
 import {RobotsUiService} from '../../services/robots-ui.service';
+import {ExecsService} from '../../services/execs.service';
 
 @Component({
   selector   : 'app-admin',
@@ -20,7 +21,8 @@ export class AdminComponent extends AbstractComponent implements OnInit, OnDestr
 
   constructor(private store: Store<any>,
               private robotsUiService: RobotsUiService,
-              private robotsService: RobotsService) {
+              private robotsService: RobotsService,
+              private execsService: ExecsService) {
     super();
   }
 
@@ -64,8 +66,12 @@ export class AdminComponent extends AbstractComponent implements OnInit, OnDestr
     this.robotsUiService.importLogs(robot);
   }
 
+  showPaths(exec: Exec) {
+    this.robotsUiService.showPaths(this.selectedRobot.id, exec.id);
+  }
+
   deleteExec(exec: Exec) {
-    this.robotsService.deleteRobotExec(exec.id)
+    this.execsService.deleteExec(this.selectedRobot.id, exec.id)
       .subscribe(() => {
         this.execs$.next(this.execs$.value.filter(e => e !== exec));
       });

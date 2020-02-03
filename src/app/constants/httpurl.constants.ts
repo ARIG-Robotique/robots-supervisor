@@ -1,9 +1,11 @@
 export const httpurl = {
-  robot      : '/robot',
-  robotAction: '/robot/:id',
-  robotExecs : '/robot/:id/execs',
-  exec       : '/exec/:id',
-  copyLogs   : '/robot/:id/copyLogs',
-  importLogs : '/robot/:id/importLogs',
-  ws         : '/ws',
+  robot       : '/robot',
+  robotAction : '/robot/:idRobot',
+  robotExecs  : '/robot/:idRobot/execs',
+  exec        : '/robot/:idRobot/execs/:idExec',
+  execPaths   : '/robot/:idRobot/execs/:idExec/paths',
+  execPathFile: '/robot/:idRobot/execs/:idExec/paths/:file',
+  copyLogs    : '/robot/:idRobot/copyLogs',
+  importLogs  : '/robot/:idRobot/importLogs',
+  ws          : '/ws',
 };

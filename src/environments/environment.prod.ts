@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
   server    : '/api',
-  wsServer  : 'TODO',
+  wsServer  : 'ws://superviseur.arig.local/api',
 };

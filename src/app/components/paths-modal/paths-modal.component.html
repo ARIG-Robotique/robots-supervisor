@@ -1,0 +1,27 @@
+<div class="modal-header">
+  <h4 class="modal-title">Paths de {{idExec}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <ngb-carousel *ngIf="paths"
+                [interval]="0"
+                [showNavigationIndicators]="false"
+                [wrap]="false"
+                (slide)="onSlide($event.current)">
+    <ng-template *ngFor="let path of paths; let idx = index;"
+                 ngbSlide
+                 [id]="'slide-' + idx">
+      <div class="path-image-wrapper">
+        <img *ngIf="currentIdx === idx || currentIdx + 1 === idx"
+             [src]="getPathFile(path)"
+             style="width: 300px; height: 200px;">
+      </div>
+      <div class="carousel-caption">
+        {{path}}
+      </div>
+    </ng-template>
+  </ngb-carousel>
+</div>

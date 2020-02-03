@@ -8,6 +8,7 @@ import {map} from 'rxjs/operators';
 import {deleteRobot} from 'app/store/robots.actions';
 import {of} from 'rxjs';
 import {AddRobotModalComponent} from '../components/add-robot-modal/add-robot-modal.component';
+import {PathsModalComponent} from '../components/paths-modal/paths-modal.component';
 
 @Injectable()
 export class RobotsUiService {
@@ -47,4 +48,8 @@ export class RobotsUiService {
     modalRef.componentInstance.robot = {...robot};
   }
 
+  showPaths(idRobot: number, idExec: string) {
+    const modalRef = this.modal.open(PathsModalComponent);
+    modalRef.componentInstance.setRobotExec(idRobot, idExec);
+  }
 }

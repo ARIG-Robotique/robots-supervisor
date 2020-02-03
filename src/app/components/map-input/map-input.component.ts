@@ -192,7 +192,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       if (data.collisions) {
         data.collisions.forEach((collision) => {
           switch (collision.type) {
-            case 'CERCLE':
+            case 'CIRCLE':
               this.points.add(new Konva.Circle({
                 x     : collision.centre.x * this.table.imageRatio,
                 y     : (this.table.height - collision.centre.y) * this.table.imageRatio,
