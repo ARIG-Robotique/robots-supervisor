@@ -199,15 +199,29 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
                 radius: collision.rayon * this.table.imageRatio,
                 fill  : 'rgba(0, 0, 0, 0.2)'
               }));
+
+              this.points.add(new Konva.Circle({
+                x     : collision.centre.x * this.table.imageRatio,
+                y     : (this.table.height - collision.centre.y) * this.table.imageRatio,
+                radius: this.tableZoom * 4,
+                fill  : 'red'
+              }));
               break;
 
             case 'RECTANGLE':
               this.points.add(new Konva.Rect({
                 x     : collision.x * this.table.imageRatio,
-                y     : (this.table.height - collision.y) * this.table.imageRatio,
+                y     : (this.table.height - collision.y) * this.table.imageRatio - collision.h * this.table.imageRatio,
                 width : collision.w * this.table.imageRatio,
                 height: collision.h * this.table.imageRatio,
                 fill  : 'rgba(0, 0, 0, 0.2)'
+              }));
+
+              this.points.add(new Konva.Circle({
+                x     : collision.x * this.table.imageRatio,
+                y     : (this.table.height - collision.y) * this.table.imageRatio - collision.h * this.table.imageRatio,
+                radius: this.tableZoom * 4,
+                fill  : 'red'
               }));
               break;
           }
