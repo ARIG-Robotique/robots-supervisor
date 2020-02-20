@@ -1,23 +1,21 @@
-export interface ServoPos {
+export interface ServoPosition {
   name: string;
   value: number;
 }
 
-export interface Servo {
+export interface ServoConfig {
   id: number;
   name: string;
   currentSpeed: number;
   currentPosition: number;
-  minPosition: number;
-  maxPosition: number;
-  positions: ServoPos[];
-}
-
-export interface Servos {
-  [group: string]: Servo[];
+  positions: ServoPosition[];
 }
 
 export interface ServoGroup {
+  id: number;
   name: string;
-  servos: Servo[];
+  servos: ServoConfig[];
+  batch: ServoPosition[];
 }
+
+export type Servos = ServoGroup[];

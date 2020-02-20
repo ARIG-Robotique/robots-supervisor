@@ -1,12 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ServosService} from '../../services/servos.service';
-import {Observable, of, timer} from 'rxjs';
-import {ServoGroup} from '../../models/Servo';
+import {BehaviorSubject, Observable, of, timer} from 'rxjs';
 import {catchError, map, shareReplay, switchMap, takeUntil} from 'rxjs/operators';
-import {ActionneursService} from '../../services/actionneurs.service';
-import {ESide} from 'app/models/ESide';
-import {EActionneurState} from 'app/models/EActionneurState';
 import {Mouvements} from 'app/constants/mouvements.constants';
 import {CapteursService} from '../../services/capteurs.service';
 import {Capteurs} from '../../models/Capteurs';
@@ -15,6 +11,7 @@ import {AbstractComponent} from '../../components/abstract.component';
 import {Exec} from '../../models/Exec';
 import {RobotsService} from '../../services/robots.service';
 import {RobotsUiService} from '../../services/robots-ui.service';
+import {Servos} from '../../models/Servo';
 
 @Component({
   templateUrl: './controls.component.html',
@@ -23,18 +20,17 @@ import {RobotsUiService} from '../../services/robots-ui.service';
 export class ControlsComponent extends AbstractComponent implements OnInit {
 
   robot: Robot;
-  servos$: Observable<ServoGroup[]>;
+  servos$: Observable<Servos>;
   capteurs$: Observable<unknown | Capteurs>;
   execs$: Observable<Exec[]>;
 
-  ESide = ESide;
-  EActionneurState = EActionneurState;
   Mouvements = Mouvements;
+
+  refreshServos$ = new BehaviorSubject<void>(null);
 
   constructor(private route: ActivatedRoute,
               private robotsService: RobotsService,
               private robotsUiService: RobotsUiService,
-              private actionneursService: ActionneursService,
               private servosService: ServosService,
               private capteursService: CapteursService) {
     super();
@@ -42,14 +38,9 @@ export class ControlsComponent extends AbstractComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.servos$ = this.servosService.getServos(this.robot)
+    this.servos$ = this.refreshServos$
       .pipe(
-        map(servos => {
-          return Object.keys(servos).map(name => ({
-            name,
-            servos: servos[name],
-          }))
-        }),
+        switchMap(() => this.servosService.getServos(this.robot)),
         catchError(() => of(null))
       );
 
@@ -69,16 +60,6 @@ export class ControlsComponent extends AbstractComponent implements OnInit {
 
   showPaths(exec: Exec) {
     this.robotsUiService.showPaths(this.robot.id, exec.id);
-  }
-
-  setEv(side: ESide, state: EActionneurState) {
-    this.actionneursService.ev(this.robot, side, state)
-      .subscribe();
-  }
-
-  setPompe(side: ESide, state: EActionneurState) {
-    this.actionneursService.pompe(this.robot, side, state)
-      .subscribe();
   }
 
   setTirette(present: boolean) {

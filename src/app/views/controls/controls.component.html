@@ -2,9 +2,16 @@
 
   <div class="col-6 controls-list">
     <div class="card mb-3" *ngFor="let servoGroup of servos$ | async">
-      <h5 class="card-header">
-        <fa-icon icon="cogs"></fa-icon>
-        Servos: {{servoGroup.name}}
+      <h5 class="card-header d-flex justify-content-between">
+        <span>
+          <fa-icon icon="cogs"></fa-icon>
+          Servos: {{servoGroup.name}}
+        </span>
+
+        <app-servo-batch-control *ngIf="servoGroup.batch?.length"
+                                 [robot]="robot" [group]="servoGroup"
+                                 (change)="refreshServos$.next()">
+        </app-servo-batch-control>
       </h5>
 
       <div class="list-group list-group-flush">
@@ -84,67 +91,13 @@
                 (click)="setTeam('JAUNE')">
           Jaune
         </button>
-        <button type="button" class="btn btn-violet"
-                (click)="setTeam('VIOLET')">
-          Violet
+        <button type="button" class="btn btn-bleu"
+                (click)="setTeam('BLEU')">
+          Bleu
         </button>
       </div>
 
       <pre class="m-2"><code>{{capteurs$ | async | json }}</code></pre>
-    </div>
-
-    <div class="card mb-3">
-      <h5 class="card-header">
-        <fa-icon icon="arrows-alt"></fa-icon>
-        Actionneurs
-      </h5>
-
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item p-2">
-          Pompe droite :
-          <div class="btn-group">
-            <button type="button" class="btn btn-info" (click)="setPompe(ESide.DROITE, EActionneurState.ON)">
-              ON
-            </button>
-            <button type="button" class="btn btn-danger" (click)="setPompe(ESide.DROITE, EActionneurState.OFF)">
-              OFF
-            </button>
-          </div>
-        </li>
-        <li class="list-group-item p-2">
-          Pompe gauche :
-          <div class="btn-group">
-            <button type="button" class="btn btn-info" (click)="setPompe(ESide.GAUCHE, EActionneurState.ON)">
-              ON
-            </button>
-            <button type="button" class="btn btn-danger" (click)="setPompe(ESide.GAUCHE, EActionneurState.OFF)">
-              OFF
-            </button>
-          </div>
-        </li>
-        <li class="list-group-item p-2">
-          EV droite :
-          <div class="btn-group">
-            <button type="button" class="btn btn-info" (click)="setEv(ESide.DROITE, EActionneurState.ON)">
-              AIR
-            </button>
-            <button type="button" class="btn btn-danger" (click)="setEv(ESide.DROITE, EActionneurState.OFF)">
-              VIDE
-            </button>
-          </div>
-        </li>
-        <li class="list-group-item p-2">
-          EV gauche :
-          <div class="btn-group">
-            <button type="button" class="btn btn-info" (click)="setEv(ESide.GAUCHE, EActionneurState.ON)">
-              AIR
-            </button>
-            <button type="button" class="btn btn-danger" (click)="setEv(ESide.GAUCHE, EActionneurState.OFF)">
-              VIDE
-            </button>
-          </div>
-        </li>
-      </ul>
     </div>
   </div>
 
