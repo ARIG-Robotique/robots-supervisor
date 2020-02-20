@@ -47,7 +47,6 @@ import {faCopy} from '@fortawesome/free-solid-svg-icons/faCopy';
 import {faDatabase} from '@fortawesome/free-solid-svg-icons/faDatabase';
 import {ToastrModule} from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ActionneursService} from './services/actionneurs.service';
 import {Store, StoreModule} from '@ngrx/store';
 import {robotsReducer} from './store/robots.reducer';
 import {loadRobots} from './store/robots.actions';
@@ -58,6 +57,7 @@ import {ImportLogsModalComponent} from './components/import-logs-modal/import-lo
 import {RobotsUiService} from './services/robots-ui.service';
 import {ExecsService} from './services/execs.service';
 import {PathsModalComponent} from './components/paths-modal/paths-modal.component';
+import {ServoBatchControlComponent} from './components/servo-batch-control/servo-batch-control.component';
 
 registerLocaleData(localeFr);
 
@@ -74,6 +74,7 @@ registerLocaleData(localeFr);
     MouvementInputComponent,
     NavbarComponent,
     ServoControlComponent,
+    ServoBatchControlComponent,
     PathsModalComponent,
   ],
   imports        : [
@@ -90,7 +91,6 @@ registerLocaleData(localeFr);
   ],
   providers      : [
     {provide: LOCALE_ID, useValue: 'fr-FR'},
-    ActionneursService,
     CapteursService,
     CodeursService,
     MouvementsService,

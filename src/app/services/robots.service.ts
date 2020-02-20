@@ -20,7 +20,7 @@ export class RobotsService {
   }
 
   getRobots(): Observable<Robot[]> {
-    const url = buildUrl(httpurl.robot,);
+    const url = buildUrl(httpurl.robot);
     return this.http.get<Robot[]>(url);
   }
 
