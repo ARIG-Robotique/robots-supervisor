@@ -18,7 +18,7 @@ export const AppRoutes: Routes = [
     children : [
       {
         path      : '',
-        redirectTo: 'info',
+        redirectTo: 'controls',
         pathMatch : 'full'
       },
       {

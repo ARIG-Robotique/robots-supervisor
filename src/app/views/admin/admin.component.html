@@ -35,16 +35,18 @@
   <div class="col-9" *ngIf="selectedRobot != null">
     <div class="card">
       <h5 class="card-header">
-        <fa-icon icon="robot"></fa-icon>
-        Execs de robot <strong>{{selectedRobot.name}}</strong>
+        <fa-icon icon="database"></fa-icon>
+        Éxécutions de <strong>{{selectedRobot.name}}</strong>
       </h5>
       <ul class="list-group list-group-flush">
         <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
             *ngFor="let exec of execs$ | async"
             (click)="showPaths(exec)">
           <div>
-            <strong>{{exec.id}}</strong> - du {{exec.dateStart | date: 'medium'}}
-            <em>au</em> {{exec.dateEnd | date: 'medium'}}
+            <strong>{{exec.id}}</strong> :
+            le {{exec.dateStart | date: 'mediumDate'}}
+            de {{exec.dateStart | date: 'shortTime'}}
+            à {{exec.dateEnd | date: 'shortTime'}}
           </div>
 
           <span class="ml-auto"></span>

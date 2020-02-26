@@ -37,6 +37,24 @@
   <div class="col-3 controls-list">
     <div class="card mb-3">
       <h5 class="card-header">
+        <fa-icon icon="database"></fa-icon>
+        Éxécutions
+      </h5>
+
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item list-group-item-action p-2"
+            *ngFor="let exec of execs$ | async"
+            (click)="showPaths(exec)">
+          <strong>{{exec.id}}</strong> :
+          le {{exec.dateStart | date: 'mediumDate'}}
+          de {{exec.dateStart | date: 'shortTime'}}
+          à {{exec.dateEnd | date: 'shortTime'}}
+        </li>
+      </ul>
+    </div>
+
+    <div class="card mb-3">
+      <h5 class="card-header">
         <fa-icon icon="heartbeat"></fa-icon>
         Capteurs
       </h5>

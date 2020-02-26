@@ -1,6 +1,10 @@
 .path-image-wrapper {
   display: flex;
   justify-content: center;
+
+  img {
+    image-rendering: pixelated;
+  }
 }
 
 .carousel-caption {

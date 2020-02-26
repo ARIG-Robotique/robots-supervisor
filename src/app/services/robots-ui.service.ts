@@ -49,7 +49,7 @@ export class RobotsUiService {
   }
 
   showPaths(idRobot: number, idExec: string) {
-    const modalRef = this.modal.open(PathsModalComponent);
+    const modalRef = this.modal.open(PathsModalComponent, {size: 'lg' });
     modalRef.componentInstance.setRobotExec(idRobot, idExec);
   }
 }
