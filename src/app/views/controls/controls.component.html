@@ -87,17 +87,24 @@
                 (click)="setAu(false)">
           Claquer l'AU
         </button>
-        <button type="button" class="btn btn-jaune"
-                (click)="setTeam('JAUNE')">
-          Jaune
-        </button>
-        <button type="button" class="btn btn-bleu"
-                (click)="setTeam('BLEU')">
-          Bleu
-        </button>
       </div>
 
-      <pre class="m-2"><code>{{capteurs$ | async | json }}</code></pre>
+      <div class="list-group list-group-flush">
+        <div class="m-2">
+          <h6>Numérique</h6>
+
+          <div *ngFor="let capteur of (capteurs$ | async)?.numerique | keyvalue">
+            <app-capteur-numerique-state [name]="capteur.key" [state]="capteur.value">
+            </app-capteur-numerique-state>
+          </div>
+        </div>
+
+        <h6 class="m-2">Text</h6>
+        <pre class="m-2"><code>{{(capteurs$ | async)?.text | json }}</code></pre>
+
+        <h6 class="m-2">Analogique</h6>
+        <pre class="m-2"><code>{{(capteurs$ | async)?.analogique | json }}</code></pre>
+      </div>
     </div>
   </div>
 
