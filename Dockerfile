@@ -1,7 +1,7 @@
 FROM node:13-alpine as builder
 
 ENV NODE_ENV dev
-WORKDIR /app
+WORKDIR /build
 
 COPY . .
 
@@ -13,11 +13,11 @@ RUN yarn build
 FROM node:13-alpine as final
 
 EXPOSE 80
-WORKDIR /app
 
 RUN npm install -g http-server \
     && npm cache clean --force
 
-COPY --from=builder /app/dist/* /app/
+WORKDIR /www
+COPY --from=builder /build/dist/ /www/
 
-CMD ["http-server", ".", "-p 80"]
+CMD ["http-server", "/www", "-p 80"]
