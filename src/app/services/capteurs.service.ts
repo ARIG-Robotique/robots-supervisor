@@ -30,18 +30,6 @@ export class CapteursService {
   }
 
   /**
-   * Changement de team
-   */
-  setTeam(robot: Robot, team: string): Observable<unknown> {
-    if (!robot.simulateur) {
-      return throwError('Action on permise sur robot réel');
-    }
-    return this.http.post(`http://${robot.host}/capteurs/team`, team, {
-      headers: new HttpHeaders().append('Content-Type', 'application/json')
-    });
-  }
-
-  /**
    * Enlève ou met l'AU
    */
   setAu(robot: Robot, present: boolean): Observable<unknown> {

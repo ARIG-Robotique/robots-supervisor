@@ -1,24 +1,23 @@
-FROM node:12-alpine
-
-EXPOSE 80
+FROM node:13-alpine as builder
 
 ENV NODE_ENV dev
-
-RUN mkdir -p /app
-
 WORKDIR /app
-
-RUN npm install -g http-server \
-    && npm cache clean --force \
-    && rm -rf ~/.npm \
-    && rm -rf /tmp/npm*
 
 COPY . .
 
-RUN npm install \
-    && npm run build \
-    && npm cache clean --force \
-    && rm -rf ~/.npm \
-    && rm -rf /tmp/npm*
+RUN yarn install --production=false --ignore-engines
+RUN yarn build
 
-CMD ["http-server", "./dist", "-p 80"]
+# Image finale #
+# ------------ #
+FROM node:13-alpine as final
+
+EXPOSE 80
+WORKDIR /app
+
+RUN npm install -g http-server \
+    && npm cache clean --force
+
+COPY --from=builder /app/dist/* /app/
+
+CMD ["http-server", ".", "-p 80"]

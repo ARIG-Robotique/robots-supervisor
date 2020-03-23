@@ -21,7 +21,7 @@ export class ControlsComponent extends AbstractComponent implements OnInit {
 
   robot: Robot;
   servos$: Observable<Servos>;
-  capteurs$: Observable<unknown | Capteurs>;
+  capteurs$: Observable<Capteurs>;
   execs$: Observable<Exec[]>;
 
   Mouvements = Mouvements;
@@ -64,11 +64,6 @@ export class ControlsComponent extends AbstractComponent implements OnInit {
 
   setTirette(present: boolean) {
     this.capteursService.setTirette(this.robot, present)
-      .subscribe();
-  }
-
-  setTeam(team: string) {
-    this.capteursService.setTeam(this.robot, team)
       .subscribe();
   }
 

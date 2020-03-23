@@ -58,6 +58,7 @@ import {RobotsUiService} from './services/robots-ui.service';
 import {ExecsService} from './services/execs.service';
 import {PathsModalComponent} from './components/paths-modal/paths-modal.component';
 import {ServoBatchControlComponent} from './components/servo-batch-control/servo-batch-control.component';
+import {CapteurNumeriqueStateComponent} from './components/capteur-numerique-state/capteur-numerique-state.component';
 
 registerLocaleData(localeFr);
 
@@ -67,6 +68,7 @@ registerLocaleData(localeFr);
     ImportLogsModalComponent,
     AdminComponent,
     AppComponent,
+    CapteurNumeriqueStateComponent,
     ControlsComponent,
     HomeComponent,
     MapComponent,
