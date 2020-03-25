@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Robot} from '../../models/Robot';
-import {ServoGroup, ServoPosition} from '../../models/Servo';
+import {ServoGroup} from '../../models/Servo';
 import {ServosService} from '../../services/servos.service';
 
 @Component({
@@ -20,8 +20,8 @@ export class ServoBatchControlComponent {
   }
 
   setPosition() {
-    this.servosService.setGroupPosition(this.robot, this.group, this.currentPosition).subscribe();
-    this.change.emit();
+    this.servosService.setPositionBatch(this.robot, this.group, this.currentPosition)
+      .subscribe(() => this.change.emit());
   }
 
 }

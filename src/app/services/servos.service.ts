@@ -28,11 +28,11 @@ export class ServosService {
     return this.http.post(`http://${robot.host}/servos/${servo.id}`, {}, {params: search});
   }
 
-  setGroupPosition(robot: Robot, group: ServoGroup, position: number): Observable<unknown> {
+  setPositionBatch(robot: Robot, group: ServoGroup, position: number): Observable<unknown> {
     const search = new HttpParams()
       .set('position', '' + position);
 
-    return this.http.post(`http://${robot.host}/servos/groupe/${group.id}`, {}, {params: search});
+    return this.http.post(`http://${robot.host}/servos/batch/${group.id}`, {}, {params: search});
   }
 
 }
