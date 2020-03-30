@@ -24,6 +24,7 @@ import {
   faArrowLeft,
   faArrowRight,
   faArrowsAlt,
+  faChartLine,
   faCheck,
   faCogs,
   faEdit,
@@ -35,10 +36,11 @@ import {
   faRedoAlt,
   faRobot,
   faRoute,
+  faServer,
   faUser,
   faWindowClose
 } from '@fortawesome/free-solid-svg-icons';
-import {faCompass, faDotCircle} from '@fortawesome/free-regular-svg-icons';
+import {faChartBar, faCompass, faDotCircle} from '@fortawesome/free-regular-svg-icons';
 import {AdminComponent} from './views/admin/admin.component';
 import localeFr from '@angular/common/locales/fr';
 import {registerLocaleData} from '@angular/common';
@@ -117,26 +119,29 @@ export class AppModule {
       arrowToTop as any,
       arrowFromTop as any,
       joystick as any,
-      faRobot,
-      faInfoCircle,
-      faHeartbeat,
-      faCogs,
-      faMap,
-      faWindowClose,
-      faPlus,
-      faMinus,
-      faArrowsAlt,
-      faCheck,
-      faEdit,
-      faCopy,
-      faDatabase,
-      faUser,
-      faRoute,
-      faDotCircle,
       faArrowLeft,
       faArrowRight,
+      faArrowsAlt,
+      faChartBar,
+      faChartLine,
+      faCheck,
+      faCogs,
       faCompass,
-      faRedoAlt
+      faCopy,
+      faDatabase,
+      faDotCircle,
+      faEdit,
+      faHeartbeat,
+      faInfoCircle,
+      faMap,
+      faMinus,
+      faPlus,
+      faRedoAlt,
+      faRobot,
+      faRoute,
+      faServer,
+      faUser,
+      faWindowClose
     );
 
     robotsService.getRobots()
