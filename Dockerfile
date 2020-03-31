@@ -1,4 +1,4 @@
-FROM node:13-alpine as builder
+FROM node:12-alpine as builder
 
 ENV NODE_ENV dev
 WORKDIR /build
@@ -10,7 +10,7 @@ RUN yarn build
 
 # Image finale #
 # ------------ #
-FROM node:13-alpine as final
+FROM node:12-alpine as final
 
 EXPOSE 80
 
