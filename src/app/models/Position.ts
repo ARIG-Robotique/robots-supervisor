@@ -32,4 +32,5 @@ export interface Position {
   pointsLidar: Point[];
   collisions: Array<Cercle | Rect>;
   matchTime: number;
+  score: number;
 }
