@@ -39,6 +39,22 @@
                              [fields]="mouvement.fields"></app-mouvement-input>
       </div>
     </div>
+
+    <div class="card mb-3">
+      <h5 class="card-header">
+        <fa-icon icon="arrows-alt"></fa-icon>
+        PID
+      </h5>
+
+      <div class="list-group list-group-flush">
+        <app-pid-input class="list-group-item p-0"
+                       [robot]="robot"
+                       type="DIST"></app-pid-input>
+        <app-pid-input class="list-group-item p-0"
+                       [robot]="robot"
+                       type="ANGLE"></app-pid-input>
+      </div>
+    </div>
   </div>
 
   <div class="col-3 controls-list">

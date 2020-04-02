@@ -61,6 +61,8 @@ import {ExecsService} from './services/execs.service';
 import {PathsModalComponent} from './components/paths-modal/paths-modal.component';
 import {ServoBatchControlComponent} from './components/servo-batch-control/servo-batch-control.component';
 import {CapteurNumeriqueStateComponent} from './components/capteur-numerique-state/capteur-numerique-state.component';
+import {PidInputComponent} from './components/pid-input/pid-input.component';
+import {AsservissementService} from './services/asservissement.service';
 
 registerLocaleData(localeFr);
 
@@ -80,6 +82,7 @@ registerLocaleData(localeFr);
     ServoControlComponent,
     ServoBatchControlComponent,
     PathsModalComponent,
+    PidInputComponent,
   ],
   imports        : [
     BrowserModule,
@@ -103,6 +106,7 @@ registerLocaleData(localeFr);
     ServosService,
     RobotsUiService,
     ExecsService,
+    AsservissementService,
   ],
   bootstrap      : [AppComponent],
   entryComponents: [

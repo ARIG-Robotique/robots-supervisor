@@ -1,0 +1,46 @@
+<div class="row no-gutters">
+  <div class="col-3 d-flex justify-content-center align-items-center">
+    <div class="mouvement-icon m-2">
+      <fa-icon [icon]="type === 'ANGLE' ? 'redo-alt' : 'arrow-right'"></fa-icon>
+    </div>
+  </div>
+  <div class="col-9">
+    <div class="card-body p-2">
+      <h5 class="card-title">{{type === 'ANGLE' ? 'Angle' : 'Distance'}}</h5>
+
+      <div class="form-inline d-inline-flex">
+        <div class="form-group has-float-label">
+          <input class="form-control form-control-sm mr-1"
+                 style="width: 80px"
+                 type="number"
+                 step="0.0001"
+                 [(ngModel)]="values.kp"
+                 placeholder="P">
+          <span>P</span>
+        </div>
+        <div class="form-group has-float-label">
+          <input class="form-control form-control-sm mr-1"
+                 style="width: 80px"
+                 type="number"
+                 step="0.0001"
+                 [(ngModel)]="values.ki"
+                 placeholder="I">
+          <span>I</span>
+        </div>
+        <div class="form-group has-float-label">
+          <input class="form-control form-control-sm mr-1"
+                 style="width: 80px"
+                 type="number"
+                 step="0.0001"
+                 [(ngModel)]="values.kd"
+                 placeholder="D">
+          <span>D</span>
+        </div>
+
+        <button class="btn btn-secondary btn-sm btn-round" (click)="apply()">
+          <fa-icon icon="check"></fa-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
