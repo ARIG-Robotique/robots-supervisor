@@ -148,8 +148,12 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
             image  : maskLoader,
             width  : table.width * table.imageRatio,
             height : table.height * table.imageRatio,
-            opacity: 0.05
+            opacity: 0.15
           });
+
+          image.cache();
+          image.filters([Konva.Filters.Pixelate]);
+          image.pixelSize(table.width * table.imageRatio / maskLoader.width);
 
           this.background.add(image);
           image.moveToTop();
@@ -387,7 +391,8 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
     imageLoader.onload = function () {
       robot.add(new Konva.Image({
-        x            : -65, y: -65,
+        x            : -Constants.robot.size.width / 2,
+        y            : -Constants.robot.size.height / 2,
         image        : imageLoader,
         width        : Constants.robot.size.width,
         height       : Constants.robot.size.height,
