@@ -33,4 +33,5 @@ export interface Position {
   collisions: Array<Cercle | Rect>;
   matchTime: number;
   score: number;
+  action: string;
 }
