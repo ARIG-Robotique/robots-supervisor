@@ -1,8 +1,8 @@
 export const Constants = {
   robot: {
     size: {
-      width: 147,
-      height: 147
+      width: 175,
+      height: 175
     }
   }
 };
