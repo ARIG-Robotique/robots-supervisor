@@ -174,7 +174,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         x: position.x * this.table.imageRatio,
         y: (this.table.height - position.y) * this.table.imageRatio
       });
-      this.nerell.rotation(-position.angle);
+      this.nerell.rotation(-position.angle - 180);
     }
   }
 
