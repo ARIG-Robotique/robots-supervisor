@@ -1,5 +1,6 @@
-import {Point} from './Point';
+import {Action} from './Action';
 import {Cercle} from './Cercle';
+import {Point} from './Point';
 import {Rect} from './Rect';
 
 export interface MouvementPath {
@@ -33,5 +34,6 @@ export interface Position {
   collisions: Array<Cercle | Rect>;
   matchTime: number;
   score: number;
-  action: string;
+  currentAction: string;
+  actions: Action[];
 }

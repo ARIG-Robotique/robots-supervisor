@@ -35,69 +35,50 @@
           <h5 class="card-title">Match information :</h5>
           <div class="row">
             <div class="col">
-              <h5>T : {{robotPosition?.matchTime / 1000}} s</h5>
+              <h5>T : <span class="badge badge-info">{{robotPosition?.matchTime / 1000 | number:'3.0-0'}} s</span></h5>
             </div>
             <div class="col">
-              <h5>Score : {{robotPosition?.score}} pts</h5>
+              <h5>Score : <span class="badge badge-info">{{robotPosition?.score | number:'3.0-0'}} pts</span></h5>
             </div>
           </div>
           <div class="row">
-            <div class="col">
-              <h5>{{robotPosition?.action}}</h5>
+            <div class="col-4">
+              x : <span class="badge badge-info">{{robotPosition?.x | number:'4.0-0'}}</span>
             </div>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <h5 class="card-title">Position actuelle :</h5>
-          <div class="row">
-            <div class="col">
-              x: {{robotPosition?.x | number:'4.0-0'}}
+            <div class="col-4">
+              y : <span class="badge badge-info">{{robotPosition?.y | number:'4.0-0'}}</span>
             </div>
-
-            <div class="col">
-              y: {{robotPosition?.y | number:'4.0-0'}}
-            </div>
-
-            <div class="col">
-              angle: {{robotPosition?.angle | number:'2.1-1'}}
+            <div class="col-4">
+              a : <span class="badge badge-info">{{robotPosition?.angle | number:'3.1-1'}}</span>
             </div>
           </div>
         </li>
         <li class="list-group-item">
-          <h5 class="card-title">Mouvement en cours :</h5>
-          <div class="row">
-            <div class="col">
-              type: {{robotPosition?.targetMvt?.type}}
+          <h5 class="card-title"><span class="badge badge-info">{{robotPosition?.actions.length}}</span> Actions -> {{robotPosition?.currentAction}}</h5>
+          <div class="row" *ngFor="let action of robotPosition?.actions">
+            <div class="col-2">
+              <h5><span [ngClass]="{'badge': true, 'badge-success': action.valid, 'badge-danger': !action.valid}">{{action.order | number:'4.0-0'}}</span></h5>
             </div>
-            <div class="col" *ngIf="robotPosition?.targetMvt?.type === 'PATH'">
-              path: {{robotPosition?.targetMvt?.path | json}}
-            </div>
-            <div class="col" *ngIf="robotPosition?.targetMvt?.type === 'ROTATION'">
-              angle: {{robotPosition?.targetMvt?.angle | number:'2.1-1'}}
-            </div>
-            <div class="col" *ngIf="robotPosition?.targetMvt?.type === 'TRANSLATION'">
-              distance: {{robotPosition?.targetMvt?.distance | number:'4.0-0'}}
+            <div class="col-10">
+              {{action.name}}
             </div>
           </div>
         </li>
         <li class="list-group-item">
           <h5 class="card-title">Position demandée :</h5>
           <div class="row">
-            <div class="col">
-              x: {{targetPosition?.x | number:'4.0-0'}}
+            <div class="col-4">
+              x : <span class="badge badge-info">{{targetPosition?.x | number:'4.0-0'}}</span>
             </div>
-
-            <div class="col">
-              y: {{targetPosition?.y | number:'4.0-0'}}
+            <div class="col-4">
+              y : <span class="badge badge-info">{{targetPosition?.y | number:'4.0-0'}}</span>
             </div>
-
-            <div class="col">
-              angle: {{targetPosition?.angle | number:'2.1-1'}}
+            <div class="col-4">
+              a : <span class="badge badge-info">{{targetPosition?.angle | number:'3.1-1'}}</span>
             </div>
           </div>
         </li>
       </ul>
     </div>
-
   </div>
 </div>
