@@ -82,7 +82,7 @@
         Capteurs
       </h5>
 
-      <div class="btn-group">
+      <div class="btn-group" [hidden]="!robot.simulateur">
         <button type="button" class="btn btn-secondary"
                 *ngIf="!(capteurs$ | async)?.numerique.Tirette"
                 (click)="setTirette(true)">
