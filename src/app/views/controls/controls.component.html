@@ -31,7 +31,7 @@
       </h5>
 
       <div class="list-group list-group-flush">
-        <app-mouvement-input class="list-group-item p-0" *ngFor="let mouvement of Mouvements"
+        <app-mouvement-input class="list-group-item p-2" *ngFor="let mouvement of Mouvements"
                              [robot]="robot"
                              [name]="mouvement.name"
                              [icon]="mouvement.icon"
@@ -43,16 +43,16 @@
     <div class="card mb-3">
       <h5 class="card-header">
         <fa-icon icon="arrows-alt"></fa-icon>
-        PID
+        PID / Rampes
       </h5>
 
       <div class="list-group list-group-flush">
-        <app-pid-input class="list-group-item p-0"
-                       [robot]="robot"
-                       type="DIST"></app-pid-input>
-        <app-pid-input class="list-group-item p-0"
-                       [robot]="robot"
-                       type="ANGLE"></app-pid-input>
+        <app-asserv-input class="list-group-item p-2"
+                          [robot]="robot"
+                          type="DIST"></app-asserv-input>
+        <app-asserv-input class="list-group-item p-2"
+                          [robot]="robot"
+                          type="ANGLE"></app-asserv-input>
       </div>
     </div>
   </div>
@@ -105,22 +105,8 @@
         </button>
       </div>
 
-      <div class="list-group list-group-flush">
-        <div class="m-2">
-          <h6>Numérique</h6>
-
-          <div *ngFor="let capteur of (capteurs$ | async)?.numerique | keyvalue">
-            <app-capteur-numerique-state [name]="capteur.key" [state]="capteur.value">
-            </app-capteur-numerique-state>
-          </div>
-        </div>
-
-        <h6 class="m-2">Text</h6>
-        <pre class="m-2"><code>{{(capteurs$ | async)?.text | json }}</code></pre>
-
-        <h6 class="m-2">Analogique</h6>
-        <pre class="m-2"><code>{{(capteurs$ | async)?.analogique | json }}</code></pre>
-      </div>
+      <app-capteurs class="list-group list-group-flush"
+                    [capteurs]="capteurs$ | async"></app-capteurs>
     </div>
   </div>
 

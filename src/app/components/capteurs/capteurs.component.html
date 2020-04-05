@@ -1,0 +1,18 @@
+<ul class="list-group-item list-unstyled">
+  <li *ngFor="let capteur of capteurs?.numerique | keyvalue">
+    <fa-icon [icon]="['far', 'dot-circle']"
+             class="mr-2"
+             [class.text-success]="capteur.value"
+             [class.text-danger]="!capteur.value"></fa-icon>
+    {{capteur.key}}
+  </li>
+</ul>
+
+<ul class="list-group-item list-unstyled">
+  <li *ngFor="let entry of capteurs?.text | keyvalue">
+    <strong>{{entry.key}}</strong> : {{entry.value}}
+  </li>
+  <li *ngFor="let entry of capteurs?.analogique | keyvalue">
+    <strong>{{entry.key}}</strong> : {{entry.value}}
+  </li>
+</ul>

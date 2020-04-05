@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Robot} from '../models/Robot';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Pid} from 'app/models/Pid';
+import {Asserv} from 'app/models/Asserv';
 
 @Injectable()
 export class AsservissementService {
@@ -11,17 +11,17 @@ export class AsservissementService {
   }
 
   /**
-   * Retourne les servos d'un robot
+   * Retourne les valeurs d'asservissement
    */
-  getPid(robot: Robot, type: string): Observable<Pid> {
-    return this.http.get<Pid>(`http://${robot.host}/asservissement/pid/${type}`);
+  getValues(robot: Robot, type: string): Observable<Asserv> {
+    return this.http.get<Asserv>(`http://${robot.host}/asservissement/${type}`);
   }
 
   /**
-   * Envoie une commande déplacement de servo
+   * Change les valeurs d'asservissement
    */
-  setPid(robot: Robot, type: string, pid: Pid): Observable<unknown> {
-    return this.http.post(`http://${robot.host}/asservissement/pid/${type}`, {}, {params: pid as any});
+  setValues(robot: Robot, type: string, values: Asserv): Observable<unknown> {
+    return this.http.post(`http://${robot.host}/asservissement/${type}`, {}, {params: values as any});
   }
 
 }

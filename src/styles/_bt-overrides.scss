@@ -244,6 +244,7 @@ $web-font-path: "https://fonts.googleapis.com/css?family=Lato:400,700,400italic"
 .has-float-label {
   label, > span {
     top: -0.8rem;
+    left: 0.4rem;
     font-size: 90%;
 
     &::after {
