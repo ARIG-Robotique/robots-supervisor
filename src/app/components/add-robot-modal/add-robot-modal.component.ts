@@ -31,16 +31,6 @@ export class AddRobotModalComponent extends AbstractComponent {
     super();
   }
 
-  get editableLogDir() {
-    return !(this.robot.simulateur && environment.production);
-  }
-
-  onChangeSimulateur() {
-    if (!this.editableLogDir) {
-      this.robot.dir = '/logs/simulateur';
-    }
-  }
-
   addRobot() {
     if (this.robot.id) {
       this.robotsService.editRobot(this.robot)
