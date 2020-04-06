@@ -13,7 +13,7 @@ export class AsservInputComponent implements OnInit {
   @Input() type: 'ANGLE' | 'DIST';
   @Input() robot: Robot;
 
-  values: Asserv = {kp: 0, ki: 0, kd: 0, rampAcc: 0, rampDec: 0};
+  values: Asserv = {kp: 0, ki: 0, kd: 0, rampAcc: 0, rampDec: 0, vitesse: 0};
 
   constructor(private asservissement: AsservissementService) {
 

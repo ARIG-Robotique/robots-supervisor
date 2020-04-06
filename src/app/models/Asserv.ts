@@ -4,4 +4,5 @@ export interface Asserv {
   kd: number;
   rampAcc: 0;
   rampDec: 0;
+  vitesse: 0;
 }

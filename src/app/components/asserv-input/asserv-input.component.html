@@ -40,26 +40,34 @@
     <div class="form-inline d-inline-flex mt-3">
       <div class="form-group has-float-label">
         <input class="form-control form-control-sm mr-1"
-               style="width: 100px"
+               style="width: 80px"
                type="number"
                step="1"
                [(ngModel)]="values.rampAcc"
                placeholder="Rampe Acc">
-        <span>Rampe Acc</span>
+        <span>Ramp Acc</span>
       </div>
       <div class="form-group has-float-label">
         <input class="form-control form-control-sm mr-1"
-               style="width: 100px"
+               style="width: 80px"
                type="number"
                step="1"
                [(ngModel)]="values.rampDec"
                placeholder="Rampe Dec">
-        <span>Rampe Dec</span>
+        <span>Ramp Dec</span>
       </div>
-
-      <button class="btn btn-secondary btn-sm btn-round" (click)="apply()">
-        <fa-icon icon="check"></fa-icon>
-      </button>
+      <div class="form-group has-float-label">
+        <input class="form-control form-control-sm mr-1"
+               style="width: 80px"
+               type="number"
+               step="1"
+               [(ngModel)]="values.vitesse"
+               placeholder="Vitesse">
+        <span>Vitesse</span>
+      </div>
     </div>
+    <button class="btn btn-secondary btn-sm btn-round" (click)="apply()">
+      <fa-icon icon="check"></fa-icon>
+    </button>
   </div>
 </div>
