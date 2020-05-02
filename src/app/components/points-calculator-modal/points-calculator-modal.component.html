@@ -1,0 +1,83 @@
+<div class="modal-header">
+  <h4 class="modal-title">Calculateur de points</h4>
+  <button type="button" class="close" aria-label="Close" (click)="close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body row">
+  <div class="col-5">
+    <div class="card">
+      <h5 class="card-header">
+        Presets
+      </h5>
+
+      <div class="list-group list-group-flush">
+        <button *ngFor="let preset of presets"
+                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                (click)="applyPreset(preset)">
+          {{preset.label}}
+          <span class="ml-auto"></span>
+
+          <span (click)="$event.stopPropagation()">
+            <fa-icon *ngIf="preset.deletable"
+                     icon="window-close" class="ml-1" ngbTooltip="Supprimer" placement="top"
+                     (click)="deletePreset(preset)"></fa-icon>
+          </span>
+        </button>
+      </div>
+
+      <button type="button" class="btn btn-primary" (click)="addPreset()">Sauvegarder</button>
+    </div>
+  </div>
+  <div class="col-7">
+    <table class="points-table table table-striped table-hover table-sm table-dark">
+      <thead class="thead-light">
+      <tr>
+        <th>Action</th>
+        <th>Points</th>
+        <th>Quantité</th>
+        <th>Total</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let action of actions; index as i">
+        <td>{{action.label}}</td>
+        <td>{{action.pt}}</td>
+        <td *ngTemplateOutlet="input; context: {control: form.controls.actions.controls[i]}"></td>
+        <td>{{results.actions[i]}}</td>
+      </tr>
+      <tr class="table-secondary">
+        <td><strong>Total action</strong></td>
+        <td></td>
+        <td></td>
+        <td><strong>{{results.totalActions}}</strong></td>
+      </tr>
+      <tr>
+        <td>Evaluation</td>
+        <td></td>
+        <td *ngTemplateOutlet="input; context: {control: form.controls.evaluation}"></td>
+        <td>{{results.evaluation}}</td>
+      </tr>
+      <tr *ngFor="let rule of rules; index as i">
+        <td>{{rule.label}}</td>
+        <td>{{rule.pt}}</td>
+        <td *ngTemplateOutlet="input; context: {control: form.controls.rules.controls[i]}"></td>
+        <td>{{results.rules[i]}}</td>
+      </tr>
+      <tr class="table-primary">
+        <td><strong>Total</strong></td>
+        <td></td>
+        <td></td>
+        <td><strong>{{results.total}}</strong></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<ng-template #input let-control="control">
+  <input type="number" min="0"
+         class="form-control form-control-sm"
+         [formControl]="control">
+</ng-template>

@@ -1,15 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
-import {combineLatest, Observable, of} from 'rxjs';
-import {AbstractComponent} from '../abstract.component';
-import {Store} from '@ngrx/store';
-import {selectRobots} from '../../store/robots.selector';
-import {Robot} from '../../models/Robot';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
-import {RobotInfo} from '../../models/RobotInfo';
-import {filter, map, switchMap} from 'rxjs/operators';
-import {RobotsService} from '../../services/robots.service';
-import {RobotsUiService} from '../../services/robots-ui.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { combineLatest, Observable, of } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs/operators';
+import { Robot } from '../../models/Robot';
+import { RobotInfo } from '../../models/RobotInfo';
+import { RobotsUiService } from '../../services/robots-ui.service';
+import { RobotsService } from '../../services/robots.service';
+import { selectRobots } from '../../store/robots.selector';
+import { AbstractComponent } from '../abstract.component';
+import { PointsCalculatorModalComponent } from '../points-calculator-modal/points-calculator-modal.component';
 
 @Component({
   selector   : 'app-navbar',
@@ -26,6 +27,7 @@ export class NavbarComponent extends AbstractComponent implements OnInit {
   constructor(private store: Store<any>,
               private route: ActivatedRoute,
               private router: Router,
+              private modal: NgbModal,
               private robotsService: RobotsService,
               private robotsUiService: RobotsUiService) {
     super();
@@ -67,6 +69,10 @@ export class NavbarComponent extends AbstractComponent implements OnInit {
 
   importLogs(robot: Robot) {
     this.robotsUiService.importLogs(robot);
+  }
+
+  openCalculator() {
+    this.modal.open(PointsCalculatorModalComponent, {size: 'lg'})
   }
 
 }

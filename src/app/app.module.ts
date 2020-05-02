@@ -12,6 +12,7 @@ import {
   faArrowLeft,
   faArrowRight,
   faArrowsAlt,
+  faCalculator,
   faChartLine,
   faCheck,
   faCogs,
@@ -46,6 +47,7 @@ import { MouvementInputComponent } from './components/mouvement-input/mouvement-
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { PathsModalComponent } from './components/paths-modal/paths-modal.component';
 import { AsservInputComponent } from './components/asserv-input/asserv-input.component';
+import { PointsCalculatorModalComponent } from './components/points-calculator-modal/points-calculator-modal.component';
 import { ServoBatchControlComponent } from './components/servo-batch-control/servo-batch-control.component';
 import { ServoControlComponent } from './components/servo-control/servo-control.component';
 import { RobotResolve } from './resolvers/RobotResolve';
@@ -81,6 +83,7 @@ registerLocaleData(localeFr);
     MouvementInputComponent,
     NavbarComponent,
     PathsModalComponent,
+    PointsCalculatorModalComponent,
     ServoBatchControlComponent,
     ServoControlComponent,
   ],
@@ -113,6 +116,7 @@ registerLocaleData(localeFr);
     AddRobotModalComponent,
     ImportLogsModalComponent,
     PathsModalComponent,
+    PointsCalculatorModalComponent,
   ],
 })
 export class AppModule {
@@ -126,6 +130,7 @@ export class AppModule {
       faArrowLeft,
       faArrowRight,
       faArrowsAlt,
+      faCalculator,
       faChartBar,
       faChartLine,
       faCheck,
