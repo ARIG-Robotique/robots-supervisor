@@ -36,7 +36,7 @@ export class PointsCalculatorModalComponent {
     },
     {
       label    : 'Maximum',
-      actions  : [36, 36, 18, 0, 1, 1, 0, 1, 1, 1, 1],
+      actions  : [31, 31, 15, 0, 1, 1, 0, 1, 1, 1, 1],
       rules    : [1, 0],
       deletable: false,
     },
