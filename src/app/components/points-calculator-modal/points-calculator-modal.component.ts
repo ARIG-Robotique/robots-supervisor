@@ -93,13 +93,22 @@ export class PointsCalculatorModalComponent {
     const label = prompt('Nom');
 
     if (label) {
-      const preset = {
-        label    : label,
-        deletable: true,
-        actions  : (this.form.controls.actions as FormArray).controls.map(c => c.value),
-        rules    : (this.form.controls.rules as FormArray).controls.map(c => c.value),
-      };
-      this.presets.push(preset);
+      const existing = this.presets.find(p => p.deletable && p.label.toLocaleLowerCase() === label.toLocaleLowerCase());
+
+      if (existing) {
+        Object.assign(existing, {
+          actions  : (this.form.controls.actions as FormArray).controls.map(c => c.value),
+          rules    : (this.form.controls.rules as FormArray).controls.map(c => c.value),
+        });
+      } else {
+        this.presets.push({
+          label    : label,
+          deletable: true,
+          actions  : (this.form.controls.actions as FormArray).controls.map(c => c.value),
+          rules    : (this.form.controls.rules as FormArray).controls.map(c => c.value),
+        });
+      }
+
       this.savePresets();
     }
   }
