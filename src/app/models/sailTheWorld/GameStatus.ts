@@ -15,6 +15,7 @@ export interface GameStatus {
   mancheAAir1: boolean;
   mancheAAir2: boolean;
   girouette: EDirectionGirouette;
+  couleursEcueilEquipe: ECouleurBouee[];
   couleursEcueilCommunEquipe: ECouleurBouee[];
   couleursEcueilCommunAdverse: ECouleurBouee[];
 }

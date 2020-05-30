@@ -53,8 +53,9 @@
                   A : <span class="badge badge-big badge-info">{{robotPosition?.angle | number:'3.1-1'}}</span>
                 </div>
               </div>
-              <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Eccueil équipe', couleurs: robotPosition?.gameStatus?.couleursEcueilCommunEquipe}"></ng-container>
-              <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Eccueil adverse', couleurs: robotPosition?.gameStatus?.couleursEcueilCommunAdverse}"></ng-container>
+              <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Ecueil équipe', couleurs: robotPosition?.gameStatus?.couleursEcueilEquipe}"></ng-container>
+              <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Ecueil commun équipe', couleurs: robotPosition?.gameStatus?.couleursEcueilCommunEquipe}"></ng-container>
+              <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Ecueil commun adverse', couleurs: robotPosition?.gameStatus?.couleursEcueilCommunAdverse}"></ng-container>
               <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Pinces avant', couleurs: robotPosition?.gameStatus?.pincesAvant}"></ng-container>
               <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Pinces arrière', couleurs: robotPosition?.gameStatus?.pincesArriere}"></ng-container>
             </div>

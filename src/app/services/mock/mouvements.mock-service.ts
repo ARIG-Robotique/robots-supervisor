@@ -56,6 +56,8 @@ export class MouvementsMockService extends MouvementsService {
         girouette       : EDirectionGirouette.DOWN,
 
         // tslint:disable-next-line:max-line-length
+        couleursEcueilEquipe : [ECouleurBouee.ROUGE, ECouleurBouee.VERT, ECouleurBouee.ROUGE, ECouleurBouee.VERT, ECouleurBouee.ROUGE],
+        // tslint:disable-next-line:max-line-length
         couleursEcueilCommunEquipe : [ECouleurBouee.ROUGE, ECouleurBouee.INCONNU, ECouleurBouee.INCONNU, ECouleurBouee.INCONNU, ECouleurBouee.VERT],
         // tslint:disable-next-line:max-line-length
         couleursEcueilCommunAdverse: [ECouleurBouee.ROUGE, ECouleurBouee.INCONNU, ECouleurBouee.INCONNU, ECouleurBouee.INCONNU, ECouleurBouee.VERT],
