@@ -7,6 +7,18 @@ export class GameStatusManager {
 
   readonly DIAMETRE_GOBELET = 72;
 
+  ///////////////////////////////////////////////////////
+  //                      Bouées                       //
+  ///////////////////////////////////////////////////////
+  //              5                    12              //
+  //                                                   //
+  //     1          6               11         13      //
+  // -----| 2                               14 |-------//
+  // Bleu |            7         10            | Jaune //
+  // -----| 3                               15 |-------//
+  //     4               8     9               16      //
+  // -----------  -----------------------  ----------- //
+
   readonly POS_BOUEES: Array<[number, number, ECouleurBouee]> = [
     [300, 2000 - 400, ECouleurBouee.ROUGE],
     [450, 2000 - 510, ECouleurBouee.VERT],
@@ -27,12 +39,12 @@ export class GameStatusManager {
   ];
 
   readonly GRAND_CHENAL_VERT_Y = {
-    'JAUNE': 2000 - 510,
-    'BLEU' : 2000 - 1100,
-  };
-  readonly GRAND_CHENAL_ROUGE_Y = {
     'JAUNE': 2000 - 1100,
     'BLEU' : 2000 - 510,
+  };
+  readonly GRAND_CHENAL_ROUGE_Y = {
+    'JAUNE': 2000 - 510,
+    'BLEU' : 2000 - 1100,
   };
   readonly GRAND_PORT_Y = {
     'JAUNE': 2000 - 800,
