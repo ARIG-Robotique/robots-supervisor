@@ -99,7 +99,9 @@
 
 <ng-template #listeCouleurs let-title="title" let-couleurs="couleurs">
   <div class="row">
-    <span class="col" style="width: 140px; flex: none;">{{title}} :</span>
+    <span class="col">{{title}} :</span>
+  </div>
+  <div class="row">
     <div class="col" *ngFor="let couleur of couleurs">
       <div [class]="'couleur couleur--' + couleur"></div>
     </div>
