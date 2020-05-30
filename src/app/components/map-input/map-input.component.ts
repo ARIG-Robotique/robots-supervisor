@@ -5,6 +5,7 @@ import {Point} from '../../models/Point';
 import {Constants} from '../../constants/constants';
 import {Position} from '../../models/Position';
 import {MapPosition} from '../../models/MapPosition';
+import { GameStatusManager } from './game-status.manager';
 
 @Component({
   selector   : 'app-map-input',
@@ -36,6 +37,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   crosshair: Konva.Group;
   points: Konva.Group;
   mouvement: Konva.Group;
+  statusManager: GameStatusManager;
 
   ngAfterViewInit(): void {
     this.stage = new Konva.Stage({
@@ -83,6 +85,8 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     this.drawPoints(this.robotPosition);
     this.drawMouvement(this.robotPosition);
 
+    this.statusManager = new GameStatusManager(this.mainLayer, this.table);
+
     this.mainLayer.draw();
 
     this.setTable(this.table, this.team);
@@ -93,10 +97,23 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       this.setTable(this.table, this.team);
     }
 
+    if (changes['table']) {
+      if (this.table.name === 'test') {
+        this.statusManager.destroy();
+        this.statusManager = null;
+      } else if (this.mainLayer) {
+        this.statusManager = new GameStatusManager(this.mainLayer, this.table);
+      }
+    }
+
     if (changes['robotPosition']) {
       this.moveNerell(this.robotPosition);
       this.drawPoints(this.robotPosition);
       this.drawMouvement(this.robotPosition);
+
+      if (this.statusManager && this.robotPosition.gameStatus) {
+        this.statusManager.update(this.robotPosition.gameStatus, this.team);
+      }
 
       if (this.stage) {
         this.mainLayer.draw();

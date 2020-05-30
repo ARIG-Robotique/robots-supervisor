@@ -1,7 +1,8 @@
-import {Action} from './Action';
-import {Cercle} from './Cercle';
-import {Point} from './Point';
-import {Rect} from './Rect';
+import { Action } from './Action';
+import { Cercle } from './Cercle';
+import { Point } from './Point';
+import { Rect } from './Rect';
+import { GameStatus } from './sailTheWorld/GameStatus';
 
 export interface MouvementPath {
   type: 'PATH',
@@ -36,4 +37,5 @@ export interface Position {
   score: number;
   currentAction: string;
   actions: Action[];
+  gameStatus: GameStatus;
 }

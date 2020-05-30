@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  mock      : false,
+  mock      : true,
   server    : 'http://localhost:4100',
   wsServer  : 'ws://localhost:4100',
 };

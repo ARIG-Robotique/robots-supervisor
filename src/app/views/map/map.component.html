@@ -30,55 +30,78 @@
         </label>
       </div>
 
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">
-          <h5 class="card-title">Match information :</h5>
+      <div class="list-group list-group-flush">
+        <div class="list-group-item">
           <div class="row">
-            <div class="col">
-              <h5>T : <span class="badge badge-info">{{robotPosition?.matchTime / 1000 | number:'3.0-0'}} s</span></h5>
+            <div class="col-8">
+              <div class="row">
+                <div class="col">
+                  <h5 class="mb-0">Temps : <span class="badge badge-info">{{robotPosition?.matchTime / 1000 | number:'3.0-0'}} s</span></h5>
+                </div>
+                <div class="col">
+                  <h5 class="mb-0">Score : <span class="badge badge-info">{{robotPosition?.score | number:'3.0-0'}} pts</span></h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  x : <span class="badge badge-big badge-info">{{robotPosition?.x | number:'4.0-0'}}</span>
+                </div>
+                <div class="col">
+                  y : <span class="badge badge-big badge-info">{{robotPosition?.y | number:'4.0-0'}}</span>
+                </div>
+                <div class="col">
+                  a : <span class="badge badge-big badge-info">{{robotPosition?.angle | number:'3.1-1'}}</span>
+                </div>
+              </div>
+              <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Eccueil équipe', couleurs: robotPosition?.gameStatus?.couleursEcueilCommunEquipe}"></ng-container>
+              <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Eccueil adverse', couleurs: robotPosition?.gameStatus?.couleursEcueilCommunAdverse}"></ng-container>
+              <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Pinces avant', couleurs: robotPosition?.gameStatus?.pincesAvant}"></ng-container>
+              <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Pinces arrière', couleurs: robotPosition?.gameStatus?.pincesArriere}"></ng-container>
             </div>
-            <div class="col">
-              <h5>Score : <span class="badge badge-info">{{robotPosition?.score | number:'3.0-0'}} pts</span></h5>
+            <div class="col-4">
+              <div><span class="badge badge-big" [ngClass]="{'badge-success': robotPosition?.gameStatus?.phare, 'badge-danger': !robotPosition?.gameStatus?.phare}">phare</span></div>
+              <div><span class="badge badge-big" [ngClass]="{'badge-success': robotPosition?.gameStatus?.mancheAAir1, 'badge-danger': !robotPosition?.gameStatus?.mancheAAir1}">manche à air 1</span></div>
+              <div><span class="badge badge-big" [ngClass]="{'badge-success': robotPosition?.gameStatus?.mancheAAir2, 'badge-danger': !robotPosition?.gameStatus?.mancheAAir2}">manche à air 2</span></div>
+              <div>Girouette : <span class="badge badge-big badge-light">{{robotPosition?.gameStatus?.girouette}}</span></div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-4">
-              x : <span class="badge badge-info">{{robotPosition?.x | number:'4.0-0'}}</span>
-            </div>
-            <div class="col-4">
-              y : <span class="badge badge-info">{{robotPosition?.y | number:'4.0-0'}}</span>
-            </div>
-            <div class="col-4">
-              a : <span class="badge badge-info">{{robotPosition?.angle | number:'3.1-1'}}</span>
-            </div>
+        </div>
+
+        <div class="list-group-item">
+          <h5 class="card-title">Actions : <span class="badge badge-info">{{robotPosition?.actions.length}}</span></h5>
+          En cours : {{robotPosition?.currentAction}}
+          <div *ngFor="let action of robotPosition?.actions"
+               ngbTooltip="{{action.uuid}}" placement="left">
+            <span class="badge badge-big mr-2" [ngClass]="{'badge-success': action.valid, 'badge-danger': !action.valid}">{{action.order | number:'4.0-0'}}</span>
+            {{action.name}}
           </div>
-        </li>
-        <li class="list-group-item">
-          <h5 class="card-title"><span class="badge badge-info">{{robotPosition?.actions.length}}</span> Actions -> {{robotPosition?.currentAction}}</h5>
-          <div class="row" *ngFor="let action of robotPosition?.actions">
-            <div class="col-2">
-              <h5><span [ngClass]="{'badge': true, 'badge-success': action.valid, 'badge-danger': !action.valid}">{{action.order | number:'4.0-0'}}</span></h5>
-            </div>
-            <div class="col-10" ngbTooltip="{{action.uuid}}" placement="bottom">
-              {{action.name}}
-            </div>
-          </div>
-        </li>
-        <li class="list-group-item">
+        </div>
+
+        <div class="list-group-item">
           <h5 class="card-title">Position demandée :</h5>
           <div class="row">
             <div class="col-4">
-              x : <span class="badge badge-info">{{targetPosition?.x | number:'4.0-0'}}</span>
+              x : <span class="badge badge-big badge-info">{{targetPosition?.x | number:'4.0-0'}}</span>
             </div>
             <div class="col-4">
-              y : <span class="badge badge-info">{{targetPosition?.y | number:'4.0-0'}}</span>
+              y : <span class="badge badge-big badge-info">{{targetPosition?.y | number:'4.0-0'}}</span>
             </div>
             <div class="col-4">
-              a : <span class="badge badge-info">{{targetPosition?.angle | number:'3.1-1'}}</span>
+              a : <span class="badge badge-big badge-info">{{targetPosition?.angle | number:'3.1-1'}}</span>
             </div>
           </div>
-        </li>
-      </ul>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
+
+<ng-template #listeCouleurs let-title="title" let-couleurs="couleurs">
+  <div class="row">
+    <span class="col" style="width: 140px; flex: none;">{{title}} :</span>
+    <div class="col" *ngFor="let couleur of couleurs">
+      <div [class]="'couleur couleur--' + couleur"></div>
+    </div>
+  </div>
+</ng-template>

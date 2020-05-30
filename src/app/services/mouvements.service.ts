@@ -13,7 +13,7 @@ export class MouvementsService {
   /**
    * Envoie une commande de mouvement
    */
-  sendMouvement(robot: Robot, type: string, values: any) {
+  sendMouvement(robot: Robot, type: string, values: any): Observable<unknown> {
     let params = new HttpParams();
     for (const key in values) {
       if (values.hasOwnProperty(key)) {

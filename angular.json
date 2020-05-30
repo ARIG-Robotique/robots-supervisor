@@ -33,6 +33,14 @@
             "scripts": []
           },
           "configurations": {
+            "mock": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.mock.ts"
+                }
+              ]
+            },
             "production": {
               "optimization": true,
               "outputHashing": "all",
@@ -58,6 +66,9 @@
             "browserTarget": "robots-supervisor:build"
           },
           "configurations": {
+            "mock": {
+              "browserTarget": "robots-supervisor:build:mock"
+            },
             "production": {
               "browserTarget": "robots-supervisor:build:production"
             }
@@ -72,7 +83,6 @@
             "exclude": [
               "**/node_modules/**"
             ]
-
           }
         }
       }
