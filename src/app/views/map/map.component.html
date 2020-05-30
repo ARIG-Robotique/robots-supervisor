@@ -36,21 +36,21 @@
             <div class="col-8">
               <div class="row">
                 <div class="col">
-                  <h5 class="mb-0">Temps : <span class="badge badge-info">{{robotPosition?.matchTime / 1000 | number:'3.0-0'}} s</span></h5>
+                  T : <span class="badge badge-big badge-info">{{robotPosition?.matchTime / 1000 | number:'3.0-0'}} s</span>
                 </div>
                 <div class="col">
-                  <h5 class="mb-0">Score : <span class="badge badge-info">{{robotPosition?.score | number:'3.0-0'}} pts</span></h5>
+                  S : <span class="badge badge-big badge-info">{{robotPosition?.score | number:'3.0-0'}} pts</span>
                 </div>
               </div>
               <div class="row">
                 <div class="col">
-                  x : <span class="badge badge-big badge-info">{{robotPosition?.x | number:'4.0-0'}}</span>
+                  X : <span class="badge badge-big badge-info">{{robotPosition?.x | number:'4.0-0'}}</span>
                 </div>
                 <div class="col">
-                  y : <span class="badge badge-big badge-info">{{robotPosition?.y | number:'4.0-0'}}</span>
+                  Y : <span class="badge badge-big badge-info">{{robotPosition?.y | number:'4.0-0'}}</span>
                 </div>
                 <div class="col">
-                  a : <span class="badge badge-big badge-info">{{robotPosition?.angle | number:'3.1-1'}}</span>
+                  A : <span class="badge badge-big badge-info">{{robotPosition?.angle | number:'3.1-1'}}</span>
                 </div>
               </div>
               <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Eccueil équipe', couleurs: robotPosition?.gameStatus?.couleursEcueilCommunEquipe}"></ng-container>
@@ -59,9 +59,9 @@
               <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Pinces arrière', couleurs: robotPosition?.gameStatus?.pincesArriere}"></ng-container>
             </div>
             <div class="col-4">
-              <div><span class="badge badge-big" [ngClass]="{'badge-success': robotPosition?.gameStatus?.phare, 'badge-danger': !robotPosition?.gameStatus?.phare}">phare</span></div>
-              <div><span class="badge badge-big" [ngClass]="{'badge-success': robotPosition?.gameStatus?.mancheAAir1, 'badge-danger': !robotPosition?.gameStatus?.mancheAAir1}">manche à air 1</span></div>
-              <div><span class="badge badge-big" [ngClass]="{'badge-success': robotPosition?.gameStatus?.mancheAAir2, 'badge-danger': !robotPosition?.gameStatus?.mancheAAir2}">manche à air 2</span></div>
+              <div><span class="badge badge-big" [ngClass]="{'badge-success': robotPosition?.gameStatus?.phare, 'badge-danger': !robotPosition?.gameStatus?.phare}">Phare</span></div>
+              <div><span class="badge badge-big" [ngClass]="{'badge-success': robotPosition?.gameStatus?.mancheAAir1, 'badge-danger': !robotPosition?.gameStatus?.mancheAAir1}">Manche à air 1</span></div>
+              <div><span class="badge badge-big" [ngClass]="{'badge-success': robotPosition?.gameStatus?.mancheAAir2, 'badge-danger': !robotPosition?.gameStatus?.mancheAAir2}">Manche à air 2</span></div>
               <div>Girouette : <span class="badge badge-big badge-light">{{robotPosition?.gameStatus?.girouette}}</span></div>
             </div>
           </div>
