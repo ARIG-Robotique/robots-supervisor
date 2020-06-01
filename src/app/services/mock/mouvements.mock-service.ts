@@ -35,6 +35,16 @@ export class MouvementsMockService extends MouvementsService {
         {uuid: '5', order: 10, name: 'Action 5', valid: false},
         {uuid: '6', order: 10, name: 'Action 6', valid: false},
       ],
+      scoreStatus     : {
+        'Phare'        : 15,
+        'Grand port'   : 1,
+        'Petit port'   : 2,
+        'Grand chenaux': 16,
+        'Petit chenaux': 13,
+        'Manche a air' : 5,
+        'Port'         : 0,
+        'Pavillon'     : 0,
+      },
       gameStatus      : {
         bouees          : [
           false, false, false, false,
@@ -51,12 +61,12 @@ export class MouvementsMockService extends MouvementsService {
         pincesAvant     : [null, ECouleurBouee.ROUGE, null, ECouleurBouee.VERT],
         pincesArriere   : [ECouleurBouee.VERT, ECouleurBouee.VERT, ECouleurBouee.ROUGE, ECouleurBouee.ROUGE, ECouleurBouee.ROUGE],
         phare           : true,
-        mancheAAir1     : false,
+        mancheAAir1     : true,
         mancheAAir2     : false,
         girouette       : EDirectionGirouette.DOWN,
 
         // tslint:disable-next-line:max-line-length
-        couleursEcueilEquipe : [ECouleurBouee.ROUGE, ECouleurBouee.VERT, ECouleurBouee.ROUGE, ECouleurBouee.VERT, ECouleurBouee.ROUGE],
+        couleursEcueilEquipe       : [ECouleurBouee.ROUGE, ECouleurBouee.VERT, ECouleurBouee.ROUGE, ECouleurBouee.VERT, ECouleurBouee.ROUGE],
         // tslint:disable-next-line:max-line-length
         couleursEcueilCommunEquipe : [ECouleurBouee.ROUGE, ECouleurBouee.INCONNU, ECouleurBouee.INCONNU, ECouleurBouee.INCONNU, ECouleurBouee.VERT],
         // tslint:disable-next-line:max-line-length

@@ -70,12 +70,24 @@
         </div>
 
         <div class="list-group-item">
-          <h5 class="card-title">Actions : <span class="badge badge-info">{{robotPosition?.actions.length}}</span></h5>
-          En cours : {{robotPosition?.currentAction}}
-          <div *ngFor="let action of robotPosition?.actions"
-               ngbTooltip="{{action.uuid}}" placement="left">
-            <span class="badge badge-big mr-2" [ngClass]="{'badge-success': action.valid, 'badge-danger': !action.valid}">{{action.order | number:'4.0-0'}}</span>
-            {{action.name}}
+          <div class="row">
+            <div class="col-7">
+              <h5 class="card-title">Actions : <span class="badge badge-info">{{robotPosition?.actions.length}}</span></h5>
+              En cours : {{robotPosition?.currentAction}}
+              <div *ngFor="let action of robotPosition?.actions"
+                   ngbTooltip="{{action.uuid}}" placement="left">
+                <span class="badge badge-big mr-2"
+                      [ngClass]="{'badge-success': action.valid, 'badge-danger': !action.valid}">{{action.order | number:'4.0-0'}}</span>
+                {{action.name}}
+              </div>
+            </div>
+            <div class="col-5">
+              <h5 class="card-title">Score : <span class="badge badge-info">{{robotPosition?.score}}</span></h5>
+              <div *ngFor="let score of robotPosition?.scoreStatus | keyvalue">
+                <span class="badge badge-big badge-primary mr-2">{{score.value | number:'2.0-0'}}</span>
+                {{score.key | titlecase}}
+              </div>
+            </div>
           </div>
         </div>
 
