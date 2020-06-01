@@ -63,6 +63,9 @@ export class MouvementsMockService extends MouvementsService {
         phare           : true,
         mancheAAir1     : true,
         mancheAAir2     : false,
+        ecueilEquipePris: true,
+        ecueilCommunEquipePris: false,
+        ecueilCommunAdversePris: false,
         girouette       : EDirectionGirouette.DOWN,
 
         // tslint:disable-next-line:max-line-length
