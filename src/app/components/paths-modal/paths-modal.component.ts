@@ -27,7 +27,7 @@ export class PathsModalComponent {
   }
 
   getPathFile(file: string): string {
-    return this.execsService.getPathFile(this.idRobot, this.idExec, file);
+    return this.execsService.getPathFile(this.idRobot, this.exec.id, file);
   }
 
   close() {
