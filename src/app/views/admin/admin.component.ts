@@ -1,17 +1,19 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Robot} from '../../models/Robot';
-import {RobotsService} from '../../services/robots.service';
-import {Exec} from '../../models/Exec';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {AbstractComponent} from '../../components/abstract.component';
-import {Store} from '@ngrx/store';
-import {selectRobots} from '../../store/robots.selector';
-import {RobotsUiService} from '../../services/robots-ui.service';
-import {ExecsService} from '../../services/execs.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { AbstractComponent } from '../../components/abstract.component';
+import { Exec } from '../../models/Exec';
+import { Robot } from '../../models/Robot';
+import { ExecsService } from '../../services/execs.service';
+import { RobotsUiService } from '../../services/robots-ui.service';
+import { RobotsService } from '../../services/robots.service';
+import { selectRobots } from '../../store/robots.selector';
 
 @Component({
-  selector   : 'app-admin',
   templateUrl: './admin.component.html',
+  host       : {
+    class: 'd-block container-fluid mt-3',
+  },
 })
 export class AdminComponent extends AbstractComponent implements OnInit, OnDestroy {
 

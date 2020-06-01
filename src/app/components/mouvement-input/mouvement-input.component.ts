@@ -1,6 +1,6 @@
-import {Component, Input} from '@angular/core';
-import {Robot} from '../../models/Robot';
-import {MouvementsService} from '../../services/mouvements.service';
+import { Component, Input } from '@angular/core';
+import { Robot } from '../../models/Robot';
+import { MouvementsService } from '../../services/mouvements.service';
 
 @Component({
   selector   : 'app-mouvement-input',
@@ -14,6 +14,7 @@ export class MouvementInputComponent {
   @Input() icon: string;
   @Input() name: string;
   @Input() fields: string[];
+  @Input() select: { [K: string]: string[] };
 
   values: any = {};
 

@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row no-gutters">
   <div class="col">
     <app-map-input [table]="currentTable"
                    [robotPosition]="robotPosition"
@@ -8,49 +8,64 @@
     </app-map-input>
   </div>
 
+
   <div class="col">
     <div class="card">
-      <div class="card-body row">
-        <label class="col form-group has-float-label">
-          <select class="form-control" [(ngModel)]="currentTable">
+      <div class="card-body">
+        <div class="form-group has-float-label m-0">
+          <select class="form-control form-control-sm" [(ngModel)]="currentTable">
             <option *ngFor="let table of Tables" [ngValue]="table">
               {{table.name}}
             </option>
           </select>
           <span>Table</span>
-        </label>
-
-        <label class="col form-group has-float-label">
-          <select class="form-control" [(ngModel)]="currentMode">
-            <option *ngFor="let mode of Modes" [ngValue]="mode.name">
-              {{mode.label}}
-            </option>
-          </select>
-          <span>Mode</span>
-        </label>
+        </div>
       </div>
-
+    </div>
+    <div class="card">
       <div class="list-group list-group-flush">
         <div class="list-group-item">
+          <h5 class="card-title">Déplacement :</h5>
+          <ng-container *ngTemplateOutlet="position; context: {prefix: 'target', position: targetPosition}"></ng-container>
+          <ng-container *ngTemplateOutlet="position; context: {prefix: 'current', position: robotPosition}"></ng-container>
+          <div class="row mt-3" [formGroup]="form">
+            <div class="form-group has-float-label col">
+              <select class="form-control form-control-sm mr-1" formControlName="mode">
+                <option *ngFor="let mode of Modes" [ngValue]="mode.name">
+                  {{mode.label}}
+                </option>
+              </select>
+              <span>Mode déplacement</span>
+            </div>
+            <div class="form-group has-float-label col">
+              <select class="form-control form-control-sm mr-1" formControlName="sensDeplacement">
+                <option *ngFor="let sens of SensDeplacement" [ngValue]="sens">
+                  {{sens}}
+                </option>
+              </select>
+              <span>Sens déplacement</span>
+            </div>
+            <div class="form-group has-float-label col">
+              <select class="form-control form-control-sm mr-1" formControlName="sensRotation">
+                <option *ngFor="let sens of SensRotation" [ngValue]="sens">
+                  {{sens}}
+                </option>
+              </select>
+              <span>Sens rotation</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="list-group-item">
+          <h5 class="card-title">Infos :</h5>
           <div class="row">
             <div class="col-8">
               <div class="row">
                 <div class="col">
-                  T : <span class="badge badge-big badge-info">{{robotPosition?.matchTime / 1000 | number:'3.0-0'}} s</span>
+                  Equipe : <span class="badge badge-big" [style.background]="team==='BLEU'?'#00A1E6':team==='JAUNE'?'#FFBF00':'#555'">{{team}}</span>
                 </div>
                 <div class="col">
-                  S : <span class="badge badge-big badge-info">{{robotPosition?.score | number:'3.0-0'}} pts</span>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  X : <span class="badge badge-big badge-info">{{robotPosition?.x | number:'4.0-0'}}</span>
-                </div>
-                <div class="col">
-                  Y : <span class="badge badge-big badge-info">{{robotPosition?.y | number:'4.0-0'}}</span>
-                </div>
-                <div class="col">
-                  A : <span class="badge badge-big badge-info">{{robotPosition?.angle | number:'3.1-1'}}</span>
+                  Temps : <span class="badge badge-big badge-info">{{robotPosition?.matchTime / 1000 | number:'3.0-0'}} s</span>
                 </div>
               </div>
               <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Ecueil équipe', couleurs: robotPosition?.gameStatus?.couleursEcueilEquipe}"></ng-container>
@@ -60,7 +75,6 @@
               <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Pinces arrière', couleurs: robotPosition?.gameStatus?.pincesArriere}"></ng-container>
             </div>
             <div class="col-4">
-              <div>Equipe :<br><span class="badge badge-big" [style.background]="team==='BLEU'?'#00A1E6':team==='JAUNE'?'#FFBF00':'#555'">{{team}}</span></div>
               <div>Girouette :<br><span class="badge badge-big badge-light">{{robotPosition?.gameStatus?.girouette}}</span></div>
               <div><span class="badge badge-big" [ngClass]="{'badge-success': robotPosition?.gameStatus?.phare, 'badge-danger': !robotPosition?.gameStatus?.phare}">Phare</span></div>
               <div><span class="badge badge-big" [ngClass]="{'badge-success': robotPosition?.gameStatus?.mancheAAir1, 'badge-danger': !robotPosition?.gameStatus?.mancheAAir1}">Manche à air 1</span></div>
@@ -90,21 +104,6 @@
             </div>
           </div>
         </div>
-
-        <div class="list-group-item">
-          <h5 class="card-title">Position demandée :</h5>
-          <div class="row">
-            <div class="col-4">
-              x : <span class="badge badge-big badge-info">{{targetPosition?.x | number:'4.0-0'}}</span>
-            </div>
-            <div class="col-4">
-              y : <span class="badge badge-big badge-info">{{targetPosition?.y | number:'4.0-0'}}</span>
-            </div>
-            <div class="col-4">
-              a : <span class="badge badge-big badge-info">{{targetPosition?.angle | number:'3.1-1'}}</span>
-            </div>
-          </div>
-        </div>
       </div>
 
     </div>
@@ -118,6 +117,20 @@
   <div class="row">
     <div class="col" *ngFor="let couleur of couleurs">
       <div [class]="'couleur couleur--' + couleur"></div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #position let-position="position" let-prefix="prefix">
+  <div class="row">
+    <div class="col">
+      {{prefix}} X : <span class="badge badge-big badge-info">{{position?.x | number:'4.0-0'}}</span>
+    </div>
+    <div class="col">
+      {{prefix}} Y : <span class="badge badge-big badge-info">{{position?.y | number:'4.0-0'}}</span>
+    </div>
+    <div class="col">
+      {{prefix}} A : <span class="badge badge-big badge-info">{{position?.angle | number:'3.1-1'}}</span>
     </div>
   </div>
 </ng-template>

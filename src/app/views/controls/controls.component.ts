@@ -1,21 +1,24 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {ServosService} from '../../services/servos.service';
-import {BehaviorSubject, Observable, of, timer} from 'rxjs';
-import {catchError, map, shareReplay, switchMap, takeUntil} from 'rxjs/operators';
-import {Mouvements} from 'app/constants/mouvements.constants';
-import {CapteursService} from '../../services/capteurs.service';
-import {Capteurs} from '../../models/Capteurs';
-import {Robot} from '../../models/Robot';
-import {AbstractComponent} from '../../components/abstract.component';
-import {Exec} from '../../models/Exec';
-import {RobotsService} from '../../services/robots.service';
-import {RobotsUiService} from '../../services/robots-ui.service';
-import {Servos} from '../../models/Servo';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Mouvements } from 'app/constants/mouvements.constants';
+import { BehaviorSubject, Observable, of, timer } from 'rxjs';
+import { catchError, map, shareReplay, switchMap, takeUntil } from 'rxjs/operators';
+import { AbstractComponent } from '../../components/abstract.component';
+import { Capteurs } from '../../models/Capteurs';
+import { Exec } from '../../models/Exec';
+import { Robot } from '../../models/Robot';
+import { Servos } from '../../models/Servo';
+import { CapteursService } from '../../services/capteurs.service';
+import { RobotsUiService } from '../../services/robots-ui.service';
+import { RobotsService } from '../../services/robots.service';
+import { ServosService } from '../../services/servos.service';
 
 @Component({
   templateUrl: './controls.component.html',
-  styleUrls  : ['./controls.component.scss']
+  styleUrls  : ['./controls.component.scss'],
+  host       : {
+    class: 'd-block container-fluid mt-3',
+  },
 })
 export class ControlsComponent extends AbstractComponent implements OnInit {
 

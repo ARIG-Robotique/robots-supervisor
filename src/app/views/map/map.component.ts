@@ -1,15 +1,17 @@
-import {Component, OnInit} from '@angular/core';
-import {RobotsService} from '../../services/robots.service';
-import {Tables} from '../../constants/tables.constants';
-import {CapteursService} from '../../services/capteurs.service';
-import {MouvementsService} from '../../services/mouvements.service';
-import {Position} from '../../models/Position';
-import {ActivatedRoute} from '@angular/router';
-import {interval} from 'rxjs';
-import {catchError, switchMap, takeUntil} from 'rxjs/operators';
-import {MapPosition} from '../../models/MapPosition';
-import {Robot} from '../../models/Robot';
-import {AbstractComponent} from '../../components/abstract.component';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { interval } from 'rxjs';
+import { catchError, switchMap, takeUntil } from 'rxjs/operators';
+import { AbstractComponent } from '../../components/abstract.component';
+import { SensDeplacement, SensRotation } from '../../constants/mouvements.constants';
+import { Tables } from '../../constants/tables.constants';
+import { MapPosition } from '../../models/MapPosition';
+import { Position } from '../../models/Position';
+import { Robot } from '../../models/Robot';
+import { CapteursService } from '../../services/capteurs.service';
+import { MouvementsService } from '../../services/mouvements.service';
+import { RobotsService } from '../../services/robots.service';
 
 @Component({
   selector   : 'app-map',
@@ -18,9 +20,10 @@ import {AbstractComponent} from '../../components/abstract.component';
 })
 export class MapComponent extends AbstractComponent implements OnInit {
 
-  Tables = Tables;
-
-  Modes: any = [
+  readonly Tables = Tables;
+  readonly SensDeplacement = SensDeplacement;
+  readonly SensRotation = SensRotation;
+  readonly Modes = [
     {name: 'path', label: 'path'},
     {name: 'position', label: 'direct'}
   ];
@@ -28,12 +31,18 @@ export class MapComponent extends AbstractComponent implements OnInit {
   robot: Robot;
   team = '';
 
-  currentMode = 'path';
   currentTable = Tables[0];
   robotPosition: Position;
   targetPosition: MapPosition;
 
-  constructor(private route: ActivatedRoute,
+  form = this.fb.group({
+    mode           : ['path'],
+    sensDeplacement: ['AUTO'],
+    sensRotation   : ['AUTO'],
+  });
+
+  constructor(private fb: FormBuilder,
+              private route: ActivatedRoute,
               protected robotsService: RobotsService,
               private mouvementsService: MouvementsService,
               private capteursService: CapteursService) {
@@ -59,9 +68,10 @@ export class MapComponent extends AbstractComponent implements OnInit {
   positionChanged(position: MapPosition) {
     this.targetPosition = position;
 
-    this.mouvementsService.sendMouvement(this.robot, this.currentMode, {
-      x: position.x,
-      y: position.y,
+    this.mouvementsService.sendMouvement(this.robot, this.form.value.mode, {
+      x   : position.x,
+      y   : position.y,
+      sens: this.form.value.sensDeplacement,
     }).subscribe();
   }
 
@@ -70,6 +80,7 @@ export class MapComponent extends AbstractComponent implements OnInit {
 
     this.mouvementsService.sendMouvement(this.robot, 'orientation', {
       angle: position.angle,
+      sens : this.form.value.sensRotation,
     }).subscribe();
   }
 
