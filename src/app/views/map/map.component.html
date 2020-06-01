@@ -60,10 +60,11 @@
               <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Pinces arrière', couleurs: robotPosition?.gameStatus?.pincesArriere}"></ng-container>
             </div>
             <div class="col-4">
+              <div>Equipe :<br><span class="badge badge-big" [style.background]="team==='BLEU'?'#00A1E6':team==='JAUNE'?'#FFBF00':'#555'">{{team}}</span></div>
+              <div>Girouette :<br><span class="badge badge-big badge-light">{{robotPosition?.gameStatus?.girouette}}</span></div>
               <div><span class="badge badge-big" [ngClass]="{'badge-success': robotPosition?.gameStatus?.phare, 'badge-danger': !robotPosition?.gameStatus?.phare}">Phare</span></div>
               <div><span class="badge badge-big" [ngClass]="{'badge-success': robotPosition?.gameStatus?.mancheAAir1, 'badge-danger': !robotPosition?.gameStatus?.mancheAAir1}">Manche à air 1</span></div>
               <div><span class="badge badge-big" [ngClass]="{'badge-success': robotPosition?.gameStatus?.mancheAAir2, 'badge-danger': !robotPosition?.gameStatus?.mancheAAir2}">Manche à air 2</span></div>
-              <div>Girouette : <span class="badge badge-big badge-light">{{robotPosition?.gameStatus?.girouette}}</span></div>
             </div>
           </div>
         </div>

@@ -20,35 +20,35 @@ export class GameStatusManager {
   // -----------  -----------------------  ----------- //
 
   readonly POS_BOUEES: Array<[number, number, ECouleurBouee]> = [
-    [300, 2000 - 400, ECouleurBouee.ROUGE],
-    [450, 2000 - 510, ECouleurBouee.VERT],
-    [450, 2000 - 1080, ECouleurBouee.ROUGE],
-    [300, 2000 - 1200, ECouleurBouee.VERT],
-    [670, 2000 - 100, ECouleurBouee.ROUGE],
-    [950, 2000 - 400, ECouleurBouee.VERT],
-    [1100, 2000 - 800, ECouleurBouee.ROUGE],
-    [1270, 2000 - 1200, ECouleurBouee.VERT],
-    [1730, 2000 - 1200, ECouleurBouee.ROUGE],
-    [1900, 2000 - 800, ECouleurBouee.VERT],
-    [2050, 2000 - 400, ECouleurBouee.ROUGE],
-    [2330, 2000 - 100, ECouleurBouee.VERT],
-    [2700, 2000 - 400, ECouleurBouee.VERT],
-    [2550, 2000 - 510, ECouleurBouee.ROUGE],
-    [2550, 2000 - 1080, ECouleurBouee.VERT],
-    [2700, 2000 - 1200, ECouleurBouee.ROUGE],
+    [300, 400, ECouleurBouee.ROUGE],
+    [450, 510, ECouleurBouee.VERT],
+    [450, 1080, ECouleurBouee.ROUGE],
+    [300, 1200, ECouleurBouee.VERT],
+    [670, 100, ECouleurBouee.ROUGE],
+    [950, 400, ECouleurBouee.VERT],
+    [1100, 800, ECouleurBouee.ROUGE],
+    [1270, 1200, ECouleurBouee.VERT],
+    [1730, 1200, ECouleurBouee.ROUGE],
+    [1900, 800, ECouleurBouee.VERT],
+    [2050, 400, ECouleurBouee.ROUGE],
+    [2330, 100, ECouleurBouee.VERT],
+    [2700, 400, ECouleurBouee.VERT],
+    [2550, 510, ECouleurBouee.ROUGE],
+    [2550, 1080, ECouleurBouee.VERT],
+    [2700, 1200, ECouleurBouee.ROUGE],
   ];
 
   readonly GRAND_CHENAL_VERT_Y = {
-    'JAUNE': 2000 - 1100,
-    'BLEU' : 2000 - 510,
+    'JAUNE': 1080,
+    'BLEU' : 510,
   };
   readonly GRAND_CHENAL_ROUGE_Y = {
-    'JAUNE': 2000 - 510,
-    'BLEU' : 2000 - 1100,
+    'JAUNE': 510,
+    'BLEU' : 1080,
   };
   readonly GRAND_PORT_Y = {
-    'JAUNE': 2000 - 800,
-    'BLEU' : 2000 - 800,
+    'JAUNE': 800,
+    'BLEU' : 800,
   };
 
   readonly PETIT_CHENAL_VERT_X = {
@@ -122,7 +122,7 @@ export class GameStatusManager {
   private createBouee(x: number, y: number, couleur: ECouleurBouee) {
     return new Konva.Circle({
       x     : x * this.table.imageRatio,
-      y     : (this.table.height - y) * this.table.imageRatio,
+      y     : y * this.table.imageRatio,
       radius: this.DIAMETRE_GOBELET * this.table.imageRatio / 2,
       fill  : couleur === ECouleurBouee.ROUGE ? '#d7171f' : couleur === ECouleurBouee.VERT ? '#007a45' : '#555555',
       stroke: 'white',
@@ -143,7 +143,7 @@ export class GameStatusManager {
 
   private fillCol(group: Konva.Group, bouees: ECouleurBouee[], X: { JAUNE: number; BLEU: number }, team: string) {
     for (let i = group.children.length; i < bouees.length; i++) {
-      const y = (i + 0.6) * this.DIAMETRE_GOBELET;
+      const y = 2000 - (i + 0.6) * this.DIAMETRE_GOBELET;
       group.add(this.createBouee(X[team], y, bouees[i]));
     }
 
@@ -155,7 +155,7 @@ export class GameStatusManager {
   private fillDoubleCol(group: Konva.Group, bouees: ECouleurBouee[], X: { JAUNE: number; BLEU: number }, team: string) {
     for (let i = group.children.length; i < bouees.length; i++) {
       const x = X[team] + (i % 2 === 0 ? -1 : 1) * 0.6 * this.DIAMETRE_GOBELET;
-      const y = (Math.floor(i / 2) + 0.6) * this.DIAMETRE_GOBELET;
+      const y = 2000 - (Math.floor(i / 2) + 0.6) * this.DIAMETRE_GOBELET;
       group.add(this.createBouee(x, y, bouees[i]));
     }
 
