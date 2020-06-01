@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Observable } from 'rxjs';
 import { Exec } from '../../models/Exec';
+import { Log } from '../../models/Log';
 import { ExecsService } from '../../services/execs.service';
 
 @Component({
-  templateUrl: 'paths-modal.component.html',
-  styleUrls  : ['paths-modal.component.scss'],
+  templateUrl: 'logs-modal.component.html',
+  styleUrls  : ['logs-modal.component.scss'],
 })
-export class PathsModalComponent {
+export class LogsModalComponent {
 
   idRobot: number;
   exec: Exec;
-  paths: string[];
-
-  currentIdx = 0;
+  logs$: Observable<Log[]>;
 
   constructor(private modal: NgbActiveModal,
               private execsService: ExecsService) {
@@ -22,20 +22,17 @@ export class PathsModalComponent {
   setRobotExec(idRobot: number, exec: Exec): void {
     this.idRobot = idRobot;
     this.exec = exec;
-    this.execsService.getPaths(idRobot, exec.id)
-      .subscribe(paths => this.paths = paths);
-  }
-
-  getPathFile(file: string): string {
-    return this.execsService.getPathFile(this.idRobot, this.idExec, file);
+    this.logs$ = this.execsService.getLogs(idRobot, exec.id);
   }
 
   close() {
     this.modal.close();
   }
 
-  onSlide(id: string) {
-    this.currentIdx = +id.slice(6);
+  shortClassName(clazz: string) {
+    return clazz.replace(/([^.]+)\./g, (match, part) => {
+      return part[0] + '.';
+    });
   }
 
 }

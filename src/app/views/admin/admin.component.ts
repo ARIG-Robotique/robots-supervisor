@@ -68,10 +68,6 @@ export class AdminComponent extends AbstractComponent implements OnInit, OnDestr
     this.robotsUiService.importLogs(robot);
   }
 
-  showPaths(exec: Exec) {
-    this.robotsUiService.showPaths(this.selectedRobot.id, exec.id);
-  }
-
   deleteExec(exec: Exec) {
     this.execsService.deleteExec(this.selectedRobot.id, exec.id)
       .subscribe(() => {

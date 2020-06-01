@@ -7,7 +7,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faChartBar, faCompass, faDotCircle } from '@fortawesome/free-regular-svg-icons';
+import { faFileAlt, faChartBar, faCompass, faDotCircle } from '@fortawesome/free-regular-svg-icons';
 import {
   faArrowLeft,
   faArrowRight,
@@ -44,6 +44,7 @@ import { AddRobotModalComponent } from './components/add-robot-modal/add-robot-m
 import { AsservInputComponent } from './components/asserv-input/asserv-input.component';
 import { CapteursComponent } from './components/capteurs/capteurs.component';
 import { ImportLogsModalComponent } from './components/import-logs-modal/import-logs-modal.component';
+import { LogsModalComponent } from './components/logs-modal/logs-modal.component';
 import { MapInputComponent } from './components/map-input/map-input.component';
 import { MouvementInputComponent } from './components/mouvement-input/mouvement-input.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -51,6 +52,7 @@ import { PathsModalComponent } from './components/paths-modal/paths-modal.compon
 import { PointsCalculatorModalComponent } from './components/points-calculator-modal/points-calculator-modal.component';
 import { ServoBatchControlComponent } from './components/servo-batch-control/servo-batch-control.component';
 import { ServoControlComponent } from './components/servo-control/servo-control.component';
+import { ExecPipe } from './pipes/exec';
 import { RobotResolve } from './resolvers/RobotResolve';
 import { ServicesMockModule } from './services/mock/services.mock-module';
 import { RobotsUiService } from './services/robots-ui.service';
@@ -73,8 +75,10 @@ registerLocaleData(localeFr);
     AsservInputComponent,
     CapteursComponent,
     ControlsComponent,
+    ExecPipe,
     HomeComponent,
     ImportLogsModalComponent,
+    LogsModalComponent,
     MapComponent,
     MapInputComponent,
     MouvementInputComponent,
@@ -106,6 +110,7 @@ registerLocaleData(localeFr);
   entryComponents: [
     AddRobotModalComponent,
     ImportLogsModalComponent,
+    LogsModalComponent,
     PathsModalComponent,
     PointsCalculatorModalComponent,
   ],
@@ -131,6 +136,7 @@ export class AppModule {
       faDatabase,
       faDotCircle,
       faEdit,
+      faFileAlt,
       faHeartbeat,
       faInfoCircle,
       faMap,

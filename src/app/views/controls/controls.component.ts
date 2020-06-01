@@ -62,7 +62,11 @@ export class ControlsComponent extends AbstractComponent implements OnInit {
   }
 
   showPaths(exec: Exec) {
-    this.robotsUiService.showPaths(this.robot.id, exec.id);
+    this.robotsUiService.showPaths(this.robot.id, exec);
+  }
+
+  showLogs(exec: Exec) {
+    this.robotsUiService.showLogs(this.robot.id, exec);
   }
 
   setTirette(present: boolean) {

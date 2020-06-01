@@ -1,8 +1,9 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {httpurl} from '../constants/httpurl.constants';
-import {buildUrl} from '../utils/buildUrl';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { httpurl } from '../constants/httpurl.constants';
+import { Log } from '../models/Log';
+import { buildUrl } from '../utils/buildUrl';
 
 @Injectable()
 export class ExecsService {
@@ -13,6 +14,11 @@ export class ExecsService {
   deleteExec(idRobot: number, idExec: string): Observable<unknown> {
     const url = buildUrl(httpurl.exec, {idRobot, idExec});
     return this.http.delete(url);
+  }
+
+  getLogs(idRobot: number, idExec: string): Observable<Log[]> {
+    const url = buildUrl(httpurl.execLogs, {idRobot, idExec});
+    return this.http.get<Log[]>(url);
   }
 
   getPaths(idRobot: number, idExec: string): Observable<string[]> {

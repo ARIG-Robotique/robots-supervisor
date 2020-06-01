@@ -1,16 +1,14 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {Robot} from '../../models/Robot';
-import {RobotsService} from '../../services/robots.service';
-import {environment} from '../../../environments/environment';
-import {Store} from '@ngrx/store';
-import {AbstractComponent} from '../abstract.component';
-import {addRobot, editRobot} from '../../store/robots.actions';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { Robot } from '../../models/Robot';
+import { RobotsService } from '../../services/robots.service';
+import { addRobot, editRobot } from '../../store/robots.actions';
+import { AbstractComponent } from '../abstract.component';
 
 @Component({
   selector   : 'app-add-robor-modal',
   templateUrl: './add-robot-modal.component.html',
-  styleUrls  : ['./add-robot-modal.component.scss'],
   providers  : [RobotsService]
 })
 export class AddRobotModalComponent extends AbstractComponent {

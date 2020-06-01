@@ -4,3 +4,7 @@ $secondary: #18BC9C;
 $page-content-height: calc(100vh - 102px);
 
 $enable-rounded:   false;
+
+@import 'bt-variables';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';

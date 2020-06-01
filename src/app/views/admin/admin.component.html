@@ -38,14 +38,8 @@
       </h5>
       <ul class="list-group list-group-flush">
         <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-            *ngFor="let exec of execs$ | async"
-            (click)="showPaths(exec)">
-          <div>
-            <strong>{{exec.id}}</strong> :
-            le {{exec.dateStart | date: 'mediumDate'}}
-            de {{exec.dateStart | date: 'shortTime'}}
-            à {{exec.dateEnd | date: 'shortTime'}}
-          </div>
+            *ngFor="let exec of execs$ | async">
+          {{exec | exec}}
 
           <span class="ml-auto"></span>
 

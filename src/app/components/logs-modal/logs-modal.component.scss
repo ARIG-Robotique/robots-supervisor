@@ -1,0 +1,43 @@
+@import '../../../styles/variables';
+
+.logs-container {
+  max-height: 800px;
+  font-family: monospace;
+  list-style: none;
+  padding: 0;
+}
+
+.log-item > * {
+  margin-right: 1ch;
+}
+
+.log-date {
+  display: inline-block;
+  color: $light;
+}
+
+.log-level {
+  display: inline-block;
+  width: 5ch;
+  font-weight: bold;
+
+  &--DEBUG,
+  &--INFO {
+    color: $info;
+  }
+
+  &--WARN {
+    color: $warning;
+  }
+
+  &--ERROR,
+  &--FATAL {
+    color: $danger;
+  }
+}
+
+.log-clazz {
+  display: inline-block;
+  font-size: $font-size-sm;
+  color: $light;
+}

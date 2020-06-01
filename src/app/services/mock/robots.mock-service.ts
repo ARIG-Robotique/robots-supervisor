@@ -49,7 +49,14 @@ export class RobotsMockService extends RobotsService {
   }
 
   getRobotExecs(idRobot: number): Observable<Exec[]> {
-    return of([]);
+    return of([
+      {
+        id       : '1234',
+        idRobot,
+        dateStart: new Date(),
+        dateEnd  : new Date(new Date().getTime() + 100000),
+      },
+    ]);
   }
 
   copyLogs(idRobot: number): Observable<unknown> {

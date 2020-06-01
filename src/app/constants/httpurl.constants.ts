@@ -3,6 +3,7 @@ export const httpurl = {
   robotAction : '/robot/:idRobot',
   robotExecs  : '/robot/:idRobot/execs',
   exec        : '/robot/:idRobot/execs/:idExec',
+  execLogs    : '/robot/:idRobot/execs/:idExec/logs',
   execPaths   : '/robot/:idRobot/execs/:idExec/paths',
   execPathFile: '/robot/:idRobot/execs/:idExec/paths/:file',
   copyLogs    : '/robot/:idRobot/copyLogs',
