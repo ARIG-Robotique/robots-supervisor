@@ -14,6 +14,9 @@ export interface GameStatus {
   phare: boolean;
   mancheAAir1: boolean;
   mancheAAir2: boolean;
+  ecueilEquipePris: boolean;
+  ecueilCommunEquipePris: boolean;
+  ecueilCommunAdversePris: boolean;
   girouette: EDirectionGirouette;
   couleursEcueilEquipe: ECouleurBouee[];
   couleursEcueilCommunEquipe: ECouleurBouee[];
