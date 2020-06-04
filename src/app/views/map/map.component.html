@@ -59,7 +59,7 @@
         <div class="list-group-item">
           <h5 class="card-title">Infos :</h5>
           <div class="row">
-            <div class="col-8">
+            <div class="col">
               <div class="row">
                 <div class="col">
                   Equipe : <span class="badge badge-big" [style.background]="team==='BLEU'?'#00A1E6':team==='JAUNE'?'#FFBF00':'#555'">{{team}}</span>
@@ -68,20 +68,20 @@
                   Temps : <span class="badge badge-big badge-info">{{robotPosition?.matchTime / 1000 | number:'3.0-0'}} s</span>
                 </div>
               </div>
-              <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Ecueil équipe', couleurs: robotPosition?.gameStatus?.couleursEcueilEquipe}"></ng-container>
-              <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Ecueil commun équipe', couleurs: robotPosition?.gameStatus?.couleursEcueilCommunEquipe}"></ng-container>
-              <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Ecueil commun adverse', couleurs: robotPosition?.gameStatus?.couleursEcueilCommunAdverse}"></ng-container>
-              <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Pinces avant', couleurs: robotPosition?.gameStatus?.pincesAvant}"></ng-container>
-              <ng-container *ngTemplateOutlet="listeCouleurs; context: {title: 'Pinces arrière', couleurs: robotPosition?.gameStatus?.pincesArriere}"></ng-container>
+              <div *ngTemplateOutlet="listeCouleurs; context: {title: 'Ecueil équipe', couleurs: robotPosition?.gameStatus?.couleursEcueilEquipe}"></div>
+              <div *ngTemplateOutlet="listeCouleurs; context: {title: 'Ecueil commun équipe', couleurs: robotPosition?.gameStatus?.couleursEcueilCommunEquipe}"></div>
+              <div *ngTemplateOutlet="listeCouleurs; context: {title: 'Ecueil commun adverse', couleurs: robotPosition?.gameStatus?.couleursEcueilCommunAdverse}"></div>
+              <div *ngTemplateOutlet="listeCouleurs; context: {title: 'Pinces avant', couleurs: robotPosition?.gameStatus?.pincesAvant}"></div>
+              <div *ngTemplateOutlet="listeCouleurs; context: {title: 'Pinces arrière', couleurs: robotPosition?.gameStatus?.pincesArriere}"></div>
             </div>
-            <div class="col-4">
-              <div>Girouette :<br><span class="badge badge-big badge-light">{{robotPosition?.gameStatus?.girouette}}</span></div>
-              <div><span class="badge badge-big" [ngClass]="{'badge-success': robotPosition?.gameStatus?.phare, 'badge-danger': !robotPosition?.gameStatus?.phare}">Phare</span></div>
-              <div><span class="badge badge-big" [ngClass]="{'badge-success': robotPosition?.gameStatus?.mancheAAir1, 'badge-danger': !robotPosition?.gameStatus?.mancheAAir1}">Manche à air 1</span></div>
-              <div><span class="badge badge-big" [ngClass]="{'badge-success': robotPosition?.gameStatus?.mancheAAir2, 'badge-danger': !robotPosition?.gameStatus?.mancheAAir2}">Manche à air 2</span></div>
-              <div><span class="badge badge-big" [ngClass]="{'badge-success': robotPosition?.gameStatus?.ecueilEquipePris, 'badge-danger': !robotPosition?.gameStatus?.ecueilEquipePris}">Ecueil Equipe</span></div>
-              <div><span class="badge badge-big" [ngClass]="{'badge-success': robotPosition?.gameStatus?.ecueilCommunEquipePris, 'badge-danger': !robotPosition?.gameStatus?.ecueilCommunEquipePris}">Ecueil com. Equ.</span></div>
-              <div><span class="badge badge-big" [ngClass]="{'badge-success': robotPosition?.gameStatus?.ecueilCommunAdversePris, 'badge-danger': !robotPosition?.gameStatus?.ecueilCommunAdversePris}">Ecueil com. Adv.</span></div>
+            <div style="width: 150px">
+              <div>Girouette : <span class="badge badge-big badge-light">{{robotPosition?.gameStatus?.girouette}}</span></div>
+              <div *ngTemplateOutlet="status; context: {title: 'Phare', status: robotPosition?.gameStatus?.phare}"></div>
+              <div *ngTemplateOutlet="status; context: {title: 'Manche à air 1', status: robotPosition?.gameStatus?.mancheAAir1}"></div>
+              <div *ngTemplateOutlet="status; context: {title: 'Manche à air 2', status: robotPosition?.gameStatus?.mancheAAir2}"></div>
+              <div *ngTemplateOutlet="status; context: {title: 'Ecueil Equipe', status: robotPosition?.gameStatus?.ecueilEquipePris}"></div>
+              <div *ngTemplateOutlet="status; context: {title: 'Ecueil com. Equ.', status: robotPosition?.gameStatus?.ecueilCommunEquipePris}"></div>
+              <div *ngTemplateOutlet="status; context: {title: 'Ecueil com. Adv.', status: robotPosition?.gameStatus?.ecueilCommunAdversePris}"></div>
             </div>
           </div>
         </div>
@@ -136,4 +136,8 @@
       {{prefix}} A : <span class="badge badge-big badge-info">{{position?.angle | number:'3.1-1'}}</span>
     </div>
   </div>
+</ng-template>
+
+<ng-template #status let-title="title" let-status="status">
+  <div><span class="badge badge-big" [ngClass]="{'badge-success': status, 'badge-danger': !status}">{{title}}</span></div>
 </ng-template>

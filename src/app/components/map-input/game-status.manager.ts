@@ -104,7 +104,7 @@ export class GameStatusManager {
     this.petitPort.destroy();
   }
 
-  update(status: GameStatus, team: string) {
+  update(status: Partial<GameStatus>, team: string) {
     status.bouees.forEach((bouee, i) => {
       if (bouee) {
         this.bouees.children[i].opacity(0);

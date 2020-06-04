@@ -37,6 +37,6 @@ export interface Position {
   score: number;
   currentAction: string;
   actions: Action[];
-  gameStatus: GameStatus;
+  gameStatus: Partial<GameStatus>;
   scoreStatus: { [K: string]: number };
 }
