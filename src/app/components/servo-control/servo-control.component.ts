@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {Robot} from '../../models/Robot';
-import {ServoConfig} from '../../models/Servo';
+import { ServoConfig, ServoPosition } from '../../models/Servo';
 import {ServosService} from '../../services/servos.service';
 
 @Component({
@@ -12,6 +12,8 @@ export class ServoControlComponent {
 
   @Input() servo: ServoConfig;
   @Input() robot: Robot;
+
+  trackByName = (item: ServoPosition) => item.name;
 
   constructor(private servosService: ServosService) {
   }

@@ -1,5 +1,5 @@
 <ul class="list-group-item list-unstyled">
-  <li *ngFor="let capteur of capteurs?.numerique | keyvalue">
+  <li *ngFor="let capteur of capteurs?.numerique | keyvalue; trackBy: trackByKey">
     <fa-icon [icon]="['far', 'dot-circle']"
              class="mr-2"
              [class.text-success]="capteur.value"
@@ -9,10 +9,10 @@
 </ul>
 
 <ul class="list-group-item list-unstyled">
-  <li *ngFor="let entry of capteurs?.text | keyvalue">
+  <li *ngFor="let entry of capteurs?.text | keyvalue; trackBy: trackByKey">
     <strong>{{entry.key}}</strong> : {{entry.value}}
   </li>
-  <li *ngFor="let entry of capteurs?.analogique | keyvalue">
+  <li *ngFor="let entry of capteurs?.analogique | keyvalue; trackBy: trackByKey">
     <strong>{{entry.key}}</strong> : {{entry.value}}
   </li>
 </ul>

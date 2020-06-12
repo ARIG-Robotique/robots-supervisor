@@ -31,6 +31,8 @@ export class ControlsComponent extends AbstractComponent implements OnInit {
 
   refreshServos$ = new BehaviorSubject<void>(null);
 
+  trackById = (item: any) => item.id;
+
   constructor(private route: ActivatedRoute,
               private robotsService: RobotsService,
               private robotsUiService: RobotsUiService,

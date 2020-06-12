@@ -88,7 +88,7 @@
             <div class="col-7">
               <h5 class="card-title">Actions : <span class="badge badge-info">{{robotPosition?.actions.length}}</span></h5>
               En cours : {{robotPosition?.currentAction}}
-              <div *ngFor="let action of robotPosition?.actions"
+              <div *ngFor="let action of robotPosition?.actions; trackBy: trackByUuid"
                    ngbTooltip="{{action.uuid}}" placement="left">
                 <span class="badge badge-big mr-2"
                       [ngClass]="{'badge-success': action.valid, 'badge-danger': !action.valid}">{{action.order | number:'4.0-0'}}</span>
@@ -97,7 +97,7 @@
             </div>
             <div class="col-5">
               <h5 class="card-title">Score : <span class="badge badge-info">{{robotPosition?.score}}</span></h5>
-              <div *ngFor="let score of robotPosition?.scoreStatus | keyvalue">
+              <div *ngFor="let score of robotPosition?.scoreStatus | keyvalue; trackBy: trackByKey">
                 <span class="badge badge-big badge-primary mr-2">{{score.value | number:'2.0-0'}}</span>
                 {{score.key | titlecase}}
               </div>
@@ -115,7 +115,7 @@
     <span class="col">{{title}} :</span>
   </div>
   <div class="row">
-    <div class="col" *ngFor="let couleur of couleurs">
+    <div class="col" *ngFor="let couleur of couleurs; trackBy: trackByIndex">
       <div [class]="'couleur couleur--' + couleur"></div>
     </div>
   </div>

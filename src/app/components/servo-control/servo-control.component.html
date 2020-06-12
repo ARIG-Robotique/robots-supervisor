@@ -58,7 +58,8 @@
 
 <div class="btn-group btn-group-toggle d-inline-block" ngbRadioGroup name="positionList"
      [(ngModel)]="servo.currentPosition" (ngModelChange)="setPosition()">
-  <label ngbButtonLabel class="btn-outline-secondary btn-sm" *ngFor="let pos of servo.positions">
+  <label ngbButtonLabel class="btn-outline-secondary btn-sm"
+         *ngFor="let pos of servo.positions; trackBy: trackByName">
     <input ngbButton type="radio" [value]="pos.value"> {{pos.name}}
   </label>
 </div>

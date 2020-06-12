@@ -1,3 +1,4 @@
+import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -6,6 +7,7 @@ import { catchError, switchMap, takeUntil } from 'rxjs/operators';
 import { AbstractComponent } from '../../components/abstract.component';
 import { SensDeplacement, SensRotation } from '../../constants/mouvements.constants';
 import { Tables } from '../../constants/tables.constants';
+import { Action } from '../../models/Action';
 import { MapPosition } from '../../models/MapPosition';
 import { Position } from '../../models/Position';
 import { Robot } from '../../models/Robot';
@@ -40,6 +42,10 @@ export class MapComponent extends AbstractComponent implements OnInit {
     sensDeplacement: ['AUTO'],
     sensRotation   : ['AUTO'],
   });
+
+  trackByUuid = (action: Action) => action.uuid;
+  trackByKey = (keyvalue: KeyValue<string, any>) => keyvalue.key;
+  trackByIndex = (value: any, i: number) => i;
 
   constructor(private fb: FormBuilder,
               private route: ActivatedRoute,

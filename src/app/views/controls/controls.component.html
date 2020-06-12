@@ -1,7 +1,7 @@
 <div class="row">
 
   <div class="col-6 controls-list">
-    <div class="card mb-3" *ngFor="let servoGroup of servos$ | async">
+    <div class="card mb-3" *ngFor="let servoGroup of servos$ | async; trackBy: trackById">
       <h5 class="card-header d-flex justify-content-between">
         <span>
           <fa-icon icon="cogs"></fa-icon>
@@ -15,7 +15,7 @@
       </h5>
 
       <div class="list-group list-group-flush">
-        <app-servo-control *ngFor="let servo of servoGroup.servos"
+        <app-servo-control *ngFor="let servo of servoGroup.servos; trackBy: trackById"
                            class="list-group-item p-2"
                            [robot]="robot" [servo]="servo">
         </app-servo-control>
