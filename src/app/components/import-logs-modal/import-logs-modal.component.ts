@@ -18,7 +18,7 @@ export class ImportLogsModalComponent implements OnInit {
 
   private ws: WebSocket;
 
-  @ViewChild('logsOutput', {static: false})
+  @ViewChild('logsOutput')
   private logoutput: ElementRef<HTMLTextAreaElement>;
 
   constructor(private modal: NgbActiveModal,

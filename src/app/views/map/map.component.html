@@ -1,13 +1,10 @@
 <div class="row no-gutters">
-  <div class="col">
-    <app-map-input [table]="currentTable"
-                   [robotPosition]="robotPosition"
-                   [team]="team"
-                   (positionChanged)="positionChanged($event)"
-                   (angleChanged)="angleChanged($event)">
-    </app-map-input>
-  </div>
-
+  <app-map-input [table]="currentTable"
+                 [robotPosition]="robotPosition"
+                 [team]="team"
+                 (positionChanged)="positionChanged($event)"
+                 (angleChanged)="angleChanged($event)">
+  </app-map-input>
 
   <div class="col">
     <div class="card">
