@@ -31,7 +31,7 @@
     "bootstrap-float-label": "4.0.2",
     "core-js": "^3.4.0",
     "date-fns": "^2.14.0",
-    "konva": "^4.0.17",
+    "konva": "^6.0.0",
     "lodash": "^4.17.15",
     "ngx-toastr": "^11.2.1",
     "rxjs": "^6.5.5",
