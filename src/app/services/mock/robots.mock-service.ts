@@ -9,7 +9,6 @@ const MOCK_ROBOT: Robot = {
   id        : 1,
   host      : '127.0.0.1',
   name      : 'Mock',
-  dir       : '',
   simulateur: true,
   login     : null,
   pwd       : null,

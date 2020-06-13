@@ -18,7 +18,6 @@ export class AddRobotModalComponent extends AbstractComponent {
     name      : '',
     host      : '',
     simulateur: false,
-    dir       : '',
     login     : '',
     pwd       : '',
   };
