@@ -1,18 +1,15 @@
 # robots-supervisor
 
-Travis CI : [![Travis branch dev](https://img.shields.io/travis/ARIG-Robotique/robots-supervisor/dev.svg?style=plastic)](https://travis-ci.org/ARIG-Robotique/robots-supervisor)\
-Docker : [![Docker Build Statu](https://img.shields.io/docker/build/arig/robots-supervisor.svg?style=plastic)](https://hub.docker.com/r/arig/robots-supervisor/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/arig/robots-supervisor.svg?style=plastic)](https://hub.docker.com/r/arig/robots-supervisor/)
-[![Docker Automated build](https://img.shields.io/docker/automated/arig/robots-supervisor.svg?style=plastic)](https://hub.docker.com/r/arig/robots-supervisor/)\
-Codecov : *Prochainement !*
+[![Build Status](https://img.shields.io/github/workflow/status/ARIG-Robotique/robots-supervisor/CI?logo=github)](https://github.com/ARIG-Robotique/robots-supervisor/actions)
+[![Docker Status](https://img.shields.io/docker/build/arig/robots-supervisor?logo=docker)](https://hub.docker.com/r/arig/robots-supervisor/)
 
 Monitoring et réglage des robots.
 
 ## Pour développer en local :
 
 ```bash
-$ npm install
-$ npm run start
+$ yarn --production=false
+$ yarn start
 ```
 Application disponible sur `http://localhost:4200` (dev).
 
