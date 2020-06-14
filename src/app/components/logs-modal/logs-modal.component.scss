@@ -1,7 +1,8 @@
 @import '../../../styles/variables';
 
 .logs-container {
-  max-height: 800px;
+  max-height: calc(100vh - 200px);
+  overflow-y: scroll;
   font-family: monospace;
   list-style: none;
   padding: 0;
