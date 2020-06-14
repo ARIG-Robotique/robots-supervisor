@@ -10,7 +10,7 @@
 
         <app-servo-batch-control *ngIf="servoGroup.batch?.length"
                                  [robot]="robot" [group]="servoGroup"
-                                 (change)="refreshServos$.next()">
+                                 (changePosition)="refreshServos$.next()">
         </app-servo-batch-control>
       </h5>
 

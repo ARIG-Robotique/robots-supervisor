@@ -71,7 +71,7 @@ export class NavbarComponent extends AbstractComponent implements OnInit {
   }
 
   openCalculator() {
-    this.modal.open(PointsCalculatorModalComponent, {size: 'lg'})
+    this.modal.open(PointsCalculatorModalComponent, {size: 'lg'});
   }
 
 }

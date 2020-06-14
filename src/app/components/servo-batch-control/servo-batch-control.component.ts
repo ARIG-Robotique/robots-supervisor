@@ -12,7 +12,7 @@ export class ServoBatchControlComponent {
 
   @Input() group: ServoGroup;
   @Input() robot: Robot;
-  @Output() change = new EventEmitter<void>();
+  @Output() changePosition = new EventEmitter<void>();
 
   currentPosition: number;
 
@@ -23,7 +23,7 @@ export class ServoBatchControlComponent {
 
   setPosition() {
     this.servosService.setPositionBatch(this.robot, this.group, this.currentPosition)
-      .subscribe(() => this.change.emit());
+      .subscribe(() => this.changePosition.emit());
   }
 
 }

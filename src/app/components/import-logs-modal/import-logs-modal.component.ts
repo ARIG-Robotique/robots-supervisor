@@ -1,9 +1,9 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {httpurl} from '../../constants/httpurl.constants';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {ToastrService} from 'ngx-toastr';
-import {environment} from '../../../environments/environment';
-import {Robot} from '../../models/Robot';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
+import { environment } from '../../../environments/environment';
+import { httpurl } from '../../constants/httpurl.constants';
+import { Robot } from '../../models/Robot';
 
 @Component({
   templateUrl: './import-logs-modal.component.html',
@@ -54,6 +54,11 @@ export class ImportLogsModalComponent implements OnInit {
 
     this.ws.onopen = () => {
       this.ws.send(JSON.stringify({action: 'importLogs', data: {idRobot: this.robot.id}}));
+    };
+
+    this.ws.onerror = () => {
+      this.toastService.error('Erreur WebSocket');
+      this.modal.close();
     };
   }
 

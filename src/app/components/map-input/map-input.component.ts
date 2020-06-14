@@ -1,10 +1,10 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
-import {Table} from '../../models/Table';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import Konva from 'konva';
-import {Point} from '../../models/Point';
-import {Constants} from '../../constants/constants';
-import {Position} from '../../models/Position';
-import {MapPosition} from '../../models/MapPosition';
+import { Constants } from '../../constants/constants';
+import { MapPosition } from '../../models/MapPosition';
+import { Point } from '../../models/Point';
+import { Position } from '../../models/Position';
+import { Table } from '../../models/Table';
 import { GameStatusManager } from './game-status.manager';
 
 @Component({
@@ -406,7 +406,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
     const imageLoader = new Image();
 
-    imageLoader.onload = function () {
+    imageLoader.onload = () => {
       robot.add(new Konva.Image({
         x            : -Constants.robot.size.width / 2,
         y            : -Constants.robot.size.height / 2,
@@ -417,8 +417,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         shadowOpacity: 1,
         shadowBlur   : 20
       }));
-
-    }.bind(this);
+    };
 
     imageLoader.src = 'assets/robots/nerell.png';
 

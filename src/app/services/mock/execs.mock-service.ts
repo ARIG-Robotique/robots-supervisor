@@ -7,7 +7,7 @@ import { ExecsService } from '../execs.service';
 export class ExecsMockService extends ExecsService {
 
   deleteExec(idRobot: number, idExec: string): Observable<unknown> {
-    return of(null)
+    return of(null);
   }
 
   getLogs(idRobot: number, idExec: string): Observable<Log[]> {
@@ -61,7 +61,7 @@ export class ExecsMockService extends ExecsService {
   }
 
   getPaths(idRobot: number, idExec: string): Observable<string[]> {
-    return of([])
+    return of([]);
   }
 
 }

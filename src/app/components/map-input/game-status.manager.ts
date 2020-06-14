@@ -39,29 +39,29 @@ export class GameStatusManager {
   ];
 
   readonly GRAND_CHENAL_VERT_Y = {
-    'JAUNE': 1080,
-    'BLEU' : 510,
+    JAUNE: 1080,
+    BLEU : 510,
   };
   readonly GRAND_CHENAL_ROUGE_Y = {
-    'JAUNE': 510,
-    'BLEU' : 1080,
+    JAUNE: 510,
+    BLEU : 1080,
   };
   readonly GRAND_PORT_Y = {
-    'JAUNE': 800,
-    'BLEU' : 800,
+    JAUNE: 800,
+    BLEU : 800,
   };
 
   readonly PETIT_CHENAL_VERT_X = {
-    'JAUNE': 1075,
-    'BLEU' : 1675,
+    JAUNE: 1075,
+    BLEU : 1675,
   };
   readonly PETIT_CHENAL_ROUGE_X = {
-    'JAUNE': 1325,
-    'BLEU' : 1925,
+    JAUNE: 1325,
+    BLEU : 1925,
   };
   readonly PETIT_PORT_X = {
-    'JAUNE': 1200,
-    'BLEU' : 1800,
+    JAUNE: 1200,
+    BLEU : 1800,
   };
 
   bouees: Konva.Group;

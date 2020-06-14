@@ -5,7 +5,7 @@ import { Rect } from './Rect';
 import { GameStatus } from './sailTheWorld/GameStatus';
 
 export interface MouvementPath {
-  type: 'PATH',
+  type: 'PATH';
   path: Point[];
 }
 
