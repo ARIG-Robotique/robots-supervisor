@@ -65,11 +65,11 @@
                   Temps : <span class="badge badge-big badge-info">{{robotPosition?.matchTime / 1000 | number:'3.0-0'}} s</span>
                 </div>
               </div>
-              <div *ngTemplateOutlet="listeCouleurs; context: {title: 'Ecueil équipe', couleurs: robotPosition?.gameStatus?.couleursEcueilEquipe}"></div>
-              <div *ngTemplateOutlet="listeCouleurs; context: {title: 'Ecueil commun équipe', couleurs: robotPosition?.gameStatus?.couleursEcueilCommunEquipe}"></div>
-              <div *ngTemplateOutlet="listeCouleurs; context: {title: 'Ecueil commun adverse', couleurs: robotPosition?.gameStatus?.couleursEcueilCommunAdverse}"></div>
-              <div *ngTemplateOutlet="listeCouleurs; context: {title: 'Pinces avant', couleurs: robotPosition?.gameStatus?.pincesAvant}"></div>
-              <div *ngTemplateOutlet="listeCouleurs; context: {title: 'Pinces arrière', couleurs: robotPosition?.gameStatus?.pincesArriere}"></div>
+              <div *ngTemplateOutlet="listeCouleurs; context: {title: 'Ecueil équipe', couleurs: robotPosition?.gameStatus?.couleursEcueilEquipe, pris: robotPosition?.gameStatus?.ecueilEquipePris}"></div>
+              <div *ngTemplateOutlet="listeCouleurs; context: {title: 'Ecueil commun équipe', couleurs: robotPosition?.gameStatus?.couleursEcueilCommunEquipe, pris: robotPosition?.gameStatus?.ecueilCommunEquipePris}"></div>
+              <div *ngTemplateOutlet="listeCouleurs; context: {title: 'Ecueil commun adverse', couleurs: robotPosition?.gameStatus?.couleursEcueilCommunAdverse, pris: robotPosition?.gameStatus?.ecueilCommunAdversePris}"></div>
+              <div *ngTemplateOutlet="listeCouleurs; context: {title: 'Pinces avant', couleurs: robotPosition?.gameStatus?.pincesAvant, pris: false}"></div>
+              <div *ngTemplateOutlet="listeCouleurs; context: {title: 'Pinces arrière', couleurs: robotPosition?.gameStatus?.pincesArriere, pris: false}"></div>
             </div>
             <div style="width: 150px">
               <div>Girouette : <span class="badge badge-big badge-light">{{robotPosition?.gameStatus?.girouette}}</span></div>
@@ -110,13 +110,13 @@
   </div>
 </div>
 
-<ng-template #listeCouleurs let-title="title" let-couleurs="couleurs">
+<ng-template #listeCouleurs let-title="title" let-couleurs="couleurs" let-pris="pris">
   <div class="row">
     <span class="col">{{title}} :</span>
   </div>
   <div class="row">
     <div class="col" *ngFor="let couleur of couleurs; trackBy: trackByIndex">
-      <div [class]="'couleur couleur--' + couleur"></div>
+      <div [class]="'couleur couleur--' + couleur + ' pris--' + pris"></div>
     </div>
   </div>
 </ng-template>
