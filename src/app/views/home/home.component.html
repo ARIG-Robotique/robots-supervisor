@@ -1,4 +1,18 @@
 <div class="container pt-5">
   <p class="text-center">Veuillez choisir un robot dans la barre de navigation.</p>
   <img class="d-block m-auto" src="assets/logo.png">
+
+  <button class="btn btn-primary" (click)="loadIcons()">
+    Icones
+  </button>
+
+  <ul class="list-group" style="flex-direction: row; flex-wrap: wrap;">
+    <li class="list-group-item d-flex"
+        style="width: 25%"
+        *ngFor="let icon of icons">
+      <fa-icon [icon]="icon" size="2x"></fa-icon>
+      <span class="ml-3">{{icon | json}}</span>
+    </li>
+  </ul>
+
 </div>
