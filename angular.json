@@ -7,7 +7,7 @@
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
-      "prefix": "supervisor",
+      "prefix": "arig",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"

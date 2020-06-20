@@ -10,14 +10,14 @@ import { RobotsUiService } from '../../services/robots-ui.service';
 import { RobotsService } from '../../services/robots.service';
 import { selectRobots } from '../../store/robots.selector';
 import { AbstractComponent } from '../abstract.component';
-import { PointsCalculatorModalComponent } from '../points-calculator-modal/points-calculator-modal.component';
+import { PointsCalculatorModalComponent } from '../../modals/points-calculator-modal/points-calculator-modal.component';
 
 @Component({
-  selector   : 'app-navbar',
-  templateUrl: './navbar.component.html',
+  selector   : 'arig-app-navbar',
+  templateUrl: './app-navbar.component.html',
   providers  : [NgbDropdownConfig],
 })
-export class NavbarComponent extends AbstractComponent implements OnInit {
+export class AppNavbarComponent extends AbstractComponent implements OnInit {
 
   robots$: Observable<Robot[]>;
   selectedRobot: Robot;

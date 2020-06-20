@@ -1,10 +1,10 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Robot} from '../../models/Robot';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Robot } from '../../models/Robot';
 import { ServoGroup, ServoPosition } from '../../models/Servo';
-import {ServosService} from '../../services/servos.service';
+import { ServosService } from '../../services/servos.service';
 
 @Component({
-  selector   : 'app-servo-batch-control',
+  selector   : 'arig-servo-batch-control',
   templateUrl: './servo-batch-control.component.html',
   styleUrls  : ['./servo-batch-control.component.scss']
 })

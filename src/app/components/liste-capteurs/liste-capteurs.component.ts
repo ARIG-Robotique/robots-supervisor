@@ -3,10 +3,10 @@ import { Component, Input } from '@angular/core';
 import { Capteurs } from '../../models/Capteurs';
 
 @Component({
-  selector   : 'app-capteurs',
-  templateUrl: './capteurs.component.html',
+  selector   : 'arig-liste-capteurs',
+  templateUrl: './liste-capteurs.component.html',
 })
-export class CapteursComponent {
+export class ListeCapteursComponent {
 
   @Input() capteurs: Capteurs;
 

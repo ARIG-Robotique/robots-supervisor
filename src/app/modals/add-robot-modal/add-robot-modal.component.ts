@@ -1,15 +1,13 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
+import { AbstractComponent } from '../../components/abstract.component';
 import { Robot } from '../../models/Robot';
 import { RobotsService } from '../../services/robots.service';
 import { addRobot, editRobot } from '../../store/robots.actions';
-import { AbstractComponent } from '../abstract.component';
 
 @Component({
-  selector   : 'app-add-robor-modal',
-  templateUrl: './add-robot-modal.component.html',
-  providers  : [RobotsService]
+  templateUrl: './add-robot-modal.component.html'
 })
 export class AddRobotModalComponent extends AbstractComponent {
 

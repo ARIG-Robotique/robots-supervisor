@@ -2,8 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Exec } from '../models/Exec';
 import { formatDate } from '../utils/formatDate';
 
-@Pipe({name: 'exec'})
-export class ExecPipe implements PipeTransform {
+@Pipe({name: 'arigExec'})
+export class ArigExecPipe implements PipeTransform {
 
   transform(exec: Exec): any {
     return `${exec.id} :

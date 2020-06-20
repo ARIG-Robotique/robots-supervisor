@@ -8,17 +8,17 @@
           Servos: {{servoGroup.name}}
         </span>
 
-        <app-servo-batch-control *ngIf="servoGroup.batch?.length"
-                                 [robot]="robot" [group]="servoGroup"
-                                 (changePosition)="refreshServos$.next()">
-        </app-servo-batch-control>
+        <arig-servo-batch-control *ngIf="servoGroup.batch?.length"
+                                  [robot]="robot" [group]="servoGroup"
+                                  (changePosition)="refreshServos$.next()">
+        </arig-servo-batch-control>
       </h5>
 
       <div class="list-group list-group-flush">
-        <app-servo-control *ngFor="let servo of servoGroup.servos; trackBy: trackById"
-                           class="list-group-item p-2"
-                           [robot]="robot" [servo]="servo">
-        </app-servo-control>
+        <arig-servo-control *ngFor="let servo of servoGroup.servos; trackBy: trackById"
+                            class="list-group-item p-2"
+                            [robot]="robot" [servo]="servo">
+        </arig-servo-control>
       </div>
     </div>
   </div>
@@ -31,12 +31,14 @@
       </h5>
 
       <div class="list-group list-group-flush">
-        <app-asserv-input class="list-group-item p-2"
-                          [robot]="robot"
-                          type="DIST"></app-asserv-input>
-        <app-asserv-input class="list-group-item p-2"
-                          [robot]="robot"
-                          type="ANGLE"></app-asserv-input>
+        <arig-asserv-input class="list-group-item p-2"
+                           [robot]="robot"
+                           type="DIST">
+        </arig-asserv-input>
+        <arig-asserv-input class="list-group-item p-2"
+                           [robot]="robot"
+                           type="ANGLE">
+        </arig-asserv-input>
       </div>
     </div>
 
@@ -47,13 +49,14 @@
       </h5>
 
       <div class="list-group list-group-flush">
-        <app-mouvement-input class="list-group-item p-2" *ngFor="let mouvement of Mouvements"
-                             [robot]="robot"
-                             [name]="mouvement.name"
-                             [icon]="mouvement.icon"
-                             [type]="mouvement.type"
-                             [fields]="mouvement.fields"
-                             [select]="mouvement.select"></app-mouvement-input>
+        <arig-mouvement-input class="list-group-item p-2" *ngFor="let mouvement of Mouvements"
+                              [robot]="robot"
+                              [name]="mouvement.name"
+                              [icon]="mouvement.icon"
+                              [type]="mouvement.type"
+                              [fields]="mouvement.fields"
+                              [select]="mouvement.select">
+        </arig-mouvement-input>
       </div>
     </div>
   </div>
@@ -68,7 +71,7 @@
       <ul class="list-group list-group-flush">
         <li class="list-group-item list-group-item-action  d-flex justify-content-between align-items-center"
             *ngFor="let exec of execs$ | async">
-          {{exec | exec}}
+          {{exec | arigExec}}
 
           <span class="ml-auto"></span>
 
@@ -109,8 +112,9 @@
         </button>
       </div>
 
-      <app-capteurs class="list-group list-group-flush"
-                    [capteurs]="capteurs$ | async"></app-capteurs>
+      <arig-liste-capteurs class="list-group list-group-flush"
+                           [capteurs]="capteurs$ | async">
+      </arig-liste-capteurs>
     </div>
   </div>
 

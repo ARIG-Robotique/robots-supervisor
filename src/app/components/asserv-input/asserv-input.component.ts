@@ -4,7 +4,7 @@ import { Robot } from '../../models/Robot';
 import { AsservissementService } from '../../services/asservissement.service';
 
 @Component({
-  selector   : 'app-asserv-input',
+  selector   : 'arig-asserv-input',
   templateUrl: './asserv-input.component.html',
   styleUrls  : ['../mouvement-input/mouvement-input.component.scss'],
 })

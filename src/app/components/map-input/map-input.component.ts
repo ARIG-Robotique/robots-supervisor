@@ -8,7 +8,7 @@ import { Table } from '../../models/Table';
 import { GameStatusManager } from './game-status.manager';
 
 @Component({
-  selector   : 'app-map-input',
+  selector   : 'arig-map-input',
   templateUrl: './map-input.component.html',
   styleUrls  : ['./map-input.component.scss']
 })

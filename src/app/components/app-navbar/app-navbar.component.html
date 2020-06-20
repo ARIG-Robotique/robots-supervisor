@@ -3,7 +3,7 @@
 
   <ul class="navbar-nav flex-row">
     <li class="nav-item ml-2" *ngFor="let robot of robots$ | async" routerLinkActive="active">
-      <a class="nav-link" [routerLink]="['robot', robot.id, 'controls']">{{robot.name}}</a>
+      <a class="nav-link" [routerLink]="['robot', robot.id]">{{robot.name}}</a>
     </li>
   </ul>
 

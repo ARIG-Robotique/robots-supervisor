@@ -19,20 +19,8 @@
   &--null {
     border-color: #555555;
   }
-}
 
-.pris {
-  opacity: 1;
-
-  &--null {
-    opacity: 1;
-  }
-
-  &--true {
+  &--pris {
     opacity: 0.2;
-  }
-
-  &--false {
-    opacity: 1;
   }
 }

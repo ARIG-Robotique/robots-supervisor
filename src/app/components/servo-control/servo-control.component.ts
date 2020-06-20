@@ -1,10 +1,10 @@
-import {Component, Input} from '@angular/core';
-import {Robot} from '../../models/Robot';
+import { Component, Input } from '@angular/core';
+import { Robot } from '../../models/Robot';
 import { ServoConfig, ServoPosition } from '../../models/Servo';
-import {ServosService} from '../../services/servos.service';
+import { ServosService } from '../../services/servos.service';
 
 @Component({
-  selector   : 'app-servo-control',
+  selector   : 'arig-servo-control',
   templateUrl: './servo-control.component.html',
   styleUrls  : ['./servo-control.component.scss']
 })

@@ -7,7 +7,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faFileAlt, faChartBar, faCompass, faDotCircle } from '@fortawesome/free-regular-svg-icons';
+import { faChartBar, faCompass, faDotCircle, faFileAlt } from '@fortawesome/free-regular-svg-icons';
 import {
   faArrowLeft,
   faArrowRight,
@@ -40,19 +40,19 @@ import joystick from '../assets/icons/joystick.json';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routes';
-import { AddRobotModalComponent } from './components/add-robot-modal/add-robot-modal.component';
+import { AppNavbarComponent } from './components/app-navbar/app-navbar.component';
 import { AsservInputComponent } from './components/asserv-input/asserv-input.component';
-import { CapteursComponent } from './components/capteurs/capteurs.component';
-import { ImportLogsModalComponent } from './components/import-logs-modal/import-logs-modal.component';
-import { LogsModalComponent } from './components/logs-modal/logs-modal.component';
+import { ListeCapteursComponent } from './components/liste-capteurs/liste-capteurs.component';
 import { MapInputComponent } from './components/map-input/map-input.component';
 import { MouvementInputComponent } from './components/mouvement-input/mouvement-input.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
-import { PathsModalComponent } from './components/paths-modal/paths-modal.component';
-import { PointsCalculatorModalComponent } from './components/points-calculator-modal/points-calculator-modal.component';
 import { ServoBatchControlComponent } from './components/servo-batch-control/servo-batch-control.component';
 import { ServoControlComponent } from './components/servo-control/servo-control.component';
-import { ExecPipe } from './pipes/exec';
+import { AddRobotModalComponent } from './modals/add-robot-modal/add-robot-modal.component';
+import { ImportLogsModalComponent } from './modals/import-logs-modal/import-logs-modal.component';
+import { LogsModalComponent } from './modals/logs-modal/logs-modal.component';
+import { PathsModalComponent } from './modals/paths-modal/paths-modal.component';
+import { PointsCalculatorModalComponent } from './modals/points-calculator-modal/points-calculator-modal.component';
+import { ArigExecPipe } from './pipes/exec';
 import { RobotResolve } from './resolvers/RobotResolve';
 import { ServicesMockModule } from './services/mock/services.mock-module';
 import { RobotsUiService } from './services/robots-ui.service';
@@ -68,61 +68,62 @@ import { MapComponent } from './views/map/map.component';
 registerLocaleData(localeFr);
 
 @NgModule({
-  declarations   : [
-    AddRobotModalComponent,
+  declarations: [
+    // views
     AdminComponent,
     AppComponent,
-    AsservInputComponent,
-    CapteursComponent,
     ControlsComponent,
-    ExecPipe,
     HomeComponent,
-    ImportLogsModalComponent,
-    LogsModalComponent,
     MapComponent,
+
+    // components
+    AppNavbarComponent,
+    AsservInputComponent,
+    ListeCapteursComponent,
     MapInputComponent,
     MouvementInputComponent,
-    NavbarComponent,
-    PathsModalComponent,
-    PointsCalculatorModalComponent,
     ServoBatchControlComponent,
     ServoControlComponent,
+
+    // modals
+    AddRobotModalComponent,
+    ImportLogsModalComponent,
+    LogsModalComponent,
+    PathsModalComponent,
+    PointsCalculatorModalComponent,
+
+    // pipes
+    ArigExecPipe,
   ],
-  imports        : [
+  imports     : [
     BrowserAnimationsModule,
     BrowserModule,
-    FontAwesomeModule,
-    FormsModule,
     HttpClientModule,
-    NgbModule,
+    FormsModule,
     ReactiveFormsModule,
+    FontAwesomeModule,
+    NgbModule,
+    ToastrModule.forRoot(),
     RouterModule.forRoot(AppRoutes, {useHash: true, paramsInheritanceStrategy: 'always'}),
     StoreModule.forRoot({robots: robotsReducer}),
-    ToastrModule.forRoot(),
     environment.mock ? ServicesMockModule : ServicesModule,
   ],
-  providers      : [
+  providers   : [
     {provide: LOCALE_ID, useValue: 'fr-FR'},
     RobotResolve,
     RobotsUiService,
   ],
-  bootstrap      : [AppComponent],
-  entryComponents: [
-    AddRobotModalComponent,
-    ImportLogsModalComponent,
-    LogsModalComponent,
-    PathsModalComponent,
-    PointsCalculatorModalComponent,
-  ],
+  bootstrap   : [AppComponent],
 })
 export class AppModule {
   constructor(library: FaIconLibrary,
               store: Store<any>,
               robotsService: RobotsService) {
     library.addIcons(
-      arrowToTop as any,
       arrowFromTop as any,
+      arrowToTop as any,
       joystick as any,
+
       faArrowLeft,
       faArrowRight,
       faArrowsAlt,
@@ -147,7 +148,7 @@ export class AppModule {
       faRoute,
       faServer,
       faUser,
-      faWindowClose
+      faWindowClose,
     );
 
     robotsService.getRobots()

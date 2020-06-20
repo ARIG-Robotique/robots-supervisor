@@ -16,7 +16,6 @@ import { MouvementsService } from '../../services/mouvements.service';
 import { RobotsService } from '../../services/robots.service';
 
 @Component({
-  selector   : 'app-map',
   templateUrl: './map.component.html',
   styleUrls  : ['./map.component.scss']
 })

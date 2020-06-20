@@ -3,7 +3,7 @@ import { Robot } from '../../models/Robot';
 import { MouvementsService } from '../../services/mouvements.service';
 
 @Component({
-  selector   : 'app-mouvement-input',
+  selector   : 'arig-mouvement-input',
   templateUrl: './mouvement-input.component.html',
   styleUrls  : ['./mouvement-input.component.scss']
 })

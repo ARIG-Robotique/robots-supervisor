@@ -1,10 +1,10 @@
 <div class="row no-gutters">
-  <app-map-input [table]="currentTable"
-                 [robotPosition]="robotPosition"
-                 [team]="team"
-                 (positionChanged)="positionChanged($event)"
-                 (angleChanged)="angleChanged($event)">
-  </app-map-input>
+  <arig-map-input [table]="currentTable"
+                  [robotPosition]="robotPosition"
+                  [team]="team"
+                  (positionChanged)="positionChanged($event)"
+                  (angleChanged)="angleChanged($event)">
+  </arig-map-input>
 
   <div class="col">
     <div class="card">
@@ -116,7 +116,7 @@
   </div>
   <div class="row">
     <div class="col" *ngFor="let couleur of couleurs; trackBy: trackByIndex">
-      <div [class]="'couleur couleur--' + couleur + ' pris--' + pris"></div>
+      <div [class]="'couleur couleur--' + couleur + ' ' + (pris ? 'couleur--pris' : '')"></div>
     </div>
   </div>
 </ng-template>
@@ -136,5 +136,5 @@
 </ng-template>
 
 <ng-template #status let-title="title" let-status="status">
-  <div><span class="badge badge-big" [ngClass]="{'badge-success': status, 'badge-danger': !status}">{{title}}</span></div>
+  <div class="badge badge-big d-block mt-1" [ngClass]="{'badge-success': status, 'badge-danger': !status}">{{title}}</div>
 </ng-template>
