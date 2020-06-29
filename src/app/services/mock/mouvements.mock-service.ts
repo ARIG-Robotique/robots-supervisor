@@ -9,15 +9,31 @@ import { MouvementsService } from '../mouvements.service';
 @Injectable()
 export class MouvementsMockService extends MouvementsService {
 
+  x = 1500;
+  y = 1000;
+  angle = 90;
+
   sendMouvement(robot: Robot, type: string, values: any): Observable<unknown> {
+    switch (type) {
+      case 'path':
+      case 'position':
+        this.x = values.x;
+        this.y = values.y;
+        break;
+
+      case 'orientation':
+        this.angle = values.angle;
+        break;
+    }
+
     return of(null);
   }
 
   getPosition(robot: Robot): Observable<Position> {
     return of({
-      x               : 1500,
-      y               : 1000,
-      angle           : 90,
+      x               : this.x,
+      y               : this.y,
+      angle           : this.angle,
       targetMvt       : null,
       trajetAtteint   : true,
       trajetEnApproche: false,

@@ -89,8 +89,8 @@ export class GameStatusManager {
     this.mainLayer.add(this.petitChenalVert);
     this.mainLayer.add(this.petitPort);
 
-    this.POS_BOUEES.forEach(posBouee => {
-      this.bouees.add(this.createBouee(posBouee[0], posBouee[1], posBouee[2]));
+    this.POS_BOUEES.forEach((posBouee, i) => {
+      this.bouees.add(this.createBouee(posBouee[0], posBouee[1], posBouee[2], '' + (i + 1)));
     });
   }
 
@@ -107,7 +107,7 @@ export class GameStatusManager {
   update(status: Partial<GameStatus>, team: string) {
     status.bouees.forEach((bouee, i) => {
       if (bouee) {
-        this.bouees.children[i].opacity(0);
+        this.bouees.children[i].opacity(0.1);
       }
     });
 
@@ -119,15 +119,38 @@ export class GameStatusManager {
     this.fillCol(this.petitPort, status.petitPort, this.PETIT_PORT_X, team);
   }
 
-  private createBouee(x: number, y: number, couleur: ECouleurBouee) {
-    return new Konva.Circle({
-      x     : x * this.table.imageRatio,
-      y     : y * this.table.imageRatio,
-      radius: this.DIAMETRE_GOBELET * this.table.imageRatio / 2,
-      fill  : couleur === ECouleurBouee.ROUGE ? '#d7171f' : couleur === ECouleurBouee.VERT ? '#007a45' : '#555555',
-      stroke: 'white',
-      strokeWidth: 2,
-    });
+  private createBouee(x: number, y: number, couleur: ECouleurBouee, text?: string) {
+    const group = new Konva.Group();
+
+    group.add(
+      new Konva.Circle({
+        x          : x * this.table.imageRatio,
+        y          : y * this.table.imageRatio,
+        radius     : this.DIAMETRE_GOBELET * this.table.imageRatio / 2,
+        fill       : couleur === ECouleurBouee.ROUGE ? '#d7171f' : couleur === ECouleurBouee.VERT ? '#007a45' : '#555555',
+        stroke     : 'white',
+        strokeWidth: 2,
+      })
+    );
+
+    if (text) {
+      group.add(
+        new Konva.Text({
+          text,
+          x            : (x - this.DIAMETRE_GOBELET / 2) * this.table.imageRatio,
+          y            : (y - this.DIAMETRE_GOBELET / 2) * this.table.imageRatio,
+          width        : this.DIAMETRE_GOBELET * this.table.imageRatio,
+          height       : this.DIAMETRE_GOBELET * this.table.imageRatio,
+          fontSize     : 16,
+          fontStyle    : 'bold',
+          align        : 'center',
+          verticalAlign: 'middle',
+          fill         : 'white',
+        })
+      );
+    }
+
+    return group;
   }
 
   private fillRow(group: Konva.Group, bouees: ECouleurBouee[], Y: { JAUNE: number; BLEU: number }, team: string) {
