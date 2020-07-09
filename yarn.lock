@@ -186,10 +186,10 @@
   resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-9.1.11.tgz#fa246144649236613598a0471aa7f39b60f986b5"
   integrity sha512-t4WHrh6ot1r8zdV+3fJz7g9rCok77c9CiIevhH2dR/idxD+HtFR0wqmcBQzsn+rNVB0f0TiSHDrj+TeELIFyWw==
 
-"@angular/localize@^9.1.11":
-  version "9.1.11"
-  resolved "https://registry.yarnpkg.com/@angular/localize/-/localize-9.1.11.tgz#25921d794836fb7a07d284c1ac0ed06c10e77d50"
-  integrity sha512-CrR7RniwJIK3+QKH8nHl35KDAHZn1mp1QAd5vujTWKw6YRLfio7SjM9qIfzw5y4WZuUitTsqKlQT/m/NK146Ag==
+"@angular/localize@^9.1.12":
+  version "9.1.12"
+  resolved "https://registry.yarnpkg.com/@angular/localize/-/localize-9.1.12.tgz#60377a644c620be4ac408b77db9c547f44ac1514"
+  integrity sha512-31OalfES+dLrxN0VXCxxtT5dWoOSlQ40KYmzMS8X+mQ20gy9eFiZK4qf3DEq3JPqRltBMdEDnwR38uGIMAu2gQ==
   dependencies:
     "@babel/core" "7.8.3"
     glob "7.1.2"
