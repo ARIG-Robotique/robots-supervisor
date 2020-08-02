@@ -13,12 +13,16 @@ export class HomeComponent {
   }
 
   loadIcons() {
-    const definitions = (this.library as any).definitions as { [prefix: string]: { [name: string]: IconDefinition } };
+    if (this.icons.length === 0) {
+      const definitions = (this.library as any).definitions as { [prefix: string]: { [name: string]: IconDefinition } };
 
-    for (const [prefix, icons] of Object.entries(definitions)) {
-      for (const name of Object.keys(icons)) {
-        this.icons.push([prefix, name]);
+      for (const [prefix, icons] of Object.entries(definitions)) {
+        for (const name of Object.keys(icons)) {
+          this.icons.push([prefix, name]);
+        }
       }
+    } else {
+      this.icons.length = 0;
     }
   }
 
