@@ -16,14 +16,16 @@ export const Mouvements: any[] = [
     icon  : 'route',
     type  : 'path',
     fields: ['x', 'y'],
-    select: {sens: SensDeplacement},
+    select: { sens: SensDeplacement },
+    values: { sens: 'AUTO' },
   },
   {
     name  : 'Aller à',
     icon  : ['far', 'dot-circle'],
     type  : 'position',
     fields: ['x', 'y'],
-    select: {sens: SensDeplacement},
+    select: { sens: SensDeplacement },
+    values: { sens: 'AUTO' },
   },
   {
     name  : 'Faire face',
@@ -42,7 +44,8 @@ export const Mouvements: any[] = [
     icon  : ['far', 'compass'],
     type  : 'orientation',
     fields: ['angle'],
-    select: {sens: SensRotation},
+    select: { sens: SensRotation },
+    values: { sens: 'AUTO' },
   },
   {
     name  : 'Tourner',

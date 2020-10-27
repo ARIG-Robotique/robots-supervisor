@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Robot } from '../../models/Robot';
 import { MouvementsService } from '../../services/mouvements.service';
 
@@ -7,7 +7,7 @@ import { MouvementsService } from '../../services/mouvements.service';
   templateUrl: './mouvement-input.component.html',
   styleUrls  : ['./mouvement-input.component.scss']
 })
-export class MouvementInputComponent {
+export class MouvementInputComponent implements OnInit {
 
   @Input() robot: Robot;
   @Input() type: string;
@@ -15,10 +15,15 @@ export class MouvementInputComponent {
   @Input() name: string;
   @Input() fields: string[];
   @Input() select: { [K: string]: string[] };
-
-  values: any = {};
+  @Input() values: any;
 
   constructor(private mouvementsService: MouvementsService) {
+  }
+
+  ngOnInit() {
+    if (!this.values) {
+      this.values = {};
+    }
   }
 
   apply() {
