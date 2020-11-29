@@ -42,9 +42,9 @@ export class MapComponent extends AbstractComponent implements OnInit {
     sensRotation   : ['AUTO'],
   });
 
-  trackByUuid = (action: Action) => action.uuid;
-  trackByKey = (keyvalue: KeyValue<string, any>) => keyvalue.key;
-  trackByIndex = (value: any, i: number) => i;
+  trackByUuid = (i: number, action: Action) => action.uuid;
+  trackByKey = (i: number, keyvalue: KeyValue<string, any>) => keyvalue.key;
+  trackByIndex = (i: number, value: any) => i;
 
   constructor(private fb: FormBuilder,
               private route: ActivatedRoute,

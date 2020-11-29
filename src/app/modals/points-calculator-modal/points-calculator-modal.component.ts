@@ -48,6 +48,14 @@ export class PointsCalculatorModalComponent {
     evaluation: new FormControl(0),
   });
 
+  get actionsForm(): FormArray {
+    return this.form.get('actions') as FormArray;
+  }
+
+  get rulesForm(): FormArray {
+    return this.form.get('rules') as FormArray;
+  }
+
   results = {
     actions     : this.actions.map(() => 0),
     rules       : this.rules.map(() => 0),

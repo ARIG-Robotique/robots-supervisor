@@ -57,7 +57,7 @@ import { RobotResolve } from './resolvers/RobotResolve';
 import { ServicesMockModule } from './services/mock/services.mock-module';
 import { RobotsUiService } from './services/robots-ui.service';
 import { RobotsService } from './services/robots.service';
-import { ServicesModule } from './services/services.module.js';
+import { ServicesModule } from './services/services.module';
 import { loadRobots } from './store/robots.actions';
 import { robotsReducer } from './store/robots.reducer';
 import { AdminComponent } from './views/admin/admin.component';

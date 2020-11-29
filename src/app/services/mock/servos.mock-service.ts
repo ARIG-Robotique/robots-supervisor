@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Robot } from '../../models/Robot';
 import { ServoConfig, ServoGroup, Servos } from '../../models/Servo';
-import { ServicesModule } from '../services.module';
+import { ServosService } from '../servos.service';
 
 @Injectable()
-export class ServosMockService extends ServicesModule {
+export class ServosMockService extends ServosService {
 
   getServos(robot: Robot): Observable<Servos> {
     return of([

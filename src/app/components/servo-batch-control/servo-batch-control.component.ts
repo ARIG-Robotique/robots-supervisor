@@ -16,7 +16,7 @@ export class ServoBatchControlComponent {
 
   currentPosition: number;
 
-  trackByName = (item: ServoPosition) => item.name;
+  trackByName = (i: number, item: ServoPosition) => item.name;
 
   constructor(private servosService: ServosService) {
   }

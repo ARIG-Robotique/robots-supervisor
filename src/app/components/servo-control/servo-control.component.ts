@@ -13,7 +13,7 @@ export class ServoControlComponent {
   @Input() servo: ServoConfig;
   @Input() robot: Robot;
 
-  trackByName = (item: ServoPosition) => item.name;
+  trackByName = (i: number, item: ServoPosition) => item.name;
 
   constructor(private servosService: ServosService) {
   }

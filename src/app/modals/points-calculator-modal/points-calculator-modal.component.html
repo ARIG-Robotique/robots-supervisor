@@ -44,7 +44,7 @@
       <tr *ngFor="let action of actions; index as i">
         <td>{{action.label}}</td>
         <td>{{action.pt}}</td>
-        <td *ngTemplateOutlet="input; context: {control: form.controls.actions.controls[i]}"></td>
+        <td *ngTemplateOutlet="input; context: {control: actionsForm.controls[i]}"></td>
         <td>{{results.actions[i]}}</td>
       </tr>
       <tr class="table-secondary">
@@ -62,7 +62,7 @@
       <tr *ngFor="let rule of rules; index as i">
         <td>{{rule.label}}</td>
         <td>{{rule.pt}}</td>
-        <td *ngTemplateOutlet="input; context: {control: form.controls.rules.controls[i]}"></td>
+        <td *ngTemplateOutlet="input; context: {control: rulesForm.controls[i]}"></td>
         <td>{{results.rules[i]}}</td>
       </tr>
       <tr class="table-primary">

@@ -29,13 +29,13 @@ export const Mouvements: any[] = [
   },
   {
     name  : 'Faire face',
-    icon  : ['fac', 'arrow-to-top'],
+    icon  : ['fas', 'arrow-to-top'],
     type  : 'face',
     fields: ['x', 'y']
   },
   {
     name  : 'Faire dos',
-    icon  : ['fac', 'arrow-from-top'],
+    icon  : ['fas', 'arrow-from-top'],
     type  : 'dos',
     fields: ['x', 'y']
   },

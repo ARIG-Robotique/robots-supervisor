@@ -10,6 +10,6 @@ export class ListeCapteursComponent {
 
   @Input() capteurs: Capteurs;
 
-  trackByKey = (keyvalue: KeyValue<string, any>) => keyvalue.key;
+  trackByKey = (i: number, keyvalue: KeyValue<string, any>) => keyvalue.key;
 
 }
