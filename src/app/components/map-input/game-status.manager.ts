@@ -65,6 +65,7 @@ export class GameStatusManager {
   };
 
   bouees: Konva.Group;
+  hautFond: Konva.Group;
   grandChenalRouge: Konva.Group;
   grandChenalVert: Konva.Group;
   grandPort: Konva.Group;
@@ -74,6 +75,7 @@ export class GameStatusManager {
 
   constructor(private mainLayer: Konva.Layer, private table: Table) {
     this.bouees = new Konva.Group();
+    this.hautFond = new Konva.Group();
     this.grandChenalRouge = new Konva.Group();
     this.grandChenalVert = new Konva.Group();
     this.grandPort = new Konva.Group();
@@ -82,6 +84,7 @@ export class GameStatusManager {
     this.petitPort = new Konva.Group();
 
     this.mainLayer.add(this.bouees);
+    this.mainLayer.add(this.hautFond);
     this.mainLayer.add(this.grandChenalRouge);
     this.mainLayer.add(this.grandChenalVert);
     this.mainLayer.add(this.grandPort);
@@ -96,6 +99,7 @@ export class GameStatusManager {
 
   destroy() {
     this.bouees.destroy();
+    this.hautFond.destroy();
     this.grandChenalRouge.destroy();
     this.grandChenalVert.destroy();
     this.grandPort.destroy();
@@ -109,6 +113,11 @@ export class GameStatusManager {
       if (bouee) {
         this.bouees.children[i].opacity(0.1);
       }
+    });
+
+    this.hautFond.destroyChildren();
+    status.hautFond.forEach((bouee, i) => {
+      this.hautFond.add(this.createBouee(bouee.pt.x, 2000 - bouee.pt.y, bouee.couleur));
     });
 
     this.fillRow(this.grandChenalRouge, status.grandChenalRouge, this.GRAND_CHENAL_ROUGE_Y, team);

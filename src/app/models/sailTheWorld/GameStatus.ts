@@ -1,8 +1,10 @@
+import { Bouee } from './Bouee';
 import { ECouleurBouee } from './ECouleurBouee';
 import { EDirectionGirouette } from './EDirectionGirouette';
 
 export interface GameStatus {
   bouees: boolean[];
+  hautFond: Bouee[];
   grandPort: ECouleurBouee[];
   grandChenalVert: ECouleurBouee[];
   grandChenalRouge: ECouleurBouee[];
