@@ -33,7 +33,7 @@ jobs:
           color: good
 
       - name: Notify slack fail
-        if: !success() && github.ref == 'refs/heads/dev'
+        if: failure() && github.ref == 'refs/heads/dev'
         uses: voxmedia/github-action-slack-notify-build@v1
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
