@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { AbstractComponent } from '../../components/abstract.component';
+import { ROBOT_NAME } from '../../constants/constants';
 import { Robot } from '../../models/Robot';
 import { RobotsService } from '../../services/robots.service';
 import { addRobot, editRobot } from '../../store/robots.actions';
@@ -10,6 +11,8 @@ import { addRobot, editRobot } from '../../store/robots.actions';
   templateUrl: './add-robot-modal.component.html'
 })
 export class AddRobotModalComponent extends AbstractComponent {
+
+  readonly ROBOT_NAME = ROBOT_NAME;
 
   robot: Robot = {
     id        : null,

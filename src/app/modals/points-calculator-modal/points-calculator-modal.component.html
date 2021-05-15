@@ -30,7 +30,16 @@
       <button type="button" class="btn btn-primary" (click)="addPreset()">Sauvegarder</button>
     </div>
   </div>
+
   <div class="col-7">
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox"
+             class="custom-control-input"
+             id="deuxRobots"
+             [formControl]="$any(form.controls.deuxRobots)">
+      <label class="custom-control-label" for="deuxRobots">Deux robots</label>
+    </div>
+
     <table class="points-table table table-striped table-hover table-sm table-dark">
       <thead class="thead-light">
       <tr>
@@ -43,8 +52,8 @@
       <tbody>
       <tr *ngFor="let action of actions; index as i">
         <td>{{action.label}}</td>
-        <td>{{action.pt}}</td>
-        <td *ngTemplateOutlet="input; context: {control: actionsForm.controls[i]}"></td>
+        <td>{{action.hint}}</td>
+        <td *ngTemplateOutlet="input; context: {id: action.id, type: action.type, control: actionsForm.controls[i]}"></td>
         <td>{{results.actions[i]}}</td>
       </tr>
       <tr class="table-secondary">
@@ -56,13 +65,13 @@
       <tr>
         <td>Evaluation</td>
         <td></td>
-        <td *ngTemplateOutlet="input; context: {control: form.controls.evaluation}"></td>
+        <td *ngTemplateOutlet="input; context: {id: 'evaluation', type: 'number', control: form.controls.evaluation}"></td>
         <td>{{results.evaluation}}</td>
       </tr>
       <tr *ngFor="let rule of rules; index as i">
         <td>{{rule.label}}</td>
-        <td>{{rule.pt}}</td>
-        <td *ngTemplateOutlet="input; context: {control: rulesForm.controls[i]}"></td>
+        <td>{{rule.hint}}</td>
+        <td *ngTemplateOutlet="input; context: {id: rule.id, type: rule.type, control: rulesForm.controls[i]}"></td>
         <td>{{results.rules[i]}}</td>
       </tr>
       <tr class="table-primary">
@@ -76,8 +85,17 @@
   </div>
 </div>
 
-<ng-template #input let-control="control">
-  <input type="number" min="0"
+<ng-template #input let-id="id" let-control="control" let-type="type">
+  <input *ngIf="type==='number'"
+         type="number" min="0"
          class="form-control form-control-sm"
          [formControl]="control">
+  <div *ngIf="type==='boolean'"
+       class="custom-control custom-checkbox">
+    <input type="checkbox"
+           class="custom-control-input"
+           id="{{id}}"
+           [formControl]="control">
+    <label class="custom-control-label" for="{{id}}"></label>
+  </div>
 </ng-template>

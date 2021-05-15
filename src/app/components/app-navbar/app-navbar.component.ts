@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
-import { combineLatest, Observable, of } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
-import { Robot } from '../../models/Robot';
-import { RobotInfo } from '../../models/RobotInfo';
-import { RobotsUiService } from '../../services/robots-ui.service';
-import { RobotsService } from '../../services/robots.service';
-import { selectRobots } from '../../store/robots.selector';
-import { AbstractComponent } from '../abstract.component';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { PointsCalculatorModalComponent } from '../../modals/points-calculator-modal/points-calculator-modal.component';
+import { Robot } from '../../models/Robot';
+import { setMainRobot, toggleRobot } from '../../store/robots.actions';
+import { selectRobots, selectSelectedRobotsState } from '../../store/robots.selector';
+import { AbstractComponent } from '../abstract.component';
 
 @Component({
   selector   : 'arig-app-navbar',
@@ -19,59 +16,39 @@ import { PointsCalculatorModalComponent } from '../../modals/points-calculator-m
 })
 export class AppNavbarComponent extends AbstractComponent implements OnInit {
 
-  robots$: Observable<Robot[]>;
-  selectedRobot: Robot;
-  selectedRobotInfo: RobotInfo;
+  robots$: Observable<{ robot: Robot, selected: boolean, main: boolean }[]>;
 
   constructor(private store: Store<any>,
-              private route: ActivatedRoute,
-              private router: Router,
-              private modal: NgbModal,
-              private robotsService: RobotsService,
-              private robotsUiService: RobotsUiService) {
+              private modal: NgbModal) {
     super();
   }
 
   ngOnInit() {
-    this.robots$ = this.store.select(selectRobots);
-
-    combineLatest([
-      this.router.events
-        .pipe(
-          filter(e => e instanceof NavigationEnd),
-          map(() => {
-            let params = {};
-            let route = this.route.root;
-            do {
-              params = {...params, ...route.snapshot.params};
-              route = route.firstChild;
-            } while (route);
-            return params;
-          }),
-          map(params => +params['idRobot'])
-        ),
-      this.robots$
+    this.robots$ = combineLatest([
+      this.store.select(selectRobots),
+      this.store.select(selectSelectedRobotsState),
     ])
       .pipe(
-        map(([idRobot, robots]) => robots.find(r => r.id === idRobot)),
-        switchMap(robot => {
-          this.selectedRobot = robot;
-          if (robot) {
-            return this.robotsService.getRobotInfo(robot);
-          } else {
-            return of(null);
-          }
+        map(([robots, selected]) => {
+          return robots.map(robot => ({
+            robot,
+            selected: !!selected.find(r => r.id === robot.id),
+            main    : selected.find(r => r.id === robot.id)?.main || false,
+          }));
         })
-      )
-      .subscribe(infos => this.selectedRobotInfo = infos);
-  }
-
-  importLogs(robot: Robot) {
-    this.robotsUiService.importLogs(robot);
+      );
   }
 
   openCalculator() {
-    this.modal.open(PointsCalculatorModalComponent, {size: 'lg'});
+    this.modal.open(PointsCalculatorModalComponent, { size: 'lg' });
+  }
+
+  toggleRobot(robot: Robot) {
+    this.store.dispatch(toggleRobot({ id: robot.id }));
+  }
+
+  setMainRobot(robot: Robot) {
+    this.store.dispatch(setMainRobot({ id: robot.id }));
   }
 
 }

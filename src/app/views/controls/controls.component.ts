@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Mouvements } from 'app/constants/mouvements.constants';
 import { BehaviorSubject, Observable, of, timer } from 'rxjs';
-import { catchError, map, shareReplay, switchMap, takeUntil } from 'rxjs/operators';
+import { catchError, filter, map, shareReplay, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { AbstractComponent } from '../../components/abstract.component';
 import { Capteurs } from '../../models/Capteurs';
 import { Exec } from '../../models/Exec';
 import { Robot } from '../../models/Robot';
+import { RobotInfo } from '../../models/RobotInfo';
 import { Servos } from '../../models/Servo';
 import { CapteursService } from '../../services/capteurs.service';
 import { RobotsUiService } from '../../services/robots-ui.service';
 import { RobotsService } from '../../services/robots.service';
 import { ServosService } from '../../services/servos.service';
+import { selectMainRobot } from '../../store/robots.selector';
 
 @Component({
   templateUrl: './controls.component.html',
@@ -22,7 +24,8 @@ import { ServosService } from '../../services/servos.service';
 })
 export class ControlsComponent extends AbstractComponent implements OnInit {
 
-  robot: Robot;
+  robot$: Observable<Robot>;
+  robotInfo$: Observable<RobotInfo>;
   servos$: Observable<Servos>;
   capteurs$: Observable<Capteurs>;
   execs$: Observable<Exec[]>;
@@ -33,52 +36,74 @@ export class ControlsComponent extends AbstractComponent implements OnInit {
 
   trackById = (item: any) => item.id;
 
-  constructor(private route: ActivatedRoute,
+  constructor(private store: Store<any>,
               private robotsService: RobotsService,
               private robotsUiService: RobotsUiService,
               private servosService: ServosService,
               private capteursService: CapteursService) {
     super();
-    this.robot = this.route.snapshot.data['robot'];
   }
 
   ngOnInit(): void {
+    this.robot$ = this.store.select(selectMainRobot);
+
+    this.robotInfo$ = this.robot$
+      .pipe(
+        filter(robot => !!robot),
+        switchMap(robot => this.robotsService.getRobotInfo(robot)),
+        catchError(() => of({
+          id     : null,
+          nom    : 'Erreur',
+          version: 'Unknown',
+        })),
+        takeUntil(this.ngDestroy$)
+      );
+
     this.servos$ = this.refreshServos$
       .pipe(
-        switchMap(() => this.servosService.getServos(this.robot)),
-        catchError(() => of(null))
+        withLatestFrom(this.robot$),
+        switchMap(([, robot]) => this.servosService.getServos(robot)),
+        catchError(() => of(null)),
+        takeUntil(this.ngDestroy$)
       );
 
     this.capteurs$ = timer(0, 1000)
       .pipe(
-        takeUntil(this.ngDestroy$),
-        switchMap(() => this.capteursService.getCapteurs(this.robot)),
+        withLatestFrom(this.robot$),
+        switchMap(([, robot]) => this.capteursService.getCapteurs(robot)),
         shareReplay(1),
-        catchError(() => of(null))
+        catchError(() => of(null)),
+        takeUntil(this.ngDestroy$)
       );
 
-    this.execs$ = this.robotsService.getRobotExecs(this.robot.id)
+    this.execs$ = this.robot$
       .pipe(
-        map(execs => execs.reverse().slice(0, 5))
+        switchMap(robot => this.robotsService.getRobotExecs(robot.id)),
+        map(execs => execs.reverse().slice(0, 5)),
+        takeUntil(this.ngDestroy$)
       );
   }
 
-  showPaths(exec: Exec) {
-    this.robotsUiService.showPaths(this.robot.id, exec);
+  showPaths(robot: Robot, exec: Exec) {
+    this.robotsUiService.showPaths(robot.id, exec);
   }
 
-  showLogs(exec: Exec) {
-    this.robotsUiService.showLogs(this.robot.id, exec);
+  showLogs(robot: Robot, exec: Exec) {
+    this.robotsUiService.showLogs(robot.id, exec);
   }
 
-  setTirette(present: boolean) {
-    this.capteursService.setTirette(this.robot, present)
+  setTirette(robot: Robot, present: boolean) {
+    this.capteursService.setTirette(robot, present)
       .subscribe();
   }
 
-  setAu(present: boolean) {
-    this.capteursService.setAu(this.robot, present)
+  setAu(robot: Robot, present: boolean) {
+    this.capteursService.setAu(robot, present)
       .subscribe();
+  }
+
+  importLogs(robot: Robot) {
+    this.robotsUiService.importLogs(robot);
   }
 
 }

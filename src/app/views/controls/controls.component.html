@@ -1,4 +1,8 @@
-<div class="row">
+<ng-template #noRobot>
+  <arig-no-robot></arig-no-robot>
+</ng-template>
+
+<div class="row" *ngIf="robot$ | async as robot; else noRobot">
 
   <div class="col-6 controls-list">
     <div class="card mb-3" *ngFor="let servoGroup of servos$ | async; trackBy: trackById">
@@ -63,23 +67,37 @@
   </div>
 
   <div class="col-3 controls-list">
-    <div class="card mb-3">
+    <div class="card mb-3" *ngIf="robotInfo$ | async as robotInfo">
       <h5 class="card-header">
-        <fa-icon icon="database"></fa-icon>
-        Éxécutions
+        <fa-icon icon="robot"></fa-icon>
+        {{robotInfo.nom}} ({{robotInfo.version}})
+      </h5>
+    </div>
+    <div class="card mb-3">
+      <h5 class="card-header d-flex justify-content-between">
+        <span>
+          <fa-icon icon="database"></fa-icon>
+          Éxécutions
+        </span>
+        <button type="button" class="btn btn-info btn-sm"
+                ngbTooltip="Importer"
+                placement="bottom"
+                (click)="importLogs(robot)">
+          <fa-icon icon="robot"></fa-icon>
+        </button>
       </h5>
 
       <ul class="list-group list-group-flush">
-        <li class="list-group-item list-group-item-action  d-flex justify-content-between align-items-center"
+        <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
             *ngFor="let exec of execs$ | async">
           {{exec | arigExec}}
 
           <span class="ml-auto"></span>
 
           <fa-icon icon="map" class="ml-1" ngbTooltip="Paths" placement="top"
-                   (click)="showPaths(exec)"></fa-icon>
+                   (click)="showPaths(robot, exec)"></fa-icon>
           <fa-icon [icon]="['far', 'file-alt']" class="ml-1" ngbTooltip="Logs" placement="top"
-                   (click)="showLogs(exec)"></fa-icon>
+                   (click)="showLogs(robot, exec)"></fa-icon>
         </li>
       </ul>
     </div>
@@ -93,22 +111,22 @@
       <div class="btn-group" [hidden]="!robot.simulateur">
         <button type="button" class="btn btn-secondary"
                 *ngIf="!(capteurs$ | async)?.numerique.Tirette"
-                (click)="setTirette(true)">
+                (click)="setTirette(robot, true)">
           Mettre la tirette
         </button>
         <button type="button" class="btn btn-secondary"
                 *ngIf="(capteurs$ | async)?.numerique.Tirette"
-                (click)="setTirette(false)">
+                (click)="setTirette(robot, false)">
           Enlever la tirette
         </button>
         <button type="button" class="btn btn-secondary"
                 *ngIf="!(capteurs$ | async)?.numerique.AU"
-                (click)="setAu(true)">
+                (click)="setAu(robot, true)">
           Enclencher l'AU
         </button>
         <button type="button" class="btn btn-secondary"
                 *ngIf="(capteurs$ | async)?.numerique.AU"
-                (click)="setAu(false)">
+                (click)="setAu(robot, false)">
           Claquer l'AU
         </button>
       </div>

@@ -1,9 +1,8 @@
-import {Routes} from '@angular/router';
-import {ControlsComponent} from './views/controls/controls.component';
-import {MapComponent} from './views/map/map.component';
-import {AdminComponent} from './views/admin/admin.component';
-import {HomeComponent} from './views/home/home.component';
-import {RobotResolve} from './resolvers/RobotResolve';
+import { Routes } from '@angular/router';
+import { AdminComponent } from './views/admin/admin.component';
+import { ControlsComponent } from './views/controls/controls.component';
+import { HomeComponent } from './views/home/home.component';
+import { MapComponent } from './views/map/map.component';
 
 export const AppRoutes: Routes = [
   {
@@ -11,25 +10,12 @@ export const AppRoutes: Routes = [
     component: HomeComponent,
   },
   {
-    path     : 'robot/:idRobot',
-    resolve  : {
-      robot: RobotResolve,
-    },
-    children : [
-      {
-        path      : '',
-        redirectTo: 'controls',
-        pathMatch : 'full'
-      },
-      {
-        path     : 'controls',
-        component: ControlsComponent
-      },
-      {
-        path     : 'map',
-        component: MapComponent
-      }
-    ]
+    path     : 'controls',
+    component: ControlsComponent
+  },
+  {
+    path     : 'map',
+    component: MapComponent
   },
   {
     path     : 'admin',
