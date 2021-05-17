@@ -32,6 +32,7 @@ import {
 import { faCopy } from '@fortawesome/free-solid-svg-icons/faCopy';
 import { faDatabase } from '@fortawesome/free-solid-svg-icons/faDatabase';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { EffectsModule } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
 import { ToastrModule } from 'ngx-toastr';
 import arrowFromTop from '../assets/icons/arrowFromTop.json';
@@ -59,7 +60,8 @@ import { RobotsUiService } from './services/robots-ui.service';
 import { RobotsService } from './services/robots.service';
 import { ServicesModule } from './services/services.module';
 import { loadRobots } from './store/robots.actions';
-import { robotsReducer, selectedRobotsReducer } from './store/robots.reducer';
+import { RobotsEffects } from './store/robots.effects';
+import { robotsReducer, robotsStatusReducer, selectedRobotsReducer } from './store/robots.reducer';
 import { AdminComponent } from './views/admin/admin.component';
 import { ControlsComponent } from './views/controls/controls.component';
 import { HomeComponent } from './views/home/home.component';
@@ -106,7 +108,12 @@ registerLocaleData(localeFr);
     NgbModule,
     ToastrModule.forRoot(),
     RouterModule.forRoot(AppRoutes, { useHash: true, paramsInheritanceStrategy: 'always' }),
-    StoreModule.forRoot({ robots: robotsReducer, selectedRobots: selectedRobotsReducer }),
+    StoreModule.forRoot({
+      robots        : robotsReducer,
+      selectedRobots: selectedRobotsReducer,
+      robotsStatus  : robotsStatusReducer,
+    }),
+    EffectsModule.forRoot([RobotsEffects]),
     environment.mock ? ServicesMockModule : ServicesModule,
   ],
   providers   : [

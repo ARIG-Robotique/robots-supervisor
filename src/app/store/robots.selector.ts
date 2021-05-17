@@ -2,8 +2,8 @@ import { createSelector } from '@ngrx/store';
 import { SelectedRobot } from '../models/Robot';
 
 export const selectRobots = (state) => state.robots;
-
 export const selectSelectedRobotsState = (state) => state.selectedRobots;
+export const selectRobotsStatusState = (state) => state.robotsStatus;
 
 export const selectSelectedRobots = createSelector(selectRobots, selectSelectedRobotsState, (robots, selected) => {
   return selected.map(({ id, main }) => ({

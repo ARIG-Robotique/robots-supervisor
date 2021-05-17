@@ -2,7 +2,7 @@
   <a class="navbar-brand" [routerLink]="['/']">ARIG :: Robots supervisor</a>
 
   <ul class="navbar-nav flex-row">
-    <li *ngFor="let r of robots$ | async"
+    <li *ngFor="let r of robots$ | async; trackBy: trackById"
         class="nav-item ml-2 d-flex flex-row align-items-center"
         [class.active]="r.main">
       <span class="custom-control custom-checkbox">
@@ -14,6 +14,9 @@
       <a class="nav-link" (click)="setMainRobot(r.robot)">
         {{r.robot.name}}
         <ng-container *ngIf="r.robot.simulateur">(simu)</ng-container>
+        <span class="badge robot-status-badge"
+              [class.badge-success]="r.online"
+              [class.badge-danger]="!r.online">&nbsp;</span>
       </a>
     </li>
   </ul>
