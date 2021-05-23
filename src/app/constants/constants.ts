@@ -6,3 +6,5 @@ export const Constants = {
     }
   }
 };
+
+export const ROBOT_NAME = ['Nerell', 'Odin'];

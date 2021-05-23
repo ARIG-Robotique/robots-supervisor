@@ -32,6 +32,7 @@ import {
 import { faCopy } from '@fortawesome/free-solid-svg-icons/faCopy';
 import { faDatabase } from '@fortawesome/free-solid-svg-icons/faDatabase';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { EffectsModule } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
 import { ToastrModule } from 'ngx-toastr';
 import arrowFromTop from '../assets/icons/arrowFromTop.json';
@@ -45,6 +46,7 @@ import { AsservInputComponent } from './components/asserv-input/asserv-input.com
 import { ListeCapteursComponent } from './components/liste-capteurs/liste-capteurs.component';
 import { MapInputComponent } from './components/map-input/map-input.component';
 import { MouvementInputComponent } from './components/mouvement-input/mouvement-input.component';
+import { NoRobotComponent } from './components/no-robot/no-robot.component';
 import { ServoBatchControlComponent } from './components/servo-batch-control/servo-batch-control.component';
 import { ServoControlComponent } from './components/servo-control/servo-control.component';
 import { AddRobotModalComponent } from './modals/add-robot-modal/add-robot-modal.component';
@@ -53,13 +55,13 @@ import { LogsModalComponent } from './modals/logs-modal/logs-modal.component';
 import { PathsModalComponent } from './modals/paths-modal/paths-modal.component';
 import { PointsCalculatorModalComponent } from './modals/points-calculator-modal/points-calculator-modal.component';
 import { ArigExecPipe } from './pipes/exec';
-import { RobotResolve } from './resolvers/RobotResolve';
 import { ServicesMockModule } from './services/mock/services.mock-module';
 import { RobotsUiService } from './services/robots-ui.service';
 import { RobotsService } from './services/robots.service';
 import { ServicesModule } from './services/services.module';
 import { loadRobots } from './store/robots.actions';
-import { robotsReducer } from './store/robots.reducer';
+import { RobotsEffects } from './store/robots.effects';
+import { robotsReducer, robotsStatusReducer, selectedRobotsReducer } from './store/robots.reducer';
 import { AdminComponent } from './views/admin/admin.component';
 import { ControlsComponent } from './views/controls/controls.component';
 import { HomeComponent } from './views/home/home.component';
@@ -82,6 +84,7 @@ registerLocaleData(localeFr);
     ListeCapteursComponent,
     MapInputComponent,
     MouvementInputComponent,
+    NoRobotComponent,
     ServoBatchControlComponent,
     ServoControlComponent,
 
@@ -104,13 +107,17 @@ registerLocaleData(localeFr);
     FontAwesomeModule,
     NgbModule,
     ToastrModule.forRoot(),
-    RouterModule.forRoot(AppRoutes, {useHash: true, paramsInheritanceStrategy: 'always'}),
-    StoreModule.forRoot({robots: robotsReducer}),
+    RouterModule.forRoot(AppRoutes, { useHash: true, paramsInheritanceStrategy: 'always' }),
+    StoreModule.forRoot({
+      robots        : robotsReducer,
+      selectedRobots: selectedRobotsReducer,
+      robotsStatus  : robotsStatusReducer,
+    }),
+    EffectsModule.forRoot([RobotsEffects]),
     environment.mock ? ServicesMockModule : ServicesModule,
   ],
   providers   : [
-    {provide: LOCALE_ID, useValue: 'fr-FR'},
-    RobotResolve,
+    { provide: LOCALE_ID, useValue: 'fr-FR' },
     RobotsUiService,
   ],
   bootstrap   : [AppComponent],
@@ -152,6 +159,6 @@ export class AppModule {
     );
 
     robotsService.getRobots()
-      .subscribe(robots => store.dispatch(loadRobots({robots})));
+      .subscribe(robots => store.dispatch(loadRobots({ robots })));
   }
 }

@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {Robot} from '../models/Robot';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {Position} from '../models/Position';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Position } from '../models/Position';
+import { Robot } from '../models/Robot';
 
 @Injectable()
 export class MouvementsService {
@@ -21,14 +21,17 @@ export class MouvementsService {
       }
     }
 
-    return this.http.post(`http://${robot.host}/mouvement/${type}`, {}, {params: params});
+    return this.http.post(`http://${robot.host}/mouvement/${type}`, {}, { params });
   }
 
   /**
    * Retourne la position du robot
    */
-  getPosition(robot: Robot): Observable<Position> {
-    return this.http.get<Position>(`http://${robot.host}/mouvement`);
+  getPosition(robot: Robot, full: boolean): Observable<Position> {
+    const params = new HttpParams()
+      .set('full', `${full}`);
+
+    return this.http.get<Position>(`http://${robot.host}/mouvement`, { params });
   }
 
 }

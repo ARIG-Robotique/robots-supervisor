@@ -1,4 +1,14 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import Konva from 'konva';
 import { Constants } from '../../constants/constants';
 import { MapPosition } from '../../models/MapPosition';
@@ -8,29 +18,27 @@ import { Table } from '../../models/Table';
 import { GameStatusManager } from './game-status.manager';
 
 @Component({
-  selector   : 'arig-map-input',
-  templateUrl: './map-input.component.html',
-  styleUrls  : ['./map-input.component.scss']
+  selector : 'arig-map-input',
+  template : '<div #mapContainer class="map-container"></div>',
+  styleUrls: ['./map-input.component.scss']
 })
 export class MapInputComponent implements OnChanges, AfterViewInit {
 
   @Input() team: string;
   @Input() table: Table;
-  @Input() robotPosition: Partial<Position> = {x: 0, y: 0, angle: 0};
 
-  @Output() positionChanged = new EventEmitter<MapPosition>();
-  @Output() angleChanged = new EventEmitter<MapPosition>();
+  @Output() positionChanged = new EventEmitter<Pick<MapPosition, 'x' | 'y'>>();
+  @Output() angleChanged = new EventEmitter<Pick<MapPosition, 'angle'>>();
 
-  @ViewChild('mapContainer', {static: true}) mapContainer: ElementRef;
+  @ViewChild('mapContainer', { static: true }) mapContainer: ElementRef;
 
   state: any = {};
-  targetPosition: MapPosition = {x: 0, y: 0, angle: 0};
   tableZoom = 0.85;
 
   stage: Konva.Stage;
   mainLayer: Konva.Layer;
   background: Konva.Layer;
-  nerell: Konva.Group;
+  robots: { [K: string]: Konva.Group } = {};
   target: Konva.Group;
   director: Konva.Group;
   crosshairLayer: Konva.Layer;
@@ -56,8 +64,10 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     this.mainLayer = new Konva.Layer();
     this.stage.add(this.mainLayer);
 
-    this.nerell = this.buildNerell();
-    this.mainLayer.add(this.nerell);
+    this.robots['nerell'] = this.buildRobot('nerell');
+    this.robots['odin'] = this.buildRobot('odin');
+    this.mainLayer.add(this.robots['nerell']);
+    this.mainLayer.add(this.robots['odin']);
 
     this.target = this.buildTarget();
     this.mainLayer.add(this.target);
@@ -77,15 +87,16 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     this.crosshair = this.buildCrossHair();
     this.crosshairLayer.add(this.crosshair);
 
-    this.mainLayer.scale({x: this.tableZoom, y: this.tableZoom});
-    this.background.scale({x: this.tableZoom, y: this.tableZoom});
+    this.mainLayer.scale({ x: this.tableZoom, y: this.tableZoom });
+    this.background.scale({ x: this.tableZoom, y: this.tableZoom });
 
-    this.moveTarget(this.targetPosition);
-    this.moveNerell(this.robotPosition);
-    this.drawPoints(this.robotPosition);
-    this.drawMouvement(this.robotPosition);
+    this.moveTarget({ x: 0, y: 0 });
+    this.moveRobot('nerell', { x: 0, y: 0, angle: 0 });
+    this.moveRobot('odin', { x: 0, y: 0, angle: 0 });
 
-    this.statusManager = new GameStatusManager(this.mainLayer, this.table);
+    if (this.table.name !== 'test') {
+      this.statusManager = new GameStatusManager(this.mainLayer, this.table);
+    }
 
     this.mainLayer.draw();
 
@@ -105,19 +116,22 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         this.statusManager = new GameStatusManager(this.mainLayer, this.table);
       }
     }
+  }
 
-    if (changes['robotPosition']) {
-      this.moveNerell(this.robotPosition);
-      this.drawPoints(this.robotPosition);
-      this.drawMouvement(this.robotPosition);
+  setPosition(name: string, main: boolean, position: Position) {
+    if (this.stage) {
+      this.moveRobot(name, position);
 
-      if (this.statusManager && this.robotPosition.gameStatus) {
-        this.statusManager.update(this.robotPosition.gameStatus, this.team);
+      if (main) {
+        this.drawPoints(position);
+        this.drawMouvement(position);
+
+        if (this.statusManager && position.gameStatus) {
+          this.statusManager.update(position.gameStatus, this.team);
+        }
       }
 
-      if (this.stage) {
-        this.mainLayer.draw();
-      }
+      this.mainLayer.draw();
     }
   }
 
@@ -185,17 +199,17 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     }
   }
 
-  moveNerell(position: Partial<Position>) {
-    if (position && this.stage) {
-      this.nerell.position({
+  moveRobot(name: string, position: MapPosition) {
+    if (this.robots[name] && position) {
+      this.robots[name].position({
         x: position.x * this.table.imageRatio,
         y: (this.table.height - position.y) * this.table.imageRatio
       });
-      this.nerell.rotation(-position.angle - 180);
+      this.robots[name].rotation(-position.angle - 180);
     }
   }
 
-  drawPoints(data: Partial<Position>) {
+  drawPoints(data: Position) {
     if (data && this.stage) {
       this.points.removeChildren();
 
@@ -251,7 +265,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     }
   }
 
-  drawMouvement(data: Partial<Position>) {
+  drawMouvement(data: Position) {
     if (data && this.stage) {
       this.mouvement.removeChildren();
 
@@ -371,37 +385,34 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
   mouseup() {
     if (this.state.moving) {
-      this.targetPosition = {
-        x    : this.robotPosition.x,
-        y    : this.robotPosition.y,
-        angle: this.state.angle * 180 / Math.PI
+      const position = {
+        angle: this.state.angle * 180 / Math.PI,
       };
 
-      if (this.targetPosition.angle > 180) {
-        this.targetPosition.angle -= 360;
+      if (position.angle > 180) {
+        position.angle -= 360;
       }
 
       this.target.visible(false);
 
-      this.angleChanged.emit(this.targetPosition);
+      this.angleChanged.emit(position);
 
     } else {
-      this.targetPosition = {
-        x    : this.state.startX / this.table.imageRatio / this.tableZoom,
-        y    : this.table.height - this.state.startY / this.table.imageRatio / this.tableZoom,
-        angle: this.robotPosition.angle
+      const position = {
+        x: this.state.startX / this.table.imageRatio / this.tableZoom,
+        y: this.table.height - this.state.startY / this.table.imageRatio / this.tableZoom,
       };
 
-      this.moveTarget(this.targetPosition);
+      this.moveTarget(position);
       this.director.visible(false);
 
-      this.positionChanged.emit(this.targetPosition);
+      this.positionChanged.emit(position);
     }
 
     this.state = {};
   }
 
-  private buildNerell(): Konva.Group {
+  private buildRobot(name: string): Konva.Group {
     const robot = new Konva.Group();
 
     const imageLoader = new Image();
@@ -419,7 +430,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       }));
     };
 
-    imageLoader.src = 'assets/robots/nerell.png';
+    imageLoader.src = `assets/robots/${name}.png`;
 
     return robot;
   }
@@ -496,7 +507,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       x          : -10,
       y          : 0,
       points     : [0, 0, 20, 0],
-      stroke     : 'white',
+      stroke     : 'black',
       strokeWidth: 1
     }));
 
@@ -504,7 +515,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       x          : 0,
       y          : -10,
       points     : [0, 0, 0, 20],
-      stroke     : 'white',
+      stroke     : 'black',
       strokeWidth: 1
     }));
 
@@ -520,7 +531,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     return crosshair;
   }
 
-  moveTarget(position: MapPosition) {
+  moveTarget(position: Pick<MapPosition, 'x' | 'y'>) {
     if (this.target) {
       this.target.visible(true);
       this.target.position({

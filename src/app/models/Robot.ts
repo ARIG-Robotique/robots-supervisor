@@ -6,3 +6,7 @@ export interface Robot {
   login: string;
   pwd: string;
 }
+
+export interface SelectedRobot extends Robot {
+  main: boolean;
+}
