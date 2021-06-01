@@ -13,7 +13,7 @@
             *ngFor="let robot of robots$ | async"
             (click)="selectRobot(robot)"
             [ngClass]="{'active': selectedRobot && robot.id === selectedRobot.id}">
-          {{robot.name}}
+          {{robot.name}} <ng-container *ngIf="robot.simulateur">(simu)</ng-container>
 
           <span class="ml-auto"></span>
 
