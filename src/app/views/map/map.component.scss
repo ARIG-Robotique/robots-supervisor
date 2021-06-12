@@ -1,3 +1,5 @@
+@import '../../../styles/variables';
+
 .couleur {
   height: 1rem;
   width: 100%;
@@ -23,4 +25,9 @@
   &--pris {
     opacity: 0.2;
   }
+}
+
+.data-list {
+  height: $page-full-content-height;
+  overflow: auto;
 }

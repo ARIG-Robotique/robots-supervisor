@@ -136,11 +136,12 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   }
 
   setTable(table: Table, team: string) {
-    if (table && team && this.stage) {
+    if (table && this.stage) {
       let done = 0;
+      let todo = 0;
       const checkDone = () => {
         done++;
-        if (done === 2) {
+        if (done === todo) {
           this.stage.width(this.table.width * this.table.imageRatio * this.tableZoom);
           this.stage.height(this.table.height * this.table.imageRatio * this.tableZoom);
 
@@ -150,6 +151,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
       this.background.removeChildren();
 
+      todo++;
       const tableLoader = new Image();
 
       tableLoader.onload = () => {
@@ -169,7 +171,8 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
       tableLoader.src = 'assets/tables/' + table.name + '.png';
 
-      if (this.table.name !== 'test') {
+      if (this.table.name !== 'test' && team) {
+        todo++;
         const maskLoader = new Image();
 
         maskLoader.onload = () => {
@@ -193,8 +196,6 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         };
 
         maskLoader.src = 'assets/pathMasks/' + table.name + '-' + team + '.png';
-      } else {
-        checkDone();
       }
     }
   }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Mouvements } from 'app/constants/mouvements.constants';
-import { BehaviorSubject, Observable, of, timer } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, of, timer } from 'rxjs';
 import { catchError, filter, map, shareReplay, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { AbstractComponent } from '../../components/abstract.component';
 import { Capteurs } from '../../models/Capteurs';
@@ -59,9 +59,11 @@ export class ControlsComponent extends AbstractComponent implements OnInit {
         takeUntil(this.ngDestroy$)
       );
 
-    this.servos$ = this.refreshServos$
+    this.servos$ = combineLatest([
+      this.refreshServos$,
+      this.robot$
+    ])
       .pipe(
-        withLatestFrom(this.robot$),
         switchMap(([, robot]) => this.servosService.getServos(robot)),
         catchError(() => of(null)),
         takeUntil(this.ngDestroy$)
