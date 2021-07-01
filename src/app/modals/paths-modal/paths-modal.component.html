@@ -10,6 +10,7 @@
                 [interval]="0"
                 [showNavigationIndicators]="false"
                 [wrap]="false"
+                [animation]="false"
                 (slide)="onSlide($event.current)">
     <ng-template *ngFor="let path of paths; let idx = index;"
                  ngbSlide
