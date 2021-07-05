@@ -5,6 +5,7 @@
 <div class="row no-gutters" *ngIf="mainRobot$ | async as mainRobot; else noRobot">
   <arig-map-input [table]="currentTable"
                   [team]="team"
+                  [mainRobot]="mainRobot.name | lowercase"
                   (positionChanged)="positionChanged(mainRobot, $event)"
                   (angleChanged)="angleChanged(mainRobot, $event)">
   </arig-map-input>

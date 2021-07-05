@@ -26,6 +26,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
   @Input() team: string;
   @Input() table: Table;
+  @Input() mainRobot: string;
 
   @Output() positionChanged = new EventEmitter<Pick<MapPosition, 'x' | 'y'>>();
   @Output() angleChanged = new EventEmitter<Pick<MapPosition, 'angle'>>();
@@ -100,12 +101,12 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
     this.mainLayer.draw();
 
-    this.setTable(this.table, this.team);
+    this.setTable(this.table, this.team, this.mainRobot);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['table'] || changes['team']) {
-      this.setTable(this.table, this.team);
+    if (changes['table'] || changes['team'] || changes['mainRobot']) {
+      this.setTable(this.table, this.team, this.mainRobot);
     }
 
     if (changes['table']) {
@@ -135,7 +136,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     }
   }
 
-  setTable(table: Table, team: string) {
+  setTable(table: Table, team: string, mainRobot: string) {
     if (table && this.stage) {
       let done = 0;
       let todo = 0;
@@ -195,7 +196,7 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
           checkDone();
         };
 
-        maskLoader.src = 'assets/pathMasks/' + table.name + '-' + team + '.png';
+        maskLoader.src = 'assets/pathMasks/' + table.name + '-' + team + '-' + mainRobot + '.png';
       }
     }
   }
