@@ -15,6 +15,7 @@ import { Robot, SelectedRobot } from '../../models/Robot';
 import { CapteursService } from '../../services/capteurs.service';
 import { MouvementsService } from '../../services/mouvements.service';
 import { RobotsService } from '../../services/robots.service';
+import { StrategyService } from '../../services/strategy.service';
 import { selectSelectedRobots } from '../../store/robots.selector';
 
 @Component({
@@ -57,6 +58,7 @@ export class MapComponent extends AbstractComponent implements OnInit {
               private store: Store<any>,
               protected robotsService: RobotsService,
               private mouvementsService: MouvementsService,
+              private strategyService: StrategyService,
               private capteursService: CapteursService) {
     super();
   }
@@ -121,6 +123,10 @@ export class MapComponent extends AbstractComponent implements OnInit {
       ...position,
       sens: this.form.value.sensRotation,
     }).subscribe();
+  }
+
+  executeAction(robot: Robot, action: Action) {
+    this.strategyService.execute(robot, action.uuid).subscribe();
   }
 
 }
