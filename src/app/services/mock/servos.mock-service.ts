@@ -1,42 +1,56 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
 import { Robot } from '../../models/Robot';
-import { ServoConfig, ServoGroup, Servos } from '../../models/Servo';
+import { Servo, ServoGroup, Servos } from '../../models/Servo';
 import { ServosService } from '../servos.service';
 
 @Injectable()
 export class ServosMockService extends ServosService {
 
-  getServos(robot: Robot): Observable<Servos> {
-    return of([
-      {
-        id    : 1,
-        name  : 'Mock',
-        servos: [
-          {
-            id             : 1,
-            name           : 'Mock',
-            currentSpeed   : 0,
-            currentPosition: 1500,
-            positions      : [
-              {name: 'Top', value: 0},
-              {name: 'Bottom', value: 3000},
-            ],
+  servos: Servos = [
+    {
+      id    : 1,
+      name  : 'Mock',
+      servos: [
+        {
+          id       : 1,
+          name     : 'Mock',
+          currentSpeed: 0,
+          currentPosition: 3000,
+          positions: {
+            Top   : { name: 'Top', value: 0, speed: 0 },
+            Bottom: { name: 'Bottom', value: 3000, speed: 0 },
           },
-        ],
-        batch : [
-          {name: 'Top', value: 0},
-          {name: 'Bottom', value: 3000},
-        ],
-      },
-    ]);
+        },
+      ],
+      batch : ['Top', 'Bottom'],
+    },
+  ];
+
+  constructor(http: HttpClient,
+              private toastService: ToastrService) {
+    super(http);
   }
 
-  setPosition(robot: Robot, servo: ServoConfig, position: number, speed: number): Observable<unknown> {
+  getServos(robot: Robot): Observable<Servos> {
+    return of(this.servos);
+  }
+
+  setPosition(robot: Robot, servo: Servo, position: number, speed: number): Observable<unknown> {
+    this.toastService.info(`Servo ${servo.name} to position ${position} at speed ${speed}.`);
     return of(null);
   }
 
-  setPositionBatch(robot: Robot, group: ServoGroup, position: number): Observable<unknown> {
+  setPositionBatch(robot: Robot, group: ServoGroup, position: string): Observable<unknown> {
+    this.toastService.info(`Group ${group.name} to position ${position}.`);
+    group.servos.forEach(servo => {
+      if (servo.positions[position]) {
+        servo.currentPosition = servo.positions[position].value;
+        servo.currentSpeed = servo.positions[position].speed;
+      }
+    });
     return of(null);
   }
 

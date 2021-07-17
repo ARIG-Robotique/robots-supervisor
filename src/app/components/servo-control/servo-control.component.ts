@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Robot } from '../../models/Robot';
-import { ServoConfig, ServoPosition } from '../../models/Servo';
+import { Servo, ServoPosition } from '../../models/Servo';
 import { ServosService } from '../../services/servos.service';
 
 @Component({
@@ -10,10 +10,14 @@ import { ServosService } from '../../services/servos.service';
 })
 export class ServoControlComponent {
 
-  @Input() servo: ServoConfig;
+  @Input() servo: Servo;
   @Input() robot: Robot;
 
   trackByName = (i: number, item: ServoPosition) => item.name;
+
+  get positions() {
+    return Object.values(this.servo.positions);
+  }
 
   constructor(private servosService: ServosService) {
   }
@@ -22,8 +26,14 @@ export class ServoControlComponent {
     this.servosService.setPosition(this.robot, this.servo, this.servo.currentPosition, this.servo.currentSpeed).subscribe();
   }
 
+  setPositionByName() {
+    const position = this.positions.find(p => p.value === this.servo.currentPosition);
+    this.servo.currentSpeed = position.speed;
+    this.setPosition();
+  }
+
   incrementPosition(value: number) {
-    this.servo.currentPosition = this.servo.currentPosition + value;
+    this.servo.currentPosition += value;
     this.setPosition();
   }
 

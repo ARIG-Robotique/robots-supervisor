@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Robot } from '../../models/Robot';
-import { ServoGroup, ServoPosition } from '../../models/Servo';
+import { ServoGroup } from '../../models/Servo';
 import { ServosService } from '../../services/servos.service';
 
 @Component({
@@ -14,15 +14,13 @@ export class ServoBatchControlComponent {
   @Input() robot: Robot;
   @Output() changePosition = new EventEmitter<void>();
 
-  currentPosition: number;
-
-  trackByName = (i: number, item: ServoPosition) => item.name;
+  trackByIndex = (i: number, item: any) => i;
 
   constructor(private servosService: ServosService) {
   }
 
-  setPosition() {
-    this.servosService.setPositionBatch(this.robot, this.group, this.currentPosition)
+  setPosition(position: string) {
+    this.servosService.setPositionBatch(this.robot, this.group, position)
       .subscribe(() => this.changePosition.emit());
   }
 
