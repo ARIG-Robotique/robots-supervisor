@@ -5,16 +5,14 @@ import { Store } from '@ngrx/store';
 import { combineLatest, interval, Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { AbstractComponent } from '../../components/abstract.component';
-import { MapInputComponent } from '../../components/map-input/map-input.component';
+import { MapInputComponent } from '../../components/map/input/map-input.component';
 import { SensDeplacement, SensRotation } from '../../constants/mouvements.constants';
-import { Tables } from '../../constants/tables.constants';
 import { Action } from '../../models/Action';
 import { MapPosition } from '../../models/MapPosition';
 import { Position } from '../../models/Position';
 import { Robot, SelectedRobot } from '../../models/Robot';
 import { CapteursService } from '../../services/capteurs.service';
 import { MouvementsService } from '../../services/mouvements.service';
-import { RobotsService } from '../../services/robots.service';
 import { StrategyService } from '../../services/strategy.service';
 import { selectSelectedRobots } from '../../store/robots.selector';
 
@@ -24,12 +22,11 @@ import { selectSelectedRobots } from '../../store/robots.selector';
 })
 export class MapComponent extends AbstractComponent implements OnInit {
 
-  readonly Tables = Tables;
-  readonly SensDeplacement = SensDeplacement;
-  readonly SensRotation = SensRotation;
-  readonly Modes = [
-    { name: 'path', label: 'path' },
-    { name: 'position', label: 'direct' }
+  readonly Buttons = [
+    { label: 'Servos', code: 'servos', icon: 'cogs' },
+    { label: 'Mouvements', code: 'mouvements', icon: 'arrows-alt' },
+    { label: 'Capteurs', code: 'capteurs', icon: 'heartbeat' },
+    { label: 'Éxécutions', code: 'execs', icon: 'database' },
   ];
 
   @ViewChild(MapInputComponent)
@@ -41,26 +38,26 @@ export class MapComponent extends AbstractComponent implements OnInit {
 
   team = '';
 
-  currentTable = Tables[0];
   targetPosition: MapPosition;
 
-  form = this.fb.group({
-    mode           : ['path'],
-    sensDeplacement: ['AUTO'],
-    sensRotation   : ['AUTO'],
-  });
+  mouvementConfig = {
+    mode           : 'path',
+    sensDeplacement: 'AUTO',
+    sensRotation   : 'AUTO',
+  };
 
-  trackByUuid = (i: number, action: Action) => action.uuid;
-  trackByKey = (i: number, keyvalue: KeyValue<string, any>) => keyvalue.key;
-  trackByIndex = (i: number, value: any) => i;
+  showSidebar = false;
+  sidebar: string;
 
-  constructor(private fb: FormBuilder,
-              private store: Store<any>,
-              protected robotsService: RobotsService,
+  constructor(private store: Store<any>,
               private mouvementsService: MouvementsService,
-              private strategyService: StrategyService,
               private capteursService: CapteursService) {
     super();
+  }
+
+  openSidebar(sidebar: string) {
+    this.sidebar = sidebar;
+    this.showSidebar = true;
   }
 
   ngOnInit(): void {
@@ -107,9 +104,9 @@ export class MapComponent extends AbstractComponent implements OnInit {
       ...position,
     };
 
-    this.mouvementsService.sendMouvement(robot, this.form.value.mode, {
+    this.mouvementsService.sendMouvement(robot, this.mouvementConfig.mode, {
       ...position,
-      sens: this.form.value.sensDeplacement,
+      sens: this.mouvementConfig.sensDeplacement,
     }).subscribe();
   }
 
@@ -121,12 +118,8 @@ export class MapComponent extends AbstractComponent implements OnInit {
 
     this.mouvementsService.sendMouvement(robot, 'orientation', {
       ...position,
-      sens: this.form.value.sensRotation,
+      sens: this.mouvementConfig.sensRotation,
     }).subscribe();
-  }
-
-  executeAction(robot: Robot, action: Action) {
-    this.strategyService.execute(robot, action.uuid).subscribe();
   }
 
 }

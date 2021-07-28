@@ -1,0 +1,16 @@
+<div class="card">
+  <h5 class="card-header">
+    <fa-icon [icon]="['fas', 'joystick']"></fa-icon>
+    Actions <span class="badge badge-info">{{mainPosition?.actions.length}}</span>
+  </h5>
+  <div class="card-body">
+    <strong>En cours :</strong> {{mainPosition?.currentAction}}
+    <div *ngFor="let action of mainPosition?.actions; trackBy: trackByUuid"
+         ngbTooltip="{{action.uuid}}" placement="left" container="body"
+         (click)="executeAction(mainRobot, action)">
+              <span class="badge badge-big mr-2"
+                    [ngClass]="{'badge-success': action.valid, 'badge-danger': !action.valid}">{{action.order | number:'4.0-0'}}</span>
+      {{action.name}}
+    </div>
+  </div>
+</div>

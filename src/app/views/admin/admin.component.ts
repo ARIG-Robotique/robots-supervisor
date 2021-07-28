@@ -1,4 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { IconDefinition, IconName, IconPrefix } from '@fortawesome/fontawesome-svg-core';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AbstractComponent } from '../../components/abstract.component';
@@ -17,11 +19,14 @@ import { selectRobots } from '../../store/robots.selector';
 })
 export class AdminComponent extends AbstractComponent implements OnInit, OnDestroy {
 
+  icons: [IconPrefix, IconName][] = [];
+
   robots$: Observable<Robot[]>;
   execs$ = new BehaviorSubject<Exec[]>([]);
   selectedRobot: Robot = null;
 
   constructor(private store: Store<any>,
+              private library: FaIconLibrary,
               private robotsUiService: RobotsUiService,
               private robotsService: RobotsService,
               private execsService: ExecsService) {
@@ -73,6 +78,20 @@ export class AdminComponent extends AbstractComponent implements OnInit, OnDestr
       .subscribe(() => {
         this.execs$.next(this.execs$.value.filter(e => e !== exec));
       });
+  }
+
+  loadIcons() {
+    if (this.icons.length === 0) {
+      const definitions = (this.library as any).definitions as { [prefix: string]: { [name: string]: IconDefinition } };
+
+      for (const [prefix, icons] of Object.entries(definitions)) {
+        for (const name of Object.keys(icons)) {
+          this.icons.push([prefix, name] as any);
+        }
+      }
+    } else {
+      this.icons.length = 0;
+    }
   }
 
 }

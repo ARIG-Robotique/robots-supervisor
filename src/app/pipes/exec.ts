@@ -1,15 +1,19 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { formatDate } from '@angular/common';
+import { Inject, LOCALE_ID, Pipe, PipeTransform } from '@angular/core';
 import { Exec } from '../models/Exec';
-import { formatDate } from '../utils/formatDate';
 
-@Pipe({name: 'arigExec'})
+@Pipe({ name: 'arigExec' })
 export class ArigExecPipe implements PipeTransform {
+
+  constructor(@Inject(LOCALE_ID) private locale: string) {
+
+  }
 
   transform(exec: Exec): any {
     return `${exec.id} :
-    le ${formatDate(exec.dateStart, 'PP')}
-    de ${formatDate(exec.dateStart, 'pp')}
-    à ${formatDate(exec.dateEnd, 'pp')}`;
+    le ${formatDate(exec.dateStart, 'shortDate', this.locale)}
+    de ${formatDate(exec.dateStart, 'shortTime', this.locale)}
+    à ${formatDate(exec.dateEnd, 'shortTime', this.locale)}`;
   }
 
 }

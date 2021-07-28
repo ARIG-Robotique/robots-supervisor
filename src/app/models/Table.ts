@@ -4,5 +4,6 @@ export interface Table {
   width: number;
   height: number;
   imageRatio: number;
+  zoom: number;
 
 }

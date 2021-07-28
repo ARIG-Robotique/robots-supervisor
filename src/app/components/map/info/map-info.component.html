@@ -1,0 +1,94 @@
+<div class="card">
+  <h5 class="card-header">
+    <fa-icon icon="info-circle"></fa-icon>
+    Informations
+  </h5>
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+        Equipe :
+        <span class="badge badge-big"
+              [style.background]="team==='BLEU'?'#00A1E6':team==='JAUNE'?'#FFBF00':'#555'">{{team}}</span>
+      </div>
+      <div class="col">
+        Temps :
+        <span class="badge badge-big badge-info">{{mainPosition?.matchTime / 1000 | number:'3.0-0'}}s</span>
+      </div>
+      <div class="col">
+        Girouette :
+        <span class="badge badge-big badge-light">{{mainPosition?.gameStatus?.girouette}}</span>
+      </div>
+    </div>
+    <div class="row mt-1">
+      <div class="col">
+        <div *ngTemplateOutlet="listeCouleurs; context: {
+            title: 'Ecueil équipe',
+            couleurs: mainPosition?.gameStatus?.couleursEcueilEquipe,
+            pris: mainPosition?.gameStatus?.ecueilEquipePris
+        }"></div>
+        <div *ngTemplateOutlet="listeCouleurs; context: {
+            title: 'Ecueil commun équipe',
+            couleurs: mainPosition?.gameStatus?.couleursEcueilCommunEquipe,
+            pris: mainPosition?.gameStatus?.ecueilCommunEquipePris
+        }"></div>
+        <div *ngTemplateOutlet="listeCouleurs; context: {
+            title: 'Ecueil commun adverse',
+            couleurs: mainPosition?.gameStatus?.couleursEcueilCommunAdverse,
+            pris: mainPosition?.gameStatus?.ecueilCommunAdversePris
+         }"></div>
+        <div *ngTemplateOutlet="listeCouleurs; context: {
+            title: 'Pinces avant',
+            couleurs: mainPosition?.gameStatus?.pincesAvant,
+            pris: false
+        }"></div>
+        <div *ngTemplateOutlet="listeCouleurs; context: {
+            title: 'Pinces arrière',
+            couleurs: mainPosition?.gameStatus?.pincesArriere,
+            pris: false
+        }"></div>
+      </div>
+      <div class="col" style="flex: 0 0 170px;">
+        <div *ngTemplateOutlet="status; context: {
+            title: 'Phare',
+            status: mainPosition?.gameStatus?.phare
+        }"></div>
+        <div *ngTemplateOutlet="status; context: {
+            title: 'Manche à air 1',
+            status: mainPosition?.gameStatus?.mancheAAir1
+        }"></div>
+        <div *ngTemplateOutlet="status; context: {
+            title: 'Manche à air 2',
+            status: mainPosition?.gameStatus?.mancheAAir2
+        }"></div>
+        <div *ngTemplateOutlet="status; context: {
+            title: 'Ecueil Equipe',
+            status: mainPosition?.gameStatus?.ecueilEquipePris
+        }"></div>
+        <div *ngTemplateOutlet="status; context: {
+            title: 'Ecueil com. Equ.',
+            status: mainPosition?.gameStatus?.ecueilCommunEquipePris
+        }"></div>
+        <div *ngTemplateOutlet="status; context: {
+            title: 'Ecueil com. Adv.',
+            status: mainPosition?.gameStatus?.ecueilCommunAdversePris
+        }"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #listeCouleurs let-title="title" let-couleurs="couleurs" let-pris="pris">
+  <div class="row">
+    <span class="col">{{title}} :</span>
+  </div>
+  <div class="row">
+    <div class="col" *ngFor="let couleur of couleurs; trackBy: trackByIndex">
+      <div [class]="'couleur couleur--' + couleur + ' ' + (pris ? 'couleur--pris' : '')"></div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #status let-title="title" let-status="status">
+  <div class="badge badge-big d-block mt-1"
+       [ngClass]="{'badge-success': status, 'badge-danger': !status}">{{title}}</div>
+</ng-template>

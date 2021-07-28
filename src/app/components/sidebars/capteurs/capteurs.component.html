@@ -1,0 +1,50 @@
+<div class="card" *ngIf="robot$ | async as robot">
+  <h5 class="card-header">
+    <fa-icon icon="heartbeat"></fa-icon>
+    Capteurs
+  </h5>
+
+  <div class="btn-group" [hidden]="!robot.simulateur">
+    <button type="button" class="btn btn-secondary"
+            *ngIf="!(capteurs$ | async)?.numerique.Tirette"
+            (click)="setTirette(robot, true)">
+      Mettre la tirette
+    </button>
+    <button type="button" class="btn btn-secondary"
+            *ngIf="(capteurs$ | async)?.numerique.Tirette"
+            (click)="setTirette(robot, false)">
+      Enlever la tirette
+    </button>
+    <button type="button" class="btn btn-secondary"
+            *ngIf="!(capteurs$ | async)?.numerique.AU"
+            (click)="setAu(robot, true)">
+      Enclencher l'AU
+    </button>
+    <button type="button" class="btn btn-secondary"
+            *ngIf="(capteurs$ | async)?.numerique.AU"
+            (click)="setAu(robot, false)">
+      Claquer l'AU
+    </button>
+  </div>
+
+  <div class="list-group list-group-flush" *ngIf="capteurs$ | async as capteurs">
+    <ul class="list-group-item list-unstyled">
+      <li *ngFor="let capteur of capteurs.numerique | keyvalue; trackBy: trackByKey">
+        <fa-icon [icon]="['far', 'dot-circle']"
+                 class="mr-2"
+                 [class.text-success]="capteur.value"
+                 [class.text-danger]="!capteur.value"></fa-icon>
+        {{capteur.key}}
+      </li>
+    </ul>
+
+    <ul class="list-group-item list-unstyled">
+      <li *ngFor="let entry of capteurs.text | keyvalue; trackBy: trackByKey">
+        <strong>{{entry.key}}</strong> : {{entry.value}}
+      </li>
+      <li *ngFor="let entry of capteurs.analogique | keyvalue; trackBy: trackByKey">
+        <strong>{{entry.key}}</strong> : {{entry.value}}
+      </li>
+    </ul>
+  </div>
+</div>

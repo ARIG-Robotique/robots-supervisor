@@ -1,0 +1,51 @@
+<div class="card">
+  <h5 class="card-header">
+    <fa-icon icon="arrow-right"></fa-icon>
+    Position
+  </h5>
+  <div class="card-body">
+    <ng-container *ngTemplateOutlet="position; context: {prefix: 'target', position: targetPosition}"></ng-container>
+    <ng-container *ngTemplateOutlet="position; context: {prefix: 'current', position: mainPosition}"></ng-container>
+
+    <div class="row mt-3">
+      <div class="form-group has-float-label col m-0">
+        <select class="form-control form-control-sm mr-1" [(ngModel)]="config.mode">
+          <option *ngFor="let mode of Modes" [ngValue]="mode.name">
+            {{mode.label}}
+          </option>
+        </select>
+        <span>Mode déplacement</span>
+      </div>
+      <div class="form-group has-float-label col m-0">
+        <select class="form-control form-control-sm mr-1" [(ngModel)]="config.sensDeplacement">
+          <option *ngFor="let sens of SensDeplacement" [ngValue]="sens">
+            {{sens}}
+          </option>
+        </select>
+        <span>Sens déplacement</span>
+      </div>
+      <div class="form-group has-float-label col m-0">
+        <select class="form-control form-control-sm mr-1" [(ngModel)]="config.sensRotation">
+          <option *ngFor="let sens of SensRotation" [ngValue]="sens">
+            {{sens}}
+          </option>
+        </select>
+        <span>Sens rotation</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #position let-position="position" let-prefix="prefix">
+  <div class="row">
+    <div class="col">
+      {{prefix}} X : <span class="badge badge-big badge-info">{{position?.x | number:'4.0-0'}}</span>
+    </div>
+    <div class="col">
+      {{prefix}} Y : <span class="badge badge-big badge-info">{{position?.y | number:'4.0-0'}}</span>
+    </div>
+    <div class="col">
+      {{prefix}} A : <span class="badge badge-big badge-info">{{position?.angle | number:'3.1-1'}}</span>
+    </div>
+  </div>
+</ng-template>

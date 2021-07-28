@@ -1,0 +1,26 @@
+.couleur {
+  height: 1rem;
+  width: 100%;
+  border: 1px solid transparent;
+  margin-top: 0.25rem;
+
+  &--VERT {
+    background: #007a45;
+  }
+
+  &--ROUGE {
+    background: #d7171f;
+  }
+
+  &--INCONNU {
+    background: #555555;
+  }
+
+  &--null {
+    border-color: #555555;
+  }
+
+  &--pris {
+    opacity: 0.2;
+  }
+}

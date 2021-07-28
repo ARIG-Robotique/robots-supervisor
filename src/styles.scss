@@ -3,6 +3,8 @@
 @import '~bootstrap-float-label/bootstrap-float-label.css';
 @import 'styles/bt-overrides';
 @import '~ngx-toastr/toastr-bs4-alert';
+@import '~primeng/resources/themes/bootstrap4-dark-blue/theme.css';
+@import '~primeng/resources/primeng';
 
 
 .btn-round {
@@ -21,4 +23,12 @@
 
 .badge-big {
   font-size: $h5-font-size * 0.75;
+}
+
+.p-sidebar-header {
+  display: none !important;
+}
+
+.p-sidebar-content {
+  padding: 1rem !important;;
 }

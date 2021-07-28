@@ -26,6 +26,7 @@ import {
   faRobot,
   faRoute,
   faServer,
+  faTimes,
   faUser,
   faWindowClose
 } from '@fortawesome/free-solid-svg-icons';
@@ -35,20 +36,28 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EffectsModule } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
 import { ToastrModule } from 'ngx-toastr';
+import { SidebarModule } from 'primeng/sidebar';
 import arrowFromTop from '../assets/icons/arrowFromTop.json';
 import arrowToTop from '../assets/icons/arrowToTop.json';
 import joystick from '../assets/icons/joystick.json';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routes';
-import { AppNavbarComponent } from './components/app-navbar/app-navbar.component';
-import { AsservInputComponent } from './components/asserv-input/asserv-input.component';
-import { ListeCapteursComponent } from './components/liste-capteurs/liste-capteurs.component';
-import { MapInputComponent } from './components/map-input/map-input.component';
-import { MouvementInputComponent } from './components/mouvement-input/mouvement-input.component';
-import { NoRobotComponent } from './components/no-robot/no-robot.component';
-import { ServoBatchControlComponent } from './components/servo-batch-control/servo-batch-control.component';
-import { ServoControlComponent } from './components/servo-control/servo-control.component';
+import { MapActionsComponent } from './components/map/actions/map-actions.component';
+import { MapInfoComponent } from './components/map/info/map-info.component';
+import { MapInputComponent } from './components/map/input/map-input.component';
+import { MapPositionComponent } from './components/map/position/map-position.component';
+import { MapScoreComponent } from './components/map/score/map-score.component';
+import { AppNavbarComponent } from './components/misc/app-navbar/app-navbar.component';
+import { AsservInputComponent } from './components/misc/asserv-input/asserv-input.component';
+import { MouvementInputComponent } from './components/misc/mouvement-input/mouvement-input.component';
+import { NoRobotComponent } from './components/misc/no-robot/no-robot.component';
+import { ServoBatchControlComponent } from './components/misc/servo-batch-control/servo-batch-control.component';
+import { ServoControlComponent } from './components/misc/servo-control/servo-control.component';
+import { SidebarCapteursComponent } from './components/sidebars/capteurs/capteurs.component';
+import { SidebarExecsComponent } from './components/sidebars/execs/execs.component';
+import { SidebarMouvementsComponent } from './components/sidebars/mouvements/mouvements.component';
+import { SidebarServosComponent } from './components/sidebars/servos/servos.component';
 import { AddRobotModalComponent } from './modals/add-robot-modal/add-robot-modal.component';
 import { ImportLogsModalComponent } from './modals/import-logs-modal/import-logs-modal.component';
 import { LogsModalComponent } from './modals/logs-modal/logs-modal.component';
@@ -63,8 +72,6 @@ import { loadRobots } from './store/robots.actions';
 import { RobotsEffects } from './store/robots.effects';
 import { robotsReducer, robotsStatusReducer, selectedRobotsReducer } from './store/robots.reducer';
 import { AdminComponent } from './views/admin/admin.component';
-import { ControlsComponent } from './views/controls/controls.component';
-import { HomeComponent } from './views/home/home.component';
 import { MapComponent } from './views/map/map.component';
 
 registerLocaleData(localeFr);
@@ -74,19 +81,24 @@ registerLocaleData(localeFr);
     // views
     AdminComponent,
     AppComponent,
-    ControlsComponent,
-    HomeComponent,
     MapComponent,
 
     // components
     AppNavbarComponent,
     AsservInputComponent,
-    ListeCapteursComponent,
     MapInputComponent,
     MouvementInputComponent,
     NoRobotComponent,
     ServoBatchControlComponent,
     ServoControlComponent,
+    SidebarCapteursComponent,
+    SidebarExecsComponent,
+    SidebarMouvementsComponent,
+    SidebarServosComponent,
+    MapActionsComponent,
+    MapInfoComponent,
+    MapPositionComponent,
+    MapScoreComponent,
 
     // modals
     AddRobotModalComponent,
@@ -106,6 +118,7 @@ registerLocaleData(localeFr);
     ReactiveFormsModule,
     FontAwesomeModule,
     NgbModule,
+    SidebarModule,
     ToastrModule.forRoot(),
     RouterModule.forRoot(AppRoutes, { useHash: true, paramsInheritanceStrategy: 'always' }),
     StoreModule.forRoot({
@@ -154,6 +167,7 @@ export class AppModule {
       faRobot,
       faRoute,
       faServer,
+      faTimes,
       faUser,
       faWindowClose,
     );

@@ -1,0 +1,22 @@
+<ng-container *ngIf="robot$ | async as robot">
+  <div class="card mb-3" *ngFor="let servoGroup of servos$ | async; trackBy: trackById">
+    <h5 class="card-header d-flex justify-content-between">
+        <span>
+          <fa-icon icon="cogs"></fa-icon>
+          Servos: {{servoGroup.name}}
+        </span>
+
+      <arig-servo-batch-control *ngIf="servoGroup.batch?.length"
+                                [robot]="robot" [group]="servoGroup"
+                                (changePosition)="refreshServos$.next()">
+      </arig-servo-batch-control>
+    </h5>
+
+    <div class="list-group list-group-flush">
+      <arig-servo-control *ngFor="let servo of servoGroup.servos; trackBy: trackById"
+                          class="list-group-item p-2"
+                          [robot]="robot" [servo]="servo">
+      </arig-servo-control>
+    </div>
+  </div>
+</ng-container>
