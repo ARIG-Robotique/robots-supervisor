@@ -505,29 +505,38 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   private buildCrossHair() {
     const crosshair = new Konva.Group();
 
-    crosshair.add(new Konva.Line({
-      x          : -10,
-      y          : 0,
-      points     : [0, 0, 20, 0],
-      stroke     : 'black',
-      strokeWidth: 1
+    crosshair.add(new Konva.Rect({
+      x                     : -10,
+      y                     : 0,
+      width                 : 20,
+      height                : 1,
+      fill                  : 'black',
+      stroke                : 'white',
+      strokeWidth           : 2,
+      fillAfterStrokeEnabled: true,
     }));
 
-    crosshair.add(new Konva.Line({
-      x          : 0,
-      y          : -10,
-      points     : [0, 0, 0, 20],
-      stroke     : 'black',
-      strokeWidth: 1
+    crosshair.add(new Konva.Rect({
+      x                     : 0,
+      y                     : -10,
+      width                 : 1,
+      height                : 20,
+      fill                  : 'black',
+      stroke                : 'white',
+      strokeWidth           : 2,
+      fillAfterStrokeEnabled: true,
     }));
 
     crosshair.add(new Konva.Text({
-      x        : 5,
-      y        : 5,
-      text     : '0 : 0',
-      fontSize : 16,
-      fontStyle: 'bold',
-      fill     : 'white'
+      x                     : 5,
+      y                     : 5,
+      text                  : '0 : 0',
+      fontSize              : 16,
+      fontStyle             : 'bold',
+      fill                  : 'black',
+      stroke                : 'white',
+      strokeWidth           : 2,
+      fillAfterStrokeEnabled: true,
     }));
 
     return crosshair;
