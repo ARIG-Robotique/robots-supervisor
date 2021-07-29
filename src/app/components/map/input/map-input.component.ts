@@ -1,4 +1,14 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import Konva from 'konva';
 import { ROBOT_SIZE, TABLE } from '../../../constants/constants';
 import { MapPosition } from '../../../models/MapPosition';
@@ -328,14 +338,6 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
       const dx = this.state.endX - this.state.startX;
       const dy = this.state.startY - this.state.endY;
 
-      this.state.angle = Math.atan2(dy, dx);
-      if (this.state.angle < 0) {
-        this.state.angle += 2 * Math.PI;
-      }
-      if (this.state.angle > 2 * Math.PI) {
-        this.state.angle -= 2 * Math.PI;
-      }
-
       this.state.moving = Math.abs(this.state.startX - this.state.endX) > 10 || Math.abs(this.state.startY - this.state.endY) > 10;
 
       if (this.state.moving) {
@@ -346,6 +348,8 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
           x: dx,
           y: dy
         });
+      } else {
+        this.director.visible(false);
       }
     }
 
@@ -364,12 +368,8 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
   mouseup() {
     if (this.state.moving) {
       const position = {
-        angle: this.state.angle * 180 / Math.PI,
+        angle: -this.director.rotation(),
       };
-
-      if (position.angle > 180) {
-        position.angle -= 360;
-      }
 
       this.target.visible(false);
 
@@ -466,13 +466,16 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     }));
 
     director.add(new Konva.Text({
-      text     : '',
-      x        : 120,
-      y        : -8,
-      align    : 'center',
-      fontSize : 16,
-      fontStyle: 'bold',
-      fill     : 'white'
+      text                  : '',
+      x                     : 120,
+      y                     : -8,
+      align                 : 'center',
+      fontSize              : 16,
+      fontStyle             : 'bold',
+      fill                  : 'black',
+      stroke                : 'white',
+      strokeWidth           : 2,
+      fillAfterStrokeEnabled: true,
     }));
 
     return director;
@@ -537,7 +540,9 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
         x: position.x / TABLE.zoom,
         y: position.y / TABLE.zoom,
       });
-      this.director.rotation(-Math.atan2(delta.y, delta.x) / Math.PI * 180);
+      let angle = -Math.atan2(delta.y, delta.x) / Math.PI * 180;
+      angle = Math.round(angle / 5) * 5;
+      this.director.rotation(angle);
 
       const text = this.director.getChildren((children) => children instanceof Konva.Text)[0] as Konva.Text;
       text.text(-this.director.rotation().toFixed(1) + '°');
