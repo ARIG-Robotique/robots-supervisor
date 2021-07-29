@@ -61,7 +61,22 @@ export class ExecsMockService extends ExecsService {
   }
 
   getPaths(idRobot: number, idExec: string): Observable<string[]> {
-    return of([]);
+    return of([
+      './assets/mock/work.png',
+      './assets/mock/path.png',
+      './assets/mock/work.png',
+      './assets/mock/path.png',
+      './assets/mock/work.png',
+      './assets/mock/path.png',
+      './assets/mock/work.png',
+      './assets/mock/path.png',
+      './assets/mock/work.png',
+      './assets/mock/path.png',
+    ]);
+  }
+
+  getPathFile(idRobot: number, idExec: string, file: string): string {
+    return file;
   }
 
 }
