@@ -9,22 +9,22 @@
 
     <div class="form-inline d-inline-flex mt-3">
       <div *ngFor="let field of fields"
-           class="form-group has-float-label">
+           class="form-group form-label-group">
         <input class="form-control form-control-sm mr-1"
                style="width: 80px"
                type="number"
                [(ngModel)]="values[field]"
                placeholder="{{field}}">
-        <span>{{field}}</span>
+        <label>{{field}}</label>
       </div>
       <div *ngFor="let select of select | keyvalue"
-           class="form-group has-float-label">
+           class="form-group form-label-group">
         <select class="form-control form-control-sm mr-1"
                 style="width: 80px"
                 [(ngModel)]="values[select.key]">
-          <option disabled [ngValue]="undefined" [label]="select.key"></option>
           <option *ngFor="let opt of select.value" [ngValue]="opt" [label]="opt"></option>
         </select>
+        <label>{{select.key}}</label>
       </div>
 
       <button class="btn btn-secondary btn-sm btn-round" (click)="apply()">

@@ -4,8 +4,11 @@ $secondary: #18BC9C;
 $page-content-height: calc(100vh - 102px);
 $page-full-content-height: calc(100vh - 70px);
 
+$navbar-dark-brand-color: white;
+$navbar-dark-active-color: $secondary;
+
 $enable-rounded:   false;
 
-@import 'bt-variables';
+@import '~bootswatch/dist/darkly/variables';
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';

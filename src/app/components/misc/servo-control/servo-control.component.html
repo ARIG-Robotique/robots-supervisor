@@ -5,16 +5,14 @@
 
 <div class="form-inline d-inline-flex mt-3">
   <div class="form-group mr-1">
-    <div class="input-group">
-      <label class="has-float-label">
-        <input class="form-control form-control-sm"
-               style="width: 70px"
-               type="number"
-               placeholder="Position"
-               [(ngModel)]="servo.currentPosition"
-               (keydown.enter)="setPosition()"/>
-        <span>Position</span>
-      </label>
+    <div class="input-group form-label-group">
+      <input class="form-control form-control-sm"
+             style="width: 70px"
+             type="number"
+             placeholder="Position"
+             [(ngModel)]="servo.currentPosition"
+             (keydown.enter)="setPosition()"/>
+      <label>Position</label>
       <div class="input-group-append">
         <button class="btn btn-sm btn-secondary" type="button"
                 (click)="setPosition()">
@@ -45,14 +43,14 @@
     </button>
   </div>
 
-  <label class="form-group has-float-label mr-1">
+  <label class="form-group form-label-group mr-1">
     <input class="form-control form-control-sm"
            style="width: 70px"
            type="number"
            size="5"
            placeholder="Vitesse"
            [(ngModel)]="servo.currentSpeed">
-    <span>Vitesse</span>
+    <label>Vitesse</label>
   </label>
 </div>
 

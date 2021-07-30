@@ -8,62 +8,62 @@
     <h6 class="card-title mb-0">{{type === 'ANGLE' ? 'Angle' : 'Distance'}}</h6>
 
     <div class="form-inline d-inline-flex mt-3">
-      <div class="form-group has-float-label">
+      <div class="form-group form-label-group">
         <input class="form-control form-control-sm mr-1"
                style="width: 80px"
                type="number"
                step="0.0001"
                [(ngModel)]="values.kp"
                placeholder="P">
-        <span>P</span>
+        <label>P</label>
       </div>
-      <div class="form-group has-float-label">
+      <div class="form-group form-label-group">
         <input class="form-control form-control-sm mr-1"
                style="width: 80px"
                type="number"
                step="0.0001"
                [(ngModel)]="values.ki"
                placeholder="I">
-        <span>I</span>
+        <label>I</label>
       </div>
-      <div class="form-group has-float-label">
+      <div class="form-group form-label-group">
         <input class="form-control form-control-sm mr-1"
                style="width: 80px"
                type="number"
                step="0.0001"
                [(ngModel)]="values.kd"
                placeholder="D">
-        <span>D</span>
+        <label>D</label>
       </div>
     </div>
 
     <div class="form-inline d-inline-flex mt-3">
-      <div class="form-group has-float-label">
+      <div class="form-group form-label-group">
         <input class="form-control form-control-sm mr-1"
                style="width: 80px"
                type="number"
                step="1"
                [(ngModel)]="values.rampAcc"
                placeholder="Rampe Acc">
-        <span>Ramp Acc</span>
+        <label>Ramp Acc</label>
       </div>
-      <div class="form-group has-float-label">
+      <div class="form-group form-label-group">
         <input class="form-control form-control-sm mr-1"
                style="width: 80px"
                type="number"
                step="1"
                [(ngModel)]="values.rampDec"
                placeholder="Rampe Dec">
-        <span>Ramp Dec</span>
+        <label>Ramp Dec</label>
       </div>
-      <div class="form-group has-float-label">
+      <div class="form-group form-label-group">
         <input class="form-control form-control-sm mr-1"
                style="width: 80px"
                type="number"
                step="1"
                [(ngModel)]="values.vitesse"
                placeholder="Vitesse">
-        <span>Vitesse</span>
+        <label>Vitesse</label>
       </div>
     </div>
     <button class="btn btn-secondary btn-sm btn-round" (click)="apply()">

@@ -1,7 +1,7 @@
 @import 'styles/variables';
 @import '~bootstrap/scss/bootstrap';
-@import '~bootstrap-float-label/bootstrap-float-label.css';
-@import 'styles/bt-overrides';
+@import '~bootswatch/dist/darkly/bootswatch';
+@import 'styles/floating-labels';
 @import '~ngx-toastr/toastr-bs4-alert';
 @import '~primeng/resources/themes/bootstrap4-dark-blue/theme.css';
 @import '~primeng/resources/primeng';

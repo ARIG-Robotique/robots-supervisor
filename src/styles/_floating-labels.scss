@@ -1,0 +1,28 @@
+.form-label-group {
+  position: relative;
+}
+
+.form-label-group label {
+  padding: $input-btn-padding-y-sm $input-btn-padding-x-sm;
+}
+
+.form-label-group label {
+  position: absolute;
+  top: -1.4rem;
+  left: 0;
+  display: block;
+  width: 100%;
+  margin-bottom: 0; /* Override default `<label>` margin */
+  font-size: $font-size-sm;
+  line-height: $line-height-sm;
+  color: $body-color;
+  pointer-events: none;
+  cursor: text; /* Match the input under the label */
+  border: 1px solid transparent;
+  border-radius: $input-border-radius;
+  transition: all .1s ease-in-out;
+}
+
+.form-label-group input::placeholder {
+  color: transparent;
+}
