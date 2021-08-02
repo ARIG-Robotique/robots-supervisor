@@ -359,8 +359,8 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     } else {
       this.crosshair.visible(true);
       this.moveCrosshair({
-        x: this.state.endX,
-        y: this.state.endY
+        x: Math.round(this.state.endX / TABLE.imageRatio / TABLE.zoom / 5) * 5,
+        y: Math.round(this.state.endY / TABLE.imageRatio / TABLE.zoom / 5) * 5,
       });
     }
   }
@@ -377,8 +377,8 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
     } else {
       const position = {
-        x: this.state.startX / TABLE.imageRatio / TABLE.zoom,
-        y: TABLE.height - this.state.startY / TABLE.imageRatio / TABLE.zoom,
+        x: Math.round(this.state.startX / TABLE.imageRatio / TABLE.zoom / 5) * 5,
+        y: TABLE.height - Math.round(this.state.startY / TABLE.imageRatio / TABLE.zoom / 5) * 5,
       };
 
       this.moveTarget(position);
@@ -509,6 +509,8 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     crosshair.add(new Konva.Text({
       x                     : 5,
       y                     : 5,
+      width                 : 100,
+      height                : 20,
       text                  : '0 : 0',
       fontSize              : 16,
       fontStyle             : 'bold',
@@ -554,11 +556,27 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
 
   moveCrosshair(position: Point) {
     if (this.crosshair) {
-      this.crosshair.position(position);
+      this.crosshair.position({
+        x: position.x * TABLE.imageRatio * TABLE.zoom,
+        y: position.y * TABLE.imageRatio * TABLE.zoom,
+      });
 
       const text = this.crosshair.getChildren((children) => children instanceof Konva.Text)[0] as Konva.Text;
-      text.text((position.x / TABLE.imageRatio / TABLE.zoom).toFixed(0) + ':' +
-        (TABLE.height - position.y / TABLE.imageRatio / TABLE.zoom).toFixed(0));
+      text.text(position.x.toFixed(0) + ':' + (TABLE.height - position.y).toFixed(0));
+      if (position.x > 2800) {
+        text.align('right');
+        text.x(-105);
+      } else {
+        text.align('left');
+        text.x(5);
+      }
+      if (TABLE.height - position.y < 50) {
+        text.verticalAlign('bottom');
+        text.y(-25);
+      } else {
+        text.verticalAlign('top');
+        text.y(5);
+      }
 
       this.crosshairLayer.draw();
     }
