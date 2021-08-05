@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { range } from 'lodash';
 import { MapPosition } from '../../models/MapPosition';
 import { Position } from '../../models/Position';
 import { Robot } from '../../models/Robot';
@@ -41,8 +42,15 @@ export class MouvementsMockService extends MouvementsService {
       trajetAtteint   : true,
       trajetEnApproche: false,
       typeAsserv      : 'DIST,ANGLE',
-      pointsLidar     : [],
-      collisions      : [],
+      pointsLidar     : range(20).map(i => ({ x: 500 + i * 20, y: 500 + i * 20 })),
+      collisions      : [{
+        type  : 'CIRCLE',
+        centre: {
+          x: 600,
+          y: 600,
+        },
+        rayon : 200
+      }],
       matchTime       : 25000,
       score           : 52,
       currentAction   : 'Mock',
