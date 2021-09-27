@@ -1,5 +1,5 @@
 PROJECT_NAME=`basename $(CURDIR)`
-IMAGE_NAME=arig/$(PROJECT_NAME)
+IMAGE_NAME=ghcr.io/arig-robotique/$(PROJECT_NAME)
 IMAGE_VERSION=local
 
 ALL=dist node_modules
