@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
 import { range } from 'lodash';
+import { Observable, of } from 'rxjs';
 import { MapPosition } from '../../models/MapPosition';
 import { Position } from '../../models/Position';
 import { Robot } from '../../models/Robot';
+import { EColor } from '../../models/sailTheWorld/GameStatus';
 import { MouvementsService } from '../mouvements.service';
 import { MockData } from './mock.utils';
 
@@ -67,7 +68,17 @@ export class MouvementsMockService extends MouvementsService {
         Bar: 15,
       },
       gameStatus      : {
-        foo: 'bar',
+        echantillons: [
+          { x: 900, y: 2000 - 795, angle: 0, color: EColor.ROUGE, visibleColor: EColor.ROCK },
+          { x: 830, y: 2000 - 675, angle: 0, color: EColor.VERT, visibleColor: EColor.ROCK },
+          { x: 900, y: 2000 - 555, angle: 0, color: EColor.BLEU, visibleColor: EColor.ROCK },
+
+          { x: 900, y: 2000 - 1300, angle: -10, color: EColor.BLEU, visibleColor: EColor.BLEU },
+          { x: 1050, y: 2000 - 1350, angle: 40, color: EColor.VERT, visibleColor: EColor.VERT },
+          { x: 930, y: 2000 - 1450, angle: -20, color: EColor.ROUGE, visibleColor: EColor.ROUGE },
+
+          { x: 2300, y: 2000 - 1200, angle: -10, color: EColor.UNKNOWN, visibleColor: EColor.ROCK },
+        ],
       },
     });
   }

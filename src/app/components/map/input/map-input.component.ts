@@ -5,6 +5,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   Output,
   SimpleChanges,
   ViewChild
@@ -23,7 +24,7 @@ const RED = '#e74c3c';
   template : '<div #mapContainer class="map-container"></div>',
   styleUrls: ['./map-input.component.scss']
 })
-export class MapInputComponent implements OnChanges, AfterViewInit {
+export class MapInputComponent implements OnChanges, OnDestroy, AfterViewInit {
 
   @Input() team: string;
   @Input() mainRobot: string;
@@ -100,6 +101,10 @@ export class MapInputComponent implements OnChanges, AfterViewInit {
     if (changes['team'] || changes['mainRobot']) {
       this.setTable(this.team, this.mainRobot);
     }
+  }
+
+  ngOnDestroy() {
+    this.statusManager.destroy();
   }
 
   setPosition(name: string, main: boolean, position: Position) {
