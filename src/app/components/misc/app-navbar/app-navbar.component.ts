@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { PointsCalculatorModalComponent } from '../../../modals/points-calculator-modal/points-calculator-modal.component';
 import { Robot } from '../../../models/Robot';
 import { setMainRobot, toggleRobot } from '../../../store/robots.actions';
 import { selectRobots, selectRobotsStatusState, selectSelectedRobotsState } from '../../../store/robots.selector';
@@ -20,8 +18,7 @@ export class AppNavbarComponent extends AbstractComponent implements OnInit {
 
   trackById = (i, r) => r.robot.id;
 
-  constructor(private store: Store<any>,
-              private modal: NgbModal) {
+  constructor(private store: Store<any>) {
     super();
   }
 
@@ -41,10 +38,6 @@ export class AppNavbarComponent extends AbstractComponent implements OnInit {
           }));
         })
       );
-  }
-
-  openCalculator() {
-    this.modal.open(PointsCalculatorModalComponent, { size: 'lg' });
   }
 
   toggleRobot(robot: Robot) {

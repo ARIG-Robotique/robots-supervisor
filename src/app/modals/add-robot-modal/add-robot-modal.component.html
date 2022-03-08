@@ -59,24 +59,23 @@
              [required]="!robot.simulateur"
              [(ngModel)]="robot.pwd">
     </div>
+  </div>
 
-
-    <div class="modal-footer">
-      <button type="submit"
-              *ngIf="!robot.id"
-              class="btn btn-success"
-              [disabled]="!newRobotForm.form.valid">
-        <fa-icon icon="plus"></fa-icon>
-        Ajouter
-      </button>
-      <button type="submit"
-              *ngIf="robot.id"
-              class="btn btn-success"
-              [disabled]="!newRobotForm.form.valid">
-        <fa-icon icon="edit"></fa-icon>
-        Valider
-      </button>
-    </div>
+  <div class="modal-footer">
+    <button type="submit"
+            *ngIf="!robot.id"
+            class="btn btn-success"
+            [disabled]="!newRobotForm.form.valid">
+      <fa-icon icon="plus"></fa-icon>
+      Ajouter
+    </button>
+    <button type="submit"
+            *ngIf="robot.id"
+            class="btn btn-success"
+            [disabled]="!newRobotForm.form.valid">
+      <fa-icon icon="edit"></fa-icon>
+      Valider
+    </button>
   </div>
 
 </form>

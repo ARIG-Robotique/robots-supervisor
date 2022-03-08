@@ -62,7 +62,6 @@ import { AddRobotModalComponent } from './modals/add-robot-modal/add-robot-modal
 import { ImportLogsModalComponent } from './modals/import-logs-modal/import-logs-modal.component';
 import { LogsModalComponent } from './modals/logs-modal/logs-modal.component';
 import { PathsModalComponent } from './modals/paths-modal/paths-modal.component';
-import { PointsCalculatorModalComponent } from './modals/points-calculator-modal/points-calculator-modal.component';
 import { ArigExecPipe } from './pipes/exec';
 import { ServicesMockModule } from './services/mock/services.mock-module';
 import { RobotsUiService } from './services/robots-ui.service';
@@ -105,7 +104,6 @@ registerLocaleData(localeFr);
     ImportLogsModalComponent,
     LogsModalComponent,
     PathsModalComponent,
-    PointsCalculatorModalComponent,
 
     // pipes
     ArigExecPipe,
