@@ -6,7 +6,8 @@
            (onHide)="sidebar = null"
            [showCloseIcon]="false"
            [position]="'right'"
-           [styleClass]="sidebar === 'servos' ? 'p-sidebar-lg' : 'p-sidebar-md'">
+           [styleClass]="sidebar === 'servos' || sidebar === 'bras' ? 'p-sidebar-lg' : 'p-sidebar-md'"
+           [fullScreen]="sidebar === 'bras'">
   <button type="button" class="btn btn-outline-secondary mb-3" (click)="showSidebar = false;">
     <fa-icon icon="times"></fa-icon>
     Fermer
@@ -14,6 +15,7 @@
 
   <ng-container [ngSwitch]="sidebar">
     <arig-sidebar-servos *ngSwitchCase="'servos'"></arig-sidebar-servos>
+    <arig-sidebar-bras *ngSwitchCase="'bras'"></arig-sidebar-bras>
     <arig-sidebar-mouvements *ngSwitchCase="'mouvements'"></arig-sidebar-mouvements>
     <arig-sidebar-capteurs *ngSwitchCase="'capteurs'"></arig-sidebar-capteurs>
     <arig-sidebar-execs *ngSwitchCase="'execs'"></arig-sidebar-execs>
@@ -41,7 +43,8 @@
       </div>
     </div>
 
-    <arig-map-position [mainPosition]="mainPosition" [targetPosition]="targetPosition" [config]="mouvementConfig"></arig-map-position>
+    <arig-map-position [mainPosition]="mainPosition" [targetPosition]="targetPosition"
+                       [config]="mouvementConfig"></arig-map-position>
 
     <arig-map-info [team]="team" [mainPosition]="mainPosition"></arig-map-info>
 

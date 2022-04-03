@@ -15,11 +15,11 @@ export class ServosMockService extends ServosService {
       name  : 'Mock',
       servos: [
         {
-          id       : 1,
-          name     : 'Mock',
-          currentSpeed: 0,
+          id             : 1,
+          name           : 'Mock',
+          currentSpeed   : 0,
           currentPosition: 3000,
-          positions: {
+          positions      : {
             Top   : { name: 'Top', value: 0, speed: 0 },
             Bottom: { name: 'Bottom', value: 3000, speed: 0 },
           },

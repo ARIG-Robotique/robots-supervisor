@@ -33,7 +33,7 @@
       <span class="col">Stock</span>
     </div>
     <div class="row">
-      <div class="col" *ngFor="let color of mainPosition?.gameStatus?.stocks; trackBy: trackByIndex">
+      <div class="col" *ngFor="let color of mainPosition?.gameStatus?.stock; trackBy: trackByIndex">
         <div [class]="'couleur couleurEchantillon--' + color"></div>
       </div>
     </div>

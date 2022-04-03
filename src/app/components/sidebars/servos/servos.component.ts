@@ -4,7 +4,6 @@ import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { catchError, switchMap, takeUntil } from 'rxjs/operators';
 import { Robot } from '../../../models/Robot';
 import { Servos } from '../../../models/Servo';
-import { IOService } from '../../../services/io.service';
 import { ServosService } from '../../../services/servos.service';
 import { selectMainRobot } from '../../../store/robots.selector';
 import { AbstractComponent } from '../../abstract.component';
@@ -23,7 +22,6 @@ export class SidebarServosComponent extends AbstractComponent implements OnInit 
   trackById = (item: any) => item.id;
 
   constructor(private store: Store<any>,
-              private ioService: IOService,
               private servosService: ServosService) {
     super();
   }
@@ -40,10 +38,6 @@ export class SidebarServosComponent extends AbstractComponent implements OnInit 
         catchError(() => of(null)),
         takeUntil(this.ngDestroy$)
       );
-  }
-
-  setPumpState(robot: Robot, pump: 'haut' | 'bas', state: boolean) {
-    this.ioService.setPumpState(robot, pump, state).subscribe();
   }
 
 }

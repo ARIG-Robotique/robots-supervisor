@@ -1,32 +1,5 @@
 <ng-container *ngIf="robot$ | async as robot">
-  <div class="card">
-    <h5 class="card-header d-flex justify-content-between">
-      <span>
-        <fa-icon icon="fan"></fa-icon>
-        Pompes
-      </span>
-
-      <div class="btn-group">
-        <button type="button" class="btn btn-secondary btn-sm"
-                (click)="setPumpState(robot, 'bas', true)">
-          Bas ON
-        </button>
-        <button type="button" class="btn btn-danger btn-sm"
-                (click)="setPumpState(robot, 'bas', false)">
-          Bas OFF
-        </button>
-
-        <button type="button" class="btn btn-secondary btn-sm ml-3"
-                (click)="setPumpState(robot, 'haut', true)">
-          Haut ON
-        </button>
-        <button type="button" class="btn btn-danger btn-sm"
-                (click)="setPumpState(robot, 'haut', false)">
-          Haut OFF
-        </button>
-      </div>
-    </h5>
-  </div>
+  <arig-pumps-control [robot]="robot"></arig-pumps-control>
 
   <div class="card mb-3" *ngFor="let servoGroup of servos$ | async; trackBy: trackById">
     <h5 class="card-header d-flex justify-content-between">

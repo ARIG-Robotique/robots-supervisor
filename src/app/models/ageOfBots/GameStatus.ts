@@ -43,7 +43,7 @@ export interface CarreFouille {
 }
 
 export interface GameStatus {
-  stocks: CouleurEchantillon[];
+  stock: CouleurEchantillon[];
   echantillons: Echantillon[];
   carresFouille: CarreFouille[];
   distributeurEquipePris: boolean;

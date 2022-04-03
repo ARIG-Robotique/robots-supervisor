@@ -1,19 +1,14 @@
-import { KeyValue } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { combineLatest, interval, Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { AbstractComponent } from '../../components/abstract.component';
 import { MapInputComponent } from '../../components/map/input/map-input.component';
-import { SensDeplacement, SensRotation } from '../../constants/mouvements.constants';
-import { Action } from '../../models/Action';
 import { MapPosition } from '../../models/MapPosition';
 import { Position } from '../../models/Position';
 import { Robot, SelectedRobot } from '../../models/Robot';
 import { CapteursService } from '../../services/capteurs.service';
 import { MouvementsService } from '../../services/mouvements.service';
-import { StrategyService } from '../../services/strategy.service';
 import { selectSelectedRobots } from '../../store/robots.selector';
 
 @Component({
@@ -24,6 +19,7 @@ export class MapComponent extends AbstractComponent implements OnInit {
 
   readonly Buttons = [
     { label: 'Servos', code: 'servos', icon: 'cogs' },
+    { label: 'Bras', code: 'bras', icon: 'robot-arm' },
     { label: 'Mouvements', code: 'mouvements', icon: 'arrows-alt' },
     { label: 'Capteurs', code: 'capteurs', icon: 'heartbeat' },
     { label: 'Éxécutions', code: 'execs', icon: 'database' },

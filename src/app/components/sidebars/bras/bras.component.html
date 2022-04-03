@@ -1,0 +1,78 @@
+<arig-pumps-control [robot]="robot$ | async"></arig-pumps-control>
+
+<div class="card">
+  <h5 class="card-header">
+    <fa-icon [icon]="$any(ICON)"></fa-icon> Bras
+  </h5>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+        <div #container class="bras-canvas"></div>
+
+        <pre>{{logs}}</pre>
+      </div>
+
+      <div class="col">
+        <div class="btn-group btn-group-toggle d-flex" ngbRadioGroup
+             [(ngModel)]="selectedBras">
+          <label ngbButtonLabel class="btn-outline-secondary btn">
+            <input ngbButton type="radio" [value]="'bas'"> Bas
+          </label>
+          <label ngbButtonLabel class="btn-outline-secondary btn">
+            <input ngbButton type="radio" [value]="'haut'"> Haut
+          </label>
+        </div>
+
+        <div class="row mt-3" *ngIf="current">
+          <div class="col">
+            <div><span class="badge badge-big badge-primary mr-2">x</span> {{current.bas.x}}mm</div>
+            <div><span class="badge badge-big badge-primary mr-2">y</span> {{current.bas.y}}mm</div>
+            <div><span class="badge badge-big badge-primary mr-2">a</span> {{current.bas.a}}°</div>
+          </div>
+          <div class="col">
+            <div><span class="badge badge-big badge-secondary mr-2">a1</span> {{current.bas.a1}}°</div>
+            <div><span class="badge badge-big badge-secondary mr-2">a2</span> {{current.bas.a2}}°</div>
+            <div><span class="badge badge-big badge-secondary mr-2">a3</span> {{current.bas.a3}}°</div>
+          </div>
+          <div class="col">
+            <div><span class="badge badge-big badge-primary mr-2">x</span> {{current.haut.x}}mm</div>
+            <div><span class="badge badge-big badge-primary mr-2">y</span> {{current.haut.y}}mm</div>
+            <div><span class="badge badge-big badge-primary mr-2">a</span> {{current.haut.a}}°</div>
+          </div>
+          <div class="col">
+            <div><span class="badge badge-big badge-secondary mr-2">a1</span> {{current.haut.a1}}°</div>
+            <div><span class="badge badge-big badge-secondary mr-2">a2</span> {{current.haut.a2}}°</div>
+            <div><span class="badge badge-big badge-secondary mr-2">a3</span> {{current.haut.a3}}°</div>
+          </div>
+        </div>
+
+        <div class="row mt-3" *ngIf="current">
+          <div class="col">
+            <div *ngIf="current.bas.state"><span class="badge badge-big badge-info">{{current.bas.state}}</span></div>
+            <div *ngIf="!current.bas.state"><span class="badge badge-big badge-danger">N/A</span></div>
+          </div>
+          <div class="col">
+            <div *ngIf="current.haut.state"><span class="badge badge-big badge-info">{{current.haut.state}}</span></div>
+            <div *ngIf="!current.haut.state"><span class="badge badge-big badge-danger">N/A</span></div>
+          </div>
+        </div>
+
+        <div class="row mt-3" *ngIf="config">
+          <div class="col" style="columns: 2">
+            <button class="btn btn-sm btn-outline-light d-block"
+                    *ngFor="let p of config.statesBas | sort"
+                    (click)="setBrasByName('bas', p)"
+                    [disabled]="isStateDisabled('bas', p)">{{p}}</button>
+          </div>
+          <div class="col" style="columns: 2">
+            <button class="btn btn-sm btn-outline-light d-block"
+                    *ngFor="let p of config.statesHaut | sort"
+                    (click)="setBrasByName('haut', p)"
+                    [disabled]="isStateDisabled('haut', p)">{{p}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

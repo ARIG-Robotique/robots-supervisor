@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { AsservissementService } from './asservissement.service';
+import { BrasService } from './bras.service';
 import { CapteursService } from './capteurs.service';
 import { CodeursService } from './codeurs.service';
 import { ExecsService } from './execs.service';
@@ -14,6 +15,7 @@ import { StrategyService } from './strategy.service';
     AsservissementService,
     CapteursService,
     CodeursService,
+    BrasService,
     ExecsService,
     IOService,
     MouvementsService,
