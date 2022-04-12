@@ -5,15 +5,98 @@
   </h5>
   <div class="card-body">
     <div class="row">
-      <div class="col">
+      <div class="col-3">
         Equipe :
         <span class="badge badge-big"
               [style.background]="team==='VIOLET'?'#4E3C6B':team==='JAUNE'?'#DA9A14':'#555'">{{team}}</span>
       </div>
-      <div class="col">
+      <div class="col-3">
         Temps :
         <span class="badge badge-big badge-info">{{mainPosition?.matchTime / 1000 | number:'3.0-0'}}s</span>
       </div>
+      <div class="col-6">
+        Retour :
+        <span class="badge badge-big badge-info">{{mainPosition?.gameStatus?.siteDeRetour}}</span>
+        /
+        <span class="badge badge-big badge-info">{{mainPosition?.gameStatus?.siteDeRetourAutreRobot}}</span>
+      </div>
+    </div>
+    <div class="row">
+      <span class="col">Carrés de fouille</span>
+    </div>
+    <div class="row">
+      <div class="col" *ngFor="let cf of mainPosition?.gameStatus?.carresFouille; trackBy: trackByIndex">
+        <div [class]="'couleur couleurCarreFouille--' + cf.color + ' ' + (cf.bascule ? 'couleurCarreFouille--bascule' : '')"></div>
+      </div>
+    </div>
+    <div class="row">
+      <span class="col">Stock</span>
+    </div>
+    <div class="row">
+      <div class="col" *ngFor="let color of mainPosition?.gameStatus?.stocks; trackBy: trackByIndex">
+        <div [class]="'couleur couleurEchantillon--' + color"></div>
+      </div>
+    </div>
+    <div class="row">
+      <span class="col">Etats</span>
+    </div>
+    <div style="columns: 2">
+      <div *ngTemplateOutlet="booleanStatus; context: {
+        title: 'Distributeur équipe pris',
+        status: mainPosition?.gameStatus?.distributeurEquipePris
+      }"></div>
+      <div *ngTemplateOutlet="booleanStatus; context: {
+        title: 'Distributeur commun équipe pris',
+        status: mainPosition?.gameStatus?.distributeurCommunEquipePris
+      }"></div>
+      <div *ngTemplateOutlet="booleanStatus; context: {
+        title: 'Distributeur commun adverse pris',
+        status: mainPosition?.gameStatus?.distributeurCommunAdversePris
+      }"></div>
+      <div *ngTemplateOutlet="booleanStatus; context: {
+        title: 'Echantillon chantier (coté distrib.) pris',
+        status: mainPosition?.gameStatus?.echantillonAbriChantierDistributeurPris
+      }"></div>
+      <div *ngTemplateOutlet="booleanStatus; context: {
+        title: 'Echantillon chantier (coté fouille) pris',
+        status: mainPosition?.gameStatus?.echantillonAbriChantierCarreFouillePris
+      }"></div>
+      <div *ngTemplateOutlet="booleanStatus; context: {
+        title: 'Echantillon campement pris',
+        status: mainPosition?.gameStatus?.echantillonCampementPris
+      }"></div>
+      <div *ngTemplateOutlet="booleanStatus; context: {
+        title: 'Site echantillons pris',
+        status: mainPosition?.gameStatus?.siteEchantillonPris
+      }"></div>
+      <div *ngTemplateOutlet="booleanStatus; context: {
+        title: 'Site de fouille pris',
+        status: mainPosition?.gameStatus?.siteDeFouillePris
+      }"></div>
+      <div *ngTemplateOutlet="booleanStatus; context: {
+        title: 'Zone de fouille terminée',
+        status: mainPosition?.gameStatus?.zoneDeFouilleTerminee
+      }"></div>
+      <div *ngTemplateOutlet="booleanStatus; context: {
+        title: 'Vitrine activée',
+        status: mainPosition?.gameStatus?.vitrineActive
+      }"></div>
+      <div *ngTemplateOutlet="booleanStatus; context: {
+        title: 'Statuette prise',
+        status: mainPosition?.gameStatus?.statuettePris
+      }"></div>
+      <div *ngTemplateOutlet="booleanStatus; context: {
+        title: 'Statuette dans vitrine',
+        status: mainPosition?.gameStatus?.statuetteDansVitrine
+      }"></div>
+      <div *ngTemplateOutlet="booleanStatus; context: {
+        title: 'Replique déposée',
+        status: mainPosition?.gameStatus?.repliqueDepose
+      }"></div>
     </div>
   </div>
 </div>
+
+<ng-template #booleanStatus let-title="title" let-status="status">
+  <div class="badge badge-big d-block mt-1" [ngClass]="{'badge-success': status, 'badge-danger': !status}">{{title}}</div>
+</ng-template>

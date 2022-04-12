@@ -1,6 +1,6 @@
 import Konva from 'konva';
 import { TABLE } from '../../../constants/constants';
-import { COLORS, Echantillon, GameStatus } from '../../../models/sailTheWorld/GameStatus';
+import { COLORS_ECHANTILLON, Echantillon, GameStatus } from '../../../models/ageOfBots/GameStatus';
 
 export class GameStatusManager {
 
@@ -30,8 +30,8 @@ export class GameStatusManager {
         rotationDeg: echantillon.angle,
         sides      : 6,
         radius     : 75 * TABLE.imageRatio - 2,
-        fill       : COLORS[echantillon.visibleColor],
-        stroke     : COLORS[echantillon.color],
+        fill       : COLORS_ECHANTILLON[echantillon.visibleColor],
+        stroke     : COLORS_ECHANTILLON[echantillon.color],
         strokeWidth: 4,
       })
     );

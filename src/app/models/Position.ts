@@ -2,7 +2,7 @@ import { Action } from './Action';
 import { Cercle } from './Cercle';
 import { Point } from './Point';
 import { Rect } from './Rect';
-import { GameStatus } from './sailTheWorld/GameStatus';
+import { GameStatus } from './ageOfBots/GameStatus';
 
 export interface MouvementPath {
   type: 'PATH';
