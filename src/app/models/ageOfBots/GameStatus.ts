@@ -49,8 +49,10 @@ export interface GameStatus {
   distributeurCommunEquipePris: boolean;
   distributeurCommunAdversePris: boolean;
   siteEchantillonPris: boolean;
+  siteEchantillonAdversePris: boolean;
   siteDeFouillePris: boolean;
-  zoneDeFouilleTerminee: boolean;
+  siteDeFouilleAdversePris: boolean;
+  carresDeFouilleTermines: boolean;
   vitrineActive: boolean;
   statuettePris: boolean;
   statuetteDansVitrine: boolean;

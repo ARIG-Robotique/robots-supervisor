@@ -70,12 +70,20 @@
         status: mainPosition?.gameStatus?.siteEchantillonPris
       }"></div>
       <div *ngTemplateOutlet="booleanStatus; context: {
+        title: 'Site echantillons adverse pris',
+        status: mainPosition?.gameStatus?.siteEchantillonAdversePris
+      }"></div>
+      <div *ngTemplateOutlet="booleanStatus; context: {
         title: 'Site de fouille pris',
         status: mainPosition?.gameStatus?.siteDeFouillePris
       }"></div>
       <div *ngTemplateOutlet="booleanStatus; context: {
-        title: 'Zone de fouille terminée',
-        status: mainPosition?.gameStatus?.zoneDeFouilleTerminee
+        title: 'Site de fouille adverse pris',
+        status: mainPosition?.gameStatus?.siteDeFouilleAdversePris
+      }"></div>
+      <div *ngTemplateOutlet="booleanStatus; context: {
+        title: 'Carrés de fouille terminés',
+        status: mainPosition?.gameStatus?.carresDeFouilleTermines
       }"></div>
       <div *ngTemplateOutlet="booleanStatus; context: {
         title: 'Vitrine activée',
