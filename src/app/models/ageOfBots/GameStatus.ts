@@ -37,6 +37,7 @@ export interface Echantillon extends Point {
 }
 
 export interface CarreFouille {
+  x: number;
   color: CouleurCarreFouille;
   bascule: boolean;
 }
