@@ -5,12 +5,14 @@
   margin-top: 0.25rem;
 
   &CarreFouille {
+    opacity: 0.3;
+
     &--JAUNE {
-      background: #DA9A14;
+      background-color: #DA9A14;
     }
 
     &--VIOLET {
-      background: #4E3C6B;
+      background-color: #4E3C6B;
     }
 
     &--INTERDIT {
@@ -18,7 +20,7 @@
     }
 
     &--INCONNU {
-      background: #888;
+      border-color: #888;
     }
 
     &--null {
@@ -26,18 +28,18 @@
     }
 
     &--bascule {
-      opacity: 0.3;
+      opacity: 1;
     }
   }
 
   &Echantillon {
 
     &--ROUGE {
-      background: #a71f22;
+      background-color: #a71f22;
     }
 
     &--VERT {
-      background: #40b679;
+      background-color: #40b679;
     }
 
     &--BLEU {
@@ -49,7 +51,7 @@
     }
 
     &--INCONNU {
-      border-color: gray;
+      border-color: #888;
     }
 
     &--null {

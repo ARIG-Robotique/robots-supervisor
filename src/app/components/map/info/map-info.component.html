@@ -26,7 +26,7 @@
     </div>
     <div class="row">
       <div class="col" *ngFor="let cf of mainPosition?.gameStatus?.carresFouille; trackBy: trackByIndex">
-        <div [class]="'couleur couleurCarreFouille--' + cf.color + ' ' + (cf.bascule ? 'couleurCarreFouille--bascule' : '')"></div>
+        <div [class]="'couleur couleurCarreFouille couleurCarreFouille--' + cf.color + ' ' + (cf.bascule ? 'couleurCarreFouille--bascule' : '')"></div>
       </div>
     </div>
     <div class="row">
