@@ -45,6 +45,9 @@
       <li *ngFor="let entry of capteurs.analogique | keyvalue; trackBy: trackByKey">
         <strong>{{entry.key}}</strong> : {{entry.value}}
       </li>
+      <li *ngFor="let entry of capteurs.couleurs | keyvalue; trackBy: trackByKey">
+        <strong>{{entry.key}}</strong> : {{entry.value}}
+      </li>
     </ul>
   </div>
 </div>

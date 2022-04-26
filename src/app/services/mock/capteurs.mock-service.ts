@@ -17,6 +17,7 @@ export class CapteursMockService extends CapteursService {
     text      : {
       [`Equipe`]: 'VIOLET',
     },
+    couleurs  : {},
   }));
 
   getCapteurs(robot: Robot): Observable<Capteurs> {
