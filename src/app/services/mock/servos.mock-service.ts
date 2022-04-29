@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
 import { Robot } from '../../models/Robot';
 import { Servo, ServoGroup, Servos } from '../../models/Servo';
 import { ServosService } from '../servos.service';
+import { AppToastService } from '../toast.service';
 
 @Injectable()
 export class ServosMockService extends ServosService {
@@ -30,7 +30,7 @@ export class ServosMockService extends ServosService {
   ];
 
   constructor(http: HttpClient,
-              private toastService: ToastrService) {
+              private toastService: AppToastService) {
     super(http);
   }
 

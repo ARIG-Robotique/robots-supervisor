@@ -7,8 +7,36 @@ $page-full-content-height: calc(100vh - 70px);
 $navbar-dark-brand-color: white;
 $navbar-dark-active-color: $secondary;
 
-$enable-rounded:   false;
+$enable-rounded: false;
 
 @import '~bootswatch/dist/darkly/variables';
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
+
+// restore les class "ml" "mr" "pl" "ps" qui ont été renommées en "ms" "me" "ps" "pe" dans BT5
+$utilities: (
+    "margin-right": (
+        responsive: true,
+        property: margin-right,
+        class: mr,
+        values: map-merge($spacers, (auto: auto))
+    ),
+    "margin-left": (
+        responsive: true,
+        property: margin-left,
+        class: ml,
+        values: map-merge($spacers, (auto: auto))
+    ),
+    "padding-right": (
+        responsive: true,
+        property: padding-right,
+        class: pr,
+        values: $spacers
+    ),
+    "padding-left": (
+        responsive: true,
+        property: padding-left,
+        class: pl,
+        values: $spacers
+    ),
+);

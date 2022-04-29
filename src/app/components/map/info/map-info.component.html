@@ -12,13 +12,13 @@
       </div>
       <div class="col-3">
         Temps :
-        <span class="badge badge-big badge-info">{{mainPosition?.matchTime / 1000 | number:'3.0-0'}}s</span>
+        <span class="badge badge-big bg-info">{{mainPosition?.matchTime / 1000 | number:'3.0-0'}}s</span>
       </div>
       <div class="col-6">
         Retour :
-        <span class="badge badge-big badge-info">{{mainPosition?.gameStatus?.siteDeRetour}}</span>
+        <span class="badge badge-big bg-info">{{mainPosition?.gameStatus?.siteDeRetour}}</span>
         /
-        <span class="badge badge-big badge-info">{{mainPosition?.gameStatus?.siteDeRetourAutreRobot}}</span>
+        <span class="badge bg-info">{{mainPosition?.gameStatus?.siteDeRetourAutreRobot}}</span>
       </div>
     </div>
     <div class="row">
@@ -106,5 +106,5 @@
 </div>
 
 <ng-template #booleanStatus let-title="title" let-status="status">
-  <div class="badge badge-big d-block mt-1" [ngClass]="{'badge-success': status, 'badge-danger': !status}">{{title}}</div>
+  <div class="badge badge-big d-block mt-1" [ngClass]="{'bg-success': status, 'bg-danger': !status}">{{title}}</div>
 </ng-template>

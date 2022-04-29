@@ -2,9 +2,8 @@
 @import '~bootstrap/scss/bootstrap';
 @import '~bootswatch/dist/darkly/bootswatch';
 @import 'styles/floating-labels';
-@import '~ngx-toastr/toastr-bs4-alert';
 @import '~primeng/resources/themes/bootstrap4-dark-blue/theme.css';
-@import '~primeng/resources/primeng';
+@import '~primeng/resources/primeng.css';
 
 
 .btn-round {
@@ -22,7 +21,15 @@
 }
 
 .badge-big {
-  font-size: $h5-font-size * 0.75;
+  font-size: $font-size-sm;
+  padding: 0.25rem 0.35rem;
+}
+
+.p-sidebar {
+  z-index: 810 !important;
+}
+.p-component-overlay {
+  z-index: 800 !important;
 }
 
 .p-sidebar-header {

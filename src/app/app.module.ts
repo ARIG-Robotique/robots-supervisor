@@ -36,7 +36,6 @@ import { faDatabase } from '@fortawesome/free-solid-svg-icons/faDatabase';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EffectsModule } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
-import { ToastrModule } from 'ngx-toastr';
 import { SidebarModule } from 'primeng/sidebar';
 import arrowFromTop from '../assets/icons/arrowFromTop.json';
 import arrowToTop from '../assets/icons/arrowToTop.json';
@@ -51,6 +50,7 @@ import { MapInputComponent } from './components/map/input/map-input.component';
 import { MapPositionComponent } from './components/map/position/map-position.component';
 import { MapScoreComponent } from './components/map/score/map-score.component';
 import { AppNavbarComponent } from './components/misc/app-navbar/app-navbar.component';
+import { AppToastsComponent } from './components/misc/app-toasts/app-toasts.component';
 import { AsservInputComponent } from './components/misc/asserv-input/asserv-input.component';
 import { MouvementInputComponent } from './components/misc/mouvement-input/mouvement-input.component';
 import { NoRobotComponent } from './components/misc/no-robot/no-robot.component';
@@ -89,6 +89,7 @@ registerLocaleData(localeFr);
 
     // components
     AppNavbarComponent,
+    AppToastsComponent,
     AsservInputComponent,
     MapInputComponent,
     MouvementInputComponent,
@@ -125,7 +126,6 @@ registerLocaleData(localeFr);
     FontAwesomeModule,
     NgbModule,
     SidebarModule,
-    ToastrModule.forRoot(),
     RouterModule.forRoot(AppRoutes, { useHash: true, paramsInheritanceStrategy: 'always' }),
     StoreModule.forRoot({
       robots        : robotsReducer,

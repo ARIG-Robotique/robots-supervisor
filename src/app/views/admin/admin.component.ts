@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { IconDefinition, IconName, IconPrefix } from '@fortawesome/fontawesome-svg-core';
 import { Store } from '@ngrx/store';
@@ -13,9 +13,6 @@ import { selectRobots } from '../../store/robots.selector';
 
 @Component({
   templateUrl: './admin.component.html',
-  host       : {
-    class: 'd-block container-fluid mt-3',
-  },
 })
 export class AdminComponent extends AbstractComponent implements OnInit, OnDestroy {
 
@@ -24,6 +21,9 @@ export class AdminComponent extends AbstractComponent implements OnInit, OnDestr
   robots$: Observable<Robot[]>;
   execs$ = new BehaviorSubject<Exec[]>([]);
   selectedRobot: Robot = null;
+
+  @HostBinding('class')
+  cssClass = 'd-block container-fluid mt-3';
 
   constructor(private store: Store<any>,
               private library: FaIconLibrary,

@@ -14,47 +14,49 @@
       </div>
 
       <div class="col">
-        <div class="btn-group btn-group-toggle d-flex" ngbRadioGroup
-             [(ngModel)]="selectedBras">
-          <label ngbButtonLabel class="btn-outline-secondary btn">
-            <input ngbButton type="radio" [value]="'bas'"> Bas
-          </label>
-          <label ngbButtonLabel class="btn-outline-secondary btn">
-            <input ngbButton type="radio" [value]="'haut'"> Haut
-          </label>
+        <div class="btn-group d-flex">
+          <ng-container *ngFor="let bras of ['bas', 'haut']">
+            <input type="radio" 
+                   class="btn-check"
+                   name="positionList" 
+                   [id]="'bras-' + bras"
+                   [value]="bras"
+                   [(ngModel)]="selectedBras">
+            <label class="btn btn-outline-secondary" [for]="'bras-' + bras">{{bras}}</label>
+          </ng-container>
         </div>
 
         <div class="row mt-3" *ngIf="current">
           <div class="col">
-            <div><span class="badge badge-big badge-primary mr-2">x</span> {{current.bas.x}}mm</div>
-            <div><span class="badge badge-big badge-primary mr-2">y</span> {{current.bas.y}}mm</div>
-            <div><span class="badge badge-big badge-primary mr-2">a</span> {{current.bas.a}}°</div>
+            <div><span class="badge badge-big bg-primary mr-2">x</span> {{current.bas.x}}mm</div>
+            <div><span class="badge badge-big bg-primary mr-2">y</span> {{current.bas.y}}mm</div>
+            <div><span class="badge badge-big bg-primary mr-2">a</span> {{current.bas.a}}°</div>
           </div>
           <div class="col">
-            <div><span class="badge badge-big badge-secondary mr-2">a1</span> {{current.bas.a1}}°</div>
-            <div><span class="badge badge-big badge-secondary mr-2">a2</span> {{current.bas.a2}}°</div>
-            <div><span class="badge badge-big badge-secondary mr-2">a3</span> {{current.bas.a3}}°</div>
+            <div><span class="badge badge-big bg-secondary mr-2">a1</span> {{current.bas.a1}}°</div>
+            <div><span class="badge badge-big bg-secondary mr-2">a2</span> {{current.bas.a2}}°</div>
+            <div><span class="badge badge-big bg-secondary mr-2">a3</span> {{current.bas.a3}}°</div>
           </div>
           <div class="col">
-            <div><span class="badge badge-big badge-primary mr-2">x</span> {{current.haut.x}}mm</div>
-            <div><span class="badge badge-big badge-primary mr-2">y</span> {{current.haut.y}}mm</div>
-            <div><span class="badge badge-big badge-primary mr-2">a</span> {{current.haut.a}}°</div>
+            <div><span class="badge badge-big bg-primary mr-2">x</span> {{current.haut.x}}mm</div>
+            <div><span class="badge badge-big bg-primary mr-2">y</span> {{current.haut.y}}mm</div>
+            <div><span class="badge badge-big bg-primary mr-2">a</span> {{current.haut.a}}°</div>
           </div>
           <div class="col">
-            <div><span class="badge badge-big badge-secondary mr-2">a1</span> {{current.haut.a1}}°</div>
-            <div><span class="badge badge-big badge-secondary mr-2">a2</span> {{current.haut.a2}}°</div>
-            <div><span class="badge badge-big badge-secondary mr-2">a3</span> {{current.haut.a3}}°</div>
+            <div><span class="badge badge-big bg-secondary mr-2">a1</span> {{current.haut.a1}}°</div>
+            <div><span class="badge badge-big bg-secondary mr-2">a2</span> {{current.haut.a2}}°</div>
+            <div><span class="badge badge-big bg-secondary mr-2">a3</span> {{current.haut.a3}}°</div>
           </div>
         </div>
 
         <div class="row mt-3" *ngIf="current">
           <div class="col">
-            <div *ngIf="current.bas.state"><span class="badge badge-big badge-info">{{current.bas.state}}</span></div>
-            <div *ngIf="!current.bas.state"><span class="badge badge-big badge-danger">N/A</span></div>
+            <div *ngIf="current.bas.state"><span class="badge badge-big bg-info">{{current.bas.state}}</span></div>
+            <div *ngIf="!current.bas.state"><span class="badge badge-big bg-danger">N/A</span></div>
           </div>
           <div class="col">
-            <div *ngIf="current.haut.state"><span class="badge badge-big badge-info">{{current.haut.state}}</span></div>
-            <div *ngIf="!current.haut.state"><span class="badge badge-big badge-danger">N/A</span></div>
+            <div *ngIf="current.haut.state"><span class="badge badge-big bg-info">{{current.haut.state}}</span></div>
+            <div *ngIf="!current.haut.state"><span class="badge badge-big bg-danger">N/A</span></div>
           </div>
         </div>
 

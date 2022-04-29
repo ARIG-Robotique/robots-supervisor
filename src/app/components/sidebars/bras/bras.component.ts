@@ -61,7 +61,7 @@ export class SidebarBrasComponent extends AbstractComponent implements OnInit, A
 
   logs = '';
 
-  updateSym$ = new Subject();
+  updateSym$ = new Subject<void>();
 
   constructor(private store: Store<any>,
               private brasService: BrasService) {

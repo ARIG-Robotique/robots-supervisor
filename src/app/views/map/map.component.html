@@ -22,8 +22,9 @@
   </ng-container>
 </p-sidebar>
 
-<div class="row no-gutters" *ngIf="mainRobot$ | async as mainRobot; else noRobot">
-  <arig-map-input [team]="team"
+<div class="row g-0" *ngIf="mainRobot$ | async as mainRobot; else noRobot">
+  <arig-map-input class="col"
+                  [team]="team"
                   [mainRobot]="mainRobot.name | lowercase"
                   (positionChanged)="positionChanged(mainRobot, $event)"
                   (angleChanged)="angleChanged(mainRobot, $event)">
@@ -43,12 +44,14 @@
       </div>
     </div>
 
-    <arig-map-position [mainPosition]="mainPosition" [targetPosition]="targetPosition"
-                       [config]="mouvementConfig"></arig-map-position>
+    <arig-map-position [mainPosition]="mainPosition"
+                       [targetPosition]="targetPosition"
+                       [config]="mouvementConfig">
+    </arig-map-position>
 
     <arig-map-info [team]="team" [mainPosition]="mainPosition"></arig-map-info>
 
-    <div class="row no-gutters">
+    <div class="row g-0">
       <div class="col-7">
         <arig-map-actions [mainRobot]="mainRobot" [mainPosition]="mainPosition"></arig-map-actions>
       </div>

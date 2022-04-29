@@ -39,13 +39,13 @@
 <ng-template #position let-position="position" let-prefix="prefix">
   <div class="row">
     <div class="col">
-      {{prefix}} X : <span class="badge badge-big badge-info">{{position?.x | number:'4.0-0'}}</span>
+      {{prefix}} X : <span class="badge badge-big bg-info">{{position?.x | number:'4.0-0'}}</span>
     </div>
     <div class="col">
-      {{prefix}} Y : <span class="badge badge-big badge-info">{{position?.y | number:'4.0-0'}}</span>
+      {{prefix}} Y : <span class="badge badge-big bg-info">{{position?.y | number:'4.0-0'}}</span>
     </div>
     <div class="col">
-      {{prefix}} A : <span class="badge badge-big badge-info">{{position?.angle | number:'3.1-1'}}</span>
+      {{prefix}} A : <span class="badge badge-big bg-info">{{position?.angle | number:'3.1-1'}}</span>
     </div>
   </div>
 </ng-template>

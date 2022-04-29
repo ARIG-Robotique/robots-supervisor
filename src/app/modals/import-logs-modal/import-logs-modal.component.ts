@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
+import { AppToastService } from 'app/services/toast.service';
 import { environment } from '../../../environments/environment';
 import { httpurl } from '../../constants/httpurl.constants';
 import { Robot } from '../../models/Robot';
@@ -22,7 +22,7 @@ export class ImportLogsModalComponent implements OnInit {
   private logoutput: ElementRef<HTMLTextAreaElement>;
 
   constructor(private modal: NgbActiveModal,
-              private toastService: ToastrService) {
+              private toastService: AppToastService) {
 
   }
 

@@ -54,10 +54,15 @@
   </label>
 </div>
 
-<div class="btn-group btn-group-toggle d-inline-block" ngbRadioGroup name="positionList"
-     [(ngModel)]="servo.currentPosition" (ngModelChange)="setPositionByName()">
-  <label ngbButtonLabel class="btn-outline-secondary btn-sm"
-         *ngFor="let pos of positions; trackBy: trackByName">
-    <input ngbButton type="radio" [value]="pos.value"> {{pos.name}}
-  </label>
+<div class="btn-group">
+  <ng-container *ngFor="let pos of positions; trackBy: trackByName">
+    <input type="radio" 
+           class="btn-check"
+           name="positionList" 
+           [id]="'pos-' + servo.id + '-' + pos.value"
+           [value]="pos.value"
+           [(ngModel)]="servo.currentPosition"
+           (ngModelChange)="setPositionByName()">
+    <label class="btn btn-outline-secondary btn-sm" [for]="'pos-' + servo.id + '-' + pos.value">{{pos.name}}</label>
+  </ng-container>
 </div>

@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 // tslint:disable-next-line:directive-class-suffix
 export abstract class AbstractComponent implements OnDestroy {
 
-  protected ngDestroy$ = new Subject();
+  protected ngDestroy$ = new Subject<void>();
 
   ngOnDestroy() {
     this.ngDestroy$.next();
