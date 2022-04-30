@@ -8,7 +8,7 @@
            [position]="'right'"
            [styleClass]="sidebar === 'servos' || sidebar === 'bras' ? 'p-sidebar-lg' : 'p-sidebar-md'"
            [fullScreen]="sidebar === 'bras'">
-  <button type="button" class="btn btn-outline-secondary mb-3" (click)="showSidebar = false;">
+  <button type="button" class="btn btn-outline-primary mb-3" (click)="showSidebar = false;">
     <fa-icon icon="times"></fa-icon>
     Fermer
   </button>
@@ -35,7 +35,7 @@
       <div class="card-body">
         <div class="btn-group">
           <button *ngFor="let button of Buttons"
-                  type="button" class="btn btn-outline-secondary"
+                  type="button" class="btn btn-outline-primary"
                   (click)="openSidebar(button.code)">
             <fa-icon [icon]="$any(button.icon)"></fa-icon>
             {{button.label}}

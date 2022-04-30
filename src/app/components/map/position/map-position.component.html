@@ -8,24 +8,24 @@
     <ng-container *ngTemplateOutlet="position; context: {prefix: 'current', position: mainPosition}"></ng-container>
 
     <div class="row mt-3">
-      <div class="form-group form-label-group col m-0">
-        <select class="form-control form-control-sm mr-1" [(ngModel)]="config.mode">
+      <div class="form-label-group col m-0">
+        <select class="form-select form-select-sm mr-1" [(ngModel)]="config.mode">
           <option *ngFor="let mode of Modes" [ngValue]="mode.name">
             {{mode.label}}
           </option>
         </select>
         <label>Mode déplacement</label>
       </div>
-      <div class="form-group form-label-group col m-0">
-        <select class="form-control form-control-sm mr-1" [(ngModel)]="config.sensDeplacement">
+      <div class="form-label-group col m-0">
+        <select class="form-select form-select-sm mr-1" [(ngModel)]="config.sensDeplacement">
           <option *ngFor="let sens of SensDeplacement" [ngValue]="sens">
             {{sens}}
           </option>
         </select>
         <label>Sens déplacement</label>
       </div>
-      <div class="form-group form-label-group col m-0">
-        <select class="form-control form-control-sm mr-1" [(ngModel)]="config.sensRotation">
+      <div class="form-label-group col m-0">
+        <select class="form-select form-select-sm mr-1" [(ngModel)]="config.sensRotation">
           <option *ngFor="let sens of SensRotation" [ngValue]="sens">
             {{sens}}
           </option>

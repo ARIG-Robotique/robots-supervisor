@@ -1,11 +1,8 @@
-$primary: #2C3E50;
-$secondary: #18BC9C;
+$secondary: #2C3E50;
+$primary: #1abc9c;
 
-$page-content-height: calc(100vh - 102px);
-$page-full-content-height: calc(100vh - 70px);
-
-$navbar-dark-brand-color: white;
-$navbar-dark-active-color: $secondary;
+$navbar-padding-y: 0.5rem;
+$navbar-dark-color: white;
 
 $enable-rounded: false;
 
@@ -13,7 +10,7 @@ $enable-rounded: false;
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 
-// restore les class "ml" "mr" "pl" "ps" qui ont été renommées en "ms" "me" "ps" "pe" dans BT5
+// restore les class "ml" "mr" "pl" "pr" qui ont été renommées en "ms" "me" "ps" "pe" dans BT5
 $utilities: (
     "margin-right": (
         responsive: true,

@@ -1,6 +1,4 @@
-@import '../../../styles/variables';
-
 .data-list {
-  height: $page-full-content-height;
+  height: calc(100vh - 56px);
   overflow: auto;
 }

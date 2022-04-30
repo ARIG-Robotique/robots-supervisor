@@ -9,11 +9,11 @@ export class AppToastService {
     }
 
     success(text: string) {
-        this.show(text, { classname: 'bg-success text-light' });
+        this.show(text, { classname: 'bg-success' });
     }
 
     error(text: string) {
-        this.show(text, { classname: 'bg-danger text-light' });
+        this.show(text, { classname: 'bg-danger' });
     }
 
     info(text: string) {

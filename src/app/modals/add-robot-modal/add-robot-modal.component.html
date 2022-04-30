@@ -6,7 +6,7 @@
   </div>
 
   <div class="modal-body">
-    <div class="form-check">
+    <div class="form-check mb-3">
       <input type="checkbox"
              class="form-check-input"
              name="simulateur"
@@ -15,7 +15,7 @@
       <label class="form-check-label" for="new-robot-simu">Simulateur</label>
     </div>
 
-    <div class="form-group">
+    <div class="mb-3">
       <label>Nom</label>
       <div *ngFor="let name of ROBOT_NAME"
             class="form-check">
@@ -29,7 +29,7 @@
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="mb-3">
       <label>Hôte</label>
       <input type="text"
              class="form-control"
@@ -40,7 +40,7 @@
              [(ngModel)]="robot.host">
     </div>
 
-    <div class="form-group" *ngIf="!robot.simulateur">
+    <div class="mb-3" *ngIf="!robot.simulateur">
       <label>Login</label>
       <input type="text"
              class="form-control"
@@ -49,7 +49,7 @@
              [(ngModel)]="robot.login">
     </div>
 
-    <div class="form-group" *ngIf="!robot.simulateur">
+    <div class="mb-3" *ngIf="!robot.simulateur">
       <label>Mot de passe</label>
       <input type="password"
              class="form-control"
