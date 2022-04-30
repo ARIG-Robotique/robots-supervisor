@@ -1,8 +1,6 @@
 .robot-status-badge {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  transform: translate(0px, -10px);
-  border-radius: 50%;
-  padding: 0;
+  width: 80px;
+  height: 20px;
+  border-radius: 10px;
+  cursor: pointer;
 }

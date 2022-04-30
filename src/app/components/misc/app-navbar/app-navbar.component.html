@@ -12,12 +12,12 @@
                 (change)="toggleRobot(r.robot)">
           <label class="form-check-label" for="cb-{{r.robot.id}}"></label>
         </span>
-        <a class="nav-link" (click)="setMainRobot(r.robot)">
+        <a class="nav-link badge robot-status-badge"
+           [class.bg-success]="r.online"
+           [class.bg-danger]="!r.online"
+           (click)="setMainRobot(r.robot)">
           {{r.robot.name}}
           <ng-container *ngIf="r.robot.simulateur">(simu)</ng-container>
-          <span class="badge robot-status-badge"
-                [class.bg-success]="r.online"
-                [class.bg-danger]="!r.online">&nbsp;</span>
         </a>
       </li>
     </ul>
