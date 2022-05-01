@@ -22,6 +22,7 @@
 .badge-big {
   font-size: $font-size-sm;
   padding: 0.25rem 0.35rem;
+  break-inside: avoid-column;
 }
 
 .p-sidebar {

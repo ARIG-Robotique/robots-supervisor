@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { cloneDeep } from 'lodash';
 import { AllConfigBras, AnglesBras, BRAS, Bras, CurrentBras, PointBras } from '../../models/Bras';
 import { Robot } from '../../models/Robot';
 import { BrasService } from '../bras.service';
@@ -91,7 +92,7 @@ export class BrasMockService extends BrasService {
   }
 
   getCurrent(robot: Robot): Observable<Bras<CurrentBras>> {
-    return of(this.bras);
+    return of(cloneDeep(this.bras));
   }
 
   setBras(robot: Robot, bras: BRAS, { x, y, a }: PointBras): Observable<boolean> {

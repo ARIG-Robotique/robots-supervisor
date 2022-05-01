@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import Konva from 'konva';
-import { Observable, Subject, timer } from 'rxjs';
-import { first, switchMap, takeUntil, throttleTime, withLatestFrom } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { first, takeUntil, throttleTime } from 'rxjs/operators';
 import { AllConfigBras, AnglesBras, BRAS, Bras, ConfigBras, CurrentBras } from '../../../models/Bras';
 import { Point } from '../../../models/Point';
 import { Robot } from '../../../models/Robot';
@@ -62,6 +62,13 @@ export class SidebarBrasComponent extends AbstractComponent implements OnInit, A
   logs = '';
 
   updateSym$ = new Subject<void>();
+
+  get states(): Bras<string[]> {
+    return {
+      bas : this.config.statesBas,
+      haut: this.config.statesHaut,
+    };
+  }
 
   constructor(private store: Store<any>,
               private brasService: BrasService) {
@@ -198,9 +205,12 @@ export class SidebarBrasComponent extends AbstractComponent implements OnInit, A
     this.stage.on('click', (e) => {
       if (e.evt.button === 2) {
         this.selectedBras = this.selectedBras === 'bas' ? 'haut' : 'bas';
+        this.update();
         this.updateSym$.next();
       } else {
-        this.click();
+        const pt = this.getPointerPosition();
+        const a = this.angleVentouse;
+        this.click({ ...pt, a }, this.selectedBras);
       }
     });
 
@@ -224,17 +234,6 @@ export class SidebarBrasComponent extends AbstractComponent implements OnInit, A
       e.evt.preventDefault();
     });
 
-    timer(0, 500)
-      .pipe(
-        withLatestFrom(this.robot$),
-        switchMap(([, r]) => this.brasService.getCurrent(r)),
-        takeUntil(this.ngDestroy$)
-      )
-      .subscribe((current) => {
-        this.current = current;
-        this.update();
-      });
-
     this.updateSym$
       .pipe(
         throttleTime(100, undefined, { leading: true, trailing: true }),
@@ -243,12 +242,20 @@ export class SidebarBrasComponent extends AbstractComponent implements OnInit, A
       .subscribe(() => {
         this.setCursor();
       });
+
+    this.update();
   }
 
   async setBrasByName(bras: BRAS, name: string) {
-    this.selectedBras = bras;
     const robot = await this.robot$.pipe(first()).toPromise();
-    this.brasService.setBrasByName(robot, bras, name).subscribe();
+
+    this.selectedBras = bras;
+
+    this.brasService.setBrasByName(robot, bras, name)
+      .subscribe(() => {
+        this.update();
+        this.logs += `${this.selectedBras} : ${name}\n`;
+      });
   }
 
   isStateDisabled(bras: BRAS, state: string) {
@@ -267,31 +274,36 @@ export class SidebarBrasComponent extends AbstractComponent implements OnInit, A
     return { x: Math.round(x / RATIO), y: Math.round(y / RATIO) };
   }
 
-  private update() {
-    for (const id of Object.keys(this.current)) {
-      const { pt0, pt1, pt2, pt3 } = this.getPoints(this.config[id], this.current[id]);
-
-      this.bras[id].getChild<Konva.Line>('line').points([pt0.x, pt0.y, pt1.x, pt1.y, pt2.x, pt2.y, pt3.x, pt3.y]);
-
-      this.bras[id].getChild<Konva.Line>('point0').setPosition(pt0);
-      this.bras[id].getChild<Konva.Line>('point1').setPosition(pt1);
-      this.bras[id].getChild<Konva.Line>('point2').setPosition(pt2);
-      this.bras[id].getChild<Konva.Line>('point3').setPosition(pt3);
-    }
-  }
-
-  private async click() {
+  async update() {
     const robot = await this.robot$.pipe(first()).toPromise();
 
-    const pt = this.getPointerPosition();
-    const a = this.angleVentouse;
+    this.brasService.getCurrent(robot)
+      .subscribe((current) => {
+        this.current = current;
+        for (const id of Object.keys(this.current)) {
+          const { pt0, pt1, pt2, pt3 } = this.getPoints(this.config[id], this.current[id]);
 
-    this.brasService.setBras(robot, this.selectedBras, {
-      ...pt,
-      a,
-    }).subscribe(done => {
+          this.bras[id].getChild<Konva.Line>('line').points([pt0.x, pt0.y, pt1.x, pt1.y, pt2.x, pt2.y, pt3.x, pt3.y]);
+
+          this.bras[id].getChild<Konva.Line>('point0').setPosition(pt0);
+          this.bras[id].getChild<Konva.Line>('point1').setPosition(pt1);
+          this.bras[id].getChild<Konva.Line>('point2').setPosition(pt2);
+          this.bras[id].getChild<Konva.Line>('point3').setPosition(pt3);
+        }
+
+        this.angleVentouse = this.current[this.selectedBras].a;
+      });
+  }
+
+  async click(val: { x: number, y: number, a: number }, bras: BRAS) {
+    const robot = await this.robot$.pipe(first()).toPromise();
+
+    this.selectedBras = bras;
+
+    this.brasService.setBras(robot, bras, val).subscribe(done => {
       if (done) {
-        this.logs += `${this.selectedBras} : x=${pt.x} y=${pt.y} a=${a}\n`;
+        this.update();
+        this.logs += `${this.selectedBras} : x=${val.x} y=${val.y} a=${val.a}\n`;
       }
     });
   }
