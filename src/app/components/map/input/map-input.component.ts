@@ -11,9 +11,13 @@ import {
   ViewChild
 } from '@angular/core';
 import Konva from 'konva';
+import { interval, takeUntil } from 'rxjs';
 import { TABLE } from '../../../constants/constants';
 import { MapPosition } from '../../../models/MapPosition';
 import { Position } from '../../../models/Position';
+import { Robot } from '../../../models/Robot';
+import { MouvementsService } from '../../../services/mouvements.service';
+import { AbstractComponent } from '../../abstract.component';
 import { GameStatusManager } from './game-status.manager';
 
 const GREEN = '#00bc8c';
@@ -24,10 +28,10 @@ const RED = '#e74c3c';
   template : '<div #mapContainer class="map-container"></div>',
   styleUrls: ['./map-input.component.scss']
 })
-export class MapInputComponent implements OnChanges, OnDestroy, AfterViewInit {
+export class MapInputComponent extends AbstractComponent implements OnChanges, OnDestroy, AfterViewInit {
 
   @Input() team: string;
-  @Input() mainRobot: string;
+  @Input() mainRobot: Robot;
 
   @Output() positionChanged = new EventEmitter<Pick<MapPosition, 'x' | 'y'>>();
   @Output() angleChanged = new EventEmitter<Pick<MapPosition, 'angle'>>();
@@ -48,11 +52,19 @@ export class MapInputComponent implements OnChanges, OnDestroy, AfterViewInit {
   mouvement: Konva.Group;
   statusManager: GameStatusManager;
 
+  mask: CanvasRenderingContext2D;
+
+  constructor(private mouvementsService: MouvementsService) {
+    super();
+  }
+
   ngAfterViewInit(): void {
     this.stage = new Konva.Stage({
       container: this.mapContainer.nativeElement,
       width    : TABLE.width * TABLE.imageRatio * TABLE.zoom,
       height   : TABLE.height * TABLE.imageRatio * TABLE.zoom,
+      scaleX   : TABLE.zoom,
+      scaleY   : TABLE.zoom,
     });
 
     this.stage.on('mousedown', this.mousedown.bind(this));
@@ -88,22 +100,23 @@ export class MapInputComponent implements OnChanges, OnDestroy, AfterViewInit {
     this.director = this.buildDirector();
     this.interactionLayer.add(this.director);
 
-    this.mainLayer.scale({ x: TABLE.zoom, y: TABLE.zoom });
-    this.interactionLayer.scale({ x: TABLE.zoom, y: TABLE.zoom });
-    this.background.scale({ x: TABLE.zoom, y: TABLE.zoom });
-
     this.statusManager = new GameStatusManager(this.mainLayer);
 
-    this.setTable(this.team, this.mainRobot);
+    this.setTable();
+
+    interval(2000)
+      .pipe(takeUntil(this.ngDestroy$))
+      .subscribe(() => this.setMask());
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['team'] || changes['mainRobot']) {
-      this.setTable(this.team, this.mainRobot);
+      this.setMask();
     }
   }
 
   ngOnDestroy() {
+    super.ngOnDestroy();
     this.statusManager.destroy();
   }
 
@@ -115,57 +128,77 @@ export class MapInputComponent implements OnChanges, OnDestroy, AfterViewInit {
         this.drawPoints(position);
         this.drawMouvement(position);
 
-        if (this.statusManager && position.gameStatus) {
+        if (this.statusManager && position?.gameStatus) {
           this.statusManager.update(position.gameStatus, this.team);
         }
       }
     }
   }
 
-  setTable(team: string, mainRobot: string) {
+  setTable() {
+    this.background.removeChildren();
+
+    const tableLoader = new Image();
+
+    tableLoader.onload = () => {
+      const image = new Konva.Image({
+        name  : 'table',
+        x     : 0,
+        y     : 0,
+        image : tableLoader,
+        width : TABLE.width * TABLE.imageRatio,
+        height: TABLE.height * TABLE.imageRatio
+      });
+
+      this.background.add(image);
+      image.moveToBottom();
+    };
+
+    tableLoader.src = 'assets/tables/' + TABLE.name + '.png';
+
+    this.setMask();
+  }
+
+  setMask() {
     if (this.stage) {
-      this.background.removeChildren();
+      const maskLoader = new Image();
 
-      const tableLoader = new Image();
-
-      tableLoader.onload = () => {
-        const image = new Konva.Image({
-          x     : 0,
-          y     : 0,
-          image : tableLoader,
-          width : TABLE.width * TABLE.imageRatio,
-          height: TABLE.height * TABLE.imageRatio
-        });
-
-        this.background.add(image);
-        image.moveToBottom();
+      const clear = () => {
+        for (let child of this.background.children) {
+          if (child.name() === 'mask') {
+            child.remove();
+          }
+        }
       };
 
-      tableLoader.src = 'assets/tables/' + TABLE.name + '.png';
+      maskLoader.onload = () => {
+        clear();
 
-      if (team) {
-        const maskLoader = new Image();
+        const image = new Konva.Image({
+          name   : 'mask',
+          x      : 0,
+          y      : TABLE.height * TABLE.imageRatio,
+          image  : maskLoader,
+          width  : TABLE.width * TABLE.imageRatio,
+          height : TABLE.height * TABLE.imageRatio,
+          scaleY : -1,
+          opacity: 0.15
+        });
 
-        maskLoader.onload = () => {
-          const image = new Konva.Image({
-            x      : 0,
-            y      : 0,
-            image  : maskLoader,
-            width  : TABLE.width * TABLE.imageRatio,
-            height : TABLE.height * TABLE.imageRatio,
-            opacity: 0.15
-          });
+        image.cache();
+        image.filters([Konva.Filters.Pixelate]);
+        image.pixelSize(TABLE.width * TABLE.imageRatio / maskLoader.width);
 
-          image.cache();
-          image.filters([Konva.Filters.Pixelate]);
-          image.pixelSize(TABLE.width * TABLE.imageRatio / maskLoader.width);
+        this.background.add(image);
+        image.moveToTop();
 
-          this.background.add(image);
-          image.moveToTop();
-        };
+        this.mask = image._cache.get('canvas').scene._canvas.getContext('2d'); // @ts-ignore
+      };
 
-        maskLoader.src = 'assets/pathMasks/' + TABLE.name + '-' + team + '-' + mainRobot + '.png';
-      }
+      maskLoader.onerror = clear;
+
+      maskLoader.crossOrigin = 'anonymous';
+      maskLoader.src = this.mouvementsService.getMaskUrl(this.mainRobot);
     }
   }
 
@@ -529,6 +562,13 @@ export class MapInputComponent implements OnChanges, OnDestroy, AfterViewInit {
         x: this.state.position.x * TABLE.imageRatio,
         y: (TABLE.height - this.state.position.y) * TABLE.imageRatio,
       });
+
+      const pixel = this.mask.getImageData(this.state.position.x * TABLE.imageRatio, this.state.position.y * TABLE.imageRatio, 1, 1).data;
+      const blocked = pixel[0] < 127;
+
+      for (let child of this.crosshair.children) {
+        (child as Konva.Shape).fill(blocked ? 'red' : 'black');
+      }
 
       const text = this.crosshair.getChildren((children) => children instanceof Konva.Text)[0] as Konva.Text;
       text.text(this.state.position.x + ':' + this.state.position.y);

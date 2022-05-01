@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { range } from 'lodash';
 import { Observable, of } from 'rxjs';
+import { TABLE } from '../../constants/constants';
 import { MapPosition } from '../../models/MapPosition';
 import { Position } from '../../models/Position';
 import { Robot } from '../../models/Robot';
@@ -118,6 +119,10 @@ export class MouvementsMockService extends MouvementsService {
         siteDeRetourAutreRobot                 : 'FOUILLE_NORD',
       },
     });
+  }
+
+  getMaskUrl(robot: Robot): string {
+    return 'assets/mock/work.png';
   }
 
 }

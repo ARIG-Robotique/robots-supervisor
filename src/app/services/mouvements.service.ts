@@ -34,4 +34,8 @@ export class MouvementsService {
     return this.http.get<Position>(`http://${robot.host}/mouvement`, { params });
   }
 
+  getMaskUrl(robot: Robot): string {
+    return `http://${robot.host}/mouvement/mask?t=${new Date().getTime()}`;
+  }
+
 }

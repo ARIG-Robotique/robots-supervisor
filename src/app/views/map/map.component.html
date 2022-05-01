@@ -25,7 +25,7 @@
 <div class="row g-0" *ngIf="mainRobot$ | async as mainRobot; else noRobot">
   <arig-map-input class="col"
                   [team]="team"
-                  [mainRobot]="mainRobot.name | lowercase"
+                  [mainRobot]="mainRobot"
                   (positionChanged)="positionChanged(mainRobot, $event)"
                   (angleChanged)="angleChanged(mainRobot, $event)">
   </arig-map-input>
