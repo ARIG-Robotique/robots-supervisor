@@ -195,7 +195,10 @@ export class MapInputComponent extends AbstractComponent implements OnChanges, O
         this.mask = image._cache.get('canvas').scene._canvas.getContext('2d'); // @ts-ignore
       };
 
-      maskLoader.onerror = clear;
+      maskLoader.onerror = () => {
+        clear();
+        this.mask = null;
+      };
 
       maskLoader.crossOrigin = 'anonymous';
       maskLoader.src = this.mouvementsService.getMaskUrl(this.mainRobot);
@@ -563,9 +566,11 @@ export class MapInputComponent extends AbstractComponent implements OnChanges, O
         y: (TABLE.height - this.state.position.y) * TABLE.imageRatio,
       });
 
-      const pixel = this.mask.getImageData(this.state.position.x * TABLE.imageRatio, this.state.position.y * TABLE.imageRatio, 1, 1).data;
-      const blocked = pixel[0] < 127;
-
+      let blocked = false;
+      if (this.mask) {
+        const pixel = this.mask.getImageData(this.state.position.x * TABLE.imageRatio, this.state.position.y * TABLE.imageRatio, 1, 1).data;
+        blocked = pixel[0] < 127;
+      }
       for (let child of this.crosshair.children) {
         (child as Konva.Shape).fill(blocked ? 'red' : 'black');
       }
