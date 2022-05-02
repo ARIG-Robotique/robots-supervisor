@@ -8,19 +8,15 @@ import { RobotsService } from '../robots.service';
 const MOCK_ROBOTS: { [id: string]: Robot } = {
   1: {
     id        : 1,
-    host      : '127.0.0.1',
+    host      : 'localhost:8080',
     name      : 'Nerell',
     simulateur: true,
-    login     : null,
-    pwd       : null,
   },
   2: {
     id        : 2,
-    host      : '127.0.0.1',
+    host      : 'localhost:8081',
     name      : 'Odin',
     simulateur: true,
-    login     : null,
-    pwd       : null,
   },
 };
 
@@ -46,18 +42,6 @@ export class RobotsMockService extends RobotsService {
 
   getRobots(): Observable<Robot[]> {
     return of(Object.values(MOCK_ROBOTS));
-  }
-
-  addRobot(robot: Robot): Observable<Robot> {
-    return of(robot);
-  }
-
-  editRobot(robot: Robot): Observable<Robot> {
-    return of(robot);
-  }
-
-  deleteRobot(idRobot: number): Observable<unknown> {
-    return of(null);
   }
 
   getRobotInfo(robot: Robot): Observable<RobotInfo> {

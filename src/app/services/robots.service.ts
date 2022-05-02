@@ -24,21 +24,6 @@ export class RobotsService {
     return this.http.get<Robot[]>(url);
   }
 
-  addRobot(robot: Robot): Observable<Robot> {
-    const url = buildUrl(httpurl.robot);
-    return this.http.post<Robot>(url, robot);
-  }
-
-  editRobot(robot: Robot): Observable<Robot> {
-    const url = buildUrl(httpurl.robotAction, {idRobot: robot.id});
-    return this.http.put<Robot>(url, robot);
-  }
-
-  deleteRobot(idRobot: number): Observable<unknown> {
-    const url = buildUrl(httpurl.robotAction, {idRobot});
-    return this.http.delete(url);
-  }
-
   getRobotInfo(robot: Robot): Observable<RobotInfo> {
     return this.http.get<RobotInfo>(`http://${robot.host}/robot`)
       .pipe(

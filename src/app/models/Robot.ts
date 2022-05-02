@@ -3,8 +3,6 @@ export interface Robot {
   host: string;
   name: string;
   simulateur: boolean;
-  login: string;
-  pwd: string;
 }
 
 export interface SelectedRobot extends Robot {

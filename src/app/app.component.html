@@ -3,3 +3,18 @@
 <arig-app-navbar></arig-app-navbar>
 
 <router-outlet></router-outlet>
+
+<div class="mt-3">
+  <button class="btn btn-secondary" (click)="loadIcons()">
+    Icones
+  </button>
+
+  <ul class="list-group" style="flex-direction: row; flex-wrap: wrap;">
+    <li class="list-group-item d-flex"
+        style="width: 25%"
+        *ngFor="let icon of icons">
+      <fa-icon [icon]="icon" size="2x"></fa-icon>
+      <span class="ml-3">{{icon | json}}</span>
+    </li>
+  </ul>
+</div>

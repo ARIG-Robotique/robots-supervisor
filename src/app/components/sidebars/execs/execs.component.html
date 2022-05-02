@@ -23,6 +23,8 @@
                (click)="showPaths(robot, exec)"></fa-icon>
       <fa-icon [icon]="['far', 'file-alt']" class="ml-1" ngbTooltip="Logs" placement="top"
                (click)="showLogs(robot, exec)"></fa-icon>
+      <fa-icon icon="window-close" class="ml-1" ngbTooltip="Supprimer" placement="top"
+               (click)="deleteExec(robot, exec)"></fa-icon>
     </li>
   </ul>
 </div>

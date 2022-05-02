@@ -28,7 +28,6 @@ import {
   faRoute,
   faServer,
   faTimes,
-  faUser,
   faWindowClose
 } from '@fortawesome/free-solid-svg-icons';
 import { faCopy } from '@fortawesome/free-solid-svg-icons/faCopy';
@@ -62,7 +61,6 @@ import { SidebarCapteursComponent } from './components/sidebars/capteurs/capteur
 import { SidebarExecsComponent } from './components/sidebars/execs/execs.component';
 import { SidebarMouvementsComponent } from './components/sidebars/mouvements/mouvements.component';
 import { SidebarServosComponent } from './components/sidebars/servos/servos.component';
-import { AddRobotModalComponent } from './modals/add-robot-modal/add-robot-modal.component';
 import { ImportLogsModalComponent } from './modals/import-logs-modal/import-logs-modal.component';
 import { LogsModalComponent } from './modals/logs-modal/logs-modal.component';
 import { PathsModalComponent } from './modals/paths-modal/paths-modal.component';
@@ -72,10 +70,9 @@ import { ServicesMockModule } from './services/mock/services.mock-module';
 import { RobotsUiService } from './services/robots-ui.service';
 import { RobotsService } from './services/robots.service';
 import { ServicesModule } from './services/services.module';
-import { loadRobots, setMainRobot } from './store/robots.actions';
+import { loadRobots } from './store/robots.actions';
 import { RobotsEffects } from './store/robots.effects';
 import { robotsReducer, robotsStatusReducer, selectedRobotsReducer } from './store/robots.reducer';
-import { AdminComponent } from './views/admin/admin.component';
 import { MapComponent } from './views/map/map.component';
 
 registerLocaleData(localeFr);
@@ -83,7 +80,6 @@ registerLocaleData(localeFr);
 @NgModule({
   declarations: [
     // views
-    AdminComponent,
     AppComponent,
     MapComponent,
 
@@ -108,7 +104,6 @@ registerLocaleData(localeFr);
     PumpsControlComponent,
 
     // modals
-    AddRobotModalComponent,
     ImportLogsModalComponent,
     LogsModalComponent,
     PathsModalComponent,
@@ -176,7 +171,6 @@ export class AppModule {
       faRoute,
       faServer,
       faTimes,
-      faUser,
       faWindowClose,
     );
 
