@@ -46,21 +46,6 @@ export interface GameStatus {
   stock: CouleurEchantillon[];
   echantillons: Echantillon[];
   carresFouille: CarreFouille[];
-  distributeurEquipePris: boolean;
-  distributeurCommunEquipePris: boolean;
-  distributeurCommunAdversePris: boolean;
-  siteEchantillonPris: boolean;
-  siteEchantillonAdversePris: boolean;
-  siteDeFouillePris: boolean;
-  siteDeFouilleAdversePris: boolean;
-  carresDeFouilleTermines: boolean;
-  vitrineActive: boolean;
-  statuettePris: boolean;
-  statuetteDansVitrine: boolean;
-  repliqueDepose: boolean;
-  echantillonAbriChantierDistributeurPris: boolean;
-  echantillonAbriChantierCarreFouillePris: boolean;
-  echantillonCampementPris: boolean;
   siteDeRetour: string;
   siteDeRetourAutreRobot: string;
 }

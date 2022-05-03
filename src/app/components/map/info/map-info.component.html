@@ -41,70 +41,11 @@
       <span class="col">Etats</span>
     </div>
     <div style="columns: 2">
-      <div *ngTemplateOutlet="booleanStatus; context: {
-        title: 'Distributeur équipe pris',
-        status: mainPosition?.gameStatus?.distributeurEquipePris
-      }"></div>
-      <div *ngTemplateOutlet="booleanStatus; context: {
-        title: 'Distributeur commun équipe pris',
-        status: mainPosition?.gameStatus?.distributeurCommunEquipePris
-      }"></div>
-      <div *ngTemplateOutlet="booleanStatus; context: {
-        title: 'Distributeur commun adverse pris',
-        status: mainPosition?.gameStatus?.distributeurCommunAdversePris
-      }"></div>
-      <div *ngTemplateOutlet="booleanStatus; context: {
-        title: 'Echantillon chantier (coté distrib.) pris',
-        status: mainPosition?.gameStatus?.echantillonAbriChantierDistributeurPris
-      }"></div>
-      <div *ngTemplateOutlet="booleanStatus; context: {
-        title: 'Echantillon chantier (coté fouille) pris',
-        status: mainPosition?.gameStatus?.echantillonAbriChantierCarreFouillePris
-      }"></div>
-      <div *ngTemplateOutlet="booleanStatus; context: {
-        title: 'Echantillon campement pris',
-        status: mainPosition?.gameStatus?.echantillonCampementPris
-      }"></div>
-      <div *ngTemplateOutlet="booleanStatus; context: {
-        title: 'Site echantillons pris',
-        status: mainPosition?.gameStatus?.siteEchantillonPris
-      }"></div>
-      <div *ngTemplateOutlet="booleanStatus; context: {
-        title: 'Site echantillons adverse pris',
-        status: mainPosition?.gameStatus?.siteEchantillonAdversePris
-      }"></div>
-      <div *ngTemplateOutlet="booleanStatus; context: {
-        title: 'Site de fouille pris',
-        status: mainPosition?.gameStatus?.siteDeFouillePris
-      }"></div>
-      <div *ngTemplateOutlet="booleanStatus; context: {
-        title: 'Site de fouille adverse pris',
-        status: mainPosition?.gameStatus?.siteDeFouilleAdversePris
-      }"></div>
-      <div *ngTemplateOutlet="booleanStatus; context: {
-        title: 'Carrés de fouille terminés',
-        status: mainPosition?.gameStatus?.carresDeFouilleTermines
-      }"></div>
-      <div *ngTemplateOutlet="booleanStatus; context: {
-        title: 'Vitrine activée',
-        status: mainPosition?.gameStatus?.vitrineActive
-      }"></div>
-      <div *ngTemplateOutlet="booleanStatus; context: {
-        title: 'Statuette prise',
-        status: mainPosition?.gameStatus?.statuettePris
-      }"></div>
-      <div *ngTemplateOutlet="booleanStatus; context: {
-        title: 'Statuette dans vitrine',
-        status: mainPosition?.gameStatus?.statuetteDansVitrine
-      }"></div>
-      <div *ngTemplateOutlet="booleanStatus; context: {
-        title: 'Replique déposée',
-        status: mainPosition?.gameStatus?.repliqueDepose
-      }"></div>
+      <div *ngFor="let item of mainPosition?.gameFlags | keyvalue; trackBy: trackByIndex"
+           class="badge badge-big d-block mb-1"
+           [ngClass]="{'bg-success': item.value, 'bg-danger': !item.value}">
+        {{item.key}}
+      </div>
     </div>
   </div>
 </div>
-
-<ng-template #booleanStatus let-title="title" let-status="status">
-  <div class="badge badge-big d-block mt-1" [ngClass]="{'bg-success': status, 'bg-danger': !status}">{{title}}</div>
-</ng-template>
