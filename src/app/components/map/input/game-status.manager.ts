@@ -27,11 +27,10 @@ export class GameStatusManager {
       new Konva.RegularPolygon({
         x          : echantillon.x * TABLE.imageRatio,
         y          : (TABLE.height - echantillon.y) * TABLE.imageRatio,
-        rotation   : echantillon.angle ?? 0,
         sides      : 6,
         radius     : 75 * TABLE.imageRatio - 2,
-        fill       : COLORS_ECHANTILLON[echantillon.visibleColor],
-        stroke     : COLORS_ECHANTILLON[echantillon.color],
+        fill       : COLORS_ECHANTILLON[echantillon.couleur],
+        stroke     : COLORS_ECHANTILLON[echantillon.couleur.replace('ROCHER_', '')],
         strokeWidth: 4,
       })
     );

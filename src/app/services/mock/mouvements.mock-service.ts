@@ -77,15 +77,13 @@ export class MouvementsMockService extends MouvementsService {
           CouleurEchantillon.INCONNU,
         ],
         echantillons          : [
-          { x: 900, y: 2000 - 795, angle: 0, color: CouleurEchantillon.ROUGE, visibleColor: CouleurEchantillon.ROCHER },
-          { x: 830, y: 2000 - 675, angle: 0, color: CouleurEchantillon.VERT, visibleColor: CouleurEchantillon.ROCHER },
-          { x: 900, y: 2000 - 555, angle: 0, color: CouleurEchantillon.BLEU, visibleColor: CouleurEchantillon.ROCHER },
-
-          { x: 900, y: 2000 - 1300, angle: -10, color: CouleurEchantillon.BLEU, visibleColor: CouleurEchantillon.BLEU },
-          { x: 1050, y: 2000 - 1350, angle: 40, color: CouleurEchantillon.VERT, visibleColor: CouleurEchantillon.VERT },
-          { x: 930, y: 2000 - 1450, angle: -20, color: CouleurEchantillon.ROUGE, visibleColor: CouleurEchantillon.ROUGE },
-
-          { x: 2300, y: 2000 - 1200, angle: -10, color: CouleurEchantillon.INCONNU, visibleColor: CouleurEchantillon.ROCHER },
+          { x: 900, y: 2000 - 795, couleur: CouleurEchantillon.ROCHER_ROUGE },
+          { x: 830, y: 2000 - 675, couleur: CouleurEchantillon.ROCHER_VERT },
+          { x: 900, y: 2000 - 555, couleur: CouleurEchantillon.ROCHER_BLEU },
+          { x: 900, y: 2000 - 1300, couleur: CouleurEchantillon.BLEU },
+          { x: 1050, y: 2000 - 1350, couleur: CouleurEchantillon.VERT },
+          { x: 930, y: 2000 - 1450, couleur: CouleurEchantillon.ROUGE },
+          { x: 2300, y: 2000 - 1200, couleur: CouleurEchantillon.ROCHER },
         ],
         carresFouille         : [
           { color: CouleurCarreFouille.JAUNE, bascule: true, x: 10 },
