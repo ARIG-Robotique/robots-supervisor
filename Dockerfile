@@ -10,7 +10,7 @@ RUN yarn build
 
 # Image finale #
 # ------------ #
-FROM node:14-alpine as final
+FROM node:16-alpine as final
 
 RUN npm install -g http-server \
     && npm cache clean --force
