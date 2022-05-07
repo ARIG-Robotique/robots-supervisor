@@ -36,7 +36,7 @@ export class SidebarExecsComponent extends AbstractComponent implements OnInit {
     this.execs$ = this.robot$
       .pipe(
         switchMap(robot => this.robotsService.getRobotExecs(robot.id)),
-        map(execs => execs.reverse().slice(0, 50)),
+        map(execs => execs.slice(0, 50)),
         takeUntil(this.ngDestroy$)
       );
   }
