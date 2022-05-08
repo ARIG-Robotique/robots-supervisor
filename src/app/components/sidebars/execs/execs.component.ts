@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map, switchMap, takeUntil } from 'rxjs/operators';
+import { first, map, switchMap, takeUntil } from 'rxjs/operators';
 import { Exec } from '../../../models/Exec';
 import { Robot } from '../../../models/Robot';
 import { ExecsService } from '../../../services/execs.service';
@@ -17,7 +17,7 @@ import { AbstractComponent } from '../../abstract.component';
 export class SidebarExecsComponent extends AbstractComponent implements OnInit {
 
   robot$: Observable<Robot>;
-  execs$: Observable<Exec[]>;
+  execs: Exec[] = [];
 
   constructor(private store: Store<any>,
               private robotsService: RobotsService,
@@ -32,13 +32,16 @@ export class SidebarExecsComponent extends AbstractComponent implements OnInit {
     this.refresh();
   }
 
-  refresh() {
-    this.execs$ = this.robot$
+  async refresh() {
+    const robot = await this.robot$.pipe(first()).toPromise();
+
+    this.robotsService.getRobotExecs(robot.id)
       .pipe(
-        switchMap(robot => this.robotsService.getRobotExecs(robot.id)),
-        map(execs => execs.slice(0, 50)),
-        takeUntil(this.ngDestroy$)
-      );
+        map(execs => execs.slice(0, 50))
+      )
+      .subscribe(execs => {
+        this.execs = execs;
+      });
   }
 
   showPaths(robot: Robot, exec: Exec) {
@@ -50,7 +53,10 @@ export class SidebarExecsComponent extends AbstractComponent implements OnInit {
   }
 
   importLogs(robot: Robot) {
-    this.robotsUiService.importLogs(robot);
+    this.robotsUiService.importLogs(robot)
+      .subscribe(() => {
+        this.refresh();
+      });
   }
 
   deleteExec(robot: Robot, exec: Exec) {
