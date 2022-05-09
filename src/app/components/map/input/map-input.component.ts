@@ -136,7 +136,7 @@ export class MapInputComponent extends AbstractComponent implements OnChanges, O
   }
 
   setTable() {
-    this.background.removeChildren();
+    this.background.destroyChildren();
 
     const tableLoader = new Image();
 
@@ -166,7 +166,7 @@ export class MapInputComponent extends AbstractComponent implements OnChanges, O
       const clear = () => {
         for (let child of this.background.children) {
           if (child.name() === 'mask') {
-            child.remove();
+            child.destroy();
           }
         }
       };
@@ -218,7 +218,7 @@ export class MapInputComponent extends AbstractComponent implements OnChanges, O
 
   drawPoints(data: Position) {
     if (data && this.stage) {
-      this.points.removeChildren();
+      this.points.destroyChildren();
 
       if (data.pointsLidar) {
         data.pointsLidar.forEach((point) => {
@@ -274,7 +274,7 @@ export class MapInputComponent extends AbstractComponent implements OnChanges, O
 
   drawMouvement(data: Position) {
     if (data && this.stage) {
-      this.mouvement.removeChildren();
+      this.mouvement.destroyChildren();
 
       const points = [];
 

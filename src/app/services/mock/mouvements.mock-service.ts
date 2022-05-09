@@ -121,7 +121,7 @@ export class MouvementsMockService extends MouvementsService {
   }
 
   getMaskUrl(robot: Robot): string {
-    return 'assets/mock/work.png';
+    return `assets/mock/work.png?t=${new Date().getTime()}`;
   }
 
 }

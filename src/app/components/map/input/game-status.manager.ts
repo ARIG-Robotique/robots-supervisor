@@ -17,7 +17,7 @@ export class GameStatusManager {
   }
 
   update(status: Partial<GameStatus>, team: string) {
-    this.echantillons.removeChildren();
+    this.echantillons.destroyChildren();
 
     status.echantillons?.forEach(echantillon => this.addEchantillon(echantillon));
   }
