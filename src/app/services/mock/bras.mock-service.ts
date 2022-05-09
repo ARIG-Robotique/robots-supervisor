@@ -120,6 +120,7 @@ export class BrasMockService extends BrasService {
 
   calculerAnglesInternal(robot: Robot, bras: BRAS, { x, y, a }: PointBras, enableLog = true, preferA1Min?: boolean): AnglesBras {
     const configBras = this.config[bras];
+    const first = preferA1Min === undefined;
 
     if (preferA1Min === undefined) {
       preferA1Min = configBras.preferA1Min;
@@ -176,8 +177,8 @@ export class BrasMockService extends BrasService {
     result.a3Error = result.a3 < configBras.a3Min || result.a3 > configBras.a3Max;
 
     // si l'inversion entraine une erreur, on essaye sans inversion
-    if (preferA1Min && (result.a1Error || result.a2Error || result.a3Error)) {
-      const newResult = this.calculerAnglesInternal(robot, bras, { x, y, a }, false, false);
+    if (first && (result.a1Error || result.a2Error || result.a3Error)) {
+      const newResult = this.calculerAnglesInternal(robot, bras, { x, y, a }, false, !preferA1Min);
       if (newResult && !newResult.a1Error && !newResult.a2Error && !newResult.a3Error) {
         return newResult;
       }

@@ -7,6 +7,7 @@ import { AllConfigBras, AnglesBras, BRAS, Bras, ConfigBras, CurrentBras } from '
 import { Point } from '../../../models/Point';
 import { Robot } from '../../../models/Robot';
 import { BrasService } from '../../../services/bras.service';
+import { AppToastService } from '../../../services/toast.service';
 import { selectMainRobot } from '../../../store/robots.selector';
 import { AbstractComponent } from '../../abstract.component';
 
@@ -71,7 +72,8 @@ export class SidebarBrasComponent extends AbstractComponent implements OnInit, A
   }
 
   constructor(private store: Store<any>,
-              private brasService: BrasService) {
+              private brasService: BrasService,
+              private toast: AppToastService) {
     super();
   }
 
@@ -304,6 +306,9 @@ export class SidebarBrasComponent extends AbstractComponent implements OnInit, A
       if (done) {
         this.update();
         this.logs += `${this.selectedBras} : x=${val.x} y=${val.y} a=${val.a}\n`;
+        this.toast.clear();
+      } else {
+        this.toast.error('Position invalide');
       }
     });
   }
