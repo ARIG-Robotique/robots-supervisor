@@ -49,7 +49,7 @@ export const Mouvements: any[] = [
   },
   {
     name  : 'Tourner',
-    icon  : 'redo-alt',
+    icon  : 'rotate-right',
     type  : 'tourne',
     fields: ['angle']
   },

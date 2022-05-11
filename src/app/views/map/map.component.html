@@ -8,10 +8,14 @@
            [position]="'right'"
            [styleClass]="sidebar === 'servos' || sidebar === 'bras' ? 'p-sidebar-lg' : 'p-sidebar-md'"
            [fullScreen]="sidebar === 'bras'">
-  <button type="button" class="btn btn-outline-primary mb-3" (click)="showSidebar = false;">
-    <fa-icon icon="times"></fa-icon>
-    Fermer
-  </button>
+  <div class="btn-toolbar mb-3 justify-content-between">
+    <div class="btn-group">
+      <button type="button" class="btn btn-danger" (click)="showSidebar = false;">
+        <fa-icon icon="close"></fa-icon>
+      </button>
+    </div>
+    <ng-container *ngTemplateOutlet="sidebarButtons"></ng-container>
+  </div>
 
   <ng-container [ngSwitch]="sidebar">
     <arig-sidebar-servos *ngSwitchCase="'servos'"></arig-sidebar-servos>
@@ -33,13 +37,8 @@
   <div class="col data-list">
     <div class="card">
       <div class="card-body">
-        <div class="btn-group">
-          <button *ngFor="let button of Buttons"
-                  type="button" class="btn btn-outline-primary"
-                  (click)="openSidebar(button.code)">
-            <fa-icon [icon]="$any(button.icon)"></fa-icon>
-            {{button.label}}
-          </button>
+        <div class="btn-toolbar justify-content-end">
+          <ng-container *ngTemplateOutlet="sidebarButtons"></ng-container>
         </div>
       </div>
     </div>
@@ -63,3 +62,15 @@
 
   </div>
 </div>
+
+<ng-template #sidebarButtons>
+  <div class="btn-group">
+    <button *ngFor="let button of Buttons"
+            type="button" class="btn btn-outline-primary"
+            [class.active]="sidebar === button.code"
+            (click)="openSidebar(button.code)">
+      <fa-icon [icon]="$any(button.icon)"></fa-icon>
+      {{button.label}}
+    </button>
+  </div>
+</ng-template>

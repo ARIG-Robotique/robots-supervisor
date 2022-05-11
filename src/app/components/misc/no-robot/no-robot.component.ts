@@ -13,15 +13,15 @@ import { IconDefinition, IconName, IconPrefix } from '@fortawesome/fontawesome-s
 
     <div class="container mt-5">
       <div class="row">
-        <div class="col-sm"><img class="d-block m-auto" src="assets/logo.png"></div>
-        <div class="col-sm"><img class="d-block m-auto" src="assets/coupe.png"></div>
+        <div class="col-6"><img class="d-block m-auto" src="assets/logo.png"></div>
+        <div class="col-6"><img class="d-block m-auto" src="assets/coupe.png"></div>
       </div>
 
       <div class="row">
-        <div class="col-sm"><img class="d-block m-auto" src="assets/3d/nerell.png"></div>
-        <div class="col-sm"><img class="d-block m-auto" src="assets/3d/odin.png"></div>
-        <div class="col-sm"><img class="d-block m-auto" src="assets/3d/elfa.png"></div>
-        <div class="col-sm"><img class="d-block m-auto" src="assets/3d/sauron.png"></div>
+        <div class="col-3"><img class="d-block m-auto" src="assets/3d/nerell.png"></div>
+        <div class="col-3"><img class="d-block m-auto" src="assets/3d/odin.png"></div>
+        <div class="col-3"><img class="d-block m-auto" src="assets/3d/elfa.png"></div>
+        <div class="col-3"><img class="d-block m-auto" src="assets/3d/sauron.png"></div>
       </div>
     </div>
 

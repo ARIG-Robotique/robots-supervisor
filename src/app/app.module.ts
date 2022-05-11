@@ -16,7 +16,6 @@ import {
   faChartLine,
   faCheck,
   faCogs,
-  faEdit,
   faFan,
   faHeartbeat,
   faInfoCircle,
@@ -30,7 +29,6 @@ import {
   faTimes,
   faWindowClose
 } from '@fortawesome/free-solid-svg-icons';
-import { faCopy } from '@fortawesome/free-solid-svg-icons/faCopy';
 import { faDatabase } from '@fortawesome/free-solid-svg-icons/faDatabase';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EffectsModule } from '@ngrx/effects';
@@ -155,10 +153,8 @@ export class AppModule {
       faCheck,
       faCogs,
       faCompass,
-      faCopy,
       faDatabase,
       faDotCircle,
-      faEdit,
       faFan,
       faFileAlt,
       faHeartbeat,
