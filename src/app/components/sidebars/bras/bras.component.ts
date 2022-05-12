@@ -38,8 +38,6 @@ const RATIO = 1.5;
 })
 export class SidebarBrasComponent extends AbstractComponent implements OnInit, AfterViewInit {
 
-  readonly ICON = ['fas', 'robot-arm'];
-
   @ViewChild('container', { static: true }) container: ElementRef;
 
   robot$: Observable<Robot>;
