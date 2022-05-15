@@ -28,7 +28,7 @@ export class RobotsUiService {
   }
 
   showLogs(idRobot: number, exec: Exec) {
-    const modalRef = this.modal.open(LogsModalComponent, {size: 'xl'});
+    const modalRef = this.modal.open(LogsModalComponent, {size: 'xl', fullscreen:true});
     (modalRef.componentInstance as LogsModalComponent).setRobotExec(idRobot, exec);
   }
 }
