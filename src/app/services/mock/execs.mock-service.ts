@@ -10,6 +10,10 @@ export class ExecsMockService extends ExecsService {
     return of(null);
   }
 
+  deleteAll(idRobot: number): Observable<unknown> {
+    return of(null);
+  }
+
   getLogs(idRobot: number, idExec: string): Observable<Log[]> {
     return of([
       {

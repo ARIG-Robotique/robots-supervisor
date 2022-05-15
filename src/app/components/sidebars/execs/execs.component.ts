@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { first, map, switchMap, takeUntil } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { Exec } from '../../../models/Exec';
 import { Robot } from '../../../models/Robot';
 import { ExecsService } from '../../../services/execs.service';
@@ -18,6 +18,8 @@ export class SidebarExecsComponent extends AbstractComponent implements OnInit {
 
   robot$: Observable<Robot>;
   execs: Exec[] = [];
+
+  trackById = (i, e: Exec) => e.id;
 
   constructor(private store: Store<any>,
               private robotsService: RobotsService,
@@ -64,6 +66,17 @@ export class SidebarExecsComponent extends AbstractComponent implements OnInit {
       .subscribe(() => {
         this.refresh();
       });
+  }
+
+  deleteAll(robot: Robot) {
+    const ok = confirm('Etes-vous sûr ?');
+
+    if (ok) {
+      this.execsService.deleteAll(robot.id)
+        .subscribe(() => {
+          this.execs = [];
+        });
+    }
   }
 
 }

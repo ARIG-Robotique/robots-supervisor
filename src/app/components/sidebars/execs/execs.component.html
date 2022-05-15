@@ -4,17 +4,24 @@
           <fa-icon icon="database"></fa-icon>
           Éxécutions
         </span>
-    <button type="button" class="btn btn-info btn-sm"
-            ngbTooltip="Importer"
-            placement="left"
-            (click)="importLogs(robot)">
-      <fa-icon icon="robot"></fa-icon>
-    </button>
+    <div>
+      <button type="button" class="btn btn-info btn-sm"
+              (click)="importLogs(robot)">
+        <fa-icon icon="robot"></fa-icon>
+        Importer
+      </button>
+      <button type="button" class="btn btn-danger btn-sm"
+              ngbTooltip="Tout supprimer"
+              placement="left"
+              (click)="deleteAll(robot)">
+        <fa-icon icon="window-close"></fa-icon>
+      </button>
+    </div>
   </h5>
 
   <ul class="list-group list-group-flush">
     <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-        *ngFor="let exec of execs">
+        *ngFor="let exec of execs; trackBy: trackById">
       {{exec | arigExec}}
 
       <span class="ml-auto"></span>
