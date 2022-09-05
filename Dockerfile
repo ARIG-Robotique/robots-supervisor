@@ -5,6 +5,11 @@ WORKDIR /build
 
 COPY . .
 
+RUN echo "Arch : $(uname -m)"; \
+    if [ "$(uname -m)" == "aarch64" ]; then \
+        apk add python3 build-base gcc wget git; \
+    fi
+
 RUN yarn install
 RUN yarn build
 
