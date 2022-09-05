@@ -5,7 +5,7 @@ IMAGE_VERSION=local
 ALL=dist node_modules
 
 build:
-	docker build -t $(IMAGE_NAME):$(IMAGE_VERSION) .
+	docker build --cache-from $(IMAGE_NAME):latest -t $(IMAGE_NAME):$(IMAGE_VERSION) .
 
 debug:
 	docker run -it --rm $(IMAGE_NAME):$(IMAGE_VERSION) sh
