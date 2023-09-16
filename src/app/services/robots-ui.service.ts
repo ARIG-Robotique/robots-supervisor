@@ -10,25 +10,24 @@ import { RobotsService } from './robots.service';
 
 @Injectable()
 export class RobotsUiService {
+    constructor(
+        private robotsService: RobotsService,
+        private modal: NgbModal,
+    ) {}
 
-  constructor(private robotsService: RobotsService,
-              private modal: NgbModal) {
+    importLogs(robot: Robot): Observable<any> {
+        const modalRef = this.modal.open(ImportLogsModalComponent, { backdrop: 'static', size: 'lg' });
+        (modalRef.componentInstance as ImportLogsModalComponent).robot = { ...robot };
+        return modalRef.closed;
+    }
 
-  }
+    showPaths(idRobot: number, exec: Exec) {
+        const modalRef = this.modal.open(PathsModalComponent, { size: 'lg' });
+        (modalRef.componentInstance as PathsModalComponent).setRobotExec(idRobot, exec);
+    }
 
-  importLogs(robot: Robot): Observable<any> {
-    const modalRef = this.modal.open(ImportLogsModalComponent, {backdrop: 'static', size: 'lg'});
-    (modalRef.componentInstance as ImportLogsModalComponent).robot = {...robot};
-    return modalRef.closed;
-  }
-
-  showPaths(idRobot: number, exec: Exec) {
-    const modalRef = this.modal.open(PathsModalComponent, {size: 'lg'});
-    (modalRef.componentInstance as PathsModalComponent).setRobotExec(idRobot, exec);
-  }
-
-  showLogs(idRobot: number, exec: Exec) {
-    const modalRef = this.modal.open(LogsModalComponent, {size: 'xl', fullscreen:true});
-    (modalRef.componentInstance as LogsModalComponent).setRobotExec(idRobot, exec);
-  }
+    showLogs(idRobot: number, exec: Exec) {
+        const modalRef = this.modal.open(LogsModalComponent, { size: 'xl', fullscreen: true });
+        (modalRef.componentInstance as LogsModalComponent).setRobotExec(idRobot, exec);
+    }
 }

@@ -33,6 +33,11 @@
             "allowedCommonJsDependencies": [
               "konva"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules"
+              ]
+            },
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
@@ -109,7 +114,8 @@
     "cache": {
       "enabled": false
     },
-    "defaultCollection": "@angular-eslint/schematics"
-  },
-  "defaultProject": "robots-supervisor"
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
+  }
 }

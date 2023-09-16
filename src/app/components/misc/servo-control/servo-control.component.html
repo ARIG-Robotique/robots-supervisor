@@ -1,66 +1,73 @@
 <h6 class="card-title mb-0">
-  {{servo.name}}
-  <small>id: {{servo.id}}</small>
+    {{ servo.name }}
+    <small>id: {{ servo.id }}</small>
 </h6>
 
 <div class="form-inline d-inline-flex mt-3">
-  <div class="mr-1">
-    <div class="input-group form-label-group">
-      <input class="form-control form-control-sm"
-             style="width: 70px"
-             type="number"
-             placeholder="Position"
-             [(ngModel)]="servo.currentPosition"
-             (keydown.enter)="setPosition()"/>
-      <label>Position</label>
-      <button class="btn btn-sm btn-primary" type="button"
-              (click)="setPosition()">
-        <fa-icon icon="check"></fa-icon>
-      </button>
+    <div class="mr-1">
+        <div class="input-group form-label-group">
+            <input
+                class="form-control form-control-sm"
+                style="width: 70px"
+                type="number"
+                placeholder="Position"
+                [(ngModel)]="servo.currentPosition"
+                (keydown.enter)="setPosition()"
+            />
+            <label>Position</label>
+            <button class="btn btn-sm btn-primary" type="button" (click)="setPosition()">
+                <fa-icon icon="check"></fa-icon>
+            </button>
+        </div>
     </div>
-  </div>
 
-  <div class="btn-group mr-1">
-    <button class="btn btn-info btn-sm" (click)="incrementPosition(-100)">
-      <fa-icon icon="minus"></fa-icon>
-      100
-    </button>
-    <button class="btn btn-info btn-sm" (click)="incrementPosition(-10)">
-      <fa-icon icon="minus"></fa-icon>
-      10
-    </button>
-  </div>
-  <div class="btn-group mr-1">
-    <button class="btn btn-info btn-sm" (click)="incrementPosition(10)">
-      <fa-icon icon="plus"></fa-icon>
-      10
-    </button>
-    <button class="btn btn-info btn-sm" (click)="incrementPosition(100)">
-      <fa-icon icon="plus"></fa-icon>
-      100
-    </button>
-  </div>
+    <div class="btn-group mr-1">
+        <button class="btn btn-info btn-sm" (click)="incrementPosition(-100)">
+            <fa-icon icon="minus"></fa-icon>
+            100
+        </button>
+        <button class="btn btn-info btn-sm" (click)="incrementPosition(-10)">
+            <fa-icon icon="minus"></fa-icon>
+            10
+        </button>
+    </div>
+    <div class="btn-group mr-1">
+        <button class="btn btn-info btn-sm" (click)="incrementPosition(10)">
+            <fa-icon icon="plus"></fa-icon>
+            10
+        </button>
+        <button class="btn btn-info btn-sm" (click)="incrementPosition(100)">
+            <fa-icon icon="plus"></fa-icon>
+            100
+        </button>
+    </div>
 
-  <label class="form-label-group mr-1">
-    <input class="form-control form-control-sm"
-           style="width: 70px"
-           type="number"
-           size="5"
-           placeholder="Vitesse"
-           [(ngModel)]="servo.currentSpeed">
-    <label>Vitesse</label>
-  </label>
+    <label class="form-label-group mr-1">
+        <input
+            class="form-control form-control-sm"
+            style="width: 70px"
+            type="number"
+            size="5"
+            placeholder="Vitesse"
+            [(ngModel)]="servo.currentSpeed"
+        />
+        <label>Vitesse</label>
+    </label>
 
-  <div class="btn-group">
-    <ng-container *ngFor="let pos of positions; trackBy: trackByName">
-      <input type="radio" 
-             class="btn-check"
-             name="positionList" 
-             [id]="'pos-' + servo.id + '-' + pos.value"
-             [value]="pos.value"
-             [(ngModel)]="servo.currentPosition"
-             (ngModelChange)="setPositionByName()">
-      <label class="btn btn-outline-primary btn-sm" [for]="'pos-' + servo.id + '-' + pos.value">{{pos.name}}</label>
-    </ng-container>
-  </div>
+    <div class="btn-group">
+        <ng-container *ngFor="let pos of positions; trackBy: trackByName">
+            <input
+                type="radio"
+                class="btn-check"
+                name="positionList"
+                [id]="'pos-' + servo.id + '-' + pos.value"
+                [value]="pos.value"
+                [(ngModel)]="servo.currentPosition"
+                (ngModelChange)="setPositionByName()"
+            />
+            <label class="btn btn-outline-primary btn-sm" [for]="'pos-' + servo.id + '-' + pos.value">{{
+                pos.name
+            }}</label>
+        </ng-container>
+    </div>
 </div>

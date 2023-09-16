@@ -6,36 +6,30 @@ import { Robot } from '../models/Robot';
 
 @Injectable()
 export class MouvementsService {
+    constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) {
-  }
+    /**
+     * Envoie une commande de mouvement
+     */
+    sendMouvement(robot: Robot, type: string, values: Record<string, string | number>): Observable<unknown> {
+        let params = new HttpParams();
+        for (const key in values) {
+            params = params.set(key, values[key]);
+        }
 
-  /**
-   * Envoie une commande de mouvement
-   */
-  sendMouvement(robot: Robot, type: string, values: any): Observable<unknown> {
-    let params = new HttpParams();
-    for (const key in values) {
-      if (values.hasOwnProperty(key)) {
-        params = params.set(key, values[key]);
-      }
+        return this.http.post(`http://${robot.host}/mouvement/${type}`, {}, { params });
     }
 
-    return this.http.post(`http://${robot.host}/mouvement/${type}`, {}, { params });
-  }
+    /**
+     * Retourne la position du robot
+     */
+    getPosition(robot: Robot, full: boolean): Observable<Position> {
+        const params = new HttpParams().set('full', `${full}`);
 
-  /**
-   * Retourne la position du robot
-   */
-  getPosition(robot: Robot, full: boolean): Observable<Position> {
-    const params = new HttpParams()
-      .set('full', `${full}`);
+        return this.http.get<Position>(`http://${robot.host}/mouvement`, { params });
+    }
 
-    return this.http.get<Position>(`http://${robot.host}/mouvement`, { params });
-  }
-
-  getMaskUrl(robot: Robot): string {
-    return `http://${robot.host}/mouvement/mask?t=${new Date().getTime()}`;
-  }
-
+    getMaskUrl(robot: Robot): string {
+        return `http://${robot.host}/mouvement/mask?t=${new Date().getTime()}`;
+    }
 }

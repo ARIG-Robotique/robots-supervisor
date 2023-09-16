@@ -1,51 +1,63 @@
 <div class="card">
-  <h5 class="card-header">
-    <fa-icon icon="info-circle"></fa-icon>
-    Informations
-  </h5>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-3">
-        Equipe :
-        <span class="badge badge-big"
-              [style.background]="team==='VIOLET'?'#4E3C6B':team==='JAUNE'?'#DA9A14':'#555'">{{team}}</span>
-      </div>
-      <div class="col-3">
-        Temps :
-        <span class="badge badge-big bg-info">{{mainPosition?.matchTime / 1000 | number:'3.0-0'}}s</span>
-      </div>
-      <div class="col-6">
-        Retour :
-        <span class="badge badge-big bg-info">{{mainPosition?.gameStatus?.siteDeRetour}}</span>
-        /
-        <span class="badge bg-info">{{mainPosition?.gameStatus?.siteDeRetourAutreRobot}}</span>
-      </div>
+    <h5 class="card-header">
+        <fa-icon icon="info-circle"></fa-icon>
+        Informations
+    </h5>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-3">
+                Equipe :
+                <span
+                    class="badge badge-big"
+                    [style.background]="team === 'VIOLET' ? '#4E3C6B' : team === 'JAUNE' ? '#DA9A14' : '#555'"
+                    >{{ team }}</span
+                >
+            </div>
+            <div class="col-3">
+                Temps :
+                <span class="badge badge-big bg-info">{{ mainPosition?.matchTime / 1000 | number: '3.0-0' }}s</span>
+            </div>
+            <div class="col-6">
+                Retour :
+                <span class="badge badge-big bg-info">{{ mainPosition?.gameStatus?.siteDeRetour }}</span>
+                /
+                <span class="badge bg-info">{{ mainPosition?.gameStatus?.siteDeRetourAutreRobot }}</span>
+            </div>
+        </div>
+        <div class="row">
+            <span class="col">Carrés de fouille</span>
+        </div>
+        <div class="row">
+            <div class="col" *ngFor="let cf of mainPosition?.gameStatus?.carresFouille; trackBy: trackByIndex">
+                <div
+                    [class]="
+                        'couleur couleurCarreFouille couleurCarreFouille--' +
+                        cf.color +
+                        ' ' +
+                        (cf.bascule ? 'couleurCarreFouille--bascule' : '')
+                    "
+                ></div>
+            </div>
+        </div>
+        <div class="row">
+            <span class="col">Stock</span>
+        </div>
+        <div class="row">
+            <div class="col" *ngFor="let color of mainPosition?.gameStatus?.stock; trackBy: trackByIndex">
+                <div [class]="'couleur couleurEchantillon--' + color"></div>
+            </div>
+        </div>
+        <div class="row">
+            <span class="col">Etats</span>
+        </div>
+        <div style="columns: 2">
+            <div
+                *ngFor="let item of mainPosition?.gameFlags | keyvalue; trackBy: trackByIndex"
+                class="badge badge-big d-block mb-1"
+                [ngClass]="{ 'bg-success': item.value, 'bg-danger': !item.value }"
+            >
+                {{ item.key }}
+            </div>
+        </div>
     </div>
-    <div class="row">
-      <span class="col">Carrés de fouille</span>
-    </div>
-    <div class="row">
-      <div class="col" *ngFor="let cf of mainPosition?.gameStatus?.carresFouille; trackBy: trackByIndex">
-        <div [class]="'couleur couleurCarreFouille couleurCarreFouille--' + cf.color + ' ' + (cf.bascule ? 'couleurCarreFouille--bascule' : '')"></div>
-      </div>
-    </div>
-    <div class="row">
-      <span class="col">Stock</span>
-    </div>
-    <div class="row">
-      <div class="col" *ngFor="let color of mainPosition?.gameStatus?.stock; trackBy: trackByIndex">
-        <div [class]="'couleur couleurEchantillon--' + color"></div>
-      </div>
-    </div>
-    <div class="row">
-      <span class="col">Etats</span>
-    </div>
-    <div style="columns: 2">
-      <div *ngFor="let item of mainPosition?.gameFlags | keyvalue; trackBy: trackByIndex"
-           class="badge badge-big d-block mb-1"
-           [ngClass]="{'bg-success': item.value, 'bg-danger': !item.value}">
-        {{item.key}}
-      </div>
-    </div>
-  </div>
 </div>

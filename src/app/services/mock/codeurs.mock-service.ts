@@ -7,16 +7,14 @@ import { MockData } from './mock.utils';
 
 @Injectable()
 export class CodeursMockService extends CodeursService {
+    private data = new MockData<number, Codeurs>(() => ({
+        distance: 0,
+        orientation: 0,
+        gauche: 0,
+        droite: 0,
+    }));
 
-  private data = new MockData<number, Codeurs>(() => ({
-    distance   : 0,
-    orientation: 0,
-    gauche     : 0,
-    droite     : 0,
-  }));
-
-  getCodeurs(robot: Robot): Observable<Codeurs> {
-    return of(this.data.get(robot.id));
-  }
-
+    getCodeurs(robot: Robot): Observable<Codeurs> {
+        return of(this.data.get(robot.id));
+    }
 }

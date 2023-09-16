@@ -5,39 +5,39 @@ import { Rect } from './Rect';
 import { GameStatus } from './ageOfBots/GameStatus';
 
 export interface MouvementPath {
-  type: 'PATH';
-  path: Point[];
+    type: 'PATH';
+    path: Point[];
 }
 
 export interface MouvementRotation {
-  type: 'ROTATION';
-  angle: number;
-  fromAngle: number;
-  toAngle: number;
+    type: 'ROTATION';
+    angle: number;
+    fromAngle: number;
+    toAngle: number;
 }
 
 export interface MouvementTranslation {
-  type: 'TRANSLATION';
-  distance: number;
-  fromPoint: Point;
-  toPoint: Point;
+    type: 'TRANSLATION';
+    distance: number;
+    fromPoint: Point;
+    toPoint: Point;
 }
 
 export interface Position {
-  x: number;
-  y: number;
-  angle: number;
-  targetMvt: MouvementPath | MouvementRotation | MouvementTranslation;
-  trajetAtteint: boolean;
-  trajetEnApproche: boolean;
-  typeAsserv: string;
-  pointsLidar: Point[];
-  collisions: Array<Cercle | Rect>;
-  matchTime: number;
-  score: number;
-  currentAction: string;
-  actions: Action[];
-  gameStatus: Partial<GameStatus>;
-  gameFlags: { [K: string]: boolean };
-  scoreStatus: { [K: string]: number };
+    x: number;
+    y: number;
+    angle: number;
+    targetMvt: MouvementPath | MouvementRotation | MouvementTranslation;
+    trajetAtteint: boolean;
+    trajetEnApproche: boolean;
+    typeAsserv: string;
+    pointsLidar: Point[];
+    collisions: Array<Cercle | Rect>;
+    matchTime: number;
+    score: number;
+    currentAction: string;
+    actions: Action[];
+    gameStatus: Partial<GameStatus>;
+    gameFlags: { [K: string]: boolean };
+    scoreStatus: { [K: string]: number };
 }

@@ -1,16 +1,15 @@
 <div class="modal-header">
-  <h4 class="modal-title">Logs de {{exec | arigExec}}</h4>
-  <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+    <h4 class="modal-title">Logs de {{ exec | arigExec }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
 </div>
 
 <div class="modal-body">
-  <ul class="logs-container">
-    <li *ngFor="let log of logs$ | async"
-        class="log-item">
-      <span class="log-date">{{log.date}}</span>
-      <span class="log-level log-level--{{log.level}}">{{log.level}}</span>
-      <span class="log-clazz">{{shortClassName(log.clazz)}}</span>
-      <span class="log-message">{{log.message}}</span>
-    </li>
-  </ul>
+    <ul class="logs-container">
+        <li *ngFor="let log of logs$ | async" class="log-item">
+            <span class="log-date">{{ log.date }}</span>
+            <span class="log-level log-level--{{ log.level }}">{{ log.level }}</span>
+            <span class="log-clazz">{{ shortClassName(log.clazz) }}</span>
+            <span class="log-message">{{ log.message }}</span>
+        </li>
+    </ul>
 </div>

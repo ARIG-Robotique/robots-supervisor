@@ -1,8 +1,8 @@
 <div class="modal-header">
-  <h4 class="modal-title">Import des logs de {{robot.name}}</h4>
-  <button type="button" class="btn-close" aria-label="Close" (click)="close()" [disabled]="!done"></button>
+    <h4 class="modal-title">Import des logs de {{ robot.name }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="close()" [disabled]="!done"></button>
 </div>
 
 <div class="modal-body">
-  <textarea #logsOutput [value]="logs" readonly rows="20" class="form-control" style="font-size: 0.9rem;"></textarea>
+    <textarea #logsOutput [value]="logs" readonly rows="20" class="form-control" style="font-size: 0.9rem"></textarea>
 </div>

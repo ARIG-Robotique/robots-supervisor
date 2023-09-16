@@ -6,33 +6,32 @@ import { Log } from '../../models/Log';
 import { ExecsService } from '../../services/execs.service';
 
 @Component({
-  templateUrl: 'logs-modal.component.html',
-  styleUrls  : ['logs-modal.component.scss'],
+    templateUrl: 'logs-modal.component.html',
+    styleUrls: ['logs-modal.component.scss'],
 })
 export class LogsModalComponent {
+    idRobot: number;
+    exec: Exec;
+    logs$: Observable<Log[]>;
 
-  idRobot: number;
-  exec: Exec;
-  logs$: Observable<Log[]>;
+    constructor(
+        private modal: NgbActiveModal,
+        private execsService: ExecsService,
+    ) {}
 
-  constructor(private modal: NgbActiveModal,
-              private execsService: ExecsService) {
-  }
+    setRobotExec(idRobot: number, exec: Exec): void {
+        this.idRobot = idRobot;
+        this.exec = exec;
+        this.logs$ = this.execsService.getLogs(idRobot, exec.id);
+    }
 
-  setRobotExec(idRobot: number, exec: Exec): void {
-    this.idRobot = idRobot;
-    this.exec = exec;
-    this.logs$ = this.execsService.getLogs(idRobot, exec.id);
-  }
+    close() {
+        this.modal.close();
+    }
 
-  close() {
-    this.modal.close();
-  }
-
-  shortClassName(clazz: string) {
-    return clazz.replace(/([^.]+)\./g, (match, part) => {
-      return part[0] + '.';
-    });
-  }
-
+    shortClassName(clazz: string) {
+        return clazz.replace(/([^.]+)\./g, (match, part) => {
+            return part[0] + '.';
+        });
+    }
 }

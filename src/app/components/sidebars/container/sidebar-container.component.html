@@ -1,0 +1,14 @@
+<div class="d-flex flex-column h-100">
+    <div class="btn-toolbar p-3 justify-content-end">
+        <div class="btn-group mr-3">
+            <button type="button" class="btn btn-danger" (click)="close()">
+                <fa-icon icon="close"></fa-icon>
+            </button>
+        </div>
+        <ng-container *ngTemplateOutlet="sidebarButtons"></ng-container>
+    </div>
+
+    <div class="p-3 overflow-auto">
+        <ng-content></ng-content>
+    </div>
+</div>

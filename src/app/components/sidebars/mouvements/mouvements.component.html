@@ -1,38 +1,37 @@
-<ng-container *ngIf="robot$ | async as robot">
-  <div class="card mb-3">
-    <h5 class="card-header">
-      <fa-icon icon="arrows-alt"></fa-icon>
-      Mouvements
-    </h5>
+<arig-sidebar-container [sidebarButtons]="sidebarButtons">
+    <ng-container *ngIf="robot$ | async as robot">
+        <div class="card mb-3">
+            <h5 class="card-header">
+                <fa-icon icon="arrows-alt"></fa-icon>
+                Mouvements
+            </h5>
 
-    <div class="list-group list-group-flush">
-      <arig-mouvement-input class="list-group-item p-2" *ngFor="let mouvement of Mouvements"
-                            [robot]="robot"
-                            [name]="mouvement.name"
-                            [icon]="mouvement.icon"
-                            [type]="mouvement.type"
-                            [fields]="mouvement.fields"
-                            [select]="mouvement.select"
-                            [values]="mouvement.values">
-      </arig-mouvement-input>
-    </div>
-  </div>
+            <div class="list-group list-group-flush">
+                <arig-mouvement-input
+                    class="list-group-item p-2"
+                    *ngFor="let mouvement of Mouvements"
+                    [robot]="robot"
+                    [name]="mouvement.name"
+                    [icon]="mouvement.icon"
+                    [type]="mouvement.type"
+                    [fields]="mouvement.fields"
+                    [select]="mouvement.select"
+                    [values]="mouvement.values"
+                >
+                </arig-mouvement-input>
+            </div>
+        </div>
 
-  <div class="card mb-3">
-    <h5 class="card-header">
-      <fa-icon icon="arrows-alt"></fa-icon>
-      PID / Rampes
-    </h5>
+        <div class="card mb-3">
+            <h5 class="card-header">
+                <fa-icon icon="arrows-alt"></fa-icon>
+                PID / Rampes
+            </h5>
 
-    <div class="list-group list-group-flush">
-      <arig-asserv-input class="list-group-item p-2"
-                         [robot]="robot"
-                         type="DIST">
-      </arig-asserv-input>
-      <arig-asserv-input class="list-group-item p-2"
-                         [robot]="robot"
-                         type="ANGLE">
-      </arig-asserv-input>
-    </div>
-  </div>
-</ng-container>
+            <div class="list-group list-group-flush">
+                <arig-asserv-input class="list-group-item p-2" [robot]="robot" type="DIST"> </arig-asserv-input>
+                <arig-asserv-input class="list-group-item p-2" [robot]="robot" type="ANGLE"> </arig-asserv-input>
+            </div>
+        </div>
+    </ng-container>
+</arig-sidebar-container>

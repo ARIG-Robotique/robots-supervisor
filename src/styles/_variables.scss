@@ -1,16 +1,19 @@
+@import 'bootstrap/scss/functions';
+
 $secondary: #2C3E50;
 $primary: #1abc9c;
 
 $navbar-padding-y: 0.5rem;
 $navbar-dark-color: white;
 
+$offcanvas-horizontal-width: 40rem;
+
 $enable-rounded: false;
 
 $web-font-path: false;
 
-@import '~bootswatch/dist/darkly/variables';
-@import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/variables';
+@import 'bootswatch/dist/darkly/variables';
+@import 'bootstrap/scss/variables';
 
 // restore les class "ml" "mr" "pl" "pr" qui ont été renommées en "ms" "me" "ps" "pe" dans BT5
 $utilities: (

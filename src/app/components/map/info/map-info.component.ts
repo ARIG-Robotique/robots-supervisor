@@ -3,18 +3,16 @@ import { Position } from '../../../models/Position';
 import { AbstractComponent } from '../../abstract.component';
 
 @Component({
-  selector   : 'arig-map-info',
-  templateUrl: 'map-info.component.html',
-  styleUrls  : ['map-info.component.scss'],
+    selector: 'arig-map-info',
+    templateUrl: 'map-info.component.html',
+    styleUrls: ['map-info.component.scss'],
 })
 export class MapInfoComponent extends AbstractComponent {
+    @Input()
+    team = '';
 
-  @Input()
-  team = '';
+    @Input()
+    mainPosition: Position;
 
-  @Input()
-  mainPosition: Position;
-
-  trackByIndex = (i: number, value: any) => i;
-
+    trackByIndex = (i: number, value: any) => i;
 }

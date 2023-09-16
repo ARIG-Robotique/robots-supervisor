@@ -21,19 +21,17 @@ import { ServosMockService } from './servos.mock-service';
 import { StrategyMockService } from './strategy.mock-service';
 
 @NgModule({
-  providers: [
-    { provide: AsservissementService, useClass: AsservissementMockService },
-    { provide: CapteursService, useClass: CapteursMockService },
-    { provide: BrasService, useClass: BrasMockService },
-    { provide: CodeursService, useClass: CodeursMockService },
-    { provide: ExecsService, useClass: ExecsMockService },
-    { provide: IOService, useClass: IOMockService },
-    { provide: MouvementsService, useClass: MouvementsMockService },
-    { provide: RobotsService, useClass: RobotsMockService },
-    { provide: ServosService, useClass: ServosMockService },
-    { provide: StrategyService, useClass: StrategyMockService },
-  ],
+    providers: [
+        { provide: AsservissementService, useClass: AsservissementMockService },
+        { provide: CapteursService, useClass: CapteursMockService },
+        { provide: BrasService, useClass: BrasMockService },
+        { provide: CodeursService, useClass: CodeursMockService },
+        { provide: ExecsService, useClass: ExecsMockService },
+        { provide: IOService, useClass: IOMockService },
+        { provide: MouvementsService, useClass: MouvementsMockService },
+        { provide: RobotsService, useClass: RobotsMockService },
+        { provide: ServosService, useClass: ServosMockService },
+        { provide: StrategyService, useClass: StrategyMockService },
+    ],
 })
-export class ServicesMockModule {
-
-}
+export class ServicesMockModule {}

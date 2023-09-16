@@ -9,31 +9,26 @@ import { selectRobots } from './robots.selector';
 
 @Injectable()
 export class RobotsEffects {
+    updateRobotsStatus$ = createEffect(() =>
+        merge(interval(5000), this.actions$.pipe(ofType(loadRobots.type))).pipe(
+            withLatestFrom(this.store.select(selectRobots)),
+            switchMap(([, robots]) => {
+                return merge(
+                    ...robots.map((r) => {
+                        return this.robotsService.getRobotInfo(r).pipe(
+                            map((info) => ({ id: r.id, status: !!info.nom })),
+                            catchError(() => of({ id: r.id, status: false })),
+                        );
+                    }),
+                );
+            }),
+            map((status: { id: number; status: boolean }) => setRobotStatus(status)),
+        ),
+    );
 
-  updateRobotsStatus$ = createEffect(() =>
-    merge(
-      interval(5000),
-      this.actions$.pipe(ofType(loadRobots.type))
-    )
-      .pipe(
-        withLatestFrom(this.store.select(selectRobots)),
-        switchMap(([, robots]) => {
-          return merge(...robots.map(r => {
-            return this.robotsService.getRobotInfo(r)
-              .pipe(
-                map((info) => ({ id: r.id, status: !!info.nom })),
-                catchError(() => of({ id: r.id, status: false }))
-              );
-          }));
-        }),
-        map((status: { id: number, status: boolean }) => setRobotStatus(status))
-      )
-  );
-
-  constructor(private actions$: Actions,
-              private store: Store<any>,
-              private robotsService: RobotsService) {
-
-  }
-
+    constructor(
+        private actions$: Actions,
+        private store: Store<any>,
+        private robotsService: RobotsService,
+    ) {}
 }

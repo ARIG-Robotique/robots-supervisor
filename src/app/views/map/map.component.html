@@ -1,76 +1,53 @@
 <ng-template #noRobot>
-  <arig-no-robot></arig-no-robot>
+    <arig-no-robot></arig-no-robot>
 </ng-template>
 
-<p-sidebar [(visible)]="showSidebar"
-           (onHide)="sidebar = null"
-           [showCloseIcon]="false"
-           [position]="'right'"
-           [styleClass]="sidebar === 'servos' || sidebar === 'bras' ? 'p-sidebar-lg' : 'p-sidebar-md'"
-           [fullScreen]="sidebar === 'bras'">
-  <div class="btn-toolbar mb-3 justify-content-between">
-    <div class="btn-group">
-      <button type="button" class="btn btn-danger" (click)="showSidebar = false;">
-        <fa-icon icon="close"></fa-icon>
-      </button>
-    </div>
-    <ng-container *ngTemplateOutlet="sidebarButtons"></ng-container>
-  </div>
-
-  <ng-container [ngSwitch]="sidebar">
-    <arig-sidebar-servos *ngSwitchCase="'servos'"></arig-sidebar-servos>
-    <arig-sidebar-bras *ngSwitchCase="'bras'"></arig-sidebar-bras>
-    <arig-sidebar-mouvements *ngSwitchCase="'mouvements'"></arig-sidebar-mouvements>
-    <arig-sidebar-capteurs *ngSwitchCase="'capteurs'"></arig-sidebar-capteurs>
-    <arig-sidebar-execs *ngSwitchCase="'execs'"></arig-sidebar-execs>
-  </ng-container>
-</p-sidebar>
-
 <div class="row g-0" *ngIf="mainRobot$ | async as mainRobot; else noRobot">
-  <arig-map-input class="col"
-                  [team]="team"
-                  [mainRobot]="mainRobot"
-                  (positionChanged)="positionChanged(mainRobot, $event)"
-                  (angleChanged)="angleChanged(mainRobot, $event)">
-  </arig-map-input>
+    <arig-map-input
+        class="col"
+        [team]="team"
+        [mainRobot]="mainRobot"
+        (positionChanged)="positionChanged(mainRobot, $event)"
+        (angleChanged)="angleChanged(mainRobot, $event)"
+    >
+    </arig-map-input>
 
-  <div class="col data-list">
-    <div class="card">
-      <div class="card-body">
-        <div class="btn-toolbar justify-content-end">
-          <ng-container *ngTemplateOutlet="sidebarButtons"></ng-container>
+    <div class="col data-list">
+        <div class="card">
+            <div class="card-body">
+                <div class="btn-toolbar justify-content-end">
+                    <ng-container *ngTemplateOutlet="sidebarButtons"></ng-container>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <arig-map-position [mainPosition]="mainPosition" [targetPosition]="targetPosition" [config]="mouvementConfig">
+        </arig-map-position>
+
+        <arig-map-info [team]="team" [mainPosition]="mainPosition"></arig-map-info>
+
+        <div class="row g-0">
+            <div class="col-7">
+                <arig-map-actions [mainRobot]="mainRobot" [mainPosition]="mainPosition"></arig-map-actions>
+            </div>
+
+            <div class="col-5">
+                <arig-map-score [mainPosition]="mainPosition"></arig-map-score>
+            </div>
+        </div>
     </div>
-
-    <arig-map-position [mainPosition]="mainPosition"
-                       [targetPosition]="targetPosition"
-                       [config]="mouvementConfig">
-    </arig-map-position>
-
-    <arig-map-info [team]="team" [mainPosition]="mainPosition"></arig-map-info>
-
-    <div class="row g-0">
-      <div class="col-7">
-        <arig-map-actions [mainRobot]="mainRobot" [mainPosition]="mainPosition"></arig-map-actions>
-      </div>
-
-      <div class="col-5">
-        <arig-map-score [mainPosition]="mainPosition"></arig-map-score>
-      </div>
-    </div>
-
-  </div>
 </div>
 
 <ng-template #sidebarButtons>
-  <div class="btn-group">
-    <button *ngFor="let button of Buttons"
-            type="button" class="btn btn-outline-primary"
-            [class.active]="sidebar === button.code"
-            (click)="openSidebar(button.code)">
-      <fa-icon [icon]="$any(button.icon)"></fa-icon>
-      {{button.label}}
-    </button>
-  </div>
+    <div class="btn-group">
+        <button
+            *ngFor="let button of Buttons"
+            type="button"
+            class="btn btn-outline-primary"
+            (click)="openSidebar(button.code)"
+        >
+            <fa-icon [icon]="$any(button.icon)"></fa-icon>
+            {{ button.label }}
+        </button>
+    </div>
 </ng-template>

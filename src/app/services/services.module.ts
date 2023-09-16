@@ -11,19 +11,17 @@ import { ServosService } from './servos.service';
 import { StrategyService } from './strategy.service';
 
 @NgModule({
-  providers: [
-    AsservissementService,
-    CapteursService,
-    CodeursService,
-    BrasService,
-    ExecsService,
-    IOService,
-    MouvementsService,
-    RobotsService,
-    ServosService,
-    StrategyService,
-  ],
+    providers: [
+        AsservissementService,
+        CapteursService,
+        CodeursService,
+        BrasService,
+        ExecsService,
+        IOService,
+        MouvementsService,
+        RobotsService,
+        ServosService,
+        StrategyService,
+    ],
 })
-export class ServicesModule {
-
-}
+export class ServicesModule {}

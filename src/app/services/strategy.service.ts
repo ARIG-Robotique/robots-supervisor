@@ -5,17 +5,13 @@ import { Robot } from '../models/Robot';
 
 @Injectable()
 export class StrategyService {
+    constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) {
-  }
-
-  /**
-   * Execute une action
-   */
-  execute(robot: Robot, uid: string): Observable<void> {
-    const params = new HttpParams()
-      .set('uid', uid);
-    return this.http.post<void>(`http://${robot.host}/strategy/execute`, null, { params });
-  }
-
+    /**
+     * Execute une action
+     */
+    execute(robot: Robot, uid: string): Observable<void> {
+        const params = new HttpParams().set('uid', uid);
+        return this.http.post<void>(`http://${robot.host}/strategy/execute`, null, { params });
+    }
 }

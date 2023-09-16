@@ -6,16 +6,14 @@ import { IOService } from '../io.service';
 
 @Injectable()
 export class IOMockService extends IOService {
+    constructor(http: HttpClient) {
+        super(http);
+    }
 
-  constructor(http: HttpClient) {
-    super(http);
-  }
-
-  /**
-   * Change l'état d'une pompe
-   */
-  setPumpState(robot: Robot, pump: 'haut' | 'bas', state: boolean): Observable<void> {
-    return of(null);
-  }
-
+    /**
+     * Change l'état d'une pompe
+     */
+    setPumpState(robot: Robot, pump: 'haut' | 'bas', state: boolean): Observable<void> {
+        return of(null);
+    }
 }

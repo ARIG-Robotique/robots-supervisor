@@ -7,35 +7,33 @@ import { MockData } from './mock.utils';
 
 @Injectable()
 export class CapteursMockService extends CapteursService {
+    private data = new MockData<number, Capteurs>(() => ({
+        numerique: {
+            [`AU`]: true,
+            [`Tirette`]: true,
+        },
+        analogique: {},
+        text: {
+            [`Equipe`]: 'VIOLET',
+        },
+        couleurs: {},
+    }));
 
-  private data = new MockData<number, Capteurs>(() => ({
-    numerique : {
-      [`AU`]     : true,
-      [`Tirette`]: true,
-    },
-    analogique: {},
-    text      : {
-      [`Equipe`]: 'VIOLET',
-    },
-    couleurs  : {},
-  }));
+    getCapteurs(robot: Robot): Observable<Capteurs> {
+        return of(this.data.get(robot.id));
+    }
 
-  getCapteurs(robot: Robot): Observable<Capteurs> {
-    return of(this.data.get(robot.id));
-  }
+    setTirette(robot: Robot, present: boolean): Observable<unknown> {
+        const data = this.data.get(robot.id);
+        data.numerique[`Tirette`] = present;
+        this.data.set(robot.id, data);
+        return of(null);
+    }
 
-  setTirette(robot: Robot, present: boolean): Observable<unknown> {
-    const data = this.data.get(robot.id);
-    data.numerique[`Tirette`] = present;
-    this.data.set(robot.id, data);
-    return of(null);
-  }
-
-  setAu(robot: Robot, present: boolean): Observable<unknown> {
-    const data = this.data.get(robot.id);
-    data.numerique[`AU`] = present;
-    this.data.set(robot.id, data);
-    return of(null);
-  }
-
+    setAu(robot: Robot, present: boolean): Observable<unknown> {
+        const data = this.data.get(robot.id);
+        data.numerique[`AU`] = present;
+        this.data.set(robot.id, data);
+        return of(null);
+    }
 }

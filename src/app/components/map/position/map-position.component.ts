@@ -4,25 +4,23 @@ import { MapPosition } from '../../../models/MapPosition';
 import { AbstractComponent } from '../../abstract.component';
 
 @Component({
-  selector   : 'arig-map-position',
-  templateUrl: 'map-position.component.html',
+    selector: 'arig-map-position',
+    templateUrl: 'map-position.component.html',
 })
 export class MapPositionComponent extends AbstractComponent {
+    readonly SensDeplacement = SensDeplacement;
+    readonly SensRotation = SensRotation;
+    readonly Modes = [
+        { name: 'path', label: 'path' },
+        { name: 'position', label: 'direct' },
+    ];
 
-  readonly SensDeplacement = SensDeplacement;
-  readonly SensRotation = SensRotation;
-  readonly Modes = [
-    { name: 'path', label: 'path' },
-    { name: 'position', label: 'direct' }
-  ];
+    @Input()
+    mainPosition: MapPosition;
 
-  @Input()
-  mainPosition: MapPosition;
+    @Input()
+    targetPosition: MapPosition;
 
-  @Input()
-  targetPosition: MapPosition;
-
-  @Input()
-  config: any;
-
+    @Input()
+    config: any;
 }

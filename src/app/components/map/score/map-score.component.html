@@ -1,12 +1,12 @@
 <div class="card">
-  <h5 class="card-header">
-    <fa-icon icon="calculator"></fa-icon>
-    Score : <span class="badge bg-info">{{mainPosition?.score}}</span>
-  </h5>
-  <div class="card-body">
-    <div *ngFor="let score of mainPosition?.scoreStatus | keyvalue; trackBy: trackByKey">
-      <span class="badge badge-big bg-primary mr-2">{{score.value | number:'2.0-0'}}</span>
-      {{score.key | titlecase}}
+    <h5 class="card-header">
+        <fa-icon icon="calculator"></fa-icon>
+        Score : <span class="badge bg-info">{{ mainPosition?.score }}</span>
+    </h5>
+    <div class="card-body">
+        <div *ngFor="let score of mainPosition?.scoreStatus | keyvalue; trackBy: trackByKey">
+            <span class="badge badge-big bg-primary mr-2">{{ score.value | number: '2.0-0' }}</span>
+            {{ score.key | titlecase }}
+        </div>
     </div>
-  </div>
 </div>

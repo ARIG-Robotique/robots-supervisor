@@ -1,6 +1,6 @@
 export interface Action {
-  uuid: string;
-  order: number;
-  name: string;
-  valid: boolean;
+    uuid: string;
+    order: number;
+    name: string;
+    valid: boolean;
 }

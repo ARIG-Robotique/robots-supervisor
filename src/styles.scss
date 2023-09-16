@@ -1,9 +1,7 @@
 @import 'styles/variables';
-@import '~bootstrap/scss/bootstrap';
-@import '~bootswatch/dist/darkly/bootswatch';
+@import 'bootstrap/scss/bootstrap';
+@import 'bootswatch/dist/darkly/bootswatch';
 @import 'styles/floating-labels';
-@import '~primeng/resources/themes/bootstrap4-dark-blue/theme.css';
-@import '~primeng/resources/primeng.css';
 
 .btn-round {
   border-radius: 50%;
@@ -25,15 +23,15 @@
   break-inside: avoid-column;
 }
 
-.p-sidebar {
-  z-index: 810 !important;
-}
-.p-component-overlay {
-  z-index: 800 !important;
-}
-.p-sidebar-header {
-  display: none !important;
-}
-.p-sidebar-content {
-  padding: 1rem !important;;
+.offcanvas {
+  & > * {
+    display: block;
+    height: 100%;
+  }
+  &-full {
+    --bs-offcanvas-width: 100%;
+  }
+  &-half {
+    --bs-offcanvas-width: 50%;
+  }
 }
