@@ -5,6 +5,8 @@ IMAGE_VERSION=local
 ALL=dist node_modules
 
 build:
+	yarn install
+	yarn run build
 	docker build --cache-from $(IMAGE_NAME):latest -t $(IMAGE_NAME):$(IMAGE_VERSION) .
 
 debug:
