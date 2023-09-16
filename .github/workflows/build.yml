@@ -1,4 +1,4 @@
-name: CI
+name: build
 
 on:
   - push
@@ -10,15 +10,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: '16'
+          cache: 'yarn'
 
-      - id: build
-        name: Build
+      - name: Build
         run: |
           yarn install
           yarn run lint

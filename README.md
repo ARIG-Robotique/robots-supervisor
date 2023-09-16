@@ -1,7 +1,6 @@
 # robots-supervisor
 
-[![Build Status](https://img.shields.io/github/workflow/status/ARIG-Robotique/robots-supervisor/CI?logo=github)](https://github.com/ARIG-Robotique/robots-supervisor/actions)
-[![Docker Status](https://img.shields.io/docker/build/arig/robots-supervisor?logo=docker)](https://hub.docker.com/r/arig/robots-supervisor/)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/ARIG-Robotique/robots-supervisor/build.yml?branch=dev&logo=github)](https://github.com/ARIG-Robotique/robots-supervisor/actions/workflows/build.yml)
 
 Monitoring et réglage des robots.
 
