@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { range } from 'lodash';
 import { Observable, of } from 'rxjs';
-import { CouleurCarreFouille, CouleurEchantillon } from '../../models/ageOfBots/GameStatus';
 import { MapPosition } from '../../models/MapPosition';
 import { Position } from '../../models/Position';
 import { Robot } from '../../models/Robot';
+import { TypePlante } from '../../models/ageOfBots/GameStatus';
 import { MouvementsService } from '../mouvements.service';
 import { MockData } from './mock.utils';
 
@@ -69,54 +69,51 @@ export class MouvementsMockService extends MouvementsService {
                 Bar: 15,
             },
             gameStatus: {
-                stock: [
-                    CouleurEchantillon.ROCHER,
-                    CouleurEchantillon.ROUGE,
-                    CouleurEchantillon.VERT,
-                    CouleurEchantillon.BLEU,
-                    CouleurEchantillon.INCONNU,
-                    CouleurEchantillon.INCONNU,
+                distribsPlantes: [6, 2, 6, 4, 6, 6],
+                distribsPots: {
+                    L1: 6,
+                    L2: 6,
+                    LB: 4,
+                    R1: 2,
+                    R2: 6,
+                    RB: 6,
+                },
+                airesDepose: {
+                    L1: [],
+                    L2: [],
+                    L3: [],
+                    R1: [],
+                    R2: [],
+                    R3: [],
+                },
+                jardinieres: {
+                    LH: [],
+                    L1: [],
+                    L2: [],
+                    RH: [],
+                    R1: [],
+                    R2: [],
+                },
+                plantes: [
+                    { type: TypePlante.FRAGILE, pot: true, pt: { x: 2580, y: 1060 } },
+                    { type: TypePlante.FRAGILE, pot: false, pt: { x: 2500, y: 1100 } },
+                    { type: TypePlante.RESISTANTE, pot: false, pt: { x: 2500, y: 1000 } },
                 ],
-                echantillons: [
-                    { x: 900, y: 2000 - 795, couleur: CouleurEchantillon.ROCHER_ROUGE },
-                    { x: 830, y: 2000 - 675, couleur: CouleurEchantillon.ROCHER_VERT },
-                    { x: 900, y: 2000 - 555, couleur: CouleurEchantillon.ROCHER_BLEU },
-                    { x: 900, y: 2000 - 1300, couleur: CouleurEchantillon.BLEU },
-                    { x: 1050, y: 2000 - 1350, couleur: CouleurEchantillon.VERT },
-                    { x: 930, y: 2000 - 1450, couleur: CouleurEchantillon.ROUGE },
-                    { x: 2300, y: 2000 - 1200, couleur: CouleurEchantillon.ROCHER },
+                panneaux: [
+                    { BLEU: false, JAUNE: false },
+                    { BLEU: false, JAUNE: false },
+                    { BLEU: false, JAUNE: false },
+                    { BLEU: true, JAUNE: false },
+                    { BLEU: true, JAUNE: true },
+                    { BLEU: false, JAUNE: true },
+                    { BLEU: false, JAUNE: false },
+                    { BLEU: false, JAUNE: false },
+                    { BLEU: false, JAUNE: false },
                 ],
-                carresFouille: [
-                    { color: CouleurCarreFouille.JAUNE, bascule: true, x: 10 },
-                    { color: CouleurCarreFouille.JAUNE, bascule: false, x: 10 },
-                    { color: CouleurCarreFouille.INTERDIT, bascule: false, x: 10 },
-                    { color: CouleurCarreFouille.VIOLET, bascule: false, x: 10 },
-                    { color: CouleurCarreFouille.INCONNU, bascule: false, x: 10 },
-                    { color: CouleurCarreFouille.INCONNU, bascule: true, x: 10 },
-                    { color: CouleurCarreFouille.VIOLET, bascule: true, x: 10 },
-                    { color: CouleurCarreFouille.INTERDIT, bascule: true, x: 10 },
-                    { color: CouleurCarreFouille.VIOLET, bascule: true, x: 10 },
-                    { color: CouleurCarreFouille.VIOLET, bascule: false, x: 10 },
-                ],
-                siteDeRetour: 'FOUILLE',
-                siteDeRetourAutreRobot: 'FOUILLE_NORD',
             },
             gameFlags: {
-                distributeurEquipePris: true,
-                distributeurCommunEquipePris: true,
-                distributeurCommunAdversePris: false,
-                siteEchantillonPris: false,
-                siteEchantillonAdversePris: true,
-                siteDeFouillePris: false,
-                siteDeFouilleAdversePris: true,
-                carresDeFouilleTermines: false,
-                vitrineActive: false,
-                statuettePris: false,
-                statuetteDansVitrine: false,
-                repliqueDepose: false,
-                echantillonAbriChantierDistributeurPris: false,
-                echantillonAbriChantierCarreFouillePris: false,
-                echantillonCampementPris: false,
+                foo: true,
+                bar: false,
             },
         });
     }

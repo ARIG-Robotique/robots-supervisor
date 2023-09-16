@@ -9,7 +9,7 @@
                 Equipe :
                 <span
                     class="badge badge-big"
-                    [style.background]="team === 'VIOLET' ? '#4E3C6B' : team === 'JAUNE' ? '#DA9A14' : '#555'"
+                    [style.background]="team === 'BLEU' ? '#4E84A2' : team === 'JAUNE' ? '#DA9A14' : '#555'"
                     >{{ team }}</span
                 >
             </div>
@@ -17,34 +17,13 @@
                 Temps :
                 <span class="badge badge-big bg-info">{{ mainPosition?.matchTime / 1000 | number: '3.0-0' }}s</span>
             </div>
-            <div class="col-6">
-                Retour :
-                <span class="badge badge-big bg-info">{{ mainPosition?.gameStatus?.siteDeRetour }}</span>
-                /
-                <span class="badge bg-info">{{ mainPosition?.gameStatus?.siteDeRetourAutreRobot }}</span>
-            </div>
         </div>
         <div class="row">
-            <span class="col">Carrés de fouille</span>
+            <span class="col">Panneaux</span>
         </div>
         <div class="row">
-            <div class="col" *ngFor="let cf of mainPosition?.gameStatus?.carresFouille; trackBy: trackByIndex">
-                <div
-                    [class]="
-                        'couleur couleurCarreFouille couleurCarreFouille--' +
-                        cf.color +
-                        ' ' +
-                        (cf.bascule ? 'couleurCarreFouille--bascule' : '')
-                    "
-                ></div>
-            </div>
-        </div>
-        <div class="row">
-            <span class="col">Stock</span>
-        </div>
-        <div class="row">
-            <div class="col" *ngFor="let color of mainPosition?.gameStatus?.stock; trackBy: trackByIndex">
-                <div [class]="'couleur couleurEchantillon--' + color"></div>
+            <div class="col" *ngFor="let panneau of mainPosition?.gameStatus?.panneaux; trackBy: trackByIndex">
+                <div class="panneau" [class.panneau--BLEU]="panneau.BLEU" [class.panneau--JAUNE]="panneau.JAUNE"></div>
             </div>
         </div>
         <div class="row">

@@ -3,59 +3,37 @@
   width: 100%;
   border: 1px solid transparent;
   margin-top: 0.25rem;
+}
 
-  &CarreFouille {
-    opacity: 0.3;
+.panneau {
+  background: #555;
+  position: relative;
+  height: 15px;
 
-    &--JAUNE {
-      background-color: #DA9A14;
-    }
-
-    &--VIOLET {
-      background-color: #4E3C6B;
-    }
-
-    &--INTERDIT {
-      background-color: red;
-    }
-
-    &--INCONNU {
-      border-color: #888;
-    }
-
-    &--null {
-      border-color: #888;
-    }
-
-    &--bascule {
-      opacity: 1;
-    }
+  &:before {
+    display: none;
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    background: #DA9A14;
   }
 
-  &Echantillon {
+  &:after {
+    display: none;
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    right: 0;
+    background: #4E84A2;
+  }
 
-    &--ROUGE {
-      background-color: #a71f22;
-    }
+  &--JAUNE:before {
+    display: block;
+  }
 
-    &--VERT {
-      background-color: #40b679;
-    }
-
-    &--BLEU {
-      background-color: #477bbe;
-    }
-
-    &--ROCHER {
-      background-color: #da7c48;
-    }
-
-    &--INCONNU {
-      border-color: #888;
-    }
-
-    &--null {
-      border-color: #888;
-    }
+  &--BLEU:after {
+    display: block;
   }
 }

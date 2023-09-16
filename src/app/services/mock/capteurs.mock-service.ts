@@ -14,7 +14,7 @@ export class CapteursMockService extends CapteursService {
         },
         analogique: {},
         text: {
-            [`Equipe`]: 'VIOLET',
+            [`Equipe`]: 'BLEU',
         },
         couleurs: {},
     }));
