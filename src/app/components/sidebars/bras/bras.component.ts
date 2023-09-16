@@ -34,7 +34,6 @@ const RATIO = 1.5;
 @Component({
     selector: 'arig-sidebar-bras',
     templateUrl: 'bras.component.html',
-    styleUrls: ['bras.component.scss'],
 })
 export class SidebarBrasComponent extends AbstractSidebarContainer implements OnInit, AfterViewInit {
     @ViewChild('container', { static: true }) container: ElementRef;

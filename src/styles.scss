@@ -4,34 +4,36 @@
 @import 'styles/floating-labels';
 
 .btn-round {
-  border-radius: 50%;
-  padding: 0.5rem 0;
-  width: 2.5rem;
-  height: 2.5rem;
-  text-align: center;
+    border-radius: 50%;
+    padding: 0.5rem 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    text-align: center;
 
-  &.btn-sm {
-    width: 1.7rem;
-    height: 1.7rem;
-    padding: 0.2rem 0;
-  }
+    &.btn-sm {
+        width: 1.7rem;
+        height: 1.7rem;
+        padding: 0.2rem 0;
+    }
 }
 
 .badge-big {
-  font-size: $font-size-sm;
-  padding: 0.25rem 0.35rem;
-  break-inside: avoid-column;
+    font-size: $font-size-sm;
+    padding: 0.25rem 0.35rem;
+    break-inside: avoid-column;
 }
 
 .offcanvas {
-  & > * {
-    display: block;
-    height: 100%;
-  }
-  &-full {
-    --bs-offcanvas-width: 100%;
-  }
-  &-half {
-    --bs-offcanvas-width: 50%;
-  }
+    & > * {
+        display: block;
+        height: 100%;
+    }
+
+    &-full {
+        --bs-offcanvas-width: 100%;
+    }
+
+    &-half {
+        --bs-offcanvas-width: 50%;
+    }
 }

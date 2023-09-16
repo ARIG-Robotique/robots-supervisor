@@ -1,7 +1,7 @@
 import { Point } from 'app/models/Point';
 import Konva from 'konva';
 import { TABLE } from '../../../constants/constants';
-import { DistribPot, GameStatus, PlanteEnPot, TypePlante } from '../../../models/ageOfBots/GameStatus';
+import { DistribPot, GameStatus, PlanteEnPot, TypePlante } from '../../../models/farmingMars/GameStatus';
 
 function mapLinear(x: number, a1: number, a2: number, b1: number, b2: number): number {
     return b1 + ((x - a1) * (b2 - b1)) / (a2 - a1);

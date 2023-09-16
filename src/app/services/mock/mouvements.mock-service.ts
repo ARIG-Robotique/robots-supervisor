@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { MapPosition } from '../../models/MapPosition';
 import { Position } from '../../models/Position';
 import { Robot } from '../../models/Robot';
-import { TypePlante } from '../../models/ageOfBots/GameStatus';
+import { TypePlante } from '../../models/farmingMars/GameStatus';
 import { MouvementsService } from '../mouvements.service';
 import { MockData } from './mock.utils';
 

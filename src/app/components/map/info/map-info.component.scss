@@ -1,39 +1,39 @@
 .couleur {
-  height: 1rem;
-  width: 100%;
-  border: 1px solid transparent;
-  margin-top: 0.25rem;
+    height: 1rem;
+    width: 100%;
+    border: 1px solid transparent;
+    margin-top: 0.25rem;
 }
 
 .panneau {
-  background: #555;
-  position: relative;
-  height: 15px;
+    background: #555;
+    position: relative;
+    height: 15px;
 
-  &:before {
-    display: none;
-    content: '';
-    position: absolute;
-    height: 100%;
-    width: 50%;
-    background: #DA9A14;
-  }
+    &:before {
+        display: none;
+        content: '';
+        position: absolute;
+        height: 100%;
+        width: 50%;
+        background: #da9a14;
+    }
 
-  &:after {
-    display: none;
-    content: '';
-    position: absolute;
-    height: 100%;
-    width: 50%;
-    right: 0;
-    background: #4E84A2;
-  }
+    &:after {
+        display: none;
+        content: '';
+        position: absolute;
+        height: 100%;
+        width: 50%;
+        right: 0;
+        background: #4e84a2;
+    }
 
-  &--JAUNE:before {
-    display: block;
-  }
+    &--JAUNE:before {
+        display: block;
+    }
 
-  &--BLEU:after {
-    display: block;
-  }
+    &--BLEU:after {
+        display: block;
+    }
 }

@@ -1,6 +1,6 @@
 @import 'bootstrap/scss/functions';
 
-$secondary: #2C3E50;
+$secondary: #2c3e50;
 $primary: #1abc9c;
 
 $navbar-padding-y: 0.5rem;
@@ -17,28 +17,40 @@ $web-font-path: false;
 
 // restore les class "ml" "mr" "pl" "pr" qui ont été renommées en "ms" "me" "ps" "pe" dans BT5
 $utilities: (
-    "margin-right": (
+    'margin-right': (
         responsive: true,
         property: margin-right,
         class: mr,
-        values: map-merge($spacers, (auto: auto))
+        values:
+            map-merge(
+                $spacers,
+                (
+                    auto: auto,
+                )
+            ),
     ),
-    "margin-left": (
+    'margin-left': (
         responsive: true,
         property: margin-left,
         class: ml,
-        values: map-merge($spacers, (auto: auto))
+        values:
+            map-merge(
+                $spacers,
+                (
+                    auto: auto,
+                )
+            ),
     ),
-    "padding-right": (
+    'padding-right': (
         responsive: true,
         property: padding-right,
         class: pr,
-        values: $spacers
+        values: $spacers,
     ),
-    "padding-left": (
+    'padding-left': (
         responsive: true,
         property: padding-left,
         class: pl,
-        values: $spacers
+        values: $spacers,
     ),
 );
