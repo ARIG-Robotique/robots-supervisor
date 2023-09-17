@@ -1,7 +1,7 @@
 import { Point } from 'app/models/Point';
 import Konva from 'konva';
 import { TABLE } from '../../../constants/constants';
-import { DistribPot, GameStatus, PlanteEnPot, TypePlante } from '../../../models/farmingMars/GameStatus';
+import { AireDepose, DistribPot, GameStatus, PlanteEnPot, TypePlante } from '../../../models/farmingMars/GameStatus';
 
 function mapLinear(x: number, a1: number, a2: number, b1: number, b2: number): number {
     return b1 + ((x - a1) * (b2 - b1)) / (a2 - a1);
@@ -37,6 +37,15 @@ const DISTRIBS_POTS: Record<DistribPot, Point & { dir: number }> = {
     R1: { x: 2965, y: 1387.5, dir: Math.PI },
     R2: { x: 2965, y: 612.5, dir: Math.PI },
     RB: { x: 2000, y: 35, dir: Math.PI / 2 },
+};
+
+const AIRES_DEPOSE: Record<AireDepose, Point & { dir: number }> = {
+    L1: { x: 35, y: 1775, dir: 1 },
+    L2: { x: 35, y: 1000, dir: 1 },
+    L3: { x: 35, y: 225, dir: 1 },
+    R1: { x: 3000 - 35, y: 1775, dir: -1 },
+    R2: { x: 3000 - 35, y: 1000, dir: -1 },
+    R3: { x: 3000 - 35, y: 225, dir: -1 },
 };
 
 export class GameStatusManager {
@@ -99,6 +108,10 @@ export class GameStatusManager {
             this.addDistribPots(count, distrib as DistribPot);
         });
 
+        Object.entries(status.airesDepose).forEach(([aire, plante]) => {
+            this.addAireDepose(plante, aire as AireDepose);
+        });
+
         status.panneaux.forEach(({ BLEU, JAUNE }, i) => {
             const panneau = this.panneaux.children.at(i);
             if (BLEU && JAUNE) {
@@ -120,7 +133,7 @@ export class GameStatusManager {
                 y: (TABLE.height - plante.pt.y) * TABLE.imageRatio,
                 radius: 25 * TABLE.imageRatio - 2,
                 strokeWidth: 4,
-                fill: plante.type === TypePlante.FRAGILE ? '#fcfcfa' : '#9b6aa6',
+                fill: plante.type === TypePlante.FRAGILE ? 'white' : '#9b6aa6',
                 stroke: plante.type === TypePlante.FRAGILE ? '#005b32' : '#8cce06',
             }),
         );
@@ -135,8 +148,8 @@ export class GameStatusManager {
             new Konva.Circle({
                 x: pt.x * TABLE.imageRatio,
                 y: (TABLE.height - pt.y) * TABLE.imageRatio,
-                radius: 35 * TABLE.imageRatio - 2.5,
-                strokeWidth: 5,
+                radius: 35 * TABLE.imageRatio - 2,
+                strokeWidth: 4,
                 fill: '#3d3d3d',
                 stroke: '#686868',
             }),
@@ -183,5 +196,17 @@ export class GameStatusManager {
                 y: DISTRIBS_POTS[distrib].y + dy,
             });
         }
+    }
+
+    private addAireDepose(plantes: PlanteEnPot[], aire: AireDepose) {
+        plantes.forEach((plante, i) => {
+            this.addPlante({
+                ...plante,
+                pt: {
+                    x: AIRES_DEPOSE[aire].x + Math.floor(i / 6) * 70 * AIRES_DEPOSE[aire].dir,
+                    y: AIRES_DEPOSE[aire].y + ((i % 6) - 2.5) * 70,
+                },
+            });
+        });
     }
 }

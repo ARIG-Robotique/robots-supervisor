@@ -27,6 +27,51 @@
             </div>
         </div>
         <div class="row">
+            <span class="col">Jardinières</span>
+        </div>
+        <div class="row">
+            <div class="col">
+                <ng-container
+                    *ngTemplateOutlet="
+                        plantes;
+                        context: { jardiniere: 'LH', plantes: mainPosition?.gameStatus?.jardinieres?.LH }
+                    "
+                ></ng-container>
+                <ng-container
+                    *ngTemplateOutlet="
+                        plantes;
+                        context: { jardiniere: 'L1', plantes: mainPosition?.gameStatus?.jardinieres?.L1 }
+                    "
+                ></ng-container>
+                <ng-container
+                    *ngTemplateOutlet="
+                        plantes;
+                        context: { jardiniere: 'L2', plantes: mainPosition?.gameStatus?.jardinieres?.L2 }
+                    "
+                ></ng-container>
+            </div>
+            <div class="col">
+                <ng-container
+                    *ngTemplateOutlet="
+                        plantes;
+                        context: { jardiniere: 'RH', plantes: mainPosition?.gameStatus?.jardinieres?.RH }
+                    "
+                ></ng-container>
+                <ng-container
+                    *ngTemplateOutlet="
+                        plantes;
+                        context: { jardiniere: 'R1', plantes: mainPosition?.gameStatus?.jardinieres?.R1 }
+                    "
+                ></ng-container>
+                <ng-container
+                    *ngTemplateOutlet="
+                        plantes;
+                        context: { jardiniere: 'R2', plantes: mainPosition?.gameStatus?.jardinieres?.R2 }
+                    "
+                ></ng-container>
+            </div>
+        </div>
+        <div class="row">
             <span class="col">Etats</span>
         </div>
         <div style="columns: 2">
@@ -40,3 +85,14 @@
         </div>
     </div>
 </div>
+
+<ng-template #plantes let-jardiniere="jardiniere" let-plantes="plantes">
+    <div class="d-flex">
+        <div class="flex-grow-0 mr-1">{{ jardiniere }}</div>
+        <div
+            *ngFor="let plante of plantes; trackBy: trackByIndex"
+            [class]="'plante plante--' + plante.type"
+            [class.plante--pot]="plante.pot"
+        ></div>
+    </div>
+</ng-template>
