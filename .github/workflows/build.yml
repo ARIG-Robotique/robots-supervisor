@@ -23,6 +23,7 @@ jobs:
           yarn run build
 
       - uses: actions/upload-artifact@v3
+        if: github.event_name == 'push' && (github.ref_name == 'dev' || github.ref_type == 'tag')
         with:
           name: dist-${{ github.ref_name }}
           path: dist
