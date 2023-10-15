@@ -22,10 +22,10 @@ const PANNEAU_X = [
 const PANNEAU_Y = 2000 + 22 + 15;
 
 const DISTRIBS_PLANTES: Point[] = [
-    { x: 1500, y: 1600 },
+    { x: 1500, y: 1500 },
     { x: 1000, y: 1300 },
     { x: 1000, y: 700 },
-    { x: 1500, y: 400 },
+    { x: 1500, y: 500 },
     { x: 2000, y: 700 },
     { x: 2000, y: 1300 },
 ];
