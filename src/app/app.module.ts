@@ -169,7 +169,6 @@ export class AppModule {
             store.dispatch(loadRobots({ robots }));
             if (environment.mock) {
                 store.dispatch(toggleRobot({ id: 1 }));
-                store.dispatch(toggleRobot({ id: 2 }));
             }
         });
     }

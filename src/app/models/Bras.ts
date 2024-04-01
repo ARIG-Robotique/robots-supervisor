@@ -8,6 +8,7 @@ export type ConfigBras = {
     r3: number;
     a1Min: number;
     a1Max: number;
+    back: boolean;
     preferA1Min: boolean;
     a2Min: number;
     a2Max: number;

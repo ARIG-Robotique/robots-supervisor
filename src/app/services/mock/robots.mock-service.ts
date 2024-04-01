@@ -12,23 +12,12 @@ const MOCK_ROBOTS: { [id: string]: Robot } = {
         name: 'Nerell',
         simulateur: true,
     },
-    2: {
-        id: 2,
-        host: 'localhost:8081',
-        name: 'Odin',
-        simulateur: true,
-    },
 };
 
 const MOCK_ROBOTS_INFO: { [id: string]: RobotInfo } = {
     1: {
         id: 1,
         nom: 'Nerell Mock',
-        version: 'BUILD-SNAPSHOT',
-    },
-    2: {
-        id: 2,
-        nom: 'Odin Mock',
         version: 'BUILD-SNAPSHOT',
     },
 };

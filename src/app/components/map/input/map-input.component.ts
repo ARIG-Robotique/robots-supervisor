@@ -77,9 +77,7 @@ export class MapInputComponent extends AbstractComponent implements OnChanges, O
         this.stage.add(this.mainLayer);
 
         this.robots['nerell'] = this.buildRobot('nerell');
-        this.robots['odin'] = this.buildRobot('odin');
         this.mainLayer.add(this.robots['nerell']);
-        this.mainLayer.add(this.robots['odin']);
 
         this.points = new Konva.Group();
         this.mainLayer.add(this.points);

@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import Konva from 'konva';
-import { Subject, firstValueFrom } from 'rxjs';
-import { first, takeUntil, throttleTime } from 'rxjs/operators';
+import { firstValueFrom } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { AnglesBras, BRAS, Bras, ConfigBras, CurrentBras, FullConfigBras } from '../../../models/Bras';
 import { Point } from '../../../models/Point';
 import { Robot } from '../../../models/Robot';
@@ -31,11 +31,31 @@ class KonvaNamedGroup extends Konva.Group {
 
 const RATIO = 1.5;
 
+const OFFSETS_IMAGES = [
+    { offsetX: 25, offsetY: 91, rotation: -22 },
+    { offsetX: 25, offsetY: 25, rotation: 22  },
+    { offsetX: 86, offsetY: 26, rotation: 90 },
+];
+
+
+const COLORS: Bras<string> = {
+    avantGauche: '#e41a1c',
+    avantCentre: '#377eb8',
+    avantDroite: '#4daf4a',
+    arriereGauche: '#984ea3',
+    arriereCentre: '#ff7f00',
+    arriereDroite: '#ffff33',
+};
+
 @Component({
     selector: 'arig-sidebar-bras',
     templateUrl: 'bras.component.html',
+    styleUrls: ['bras.component.scss'],
 })
-export class SidebarBrasComponent extends AbstractSidebarContainer implements AfterViewInit {
+export class SidebarBrasComponent extends AbstractSidebarContainer implements AfterViewInit, OnDestroy {
+
+    readonly COLORS = COLORS;
+
     @ViewChild('container', { static: true }) container: ElementRef;
 
     robot: Robot;
@@ -44,6 +64,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
 
     stage: Konva.Stage;
     layer: Konva.Layer;
+    layerSym: Konva.Layer;
 
     cursor: Konva.Group;
     brasSym: KonvaNamedGroup;
@@ -51,14 +72,19 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
     groups: Bras<KonvaNamedGroup> = {};
 
     selectedBras: BRAS;
-    angleVentouse = 0;
+    angleVentouse = -90;
 
     logs = '';
 
-    updateSym$ = new Subject<void>();
+    private needsUpdateSym = false;
+    private updateSymRAF: ReturnType<typeof requestAnimationFrame>;
 
     get names(): BRAS[] {
         return Object.keys(this.config);
+    }
+
+    get isBack(): boolean {
+        return this.config[this.selectedBras].config.back;
     }
 
     constructor(
@@ -69,36 +95,39 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
         super();
     }
 
+    ngOnDestroy(): void {
+        super.ngOnDestroy();
+        cancelAnimationFrame(this.updateSymRAF);
+    }
+
     async ngAfterViewInit() {
         this.robot = await firstValueFrom(this.store.select(selectMainRobot).pipe(first()));
         this.config = await firstValueFrom(this.brasService.getConfig(this.robot));
 
-        this.selectedBras = this.names[0];
+        this.selectedBras = this.names[1];
 
+        // l'origine est au milieu en bas, et l'axe vertical est positif vers le haut
         this.stage = new Konva.Stage({
             container: this.container.nativeElement,
-            width: 430 * RATIO,
+            width: 645 * RATIO,
             height: 430 * RATIO,
             y: 430 * RATIO,
+            x: 322 * RATIO,
             scaleY: -1,
         });
 
-        const bgLayer = new Konva.Layer();
-        this.stage.add(bgLayer);
-        const background = new Konva.Rect({
-            x: 0,
+        // image de fond
+        const bgLayer = new Konva.Layer({
+            x: -this.stage.x(),
             y: 0,
-            width: this.stage.width(),
-            height: this.stage.height(),
-            fill: 'white',
         });
-        bgLayer.add(background);
+        this.stage.add(bgLayer);
 
         const bgImage = new Image();
         bgImage.onload = () => {
             const img = new Konva.Image({
                 image: bgImage,
-                x: 0,
+                x: -1,
                 y: this.stage.height(),
                 scaleX: 0.5 * RATIO,
                 scaleY: -0.5 * RATIO,
@@ -107,8 +136,8 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
         };
         bgImage.src = '/assets/robots/bras-bg.png';
 
+        // calques des bras
         this.layer = new Konva.Layer();
-        this.layer.setPosition({ x: 115 * RATIO, y: 1 * RATIO });
         this.stage.add(this.layer);
 
         Object.keys(this.config).forEach((idBras: BRAS) => {
@@ -117,7 +146,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
                 new Konva.Line({
                     name: 'line',
                     points: [0, 0, 0, 0],
-                    stroke: 'black',
+                    stroke: COLORS[idBras],
                     lineCap: 'round',
                     lineJoin: 'round',
                     strokeWidth: 4 * RATIO,
@@ -129,7 +158,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
                         name: `point${i}`,
                         x: 0,
                         y: 0,
-                        fill: 'black',
+                        fill: COLORS[idBras],
                         radius: 4 * RATIO,
                     }),
                 );
@@ -137,13 +166,20 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
             this.layer.add(this.groups[idBras]);
         });
 
+        // calque du bras "live"
+        this.layerSym = new Konva.Layer();
+        this.stage.add(this.layerSym);
+
         this.brasSym = new KonvaNamedGroup();
         for (let i = 0; i < 3; i++) {
             this.brasSym.add(
+                new Konva.Group({
+                    name: `bras${i}`,
+                }),
                 new Konva.Line({
                     name: `line${i}`,
                     points: [0, 0, 0, 0],
-                    stroke: 'blue',
+                    stroke: 'black',
                     lineCap: 'round',
                     lineJoin: 'round',
                     strokeWidth: 4 * RATIO,
@@ -152,33 +188,38 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
                     name: `point${i}`,
                     x: 0,
                     y: 0,
-                    fill: 'blue',
+                    fill: 'black',
                     radius: 4 * RATIO,
                 }),
             );
+
+            const image = new Image();
+            image.onload = () => {
+                const img = new Konva.Image({
+                    name: `bras${i}`,
+                    image: image,
+                    ...OFFSETS_IMAGES[i],
+                    scaleX: 0.5 * RATIO,
+                    scaleY: -0.5 * RATIO,
+                    opacity: 0.5,
+                });
+                this.brasSym.getChild<Konva.Group>(`bras${i}`).add(img);
+            };
+            image.src = `/assets/robots/bras-${i+1}.png`;
         }
-        this.brasSym.add(
-            new Konva.Rect({
-                name: 'echantillon',
-                x: 0,
-                y: 0,
-                width: 15 * RATIO,
-                height: 150 * RATIO,
-                offsetY: 75 * RATIO,
-                fill: '#b9b9b9',
-                strokeWidth: 1,
-                stroke: 'black',
-                opacity: 0.8,
-            }),
-        );
-        this.layer.add(this.brasSym);
+
+        this.layerSym.add(this.brasSym);
+
+        // calque du curseur
+        const cursorLayer = new Konva.Layer();
+        this.stage.add(cursorLayer);
 
         this.cursor = new Konva.Group();
         this.cursor.add(
             new Konva.Circle({
                 x: 0,
                 y: 0,
-                fill: 'green',
+                fill: 'black',
                 radius: 4 * RATIO,
             }),
             new Konva.Text({
@@ -196,7 +237,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
                 fillAfterStrokeEnabled: true,
             }),
         );
-        this.layer.add(this.cursor);
+        cursorLayer.add(this.cursor);
 
         this.stage.on('click', (e) => {
             const pt = this.getPointerPosition();
@@ -205,7 +246,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
         });
 
         this.stage.on('mousemove', () => {
-            this.updateSym$.next();
+            this.needsUpdateSym = true;
         });
 
         this.stage.on('contextmenu', (e) => {
@@ -220,17 +261,20 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
             if (this.angleVentouse <= -180) {
                 this.angleVentouse += 360;
             }
-            this.updateSym$.next();
+            this.needsUpdateSym = true;
             e.evt.preventDefault();
         });
 
-        this.updateSym$
-            .pipe(throttleTime(100, undefined, { leading: true, trailing: true }), takeUntil(this.ngDestroy$))
-            .subscribe(() => {
-                this.setCursor();
-            });
+        this.changeBras();
+        this.updateSym();
+    }
 
-        this.update();
+    private updateSym() {
+        if (this.needsUpdateSym) {
+            this.setCursor();
+            this.needsUpdateSym = false;
+        }
+        this.updateSymRAF = requestAnimationFrame(() => this.updateSym());
     }
 
     async setBrasByName(bras: BRAS, name: string) {
@@ -254,16 +298,24 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
 
     private getPointerPosition(): Point {
         const pos = this.stage.getPointerPosition();
-        const x = pos.x - this.layer.x();
-        const y = this.stage.height() - pos.y - this.layer.y();
+        let x = pos.x - this.stage.x();
+        const y = this.stage.height() - pos.y;
+        if (this.isBack) {
+            x = -x;
+        }
         return { x: Math.round(x / RATIO), y: Math.round(y / RATIO) };
+    }
+
+    changeBras() {
+        this.layerSym.scaleX(this.isBack ? -1 : 1);
+        this.update();
     }
 
     async update() {
         this.brasService.getCurrent(this.robot).subscribe((current) => {
             this.current = current;
             for (const id of Object.keys(this.current)) {
-                const { pt0, pt1, pt2, pt3 } = this.getPoints(this.config[id].config, this.current[id]);
+                const { pt0, pt1, pt2, pt3 } = this.getPoints(this.config[id].config, this.current[id], false);
 
                 this.groups[id]
                     .getChild<Konva.Line>('line')
@@ -295,7 +347,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
 
     private async setCursor() {
         const pt = this.getPointerPosition();
-        this.cursor.setPosition({ x: pt.x * RATIO, y: pt.y * RATIO });
+        this.cursor.setPosition({ x: pt.x * RATIO * (this.isBack ? -1 : 1), y: pt.y * RATIO });
 
         const text = this.cursor.getChildren((children) => children instanceof Konva.Text)[0] as Konva.Text;
         text.text(pt.x + 'x' + pt.y + '@' + this.angleVentouse);
@@ -304,7 +356,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
             .calculerAngles(this.robot, this.selectedBras, { ...pt, a: this.angleVentouse })
             .subscribe((result) => {
                 if (result) {
-                    const { pt0, pt1, pt2, pt3 } = this.getPoints(this.config[this.selectedBras].config, result);
+                    const { pt0, pt1, pt2, pt3 } = this.getPoints(this.config[this.selectedBras].config, result, true);
 
                     const line0 = this.brasSym.getChild<Konva.Line>('line0');
                     const line1 = this.brasSym.getChild<Konva.Line>('line1');
@@ -312,26 +364,33 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
                     const point0 = this.brasSym.getChild<Konva.Circle>('point0');
                     const point1 = this.brasSym.getChild<Konva.Circle>('point1');
                     const point2 = this.brasSym.getChild<Konva.Circle>('point2');
-                    const ech = this.brasSym.getChild<Konva.Rect>('echantillon');
+                    const bras0 = this.brasSym.getChild<Konva.Group>('bras0');
+                    const bras1 = this.brasSym.getChild<Konva.Group>('bras1');
+                    const bras2 = this.brasSym.getChild<Konva.Image>('bras2');
 
-                    ech.setPosition(pt3);
-                    ech.rotation(this.angleVentouse);
+                    bras0.setPosition(pt0);
+                    bras1.setPosition(pt1);
+                    bras2.setPosition(pt2);
+
+                    bras0.rotation(result.a1);
+                    bras1.rotation(result.a1 + result.a2);
+                    bras2.rotation(result.a1 + result.a2 + result.a3);
 
                     line0.points([pt0.x, pt0.y, pt1.x, pt1.y]);
                     line1.points([pt1.x, pt1.y, pt2.x, pt2.y]);
                     line2.points([pt2.x, pt2.y, pt3.x, pt3.y]);
 
-                    line0.stroke(result.a1Error ? 'red' : 'blue');
-                    line1.stroke(result.a2Error ? 'red' : 'blue');
-                    line2.stroke(result.a3Error ? 'red' : 'blue');
+                    line0.stroke(result.a1Error ? 'red' : 'black');
+                    line1.stroke(result.a2Error ? 'red' : 'black');
+                    line2.stroke(result.a3Error ? 'red' : 'black');
 
                     point0.setPosition(pt0);
                     point1.setPosition(pt1);
                     point2.setPosition(pt2);
 
-                    point0.fill(result.a1Error ? 'red' : 'blue');
-                    point1.fill(result.a2Error ? 'red' : 'blue');
-                    point2.fill(result.a3Error ? 'red' : 'blue');
+                    point0.fill(result.a1Error ? 'red' : 'black');
+                    point1.fill(result.a2Error ? 'red' : 'black');
+                    point2.fill(result.a3Error ? 'red' : 'black');
 
                     this.brasSym.show();
                 } else {
@@ -340,11 +399,17 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
             });
     }
 
-    private getPoints(configBras: ConfigBras, angles: AnglesBras) {
+    private getPoints(configBras: ConfigBras, angles: AnglesBras, isSym: boolean) {
         const pt0 = { x: configBras.x * RATIO, y: configBras.y * RATIO };
         const pt1 = ptAdd(pt0, ptFromAngleRadius(angles.a1, configBras.r1 * RATIO));
         const pt2 = ptAdd(pt1, ptFromAngleRadius(angles.a1 + angles.a2, configBras.r2 * RATIO));
         const pt3 = ptAdd(pt2, ptFromAngleRadius(angles.a1 + angles.a2 + angles.a3, configBras.r3 * RATIO));
+        if (!isSym && configBras.back) {
+            pt0.x = -pt0.x;
+            pt1.x = -pt1.x;
+            pt2.x = -pt2.x;
+            pt3.x = -pt3.x;
+        }
         return { pt0, pt1, pt2, pt3 };
     }
 }

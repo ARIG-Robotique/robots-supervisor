@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { cloneDeep } from 'lodash';
-import { AnglesBras, BRAS, Bras, CurrentBras, FullConfigBras, PointBras } from '../../models/Bras';
+import { AnglesBras, BRAS, Bras, ConfigBras, CurrentBras, FullConfigBras, PointBras } from '../../models/Bras';
 import { Robot } from '../../models/Robot';
 import { BrasService } from '../bras.service';
 
@@ -19,81 +19,78 @@ function alKashiAngleRad(a: number, b: number, c: number): number {
     return Math.acos((Math.pow(a, 2) + Math.pow(b, 2) - Math.pow(c, 2)) / (2 * a * b));
 }
 
+const CONFIG: ConfigBras = {
+    x: 105,
+    y: 261,
+    r1: 73,
+    r2: 73,
+    r3: 110,
+    back: false,
+    preferA1Min: true,
+    a1Min: -180,
+    a1Max: 0,
+    a2Min: -10,
+    a2Max: 180,
+    a3Min: -150,
+    a3Max: 10,
+};
+
+const INIT: CurrentBras = { state: 'INIT', a1: -160, a2: 137, a3: -66, x: 103, y: 97, a: -90 };
+
+const STATES = ['INIT', 'PRISE_SOL', 'DEPOSE_STOCK', 'PRISE_STOCK', 'DEPOSE_SOL'];
+
+const TRANSITIONS = [
+    { INIT: 'PRISE_SOL' },
+    { PRISE_SOL: 'DEPOSE_STOCK' },
+    { DEPOSE_STOCK: 'INIT' },
+    { INIT: 'PRISE_STOCK' },
+    { PRISE_STOCK: 'DEPOSE_SOL' },
+    { DEPOSE_SOL: 'INIT' },
+    { INIT: 'DEPOSE_SOL' },
+];
+
 @Injectable()
 export class BrasMockService extends BrasService {
     config: Bras<FullConfigBras> = {
-        bas: {
-            config: {
-                x: 54,
-                y: 51,
-                r1: 64,
-                r2: 71,
-                r3: 35,
-                a1Min: -10,
-                a1Max: 110,
-                preferA1Min: true,
-                a2Min: -105,
-                a2Max: 110,
-                a3Min: -100,
-                a3Max: 100,
-            },
-            states: [
-                'INIT',
-                'SECU',
-                'STOCK_PRISE_1',
-                'STOCK_PRISE_2',
-                'STOCK_PRISE_3',
-                'STOCK_PRISE_4',
-                'STOCK_PRISE_5',
-                'STOCK_PRISE_6',
-                'STOCK_DEPOSE_1',
-                'STOCK_DEPOSE_2',
-                'STOCK_DEPOSE_3',
-                'STOCK_DEPOSE_4',
-                'STOCK_DEPOSE_5',
-                'STOCK_DEPOSE_6',
-                'STOCK_ENTREE',
-                'ECHANGE',
-                'SOL_APPROCHE',
-                'SOL_PRISE',
-                'SOL_DEPOSE',
-            ],
-            transitions: [
-                { INIT: 'STOCK_ENTREE' },
-                { INIT: 'SECU' },
-                { SECU: 'STOCK_ENTREE' },
-                { STOCK_ENTREE: 'SECU' },
-                { SECU: 'SOL_APPROCHE' },
-                { SOL_APPROCHE: 'SECU' },
-            ],
+        avantGauche: {
+            config: { ...CONFIG },
+            states: STATES,
+            transitions: TRANSITIONS,
         },
-        haut: {
-            config: {
-                x: 54,
-                y: 261,
-                r1: 64,
-                r2: 71,
-                r3: 35,
-                a1Min: -135,
-                a1Max: 0,
-                preferA1Min: false,
-                a2Min: -90,
-                a2Max: 90,
-                a3Min: -100,
-                a3Max: 100,
-            },
-            states: ['INIT', 'STOCK_PRISE_1', 'STOCK_PRISE_2'],
-            transitions: [
-                { INIT: 'STOCK_PRISE_1' },
-                { STOCK_PRISE_1: 'STOCK_PRISE_2' },
-                { STOCK_PRISE_2: 'STOCK_PRISE_1' },
-            ],
+        avantCentre: {
+            config: { ...CONFIG },
+            states: STATES,
+            transitions: TRANSITIONS,
+        },
+        avantDroite: {
+            config: { ...CONFIG },
+            states: STATES,
+            transitions: TRANSITIONS,
+        },
+        arriereGauche: {
+            config: { ...CONFIG, back: true, },
+            states: STATES,
+            transitions: TRANSITIONS,
+        },
+        arriereCentre: {
+            config: { ...CONFIG, back: true, },
+            states: STATES,
+            transitions: TRANSITIONS,
+        },
+        arriereDroite: {
+            config: { ...CONFIG, back: true, },
+            states: STATES,
+            transitions: TRANSITIONS,
         },
     };
 
     bras: Bras<CurrentBras> = {
-        bas: { state: 'INIT', a1: 0, a2: 0, a3: 0, x: 0, y: 0, a: 0 },
-        haut: { state: 'INIT', a1: 0, a2: 0, a3: 0, x: 0, y: 0, a: 0 },
+        avantGauche: { ...INIT },
+        avantCentre: { ...INIT },
+        avantDroite: { ...INIT },
+        arriereGauche: { ...INIT },
+        arriereCentre: { ...INIT },
+        arriereDroite: { ...INIT },
     };
 
     constructor(http: HttpClient) {
