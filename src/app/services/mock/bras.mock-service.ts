@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { cloneDeep } from 'lodash';
-import { AllConfigBras, AnglesBras, BRAS, Bras, CurrentBras, PointBras } from '../../models/Bras';
+import { AnglesBras, BRAS, Bras, CurrentBras, FullConfigBras, PointBras } from '../../models/Bras';
 import { Robot } from '../../models/Robot';
 import { BrasService } from '../bras.service';
 
@@ -21,70 +21,74 @@ function alKashiAngleRad(a: number, b: number, c: number): number {
 
 @Injectable()
 export class BrasMockService extends BrasService {
-    config: AllConfigBras = {
+    config: Bras<FullConfigBras> = {
         bas: {
-            x: 54,
-            y: 51,
-            r1: 64,
-            r2: 71,
-            r3: 35,
-            a1Min: -10,
-            a1Max: 110,
-            preferA1Min: true,
-            a2Min: -105,
-            a2Max: 110,
-            a3Min: -100,
-            a3Max: 100,
+            config: {
+                x: 54,
+                y: 51,
+                r1: 64,
+                r2: 71,
+                r3: 35,
+                a1Min: -10,
+                a1Max: 110,
+                preferA1Min: true,
+                a2Min: -105,
+                a2Max: 110,
+                a3Min: -100,
+                a3Max: 100,
+            },
+            states: [
+                'INIT',
+                'SECU',
+                'STOCK_PRISE_1',
+                'STOCK_PRISE_2',
+                'STOCK_PRISE_3',
+                'STOCK_PRISE_4',
+                'STOCK_PRISE_5',
+                'STOCK_PRISE_6',
+                'STOCK_DEPOSE_1',
+                'STOCK_DEPOSE_2',
+                'STOCK_DEPOSE_3',
+                'STOCK_DEPOSE_4',
+                'STOCK_DEPOSE_5',
+                'STOCK_DEPOSE_6',
+                'STOCK_ENTREE',
+                'ECHANGE',
+                'SOL_APPROCHE',
+                'SOL_PRISE',
+                'SOL_DEPOSE',
+            ],
+            transitions: [
+                { INIT: 'STOCK_ENTREE' },
+                { INIT: 'SECU' },
+                { SECU: 'STOCK_ENTREE' },
+                { STOCK_ENTREE: 'SECU' },
+                { SECU: 'SOL_APPROCHE' },
+                { SOL_APPROCHE: 'SECU' },
+            ],
         },
         haut: {
-            x: 54,
-            y: 261,
-            r1: 64,
-            r2: 71,
-            r3: 35,
-            a1Min: -135,
-            a1Max: 0,
-            preferA1Min: false,
-            a2Min: -90,
-            a2Max: 90,
-            a3Min: -100,
-            a3Max: 100,
+            config: {
+                x: 54,
+                y: 261,
+                r1: 64,
+                r2: 71,
+                r3: 35,
+                a1Min: -135,
+                a1Max: 0,
+                preferA1Min: false,
+                a2Min: -90,
+                a2Max: 90,
+                a3Min: -100,
+                a3Max: 100,
+            },
+            states: ['INIT', 'STOCK_PRISE_1', 'STOCK_PRISE_2'],
+            transitions: [
+                { INIT: 'STOCK_PRISE_1' },
+                { STOCK_PRISE_1: 'STOCK_PRISE_2' },
+                { STOCK_PRISE_2: 'STOCK_PRISE_1' },
+            ],
         },
-        statesBas: [
-            'INIT',
-            'SECU',
-            'STOCK_PRISE_1',
-            'STOCK_PRISE_2',
-            'STOCK_PRISE_3',
-            'STOCK_PRISE_4',
-            'STOCK_PRISE_5',
-            'STOCK_PRISE_6',
-            'STOCK_DEPOSE_1',
-            'STOCK_DEPOSE_2',
-            'STOCK_DEPOSE_3',
-            'STOCK_DEPOSE_4',
-            'STOCK_DEPOSE_5',
-            'STOCK_DEPOSE_6',
-            'STOCK_ENTREE',
-            'ECHANGE',
-            'SOL_APPROCHE',
-            'SOL_PRISE',
-            'SOL_DEPOSE',
-        ],
-        statesHaut: ['INIT', 'STOCK_PRISE_1', 'STOCK_PRISE_2'],
-        transitionsBas: [
-            { INIT: 'STOCK_ENTREE' },
-            { INIT: 'SECU' },
-            { SECU: 'STOCK_ENTREE' },
-            { STOCK_ENTREE: 'SECU' },
-            { SECU: 'SOL_APPROCHE' },
-            { SOL_APPROCHE: 'SECU' },
-        ],
-        transitionsHaut: [
-            { INIT: 'STOCK_PRISE_1' },
-            { STOCK_PRISE_1: 'STOCK_PRISE_2' },
-            { STOCK_PRISE_2: 'STOCK_PRISE_1' },
-        ],
     };
 
     bras: Bras<CurrentBras> = {
@@ -96,7 +100,7 @@ export class BrasMockService extends BrasService {
         super(http);
     }
 
-    getConfig(robot: Robot): Observable<AllConfigBras> {
+    getConfig(robot: Robot): Observable<Bras<FullConfigBras>> {
         return of(this.config);
     }
 
@@ -133,7 +137,7 @@ export class BrasMockService extends BrasService {
         enableLog = true,
         preferA1Min?: boolean,
     ): AnglesBras {
-        const configBras = this.config[bras];
+        const configBras = this.config[bras].config;
         const first = preferA1Min === undefined;
 
         if (preferA1Min === undefined) {

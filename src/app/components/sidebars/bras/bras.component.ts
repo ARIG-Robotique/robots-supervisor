@@ -1,9 +1,9 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import Konva from 'konva';
-import { Observable, Subject } from 'rxjs';
+import { Subject, firstValueFrom } from 'rxjs';
 import { first, takeUntil, throttleTime } from 'rxjs/operators';
-import { AllConfigBras, AnglesBras, BRAS, Bras, ConfigBras, CurrentBras } from '../../../models/Bras';
+import { AnglesBras, BRAS, Bras, ConfigBras, CurrentBras, FullConfigBras } from '../../../models/Bras';
 import { Point } from '../../../models/Point';
 import { Robot } from '../../../models/Robot';
 import { BrasService } from '../../../services/bras.service';
@@ -35,12 +35,12 @@ const RATIO = 1.5;
     selector: 'arig-sidebar-bras',
     templateUrl: 'bras.component.html',
 })
-export class SidebarBrasComponent extends AbstractSidebarContainer implements OnInit, AfterViewInit {
+export class SidebarBrasComponent extends AbstractSidebarContainer implements AfterViewInit {
     @ViewChild('container', { static: true }) container: ElementRef;
 
-    robot$: Observable<Robot>;
+    robot: Robot;
     current: Bras<CurrentBras>;
-    config: AllConfigBras;
+    config: Bras<FullConfigBras>;
 
     stage: Konva.Stage;
     layer: Konva.Layer;
@@ -48,23 +48,17 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements On
     cursor: Konva.Group;
     brasSym: KonvaNamedGroup;
 
-    bras: Bras<KonvaNamedGroup> = {
-        haut: null,
-        bas: null,
-    };
+    groups: Bras<KonvaNamedGroup> = {};
 
-    selectedBras: BRAS = 'bas';
+    selectedBras: BRAS;
     angleVentouse = 0;
 
     logs = '';
 
     updateSym$ = new Subject<void>();
 
-    get states(): Bras<string[]> {
-        return {
-            bas: this.config.statesBas,
-            haut: this.config.statesHaut,
-        };
+    get names(): BRAS[] {
+        return Object.keys(this.config);
     }
 
     constructor(
@@ -75,13 +69,11 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements On
         super();
     }
 
-    ngOnInit() {
-        this.robot$ = this.store.select(selectMainRobot);
-    }
-
     async ngAfterViewInit() {
-        const robot = await this.robot$.pipe(first()).toPromise();
-        this.config = await this.brasService.getConfig(robot).toPromise();
+        this.robot = await firstValueFrom(this.store.select(selectMainRobot).pipe(first()));
+        this.config = await firstValueFrom(this.brasService.getConfig(this.robot));
+
+        this.selectedBras = this.names[0];
 
         this.stage = new Konva.Stage({
             container: this.container.nativeElement,
@@ -119,9 +111,9 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements On
         this.layer.setPosition({ x: 115 * RATIO, y: 1 * RATIO });
         this.stage.add(this.layer);
 
-        ['bas', 'haut'].forEach((idBras: BRAS) => {
-            this.bras[idBras] = new KonvaNamedGroup();
-            this.bras[idBras].add(
+        Object.keys(this.config).forEach((idBras: BRAS) => {
+            this.groups[idBras] = new KonvaNamedGroup();
+            this.groups[idBras].add(
                 new Konva.Line({
                     name: 'line',
                     points: [0, 0, 0, 0],
@@ -132,7 +124,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements On
                 }),
             );
             for (let i = 0; i < 4; i++) {
-                this.bras[idBras].add(
+                this.groups[idBras].add(
                     new Konva.Circle({
                         name: `point${i}`,
                         x: 0,
@@ -142,7 +134,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements On
                     }),
                 );
             }
-            this.layer.add(this.bras[idBras]);
+            this.layer.add(this.groups[idBras]);
         });
 
         this.brasSym = new KonvaNamedGroup();
@@ -207,15 +199,9 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements On
         this.layer.add(this.cursor);
 
         this.stage.on('click', (e) => {
-            if (e.evt.button === 2) {
-                this.selectedBras = this.selectedBras === 'bas' ? 'haut' : 'bas';
-                this.update();
-                this.updateSym$.next();
-            } else {
-                const pt = this.getPointerPosition();
-                const a = this.angleVentouse;
-                this.click({ ...pt, a }, this.selectedBras);
-            }
+            const pt = this.getPointerPosition();
+            const a = this.angleVentouse;
+            this.click({ ...pt, a }, this.selectedBras);
         });
 
         this.stage.on('mousemove', () => {
@@ -248,11 +234,9 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements On
     }
 
     async setBrasByName(bras: BRAS, name: string) {
-        const robot = await this.robot$.pipe(first()).toPromise();
-
         this.selectedBras = bras;
 
-        this.brasService.setBrasByName(robot, bras, name).subscribe(() => {
+        this.brasService.setBrasByName(this.robot, bras, name).subscribe(() => {
             this.update();
             this.logs += `${this.selectedBras} : ${name}\n`;
         });
@@ -261,7 +245,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements On
     isStateDisabled(bras: BRAS, state: string) {
         return (
             this.current?.[bras].state &&
-            !this.config[bras === 'bas' ? 'transitionsBas' : 'transitionsHaut'].some((transition) => {
+            !this.config[bras].transitions.some((transition) => {
                 const [from, to] = Object.entries(transition)[0];
                 return from === this.current[bras].state && to === state;
             })
@@ -276,21 +260,19 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements On
     }
 
     async update() {
-        const robot = await this.robot$.pipe(first()).toPromise();
-
-        this.brasService.getCurrent(robot).subscribe((current) => {
+        this.brasService.getCurrent(this.robot).subscribe((current) => {
             this.current = current;
             for (const id of Object.keys(this.current)) {
-                const { pt0, pt1, pt2, pt3 } = this.getPoints(this.config[id], this.current[id]);
+                const { pt0, pt1, pt2, pt3 } = this.getPoints(this.config[id].config, this.current[id]);
 
-                this.bras[id]
+                this.groups[id]
                     .getChild<Konva.Line>('line')
                     .points([pt0.x, pt0.y, pt1.x, pt1.y, pt2.x, pt2.y, pt3.x, pt3.y]);
 
-                this.bras[id].getChild<Konva.Line>('point0').setPosition(pt0);
-                this.bras[id].getChild<Konva.Line>('point1').setPosition(pt1);
-                this.bras[id].getChild<Konva.Line>('point2').setPosition(pt2);
-                this.bras[id].getChild<Konva.Line>('point3').setPosition(pt3);
+                this.groups[id].getChild<Konva.Line>('point0').setPosition(pt0);
+                this.groups[id].getChild<Konva.Line>('point1').setPosition(pt1);
+                this.groups[id].getChild<Konva.Line>('point2').setPosition(pt2);
+                this.groups[id].getChild<Konva.Line>('point3').setPosition(pt3);
             }
 
             this.angleVentouse = this.current[this.selectedBras].a;
@@ -298,11 +280,9 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements On
     }
 
     async click(val: { x: number; y: number; a: number }, bras: BRAS) {
-        const robot = await this.robot$.pipe(first()).toPromise();
-
         this.selectedBras = bras;
 
-        this.brasService.setBras(robot, bras, val).subscribe((done) => {
+        this.brasService.setBras(this.robot, bras, val).subscribe((done) => {
             if (done) {
                 this.update();
                 this.logs += `${this.selectedBras} : x=${val.x} y=${val.y} a=${val.a}\n`;
@@ -314,8 +294,6 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements On
     }
 
     private async setCursor() {
-        const robot = await this.robot$.pipe(first()).toPromise();
-
         const pt = this.getPointerPosition();
         this.cursor.setPosition({ x: pt.x * RATIO, y: pt.y * RATIO });
 
@@ -323,10 +301,10 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements On
         text.text(pt.x + 'x' + pt.y + '@' + this.angleVentouse);
 
         this.brasService
-            .calculerAngles(robot, this.selectedBras, { ...pt, a: this.angleVentouse })
+            .calculerAngles(this.robot, this.selectedBras, { ...pt, a: this.angleVentouse })
             .subscribe((result) => {
                 if (result) {
-                    const { pt0, pt1, pt2, pt3 } = this.getPoints(this.config[this.selectedBras], result);
+                    const { pt0, pt1, pt2, pt3 } = this.getPoints(this.config[this.selectedBras].config, result);
 
                     const line0 = this.brasSym.getChild<Konva.Line>('line0');
                     const line1 = this.brasSym.getChild<Konva.Line>('line1');

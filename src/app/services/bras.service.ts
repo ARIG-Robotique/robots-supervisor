@@ -1,15 +1,15 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AllConfigBras, AnglesBras, BRAS, Bras, CurrentBras, PointBras } from '../models/Bras';
+import { AnglesBras, BRAS, Bras, CurrentBras, FullConfigBras, PointBras } from '../models/Bras';
 import { Robot } from '../models/Robot';
 
 @Injectable()
 export class BrasService {
     constructor(private http: HttpClient) {}
 
-    getConfig(robot: Robot): Observable<AllConfigBras> {
-        return this.http.get<AllConfigBras>(`http://${robot.host}/bras/config`);
+    getConfig(robot: Robot): Observable<Bras<FullConfigBras>> {
+        return this.http.get<Bras<FullConfigBras>>(`http://${robot.host}/bras/config`);
     }
 
     getCurrent(robot: Robot): Observable<Bras<CurrentBras>> {

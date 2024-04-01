@@ -1,4 +1,4 @@
-export type BRAS = 'bas' | 'haut';
+export type BRAS = string;
 
 export type ConfigBras = {
     x: number;
@@ -35,13 +35,10 @@ export type CurrentBras = AnglesBras &
         state: string;
     };
 
-export type Bras<T> = { bas: T; haut: T };
+export type Bras<T> = Record<BRAS, T>;
 
-export type AllConfigBras = {
-    bas: ConfigBras;
-    haut: ConfigBras;
-    statesBas: string[];
-    statesHaut: string[];
-    transitionsBas: Array<{ [K: string]: string }>;
-    transitionsHaut: Array<{ [K: string]: string }>;
+export type FullConfigBras = {
+    config: ConfigBras;
+    states: string[];
+    transitions: Array<{ [K: string]: string }>;
 };
