@@ -29,6 +29,7 @@ export type PointBras = {
     x: number;
     y: number;
     a: number;
+    invertA1: boolean;
 };
 
 export type CurrentBras = AnglesBras &

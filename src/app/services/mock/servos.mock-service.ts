@@ -26,6 +26,86 @@ export class ServosMockService extends ServosService {
             ],
             batch: ['Top', 'Bottom'],
         },
+        {
+            id: 2,
+            name: 'Pinces avant',
+            servos: [
+                {
+                    id: 2,
+                    name: 'Pince avant droite',
+                    currentSpeed: 0,
+                    currentPosition: 0,
+                    positions: {
+                        Ferme: { name: 'Ferme', value: 0, speed: 0 },
+                        Prise: { name: 'Prise', value: 1500, speed: 0 },
+                        Ouvert: { name: 'Ouvert', value: 3000, speed: 0 },
+                    },
+                },
+                {
+                    id: 3,
+                    name: 'Pince avant centre',
+                    currentSpeed: 0,
+                    currentPosition: 0,
+                    positions: {
+                        Ferme: { name: 'Ferme', value: 0, speed: 0 },
+                        Prise: { name: 'Prise', value: 1500, speed: 0 },
+                        Ouvert: { name: 'Ouvert', value: 3000, speed: 0 },
+                    },
+                },
+                {
+                    id: 4,
+                    name: 'Pince avant gauche',
+                    currentSpeed: 0,
+                    currentPosition: 0,
+                    positions: {
+                        Ferme: { name: 'Ferme', value: 0, speed: 0 },
+                        Prise: { name: 'Prise', value: 1500, speed: 0 },
+                        Ouvert: { name: 'Ouvert', value: 3000, speed: 0 },
+                    },
+                },
+            ],
+            batch: ['Ferme', 'Prise', 'Ouvert'],
+        },
+        {
+            id: 3,
+            name: 'Pinces arrière',
+            servos: [
+                {
+                    id: 5,
+                    name: 'Pince arrière droite',
+                    currentSpeed: 0,
+                    currentPosition: 0,
+                    positions: {
+                        Ferme: { name: 'Ferme', value: 0, speed: 0 },
+                        Prise: { name: 'Prise', value: 1500, speed: 0 },
+                        Ouvert: { name: 'Ouvert', value: 3000, speed: 0 },
+                    },
+                },
+                {
+                    id: 6,
+                    name: 'Pince arrière centre',
+                    currentSpeed: 0,
+                    currentPosition: 0,
+                    positions: {
+                        Ferme: { name: 'Ferme', value: 0, speed: 0 },
+                        Prise: { name: 'Prise', value: 1500, speed: 0 },
+                        Ouvert: { name: 'Ouvert', value: 3000, speed: 0 },
+                    },
+                },
+                {
+                    id: 7,
+                    name: 'Pince arrière gauche',
+                    currentSpeed: 0,
+                    currentPosition: 0,
+                    positions: {
+                        Ferme: { name: 'Ferme', value: 0, speed: 0 },
+                        Prise: { name: 'Prise', value: 1500, speed: 0 },
+                        Ouvert: { name: 'Ouvert', value: 3000, speed: 0 },
+                    },
+                },
+            ],
+            batch: ['Ferme', 'Prise', 'Ouvert'],
+        }
     ];
 
     constructor(

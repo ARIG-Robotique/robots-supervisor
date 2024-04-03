@@ -12,3 +12,13 @@
     --bs-btn-disabled-color: var(--color-bras);
     --bs-btn-disabled-border-color: var(--color-bras);
 }
+
+.btns-pinces {
+    width: 100%;
+
+    .btn {
+        font-size: 0.8em;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+}

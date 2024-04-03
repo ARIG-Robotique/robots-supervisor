@@ -59,15 +59,15 @@
             <input
                 type="radio"
                 class="btn-check"
-                name="positionList"
+                [name]="'positionList-' + servo.id"
                 [id]="'pos-' + servo.id + '-' + pos.value"
                 [value]="pos.value"
                 [(ngModel)]="servo.currentPosition"
                 (ngModelChange)="setPositionByName()"
             />
-            <label class="btn btn-outline-primary btn-sm" [for]="'pos-' + servo.id + '-' + pos.value">{{
-                pos.name
-            }}</label>
+            <label class="btn btn-outline-primary btn-sm" [for]="'pos-' + servo.id + '-' + pos.value">
+                {{pos.name}}
+            </label>
         </ng-container>
     </div>
 </div>

@@ -3,13 +3,16 @@ import { Store } from '@ngrx/store';
 import Konva from 'konva';
 import { firstValueFrom } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { AnglesBras, BRAS, Bras, ConfigBras, CurrentBras, FullConfigBras } from '../../../models/Bras';
+import { AnglesBras, BRAS, Bras, ConfigBras, CurrentBras, FullConfigBras, PointBras } from '../../../models/Bras';
 import { Point } from '../../../models/Point';
 import { Robot } from '../../../models/Robot';
+import { Servo, ServoPosition } from '../../../models/Servo';
 import { BrasService } from '../../../services/bras.service';
+import { ServosService } from '../../../services/servos.service';
 import { AppToastService } from '../../../services/toast.service';
 import { selectMainRobot } from '../../../store/robots.selector';
 import { AbstractSidebarContainer } from '../container/sidebar-container.component';
+import { KeyValue } from '@angular/common';
 
 function toRadians(degrees) {
     return (degrees / 180) * Math.PI;
@@ -33,7 +36,7 @@ const RATIO = 1.5;
 
 const OFFSETS_IMAGES = [
     { offsetX: 25, offsetY: 91, rotation: -22 },
-    { offsetX: 25, offsetY: 25, rotation: 22  },
+    { offsetX: 25, offsetY: 25, rotation: 22 },
     { offsetX: 86, offsetY: 26, rotation: 90 },
 ];
 
@@ -41,10 +44,10 @@ const OFFSETS_IMAGES = [
 const COLORS: Bras<string> = {
     avantGauche: '#e41a1c',
     avantCentre: '#377eb8',
-    avantDroite: '#4daf4a',
+    avantDroit: '#4daf4a',
     arriereGauche: '#984ea3',
     arriereCentre: '#ff7f00',
-    arriereDroite: '#ffff33',
+    arriereDroit: '#ffff33',
 };
 
 @Component({
@@ -61,6 +64,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
     robot: Robot;
     current: Bras<CurrentBras>;
     config: Bras<FullConfigBras>;
+    pinces: Bras<Servo>;
 
     stage: Konva.Stage;
     layer: Konva.Layer;
@@ -72,24 +76,31 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
     groups: Bras<KonvaNamedGroup> = {};
 
     selectedBras: BRAS;
-    angleVentouse = -90;
 
     logs = '';
+
+    trackByName = (i: number, item: KeyValue<string, ServoPosition>) => item.key;
 
     private needsUpdateSym = false;
     private updateSymRAF: ReturnType<typeof requestAnimationFrame>;
 
     get names(): BRAS[] {
-        return Object.keys(this.config);
+        //return Object.keys(this.config);
+        return ['avantGauche','avantCentre','avantDroit','arriereGauche','arriereCentre','arriereDroit']
     }
 
     get isBack(): boolean {
         return this.config[this.selectedBras].config.back;
     }
 
+    get currentBras() {
+        return this.current?.[this.selectedBras];
+    }
+
     constructor(
         private store: Store<any>,
         private brasService: BrasService,
+        private servosService: ServosService,
         private toast: AppToastService,
     ) {
         super();
@@ -104,7 +115,17 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
         this.robot = await firstValueFrom(this.store.select(selectMainRobot).pipe(first()));
         this.config = await firstValueFrom(this.brasService.getConfig(this.robot));
 
-        this.selectedBras = this.names[1];
+        this.selectedBras = this.names[0];
+
+        const servos = await firstValueFrom(this.servosService.getServos(this.robot))
+        this.pinces = {
+            'avantGauche': servos.find(({ name }) => name === 'Pinces avant').servos.find(({ name }) => name == 'Pince avant gauche'),
+            'avantCentre': servos.find(({ name }) => name === 'Pinces avant').servos.find(({ name }) => name == 'Pince avant centre'),
+            'avantDroit': servos.find(({ name }) => name === 'Pinces avant').servos.find(({ name }) => name == 'Pince avant droite'),
+            'arriereGauche': servos.find(({ name }) => name === 'Pinces arrière').servos.find(({ name }) => name == 'Pince arrière gauche'),
+            'arriereCentre': servos.find(({ name }) => name === 'Pinces arrière').servos.find(({ name }) => name == 'Pince arrière centre'),
+            'arriereDroit': servos.find(({ name }) => name === 'Pinces arrière').servos.find(({ name }) => name == 'Pince arrière droite'),
+        };
 
         // l'origine est au milieu en bas, et l'axe vertical est positif vers le haut
         this.stage = new Konva.Stage({
@@ -205,7 +226,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
                 });
                 this.brasSym.getChild<Konva.Group>(`bras${i}`).add(img);
             };
-            image.src = `/assets/robots/bras-${i+1}.png`;
+            image.src = `/assets/robots/bras-${i + 1}.png`;
         }
 
         this.layerSym.add(this.brasSym);
@@ -240,9 +261,15 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
         cursorLayer.add(this.cursor);
 
         this.stage.on('click', (e) => {
-            const pt = this.getPointerPosition();
-            const a = this.angleVentouse;
-            this.click({ ...pt, a }, this.selectedBras);
+            if (e.evt.button === 2) {
+                this.currentBras.invertA1 = !this.currentBras.invertA1;
+                this.needsUpdateSym = true;
+            } else {
+                const pt = this.getPointerPosition();
+                const a = this.currentBras.a;
+                const invertA1 = this.currentBras.invertA1;
+                this.click({ ...pt, a, invertA1 }, this.selectedBras);
+            }
         });
 
         this.stage.on('mousemove', () => {
@@ -254,12 +281,12 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
         });
 
         this.stage.on('wheel', (e) => {
-            this.angleVentouse += e.evt.deltaY < 0 ? 10 : -10;
-            if (this.angleVentouse > 180) {
-                this.angleVentouse -= 360;
+            this.currentBras.a += e.evt.deltaY < 0 ? 10 : -10;
+            if (this.currentBras.a > 180) {
+                this.currentBras.a -= 360;
             }
-            if (this.angleVentouse <= -180) {
-                this.angleVentouse += 360;
+            if (this.currentBras.a <= -180) {
+                this.currentBras.a += 360;
             }
             this.needsUpdateSym = true;
             e.evt.preventDefault();
@@ -279,6 +306,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
 
     async setBrasByName(bras: BRAS, name: string) {
         this.selectedBras = bras;
+        this.changeBras();
 
         this.brasService.setBrasByName(this.robot, bras, name).subscribe(() => {
             this.update();
@@ -291,7 +319,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
             this.current?.[bras].state &&
             !this.config[bras].transitions.some((transition) => {
                 const [from, to] = Object.entries(transition)[0];
-                return from === this.current[bras].state && to === state;
+                return from === this.current?.[bras].state && to === state;
             })
         );
     }
@@ -326,18 +354,17 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
                 this.groups[id].getChild<Konva.Line>('point2').setPosition(pt2);
                 this.groups[id].getChild<Konva.Line>('point3').setPosition(pt3);
             }
-
-            this.angleVentouse = this.current[this.selectedBras].a;
         });
     }
 
-    async click(val: { x: number; y: number; a: number }, bras: BRAS) {
+    async click(val: PointBras, bras: BRAS) {
         this.selectedBras = bras;
+        this.changeBras();
 
         this.brasService.setBras(this.robot, bras, val).subscribe((done) => {
             if (done) {
                 this.update();
-                this.logs += `${this.selectedBras} : x=${val.x} y=${val.y} a=${val.a}\n`;
+                this.logs += `${this.selectedBras} : x=${val.x} y=${val.y} a=${val.a} invertA1=${val.invertA1}\n`;
                 this.toast.clear();
             } else {
                 this.toast.error('Position invalide');
@@ -349,11 +376,14 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
         const pt = this.getPointerPosition();
         this.cursor.setPosition({ x: pt.x * RATIO * (this.isBack ? -1 : 1), y: pt.y * RATIO });
 
+        const a = this.currentBras.a;
+        const invertA1 = this.currentBras.invertA1;
+
         const text = this.cursor.getChildren((children) => children instanceof Konva.Text)[0] as Konva.Text;
-        text.text(pt.x + 'x' + pt.y + '@' + this.angleVentouse);
+        text.text(pt.x + 'x' + pt.y + '@' + a);
 
         this.brasService
-            .calculerAngles(this.robot, this.selectedBras, { ...pt, a: this.angleVentouse })
+            .calculerAngles(this.robot, this.selectedBras, { ...pt, a, invertA1 })
             .subscribe((result) => {
                 if (result) {
                     const { pt0, pt1, pt2, pt3 } = this.getPoints(this.config[this.selectedBras].config, result, true);
@@ -411,5 +441,17 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
             pt3.x = -pt3.x;
         }
         return { pt0, pt1, pt2, pt3 };
+    }
+
+    setPince(bras: BRAS) {
+        this.selectedBras = bras;
+        this.changeBras();
+
+        const pince = this.pinces[bras];
+        const position = Object.values(pince.positions).find((p) => p.value === pince.currentPosition);
+        pince.currentSpeed = position.speed;
+        this.servosService
+            .setPosition(this.robot, pince, pince.currentPosition, pince.currentSpeed)
+            .subscribe();
     }
 }

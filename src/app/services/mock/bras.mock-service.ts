@@ -27,15 +27,15 @@ const CONFIG: ConfigBras = {
     r3: 110,
     back: false,
     preferA1Min: true,
-    a1Min: -180,
-    a1Max: 0,
-    a2Min: -10,
-    a2Max: 180,
-    a3Min: -150,
-    a3Max: 10,
+    a1Min: -160,
+    a1Max: 30,
+    a2Min: -60,
+    a2Max: 135,
+    a3Min: -125,
+    a3Max: 30,
 };
 
-const INIT: CurrentBras = { state: 'INIT', a1: -160, a2: 137, a3: -66, x: 103, y: 97, a: -90 };
+const INIT: CurrentBras = { state: 'INIT', a1: -160, a2: 135, a3: -65, x: 103, y: 97, a: -90, invertA1: true };
 
 const STATES = ['INIT', 'PRISE_SOL', 'DEPOSE_STOCK', 'PRISE_STOCK', 'DEPOSE_SOL'];
 
@@ -62,7 +62,7 @@ export class BrasMockService extends BrasService {
             states: STATES,
             transitions: TRANSITIONS,
         },
-        avantDroite: {
+        avantDroit: {
             config: { ...CONFIG },
             states: STATES,
             transitions: TRANSITIONS,
@@ -77,7 +77,7 @@ export class BrasMockService extends BrasService {
             states: STATES,
             transitions: TRANSITIONS,
         },
-        arriereDroite: {
+        arriereDroit: {
             config: { ...CONFIG, back: true, },
             states: STATES,
             transitions: TRANSITIONS,
@@ -87,10 +87,10 @@ export class BrasMockService extends BrasService {
     bras: Bras<CurrentBras> = {
         avantGauche: { ...INIT },
         avantCentre: { ...INIT },
-        avantDroite: { ...INIT },
+        avantDroit: { ...INIT },
         arriereGauche: { ...INIT },
         arriereCentre: { ...INIT },
-        arriereDroite: { ...INIT },
+        arriereDroit: { ...INIT },
     };
 
     constructor(http: HttpClient) {
@@ -105,13 +105,13 @@ export class BrasMockService extends BrasService {
         return of(cloneDeep(this.bras));
     }
 
-    setBras(robot: Robot, bras: BRAS, { x, y, a }: PointBras): Observable<boolean> {
-        return this.calculerAngles(robot, bras, { x, y, a }).pipe(
+    setBras(robot: Robot, bras: BRAS, { x, y, a, invertA1 }: PointBras): Observable<boolean> {
+        return this.calculerAngles(robot, bras, { x, y, a, invertA1 }).pipe(
             map((result) => {
                 if (!result || result.a1Error || result.a2Error || result.a3Error) {
                     return false;
                 } else {
-                    this.bras[bras] = { ...result, x, y, a, state: null };
+                    this.bras[bras] = { ...result, x, y, a, invertA1, state: null };
                     return true;
                 }
             }),
@@ -130,16 +130,10 @@ export class BrasMockService extends BrasService {
     calculerAnglesInternal(
         robot: Robot,
         bras: BRAS,
-        { x, y, a }: PointBras,
-        enableLog = true,
-        preferA1Min?: boolean,
+        { x, y, a, invertA1 }: PointBras,
+        enableLog = true
     ): AnglesBras {
         const configBras = this.config[bras].config;
-        const first = preferA1Min === undefined;
-
-        if (preferA1Min === undefined) {
-            preferA1Min = configBras.preferA1Min;
-        }
 
         const a3Absolute = toRadians(a);
 
@@ -167,7 +161,7 @@ export class BrasMockService extends BrasService {
         let alpha2 = alpha6 - Math.PI;
 
         // symétrise alpha1 et alpha2
-        if (preferA1Min) {
+        if (invertA1) {
             alpha1 -= (alpha1 - alpha3) * 2;
             alpha2 *= -1;
         }
@@ -192,12 +186,12 @@ export class BrasMockService extends BrasService {
         result.a3Error = result.a3 < configBras.a3Min || result.a3 > configBras.a3Max;
 
         // si l'inversion entraine une erreur, on essaye sans inversion
-        if (first && (result.a1Error || result.a2Error || result.a3Error)) {
-            const newResult = this.calculerAnglesInternal(robot, bras, { x, y, a }, false, !preferA1Min);
-            if (newResult && !newResult.a1Error && !newResult.a2Error && !newResult.a3Error) {
-                return newResult;
-            }
-        }
+        // if (first && (result.a1Error || result.a2Error || result.a3Error)) {
+        //     const newResult = this.calculerAnglesInternal(robot, bras, { x, y, a, invertA1: !invertA1 }, false);
+        //     if (newResult && !newResult.a1Error && !newResult.a2Error && !newResult.a3Error) {
+        //         return newResult;
+        //     }
+        // }
 
         if (enableLog) {
             if (result.a1Error) {

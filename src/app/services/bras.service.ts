@@ -16,8 +16,8 @@ export class BrasService {
         return this.http.get<Bras<CurrentBras>>(`http://${robot.host}/bras`);
     }
 
-    setBras(robot: Robot, bras: BRAS, { x, y, a }: PointBras): Observable<boolean> {
-        const search = new HttpParams().set('x', x).set('y', y).set('a', a);
+    setBras(robot: Robot, bras: BRAS, { x, y, a, invertA1 }: PointBras): Observable<boolean> {
+        const search = new HttpParams().set('x', x).set('y', y).set('a', a).set('invertA1', invertA1);
 
         return this.http.post<boolean>(`http://${robot.host}/bras/${bras}`, {}, { params: search });
     }
@@ -28,8 +28,8 @@ export class BrasService {
         return this.http.post<void>(`http://${robot.host}/bras/${bras}/byName`, {}, { params: search });
     }
 
-    calculerAngles(robot: Robot, bras: BRAS, { x, y, a }: PointBras): Observable<AnglesBras> {
-        const search = new HttpParams().set('x', x).set('y', y).set('a', a);
+    calculerAngles(robot: Robot, bras: BRAS, { x, y, a, invertA1 }: PointBras): Observable<AnglesBras> {
+        const search = new HttpParams().set('x', x).set('y', y).set('a', a).set('invertA1', invertA1);
 
         return this.http.get<AnglesBras>(`http://${robot.host}/bras/${bras}/compute`, { params: search });
     }
