@@ -40,7 +40,6 @@ const OFFSETS_IMAGES = [
     { offsetX: 86, offsetY: 26, rotation: 90 },
 ];
 
-
 const COLORS: Bras<string> = {
     avantGauche: '#e41a1c',
     avantCentre: '#377eb8',
@@ -89,12 +88,12 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
         return ['avantGauche','avantCentre','avantDroit','arriereGauche','arriereCentre','arriereDroit']
     }
 
-    get isBack(): boolean {
-        return this.config[this.selectedBras].config.back;
+    get selectedBrasConfig() {
+        return this.config[this.selectedBras].config;
     }
 
-    get currentBras() {
-        return this.current?.[this.selectedBras];
+    get selectedBrasCurrent() {
+        return this.current[this.selectedBras];
     }
 
     constructor(
@@ -262,12 +261,12 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
 
         this.stage.on('click', (e) => {
             if (e.evt.button === 2) {
-                this.currentBras.invertA1 = !this.currentBras.invertA1;
+                this.selectedBrasCurrent.invertA1 = !this.selectedBrasCurrent.invertA1;
                 this.needsUpdateSym = true;
             } else {
                 const pt = this.getPointerPosition();
-                const a = this.currentBras.a;
-                const invertA1 = this.currentBras.invertA1;
+                const a = this.selectedBrasCurrent.a;
+                const invertA1 = this.selectedBrasCurrent.invertA1;
                 this.click({ ...pt, a, invertA1 }, this.selectedBras);
             }
         });
@@ -281,12 +280,12 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
         });
 
         this.stage.on('wheel', (e) => {
-            this.currentBras.a += e.evt.deltaY < 0 ? 10 : -10;
-            if (this.currentBras.a > 180) {
-                this.currentBras.a -= 360;
+            this.selectedBrasCurrent.a += e.evt.deltaY < 0 ? 10 : -10;
+            if (this.selectedBrasCurrent.a > 180) {
+                this.selectedBrasCurrent.a -= 360;
             }
-            if (this.currentBras.a <= -180) {
-                this.currentBras.a += 360;
+            if (this.selectedBrasCurrent.a <= -180) {
+                this.selectedBrasCurrent.a += 360;
             }
             this.needsUpdateSym = true;
             e.evt.preventDefault();
@@ -328,14 +327,14 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
         const pos = this.stage.getPointerPosition();
         let x = pos.x - this.stage.x();
         const y = this.stage.height() - pos.y;
-        if (this.isBack) {
+        if (this.selectedBrasConfig.back) {
             x = -x;
         }
         return { x: Math.round(x / RATIO), y: Math.round(y / RATIO) };
     }
 
     changeBras() {
-        this.layerSym.scaleX(this.isBack ? -1 : 1);
+        this.layerSym.scaleX(this.selectedBrasConfig.back ? -1 : 1);
         this.update();
     }
 
@@ -374,10 +373,10 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
 
     private async setCursor() {
         const pt = this.getPointerPosition();
-        this.cursor.setPosition({ x: pt.x * RATIO * (this.isBack ? -1 : 1), y: pt.y * RATIO });
+        this.cursor.setPosition({ x: pt.x * RATIO * (this.selectedBrasConfig.back ? -1 : 1), y: pt.y * RATIO });
 
-        const a = this.currentBras.a;
-        const invertA1 = this.currentBras.invertA1;
+        const a = this.selectedBrasCurrent.a;
+        const invertA1 = this.selectedBrasCurrent.invertA1;
 
         const text = this.cursor.getChildren((children) => children instanceof Konva.Text)[0] as Konva.Text;
         text.text(pt.x + 'x' + pt.y + '@' + a);
@@ -386,7 +385,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
             .calculerAngles(this.robot, this.selectedBras, { ...pt, a, invertA1 })
             .subscribe((result) => {
                 if (result) {
-                    const { pt0, pt1, pt2, pt3 } = this.getPoints(this.config[this.selectedBras].config, result, true);
+                    const { pt0, pt1, pt2, pt3 } = this.getPoints(this.selectedBrasConfig, result, true);
 
                     const line0 = this.brasSym.getChild<Konva.Line>('line0');
                     const line1 = this.brasSym.getChild<Konva.Line>('line1');
