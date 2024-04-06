@@ -2,17 +2,18 @@
     <h5 class="card-header d-flex justify-content-between">
         <span>
             <fa-icon icon="fan"></fa-icon>
-            Pompes
+            Actionneurs
         </span>
 
         <div class="btn-group">
-            <button type="button" class="btn btn-primary btn-sm" (click)="setPumpState('bas', true)">Bas ON</button>
-            <button type="button" class="btn btn-danger btn-sm" (click)="setPumpState('bas', false)">Bas OFF</button>
+            <button type="button" class="btn btn-primary btn-sm" (click)="setElectroAimant('on')">Aimants ON</button>
+            <button type="button" class="btn btn-danger btn-sm" (click)="setElectroAimant('off')">Aimants OFF</button>
 
-            <button type="button" class="btn btn-primary btn-sm ml-3" (click)="setPumpState('haut', true)">
-                Haut ON
-            </button>
-            <button type="button" class="btn btn-danger btn-sm" (click)="setPumpState('haut', false)">Haut OFF</button>
+            <button type="button" class="btn btn-primary btn-sm ml-3 btn-custom" style="--color-btn: #FFBF00"
+                (click)="setSolarWheel('jaune')">Roue Jaune</button>
+            <button type="button" class="btn btn-primary btn-sm btn-custom" style="--color-btn: #005CE6"
+                (click)="setSolarWheel('bleu')">Roue Bleu</button>
+            <button type="button" class="btn btn-danger btn-sm" (click)="setSolarWheel('off')">Roue OFF</button>
         </div>
     </h5>
 </div>

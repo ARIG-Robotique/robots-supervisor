@@ -128,8 +128,6 @@ export class MapComponent extends AbstractComponent implements OnInit {
                     }
                 });
             });
-
-            this.openSidebar('bras');
     }
 
     openSidebar(sidebar: string) {

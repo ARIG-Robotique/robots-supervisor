@@ -17,6 +17,23 @@
     }
 }
 
+.btn-custom {
+    &:not([class*='btn-outline']) {
+        --bs-btn-bg: var(--color-btn);
+        --bs-btn-disabled-bg: var(--color-btn);
+    }
+    &[class*='btn-outline'] {
+        --bs-btn-color: var(--color-btn);
+    }
+    --bs-btn-border-color: var(--color-btn);
+    --bs-btn-hover-bg: var(--color-btn);
+    --bs-btn-hover-border-color: var(--color-btn);
+    --bs-btn-active-bg: var(--color-btn);
+    --bs-btn-active-border-color: var(--color-btn);
+    --bs-btn-disabled-color: var(--color-btn);
+    --bs-btn-disabled-border-color: var(--color-btn);
+}
+
 .badge-big {
     font-size: $font-size-sm;
     padding: 0.25rem 0.35rem;

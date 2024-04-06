@@ -1,4 +1,6 @@
 <arig-sidebar-container [sidebarButtons]="sidebarButtons">
+    <arig-pumps-control [robot]="robot"></arig-pumps-control>
+
     <div class="card">
         <h5 class="card-header">
             <fa-icon [icon]="$any(['fas', 'robot-arm'])"></fa-icon>
@@ -25,8 +27,8 @@
                                 [(ngModel)]="selectedBras"
                                 (ngModelChange)="changeBras()"
                             />
-                            <label class="btn btn-outline-primary btn-bras"
-                                   [style]="'--color-bras:' + COLORS[bras]"
+                            <label class="btn btn-outline-primary btn-custom"
+                                   [style]="'font-size: 0.8em; --color-btn:' + COLORS[bras]"
                                    [for]="'bras-' + bras">
                                 {{ bras }}
                             </label>
@@ -84,15 +86,15 @@
                                 </div>
                                 <div>
                                     <span class="badge badge-big bg-secondary mr-2">a1</span>
-                                    {{ current[bras].a1 }}°
+                                    {{ current[bras].a1 | number:'1.0-0' }}°
                                 </div>
                                 <div>
                                     <span class="badge badge-big bg-secondary mr-2">a2</span>
-                                    {{ current[bras].a2 }}°
+                                    {{ current[bras].a2 | number:'1.0-0' }}°
                                 </div>
                                 <div>
                                     <span class="badge badge-big bg-secondary mr-2">a3</span>
-                                    {{ current[bras].a3 }}°
+                                    {{ current[bras].a3 | number:'1.0-0' }}°
                                 </div>
                             </form>
 

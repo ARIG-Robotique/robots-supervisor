@@ -52,32 +52,32 @@ const TRANSITIONS = [
 @Injectable()
 export class BrasMockService extends BrasService {
     config: Bras<FullConfigBras> = {
-        avantGauche: {
+        AVANT_GAUCHE: {
             config: { ...CONFIG },
             states: STATES,
             transitions: TRANSITIONS,
         },
-        avantCentre: {
+        AVANT_CENTRE: {
             config: { ...CONFIG },
             states: STATES,
             transitions: TRANSITIONS,
         },
-        avantDroit: {
+        AVANT_DROIT: {
             config: { ...CONFIG },
             states: STATES,
             transitions: TRANSITIONS,
         },
-        arriereGauche: {
+        ARRIERE_GAUCHE: {
             config: { ...CONFIG, back: true, },
             states: STATES,
             transitions: TRANSITIONS,
         },
-        arriereCentre: {
+        ARRIERE_CENTRE: {
             config: { ...CONFIG, back: true, },
             states: STATES,
             transitions: TRANSITIONS,
         },
-        arriereDroit: {
+        ARRIERE_DROIT: {
             config: { ...CONFIG, back: true, },
             states: STATES,
             transitions: TRANSITIONS,
@@ -85,12 +85,12 @@ export class BrasMockService extends BrasService {
     };
 
     bras: Bras<CurrentBras> = {
-        avantGauche: { ...INIT },
-        avantCentre: { ...INIT },
-        avantDroit: { ...INIT },
-        arriereGauche: { ...INIT },
-        arriereCentre: { ...INIT },
-        arriereDroit: { ...INIT },
+        AVANT_GAUCHE: { ...INIT },
+        AVANT_CENTRE: { ...INIT },
+        AVANT_DROIT: { ...INIT },
+        ARRIERE_GAUCHE: { ...INIT },
+        ARRIERE_CENTRE: { ...INIT },
+        ARRIERE_DROIT: { ...INIT },
     };
 
     constructor(http: HttpClient) {

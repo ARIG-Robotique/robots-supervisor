@@ -41,12 +41,12 @@ const OFFSETS_IMAGES = [
 ];
 
 const COLORS: Bras<string> = {
-    avantGauche: '#e41a1c',
-    avantCentre: '#377eb8',
-    avantDroit: '#4daf4a',
-    arriereGauche: '#984ea3',
-    arriereCentre: '#ff7f00',
-    arriereDroit: '#ffff33',
+    AVANT_GAUCHE: '#e41a1c',
+    AVANT_CENTRE: '#377eb8',
+    AVANT_DROIT: '#4daf4a',
+    ARRIERE_GAUCHE: '#984ea3',
+    ARRIERE_CENTRE: '#ff7f00',
+    ARRIERE_DROIT: '#ffff33',
 };
 
 @Component({
@@ -84,8 +84,15 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
     private updateSymRAF: ReturnType<typeof requestAnimationFrame>;
 
     get names(): BRAS[] {
-        //return Object.keys(this.config);
-        return ['avantGauche','avantCentre','avantDroit','arriereGauche','arriereCentre','arriereDroit']
+        // return Object.keys(this.config);
+        return [
+            'AVANT_GAUCHE',
+            'AVANT_CENTRE',
+            'AVANT_DROIT',
+            'ARRIERE_GAUCHE',
+            'ARRIERE_CENTRE',
+            'ARRIERE_DROIT',
+        ];
     }
 
     get selectedBrasConfig() {
@@ -118,12 +125,12 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
 
         const servos = await firstValueFrom(this.servosService.getServos(this.robot))
         this.pinces = {
-            'avantGauche': servos.find(({ name }) => name === 'Pinces avant').servos.find(({ name }) => name == 'Pince avant gauche'),
-            'avantCentre': servos.find(({ name }) => name === 'Pinces avant').servos.find(({ name }) => name == 'Pince avant centre'),
-            'avantDroit': servos.find(({ name }) => name === 'Pinces avant').servos.find(({ name }) => name == 'Pince avant droite'),
-            'arriereGauche': servos.find(({ name }) => name === 'Pinces arrière').servos.find(({ name }) => name == 'Pince arrière gauche'),
-            'arriereCentre': servos.find(({ name }) => name === 'Pinces arrière').servos.find(({ name }) => name == 'Pince arrière centre'),
-            'arriereDroit': servos.find(({ name }) => name === 'Pinces arrière').servos.find(({ name }) => name == 'Pince arrière droite'),
+            AVANT_GAUCHE: servos.find(({ name }) => name === 'Pinces avant').servos.find(({ name }) => name == 'Pince avant gauche'),
+            AVANT_CENTRE: servos.find(({ name }) => name === 'Pinces avant').servos.find(({ name }) => name == 'Pince avant centre'),
+            AVANT_DROIT: servos.find(({ name }) => name === 'Pinces avant').servos.find(({ name }) => name == 'Pince avant droite'),
+            ARRIERE_GAUCHE: servos.find(({ name }) => name === 'Pinces arrière').servos.find(({ name }) => name == 'Pince arrière gauche'),
+            ARRIERE_CENTRE: servos.find(({ name }) => name === 'Pinces arrière').servos.find(({ name }) => name == 'Pince arrière centre'),
+            ARRIERE_DROIT: servos.find(({ name }) => name === 'Pinces arrière').servos.find(({ name }) => name == 'Pince arrière droite'),
         };
 
         // l'origine est au milieu en bas, et l'axe vertical est positif vers le haut

@@ -11,9 +11,16 @@ export class IOMockService extends IOService {
     }
 
     /**
-     * Change l'état d'une pompe
+     * Change l'état des electro aimants
      */
-    setPumpState(robot: Robot, pump: 'haut' | 'bas', state: boolean): Observable<void> {
+    setElectroAimant(robot: Robot, state: 'on' | 'off'): Observable<void> {
+        return of(null);
+    }
+
+    /**
+     * Change l'état de la roue
+     */
+    setSolarWheel(robot: Robot, state: 'bleu' | 'jaune' | 'off', speed: number = 512): Observable<void> {
         return of(null);
     }
 }

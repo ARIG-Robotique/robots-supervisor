@@ -11,7 +11,11 @@ export class PumpsControlComponent {
 
     constructor(private ioService: IOService) {}
 
-    setPumpState(pump: 'haut' | 'bas', state: boolean) {
-        this.ioService.setPumpState(this.robot, pump, state).subscribe();
+    setElectroAimant(state: 'on' | 'off') {
+        this.ioService.setElectroAimant(this.robot, state).subscribe();
+    }
+
+    setSolarWheel(state: 'jaune' | 'bleu' | 'off') {
+        this.ioService.setSolarWheel(this.robot, state).subscribe();
     }
 }
