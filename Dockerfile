@@ -1,4 +1,4 @@
-FROM node:16-alpine as final
+FROM node:18-alpine as final
 
 RUN <<EOF
 npm install -g http-server

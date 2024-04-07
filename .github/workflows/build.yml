@@ -1,19 +1,27 @@
 name: build
 
 on:
-  - push
-  - pull_request
+  push:
+    branches:
+      - dev
+    
+    tags:
+      - v*
+  pull_request: {}
+  workflow_dispatch: {}
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v3
+      - name: Setup Node.js from 'package.json'
+        uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version-file: 'package.json'
           cache: 'yarn'
 
       - name: Build
@@ -22,7 +30,8 @@ jobs:
           yarn run lint
           yarn run build
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
         if: github.event_name == 'push' && (github.ref_name == 'dev' || github.ref_type == 'tag')
         with:
           name: dist-${{ github.ref_name }}
@@ -41,18 +50,25 @@ jobs:
       packages: write
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - uses: actions/download-artifact@v3
+      - name: Get artifact from Build job
+        uses: actions/download-artifact@v4
         with:
           name: dist-${{ github.ref_name }}
           path: dist
 
-      - uses: docker/setup-qemu-action@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: linux/amd64,linux/arm64
 
-      - uses: docker/setup-buildx-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - uses: docker/login-action@v2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -64,7 +80,6 @@ jobs:
 
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-
           VERSION=$(echo "${{ github.ref_name }}" | tr '[A-Z]' '[a-z]')
 
           # Strip "v" prefix from tag name
@@ -80,7 +95,8 @@ jobs:
           echo "IMAGE_ID=$IMAGE_ID" >> $GITHUB_ENV
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-      - uses: docker/build-push-action@v3
+      - name: Build and Publish Docker image
+        uses: docker/build-push-action@v5
         with:
           context: .
           push: true

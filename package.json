@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "license": "MIT",
   "private": true,
+  "engines": {
+    "node": ">=18.14.0 <19.0.0",
+    "npm": ">=9.3.0"
+  },
   "scripts": {
     "start": "ng serve --watch",
     "start:mock": "ng serve --watch --configuration=mock",

@@ -2,7 +2,7 @@ PROJECT_NAME=`basename $(CURDIR)`
 IMAGE_NAME=ghcr.io/arig-robotique/$(PROJECT_NAME)
 IMAGE_VERSION=local
 
-ALL=dist node_modules
+CLEAN_ALL=dist node_modules
 
 build:
 	yarn install
@@ -16,4 +16,4 @@ run:
 	docker run -it --rm -p 0:80 $(IMAGE_NAME):$(IMAGE_VERSION)
 
 clean:
-	rm -Rf $(ALL)
+	rm -Rf $(CLEAN_ALL)
