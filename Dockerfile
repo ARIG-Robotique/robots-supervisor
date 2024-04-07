@@ -1,7 +1,9 @@
 FROM node:16-alpine as final
 
-RUN npm install -g http-server \
-    && npm cache clean --force
+RUN <<EOF
+npm install -g http-server
+npm cache clean --force
+EOF
 
 EXPOSE 80
 
