@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import Konva from 'konva';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, forkJoin } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AnglesBras, BRAS, Bras, ConfigBras, CurrentBras, FullConfigBras, PointBras } from '../../../models/Bras';
 import { Point } from '../../../models/Point';
@@ -49,13 +49,15 @@ const COLORS: Bras<string> = {
     ARRIERE_DROIT: '#ffff33',
 };
 
+const GROUPE_AVANT = ['AVANT_GAUCHE', 'AVANT_CENTRE', 'AVANT_DROIT'];
+const GROUPE_ARRIERE = ['ARRIERE_GAUCHE', 'ARRIERE_CENTRE', 'ARRIERE_DROIT'];
+
 @Component({
     selector: 'arig-sidebar-bras',
     templateUrl: 'bras.component.html',
     styleUrls: ['bras.component.scss'],
 })
 export class SidebarBrasComponent extends AbstractSidebarContainer implements AfterViewInit, OnDestroy {
-
     readonly COLORS = COLORS;
 
     @ViewChild('container', { static: true }) container: ElementRef;
@@ -74,6 +76,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
 
     groups: Bras<KonvaNamedGroup> = {};
 
+    groupMode = false;
     selectedBras: BRAS;
 
     logs = '';
@@ -85,14 +88,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
 
     get names(): BRAS[] {
         // return Object.keys(this.config);
-        return [
-            'AVANT_GAUCHE',
-            'AVANT_CENTRE',
-            'AVANT_DROIT',
-            'ARRIERE_GAUCHE',
-            'ARRIERE_CENTRE',
-            'ARRIERE_DROIT',
-        ];
+        return ['ARRIERE_GAUCHE', 'ARRIERE_CENTRE', 'ARRIERE_DROIT', 'AVANT_GAUCHE', 'AVANT_CENTRE', 'AVANT_DROIT'];
     }
 
     get selectedBrasConfig() {
@@ -101,6 +97,10 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
 
     get selectedBrasCurrent() {
         return this.current[this.selectedBras];
+    }
+
+    get selectedGroup() {
+        return GROUPE_ARRIERE.includes(this.selectedBras) ? GROUPE_ARRIERE : GROUPE_AVANT;
     }
 
     constructor(
@@ -123,14 +123,26 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
 
         this.selectedBras = this.names[0];
 
-        const servos = await firstValueFrom(this.servosService.getServos(this.robot))
+        const servos = await firstValueFrom(this.servosService.getServos(this.robot));
         this.pinces = {
-            AVANT_GAUCHE: servos.find(({ name }) => name === 'Pinces avant').servos.find(({ name }) => name == 'Pince avant gauche'),
-            AVANT_CENTRE: servos.find(({ name }) => name === 'Pinces avant').servos.find(({ name }) => name == 'Pince avant centre'),
-            AVANT_DROIT: servos.find(({ name }) => name === 'Pinces avant').servos.find(({ name }) => name == 'Pince avant droite'),
-            ARRIERE_GAUCHE: servos.find(({ name }) => name === 'Pinces arrière').servos.find(({ name }) => name == 'Pince arrière gauche'),
-            ARRIERE_CENTRE: servos.find(({ name }) => name === 'Pinces arrière').servos.find(({ name }) => name == 'Pince arrière centre'),
-            ARRIERE_DROIT: servos.find(({ name }) => name === 'Pinces arrière').servos.find(({ name }) => name == 'Pince arrière droite'),
+            AVANT_GAUCHE: servos
+                .find(({ name }) => name === 'Pinces avant')
+                .servos.find(({ name }) => name == 'Pince avant gauche'),
+            AVANT_CENTRE: servos
+                .find(({ name }) => name === 'Pinces avant')
+                .servos.find(({ name }) => name == 'Pince avant centre'),
+            AVANT_DROIT: servos
+                .find(({ name }) => name === 'Pinces avant')
+                .servos.find(({ name }) => name == 'Pince avant droite'),
+            ARRIERE_GAUCHE: servos
+                .find(({ name }) => name === 'Pinces arrière')
+                .servos.find(({ name }) => name == 'Pince arrière gauche'),
+            ARRIERE_CENTRE: servos
+                .find(({ name }) => name === 'Pinces arrière')
+                .servos.find(({ name }) => name == 'Pince arrière centre'),
+            ARRIERE_DROIT: servos
+                .find(({ name }) => name === 'Pinces arrière')
+                .servos.find(({ name }) => name == 'Pince arrière droite'),
         };
 
         // l'origine est au milieu en bas, et l'axe vertical est positif vers le haut
@@ -274,7 +286,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
                 const pt = this.getPointerPosition();
                 const a = this.selectedBrasCurrent.a;
                 const invertA1 = this.selectedBrasCurrent.invertA1;
-                this.click({ ...pt, a, invertA1 }, this.selectedBras);
+                this.setBras({ ...pt, a, invertA1 }, this.selectedBras);
             }
         });
 
@@ -298,36 +310,76 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
             e.evt.preventDefault();
         });
 
-        this.changeBras();
+        this.onChangeBras();
+        this.updateCurrent();
         this.updateSym();
     }
 
     private updateSym() {
         if (this.needsUpdateSym) {
-            this.setCursor();
+            this.drawSym();
             this.needsUpdateSym = false;
         }
         this.updateSymRAF = requestAnimationFrame(() => this.updateSym());
     }
 
-    async setBrasByName(bras: BRAS, name: string) {
-        this.selectedBras = bras;
-        this.changeBras();
+    setBrasByName(selectedBras: BRAS, name: string) {
+        this.selectedBras = selectedBras;
+        this.onChangeBras();
 
-        this.brasService.setBrasByName(this.robot, bras, name).subscribe(() => {
-            this.update();
-            this.logs += `${this.selectedBras} : ${name}\n`;
+        const toUpdate = this.groupMode ? this.selectedGroup : [this.selectedBras];
+
+        forkJoin(
+            toUpdate.map((bras) => {
+                return this.brasService.setBrasByName(this.robot, bras, name);
+            }),
+        ).subscribe(() => {
+            this.updateCurrent();
+            this.logs += `${toUpdate} : ${name}\n`;
         });
+    }
+
+    setPince(selectedBras: BRAS, servo: Servo) {
+        this.selectedBras = selectedBras;
+        this.onChangeBras();
+
+        const position = Object.values(servo.positions).find((p) => p.value === servo.currentPosition);
+
+        const toUpdate = this.groupMode ? this.selectedGroup : [this.selectedBras];
+
+        forkJoin(
+            toUpdate.map((bras) => {
+                const pince = this.pinces[bras];
+                pince.currentPosition = position.value;
+                pince.currentSpeed = position.speed;
+                return this.servosService.setPosition(this.robot, pince, pince.currentPosition, pince.currentSpeed);
+            }),
+        ).subscribe(() => {
+            this.logs += `${toUpdate} : pince=${position.name}\n`;
+        });
+    }
+
+    isActive(bras: BRAS) {
+        if (!this.groupMode) {
+            return bras === this.selectedBras;
+        } else {
+            return this.selectedGroup.includes(bras);
+        }
     }
 
     isStateDisabled(bras: BRAS, state: string) {
         return (
             this.current?.[bras].state &&
+            this.config[bras].transitions.length &&
             !this.config[bras].transitions.some((transition) => {
                 const [from, to] = Object.entries(transition)[0];
                 return from === this.current?.[bras].state && to === state;
             })
         );
+    }
+
+    onChangeBras() {
+        this.layerSym.scaleX(this.selectedBrasConfig.back ? -1 : 1);
     }
 
     private getPointerPosition(): Point {
@@ -340,12 +392,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
         return { x: Math.round(x / RATIO), y: Math.round(y / RATIO) };
     }
 
-    changeBras() {
-        this.layerSym.scaleX(this.selectedBrasConfig.back ? -1 : 1);
-        this.update();
-    }
-
-    async update() {
+    private updateCurrent() {
         this.brasService.getCurrent(this.robot).subscribe((current) => {
             this.current = current;
             for (const id of Object.keys(this.current)) {
@@ -363,14 +410,20 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
         });
     }
 
-    async click(val: PointBras, bras: BRAS) {
-        this.selectedBras = bras;
-        this.changeBras();
+    setBras(val: PointBras, selectedBras: BRAS) {
+        this.selectedBras = selectedBras;
+        this.onChangeBras();
 
-        this.brasService.setBras(this.robot, bras, val).subscribe((done) => {
-            if (done) {
-                this.update();
-                this.logs += `${this.selectedBras} : x=${val.x} y=${val.y} a=${val.a} invertA1=${val.invertA1}\n`;
+        const toUpdate = this.groupMode ? this.selectedGroup : [this.selectedBras];
+
+        forkJoin(
+            toUpdate.map((bras) => {
+                return this.brasService.setBras(this.robot, bras, val);
+            }),
+        ).subscribe((done) => {
+            if (done.every((d) => d)) {
+                this.updateCurrent();
+                this.logs += `${toUpdate} : x=${val.x} y=${val.y} a=${val.a} invertA1=${val.invertA1}\n`;
                 this.toast.clear();
             } else {
                 this.toast.error('Position invalide');
@@ -378,7 +431,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
         });
     }
 
-    private async setCursor() {
+    private drawSym() {
         const pt = this.getPointerPosition();
         this.cursor.setPosition({ x: pt.x * RATIO * (this.selectedBrasConfig.back ? -1 : 1), y: pt.y * RATIO });
 
@@ -388,51 +441,49 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
         const text = this.cursor.getChildren((children) => children instanceof Konva.Text)[0] as Konva.Text;
         text.text(pt.x + 'x' + pt.y + '@' + a);
 
-        this.brasService
-            .calculerAngles(this.robot, this.selectedBras, { ...pt, a, invertA1 })
-            .subscribe((result) => {
-                if (result) {
-                    const { pt0, pt1, pt2, pt3 } = this.getPoints(this.selectedBrasConfig, result, true);
+        this.brasService.calculerAngles(this.robot, this.selectedBras, { ...pt, a, invertA1 }).subscribe((result) => {
+            if (result) {
+                const { pt0, pt1, pt2, pt3 } = this.getPoints(this.selectedBrasConfig, result, true);
 
-                    const line0 = this.brasSym.getChild<Konva.Line>('line0');
-                    const line1 = this.brasSym.getChild<Konva.Line>('line1');
-                    const line2 = this.brasSym.getChild<Konva.Line>('line2');
-                    const point0 = this.brasSym.getChild<Konva.Circle>('point0');
-                    const point1 = this.brasSym.getChild<Konva.Circle>('point1');
-                    const point2 = this.brasSym.getChild<Konva.Circle>('point2');
-                    const bras0 = this.brasSym.getChild<Konva.Group>('bras0');
-                    const bras1 = this.brasSym.getChild<Konva.Group>('bras1');
-                    const bras2 = this.brasSym.getChild<Konva.Image>('bras2');
+                const line0 = this.brasSym.getChild<Konva.Line>('line0');
+                const line1 = this.brasSym.getChild<Konva.Line>('line1');
+                const line2 = this.brasSym.getChild<Konva.Line>('line2');
+                const point0 = this.brasSym.getChild<Konva.Circle>('point0');
+                const point1 = this.brasSym.getChild<Konva.Circle>('point1');
+                const point2 = this.brasSym.getChild<Konva.Circle>('point2');
+                const bras0 = this.brasSym.getChild<Konva.Group>('bras0');
+                const bras1 = this.brasSym.getChild<Konva.Group>('bras1');
+                const bras2 = this.brasSym.getChild<Konva.Image>('bras2');
 
-                    bras0.setPosition(pt0);
-                    bras1.setPosition(pt1);
-                    bras2.setPosition(pt2);
+                bras0.setPosition(pt0);
+                bras1.setPosition(pt1);
+                bras2.setPosition(pt2);
 
-                    bras0.rotation(result.a1);
-                    bras1.rotation(result.a1 + result.a2);
-                    bras2.rotation(result.a1 + result.a2 + result.a3);
+                bras0.rotation(result.a1);
+                bras1.rotation(result.a1 + result.a2);
+                bras2.rotation(result.a1 + result.a2 + result.a3);
 
-                    line0.points([pt0.x, pt0.y, pt1.x, pt1.y]);
-                    line1.points([pt1.x, pt1.y, pt2.x, pt2.y]);
-                    line2.points([pt2.x, pt2.y, pt3.x, pt3.y]);
+                line0.points([pt0.x, pt0.y, pt1.x, pt1.y]);
+                line1.points([pt1.x, pt1.y, pt2.x, pt2.y]);
+                line2.points([pt2.x, pt2.y, pt3.x, pt3.y]);
 
-                    line0.stroke(result.a1Error ? 'red' : 'black');
-                    line1.stroke(result.a2Error ? 'red' : 'black');
-                    line2.stroke(result.a3Error ? 'red' : 'black');
+                line0.stroke(result.a1Error ? 'red' : 'black');
+                line1.stroke(result.a2Error ? 'red' : 'black');
+                line2.stroke(result.a3Error ? 'red' : 'black');
 
-                    point0.setPosition(pt0);
-                    point1.setPosition(pt1);
-                    point2.setPosition(pt2);
+                point0.setPosition(pt0);
+                point1.setPosition(pt1);
+                point2.setPosition(pt2);
 
-                    point0.fill(result.a1Error ? 'red' : 'black');
-                    point1.fill(result.a2Error ? 'red' : 'black');
-                    point2.fill(result.a3Error ? 'red' : 'black');
+                point0.fill(result.a1Error ? 'red' : 'black');
+                point1.fill(result.a2Error ? 'red' : 'black');
+                point2.fill(result.a3Error ? 'red' : 'black');
 
-                    this.brasSym.show();
-                } else {
-                    this.brasSym.hide();
-                }
-            });
+                this.brasSym.show();
+            } else {
+                this.brasSym.hide();
+            }
+        });
     }
 
     private getPoints(configBras: ConfigBras, angles: AnglesBras, isSym: boolean) {
@@ -447,17 +498,5 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
             pt3.x = -pt3.x;
         }
         return { pt0, pt1, pt2, pt3 };
-    }
-
-    setPince(bras: BRAS) {
-        this.selectedBras = bras;
-        this.changeBras();
-
-        const pince = this.pinces[bras];
-        const position = Object.values(pince.positions).find((p) => p.value === pince.currentPosition);
-        pince.currentSpeed = position.speed;
-        this.servosService
-            .setPosition(this.robot, pince, pince.currentPosition, pince.currentSpeed)
-            .subscribe();
     }
 }

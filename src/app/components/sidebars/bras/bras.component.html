@@ -2,9 +2,32 @@
     <arig-pumps-control [robot]="robot"></arig-pumps-control>
 
     <div class="card">
-        <h5 class="card-header">
-            <fa-icon [icon]="$any(['fas', 'robot-arm'])"></fa-icon>
-            Bras
+        <h5 class="card-header d-flex justify-content-between">
+            <span>
+                <fa-icon [icon]="$any(['fas', 'robot-arm'])"></fa-icon>
+                Bras
+            </span>
+
+            <div class="btn-group d-flex">
+                <input
+                    type="radio"
+                    class="btn-check"
+                    name="ctrlMode"
+                    id="ctrlMode-unit"
+                    [value]="false"
+                    [(ngModel)]="groupMode"
+                />
+                <label class="btn btn-sm btn-outline-primary" for="ctrlMode-unit"> Mode unitaire </label>
+                <input
+                    type="radio"
+                    class="btn-check"
+                    name="ctrlMode"
+                    id="ctrlMode-group"
+                    [value]="true"
+                    [(ngModel)]="groupMode"
+                />
+                <label class="btn btn-sm btn-outline-primary" for="ctrlMode-group"> Mode groupé </label>
+            </div>
         </h5>
 
         <div class="card-body">
@@ -25,21 +48,21 @@
                                 [id]="'bras-' + bras"
                                 [value]="bras"
                                 [(ngModel)]="selectedBras"
-                                (ngModelChange)="changeBras()"
+                                (ngModelChange)="onChangeBras()"
                             />
-                            <label class="btn btn-outline-primary btn-custom"
-                                   [style]="'font-size: 0.8em; --color-btn:' + COLORS[bras]"
-                                   [for]="'bras-' + bras">
+                            <label
+                                class="btn btn-outline-primary btn-custom"
+                                [style]="'font-size: 0.8em; flex: 1; --color-btn:' + COLORS[bras]"
+                                [for]="'bras-' + bras"
+                            >
                                 {{ bras }}
                             </label>
                         </ng-container>
                     </div>
 
                     <div class="row mt-3 g-1" *ngIf="current">
-                        <div *ngFor="let bras of names"
-                             class="col-2"
-                             [class.bg-secondary]="bras === selectedBras">
-                            <form class="row" (ngSubmit)="click(current[bras], $any(bras))">
+                        <div *ngFor="let bras of names" class="col-2" [class.bg-secondary]="isActive(bras)">
+                            <form class="row" (ngSubmit)="setBras(current[bras], $any(bras))">
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text bg-primary text-white">x</span>
                                     <input
@@ -72,10 +95,13 @@
                                 </div>
                                 <div class="input-group input-group-sm">
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox"
-                                               [id]="bras + '-invertA1'"
-                                               [(ngModel)]="current[bras].invertA1"
-                                               [name]="bras + '-invertA1'">
+                                        <input
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            [id]="bras + '-invertA1'"
+                                            [(ngModel)]="current[bras].invertA1"
+                                            [name]="bras + '-invertA1'"
+                                        />
                                         <label class="form-check-label" [for]="bras + '-invertA1'">Invert A1</label>
                                     </div>
                                 </div>
@@ -86,15 +112,15 @@
                                 </div>
                                 <div>
                                     <span class="badge badge-big bg-secondary mr-2">a1</span>
-                                    {{ current[bras].a1 | number:'1.0-0' }}°
+                                    {{ current[bras].a1 | number: '1.0-0' }}°
                                 </div>
                                 <div>
                                     <span class="badge badge-big bg-secondary mr-2">a2</span>
-                                    {{ current[bras].a2 | number:'1.0-0' }}°
+                                    {{ current[bras].a2 | number: '1.0-0' }}°
                                 </div>
                                 <div>
                                     <span class="badge badge-big bg-secondary mr-2">a3</span>
-                                    {{ current[bras].a3 | number:'1.0-0' }}°
+                                    {{ current[bras].a3 | number: '1.0-0' }}°
                                 </div>
                             </form>
 
@@ -127,10 +153,13 @@
                                         [id]="'pos-' + pinces[bras].id + '-' + i.value.value"
                                         [value]="i.value.value"
                                         [(ngModel)]="pinces[bras].currentPosition"
-                                        (ngModelChange)="setPince(bras)"
+                                        (ngModelChange)="setPince(bras, pinces[bras])"
                                     />
-                                    <label class="btn btn-outline-primary btn-sm" [for]="'pos-' + pinces[bras].id + '-' + i.value.value">
-                                        {{i.value.name}}
+                                    <label
+                                        class="btn btn-outline-primary btn-sm"
+                                        [for]="'pos-' + pinces[bras].id + '-' + i.value.value"
+                                    >
+                                        {{ i.value.name }}
                                     </label>
                                 </ng-container>
                             </div>

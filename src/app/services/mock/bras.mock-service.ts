@@ -40,13 +40,13 @@ const INIT: CurrentBras = { state: 'INIT', a1: -160, a2: 135, a3: -65, x: 103, y
 const STATES = ['INIT', 'PRISE_SOL', 'DEPOSE_STOCK', 'PRISE_STOCK', 'DEPOSE_SOL'];
 
 const TRANSITIONS = [
-    { INIT: 'PRISE_SOL' },
-    { PRISE_SOL: 'DEPOSE_STOCK' },
-    { DEPOSE_STOCK: 'INIT' },
-    { INIT: 'PRISE_STOCK' },
-    { PRISE_STOCK: 'DEPOSE_SOL' },
-    { DEPOSE_SOL: 'INIT' },
-    { INIT: 'DEPOSE_SOL' },
+    // { INIT: 'PRISE_SOL' },
+    // { PRISE_SOL: 'DEPOSE_STOCK' },
+    // { DEPOSE_STOCK: 'INIT' },
+    // { INIT: 'PRISE_STOCK' },
+    // { PRISE_STOCK: 'DEPOSE_SOL' },
+    // { DEPOSE_SOL: 'INIT' },
+    // { INIT: 'DEPOSE_SOL' },
 ];
 
 @Injectable()
@@ -68,17 +68,17 @@ export class BrasMockService extends BrasService {
             transitions: TRANSITIONS,
         },
         ARRIERE_GAUCHE: {
-            config: { ...CONFIG, back: true, },
+            config: { ...CONFIG, back: true },
             states: STATES,
             transitions: TRANSITIONS,
         },
         ARRIERE_CENTRE: {
-            config: { ...CONFIG, back: true, },
+            config: { ...CONFIG, back: true },
             states: STATES,
             transitions: TRANSITIONS,
         },
         ARRIERE_DROIT: {
-            config: { ...CONFIG, back: true, },
+            config: { ...CONFIG, back: true },
             states: STATES,
             transitions: TRANSITIONS,
         },
@@ -127,12 +127,7 @@ export class BrasMockService extends BrasService {
         return of(this.calculerAnglesInternal(robot, bras, pt));
     }
 
-    calculerAnglesInternal(
-        robot: Robot,
-        bras: BRAS,
-        { x, y, a, invertA1 }: PointBras,
-        enableLog = true
-    ): AnglesBras {
+    calculerAnglesInternal(robot: Robot, bras: BRAS, { x, y, a, invertA1 }: PointBras, enableLog = true): AnglesBras {
         const configBras = this.config[bras].config;
 
         const a3Absolute = toRadians(a);

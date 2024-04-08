@@ -4,7 +4,6 @@ import { Observable, of } from 'rxjs';
 import { Robot } from '../../models/Robot';
 import { Servo, ServoGroup, Servos } from '../../models/Servo';
 import { ServosService } from '../servos.service';
-import { AppToastService } from '../toast.service';
 
 @Injectable()
 export class ServosMockService extends ServosService {
@@ -105,13 +104,10 @@ export class ServosMockService extends ServosService {
                 },
             ],
             batch: ['Ferme', 'Prise', 'Ouvert'],
-        }
+        },
     ];
 
-    constructor(
-        http: HttpClient,
-        private toastService: AppToastService,
-    ) {
+    constructor(http: HttpClient) {
         super(http);
     }
 
@@ -120,12 +116,10 @@ export class ServosMockService extends ServosService {
     }
 
     setPosition(robot: Robot, servo: Servo, position: number, speed: number): Observable<unknown> {
-        this.toastService.info(`Servo ${servo.name} to position ${position} at speed ${speed}.`);
         return of(null);
     }
 
     setPositionBatch(robot: Robot, group: ServoGroup, position: string): Observable<unknown> {
-        this.toastService.info(`Group ${group.name} to position ${position}.`);
         group.servos.forEach((servo) => {
             if (servo.positions[position]) {
                 servo.currentPosition = servo.positions[position].value;

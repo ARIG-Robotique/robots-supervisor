@@ -96,23 +96,23 @@ export class GameStatusManager {
         this.plantes.destroyChildren();
         this.pots.destroyChildren();
 
-        status.plantes.forEach((plante) => {
+        status.plantes?.forEach((plante) => {
             this.addPlante(plante);
         });
 
-        status.distribsPlantes.forEach((count, i) => {
+        status.distribsPlantes?.forEach((count, i) => {
             this.addDistribPlantes(count, i);
         });
 
-        Object.entries(status.distribsPots).forEach(([distrib, count]) => {
+        Object.entries(status.distribsPots ?? {}).forEach(([distrib, count]) => {
             this.addDistribPots(count, distrib as DistribPot);
         });
 
-        Object.entries(status.airesDepose).forEach(([aire, plante]) => {
+        Object.entries(status.airesDepose ?? {}).forEach(([aire, plante]) => {
             this.addAireDepose(plante, aire as AireDepose);
         });
 
-        status.panneaux.forEach(({ BLEU, JAUNE }, i) => {
+        status.panneaux?.forEach(({ BLEU, JAUNE }, i) => {
             const panneau = this.panneaux.children.at(i);
             if (BLEU && JAUNE) {
                 panneau.rotation(180);
