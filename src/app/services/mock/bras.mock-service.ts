@@ -105,7 +105,7 @@ export class BrasMockService extends BrasService {
         return of(cloneDeep(this.bras));
     }
 
-    setBras(robot: Robot, bras: BRAS, { x, y, a, invertA1 }: PointBras): Observable<boolean> {
+    setBras(robot: Robot, bras: BRAS, { x, y, a, invertA1 }: PointBras, speed: number): Observable<boolean> {
         return this.calculerAngles(robot, bras, { x, y, a, invertA1 }).pipe(
             map((result) => {
                 if (!result || result.a1Error || result.a2Error || result.a3Error) {
@@ -118,7 +118,7 @@ export class BrasMockService extends BrasService {
         );
     }
 
-    setBrasByName(robot: Robot, bras: BRAS, name: string): Observable<void> {
+    setBrasByName(robot: Robot, bras: BRAS, name: string, speed: number): Observable<void> {
         this.bras[bras] = { ...this.bras[bras], state: name };
         return of(null);
     }

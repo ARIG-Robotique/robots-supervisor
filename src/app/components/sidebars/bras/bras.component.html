@@ -8,25 +8,38 @@
                 Bras
             </span>
 
-            <div class="btn-group d-flex">
-                <input
-                    type="radio"
-                    class="btn-check"
-                    name="ctrlMode"
-                    id="ctrlMode-unit"
-                    [value]="false"
-                    [(ngModel)]="groupMode"
-                />
-                <label class="btn btn-sm btn-outline-primary" for="ctrlMode-unit"> Mode unitaire </label>
-                <input
-                    type="radio"
-                    class="btn-check"
-                    name="ctrlMode"
-                    id="ctrlMode-group"
-                    [value]="true"
-                    [(ngModel)]="groupMode"
-                />
-                <label class="btn btn-sm btn-outline-primary" for="ctrlMode-group"> Mode groupé </label>
+            <div class="d-flex">
+                <div class="input-group input-group-sm me-3">
+                    <span class="input-group-text bg-primary text-white">Speed</span>
+                    <input
+                        type="number"
+                        class="form-control form-control-sm"
+                        style="width: 100px;"
+                        [(ngModel)]="speed"
+                        name="speed"
+                    />
+                </div>
+
+                <div class="btn-group flex-shrink-0">
+                    <input
+                        type="radio"
+                        class="btn-check"
+                        name="ctrlMode"
+                        id="ctrlMode-unit"
+                        [value]="false"
+                        [(ngModel)]="groupMode"
+                    />
+                    <label class="btn btn-sm btn-outline-primary" for="ctrlMode-unit"> Mode unitaire </label>
+                    <input
+                        type="radio"
+                        class="btn-check"
+                        name="ctrlMode"
+                        id="ctrlMode-group"
+                        [value]="true"
+                        [(ngModel)]="groupMode"
+                    />
+                    <label class="btn btn-sm btn-outline-primary" for="ctrlMode-group"> Mode groupé </label>
+                </div>
             </div>
         </h5>
 
@@ -124,14 +137,14 @@
                                 </div>
                             </form>
 
-                            <div class="mt-3">
+                            <!-- <div class="mt-3">
                                 <div *ngIf="current[bras].state">
                                     <span class="badge badge-big bg-info">{{ current[bras].state }}</span>
                                 </div>
                                 <div *ngIf="!current[bras].state">
                                     <span class="badge badge-big bg-danger">N/A</span>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <div class="mt-3">
                                 <button

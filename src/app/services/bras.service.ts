@@ -16,14 +16,14 @@ export class BrasService {
         return this.http.get<Bras<CurrentBras>>(`http://${robot.host}/bras`);
     }
 
-    setBras(robot: Robot, bras: BRAS, { x, y, a, invertA1 }: PointBras): Observable<boolean> {
-        const search = new HttpParams().set('x', x).set('y', y).set('a', a).set('invertA1', invertA1);
+    setBras(robot: Robot, bras: BRAS, { x, y, a, invertA1 }: PointBras, speed: number): Observable<boolean> {
+        const search = new HttpParams().set('x', x).set('y', y).set('a', a).set('invertA1', invertA1).set('speed', speed);
 
         return this.http.post<boolean>(`http://${robot.host}/bras/${bras}`, {}, { params: search });
     }
 
-    setBrasByName(robot: Robot, bras: BRAS, name: string): Observable<void> {
-        const search = new HttpParams().set('name', name);
+    setBrasByName(robot: Robot, bras: BRAS, name: string, speed: number): Observable<void> {
+        const search = new HttpParams().set('name', name).set('speed', speed);
 
         return this.http.post<void>(`http://${robot.host}/bras/${bras}/byName`, {}, { params: search });
     }

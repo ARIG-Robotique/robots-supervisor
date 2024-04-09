@@ -78,6 +78,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
 
     groupMode = false;
     selectedBras: BRAS;
+    speed = 50;
 
     logs = '';
 
@@ -331,7 +332,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
 
         forkJoin(
             toUpdate.map((bras) => {
-                return this.brasService.setBrasByName(this.robot, bras, name);
+                return this.brasService.setBrasByName(this.robot, bras, name, this.speed);
             }),
         ).subscribe(() => {
             this.updateCurrent();
@@ -343,19 +344,20 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
         this.selectedBras = selectedBras;
         this.onChangeBras();
 
-        const position = Object.values(servo.positions).find((p) => p.value === servo.currentPosition);
+        const positionName = Object.values(servo.positions).find((p) => p.value === servo.currentPosition).name;
 
         const toUpdate = this.groupMode ? this.selectedGroup : [this.selectedBras];
 
         forkJoin(
             toUpdate.map((bras) => {
                 const pince = this.pinces[bras];
+                const position = Object.values(pince.positions).find((p) => p.name === positionName);
                 pince.currentPosition = position.value;
                 pince.currentSpeed = position.speed;
                 return this.servosService.setPosition(this.robot, pince, pince.currentPosition, pince.currentSpeed);
             }),
         ).subscribe(() => {
-            this.logs += `${toUpdate} : pince=${position.name}\n`;
+            this.logs += `${toUpdate} : pince=${positionName}\n`;
         });
     }
 
@@ -370,7 +372,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
     isStateDisabled(bras: BRAS, state: string) {
         return (
             this.current?.[bras].state &&
-            this.config[bras].transitions.length &&
+            this.config[bras].transitions?.length &&
             !this.config[bras].transitions.some((transition) => {
                 const [from, to] = Object.entries(transition)[0];
                 return from === this.current?.[bras].state && to === state;
@@ -418,7 +420,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
 
         forkJoin(
             toUpdate.map((bras) => {
-                return this.brasService.setBras(this.robot, bras, val);
+                return this.brasService.setBras(this.robot, bras, val, this.speed);
             }),
         ).subscribe((done) => {
             if (done.every((d) => d)) {
