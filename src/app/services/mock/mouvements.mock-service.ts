@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { MapPosition } from '../../models/MapPosition';
 import { Position } from '../../models/Position';
 import { Robot } from '../../models/Robot';
-import { TypePlante } from '../../models/farmingMars/GameStatus';
+import { CouleurPanneauSolaire, TypePlante } from '../../models/farmingMars/GameStatus';
 import { MouvementsService } from '../mouvements.service';
 import { MockData } from './mock.utils';
 
@@ -69,82 +69,76 @@ export class MouvementsMockService extends MouvementsService {
                 Bar: 15,
             },
             gameStatus: {
-                distribsPlantes: [6, 2, 6, 4, 6, 6],
-                distribsPots: {
-                    L1: 6,
-                    L2: 6,
-                    LB: 4,
-                    R1: 2,
-                    R2: 6,
-                    RB: 6,
+                stockPots: {
+                    BLEU_NORD: true,
+                    BLEU_MILIEU: true,
+                    BLEU_SUD: true,
+                    JAUNE_NORD: true,
+                    JAUNE_MILIEU: true,
+                    JAUNE_SUD: true,
                 },
                 airesDepose: {
-                    L1: [
-                        { type: TypePlante.FRAGILE, pot: true },
-                        { type: TypePlante.RESISTANTE, pot: true },
-                        { type: TypePlante.RESISTANTE, pot: false },
-                        { type: TypePlante.FRAGILE, pot: false },
-                        { type: TypePlante.FRAGILE, pot: false },
-                        { type: TypePlante.FRAGILE, pot: false },
-                        { type: TypePlante.FRAGILE, pot: true },
-                        { type: TypePlante.FRAGILE, pot: false },
-                        { type: TypePlante.FRAGILE, pot: true },
+                    NORD: [
+                        { type: TypePlante.FRAGILE, dansPot: true },
+                        { type: TypePlante.RESISTANTE, dansPot: true },
+                        { type: TypePlante.RESISTANTE, dansPot: false },
+                        { type: TypePlante.FRAGILE, dansPot: false },
+                        { type: TypePlante.FRAGILE, dansPot: false },
+                        { type: TypePlante.FRAGILE, dansPot: false },
                     ],
-                    L2: [],
-                    L3: [],
-                    R1: [],
-                    R2: [
-                        { type: TypePlante.FRAGILE, pot: true },
-                        { type: TypePlante.RESISTANTE, pot: true },
-                        { type: TypePlante.RESISTANTE, pot: false },
-                        { type: TypePlante.FRAGILE, pot: false },
-                        { type: TypePlante.FRAGILE, pot: false },
-                        { type: TypePlante.FRAGILE, pot: false },
-                        { type: TypePlante.FRAGILE, pot: true },
-                        { type: TypePlante.FRAGILE, pot: false },
-                        { type: TypePlante.FRAGILE, pot: true },
+                    MILIEU: [
+                        { type: TypePlante.FRAGILE, dansPot: false },
+                        { type: TypePlante.FRAGILE, dansPot: true },
+                        { type: TypePlante.FRAGILE, dansPot: false },
+                        { type: TypePlante.FRAGILE, dansPot: false },
+                        { type: TypePlante.FRAGILE, dansPot: false },
                     ],
-                    R3: [],
+                    SUD: [
+                        { type: TypePlante.FRAGILE, dansPot: true },
+                        { type: TypePlante.RESISTANTE, dansPot: true },
+                        { type: TypePlante.RESISTANTE, dansPot: false },
+                        { type: TypePlante.FRAGILE, dansPot: false },
+                        { type: TypePlante.FRAGILE, dansPot: false },
+                        { type: TypePlante.FRAGILE, dansPot: false },
+                    ],
                 },
                 jardinieres: {
-                    LH: [
-                        { type: TypePlante.FRAGILE, pot: true },
-                        { type: TypePlante.RESISTANTE, pot: true },
-                        { type: TypePlante.RESISTANTE, pot: false },
-                        { type: TypePlante.FRAGILE, pot: false },
-                        { type: TypePlante.FRAGILE, pot: false },
+                    NORD: [
+                        { type: TypePlante.FRAGILE, dansPot: true },
+                        { type: TypePlante.RESISTANTE, dansPot: true },
+                        { type: TypePlante.RESISTANTE, dansPot: false },
+                        { type: TypePlante.FRAGILE, dansPot: false },
+                        { type: TypePlante.FRAGILE, dansPot: false },
+                        { type: TypePlante.FRAGILE, dansPot: true },
                     ],
-                    L1: [],
-                    L2: [
-                        { type: TypePlante.FRAGILE, pot: false },
-                        { type: TypePlante.FRAGILE, pot: true },
-                        { type: TypePlante.FRAGILE, pot: false },
+                    MILIEU: [
+                        { type: TypePlante.FRAGILE, dansPot: false },
+                        { type: TypePlante.FRAGILE, dansPot: true },
+                        { type: TypePlante.FRAGILE, dansPot: false },
                     ],
-                    RH: [
-                        { type: TypePlante.FRAGILE, pot: true },
-                        { type: TypePlante.RESISTANTE, pot: true },
-                        { type: TypePlante.RESISTANTE, pot: false },
-                        { type: TypePlante.FRAGILE, pot: false },
-                        { type: TypePlante.FRAGILE, pot: false },
+                    SUD: [
+                        { type: TypePlante.FRAGILE, dansPot: true },
+                        { type: TypePlante.RESISTANTE, dansPot: true },
+                        { type: TypePlante.RESISTANTE, dansPot: false },
+                        { type: TypePlante.FRAGILE, dansPot: false },
+                        { type: TypePlante.FRAGILE, dansPot: false },
                     ],
-                    R1: [],
-                    R2: [],
                 },
                 plantes: [
-                    { type: TypePlante.FRAGILE, pot: true, pt: { x: 2580, y: 1060 } },
-                    { type: TypePlante.FRAGILE, pot: false, pt: { x: 2500, y: 1100 } },
-                    { type: TypePlante.RESISTANTE, pot: false, pt: { x: 2500, y: 1000 } },
+                    { type: TypePlante.FRAGILE, dansPot: true, x: 2580, y: 1060 },
+                    { type: TypePlante.FRAGILE, dansPot: false, x: 2500, y: 1100 },
+                    { type: TypePlante.RESISTANTE, dansPot: false, x: 2500, y: 1000 },
                 ],
                 panneaux: [
-                    { BLEU: false, JAUNE: false },
-                    { BLEU: false, JAUNE: false },
-                    { BLEU: false, JAUNE: false },
-                    { BLEU: true, JAUNE: false },
-                    { BLEU: true, JAUNE: true },
-                    { BLEU: false, JAUNE: true },
-                    { BLEU: false, JAUNE: false },
-                    { BLEU: false, JAUNE: false },
-                    { BLEU: false, JAUNE: false },
+                    { color: CouleurPanneauSolaire.AUCUNE },
+                    { color: CouleurPanneauSolaire.AUCUNE },
+                    { color: CouleurPanneauSolaire.TEMP_BLEU },
+                    { color: CouleurPanneauSolaire.BLEU },
+                    { color: CouleurPanneauSolaire.JAUNE_ET_BLEU },
+                    { color: CouleurPanneauSolaire.JAUNE },
+                    { color: CouleurPanneauSolaire.TEMP_JAUNE },
+                    { color: CouleurPanneauSolaire.AUCUNE },
+                    { color: CouleurPanneauSolaire.AUCUNE },
                 ],
             },
             gameFlags: {

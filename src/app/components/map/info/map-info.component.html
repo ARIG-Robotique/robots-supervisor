@@ -23,50 +23,51 @@
         </div>
         <div class="row">
             <div class="col" *ngFor="let panneau of mainPosition?.gameStatus?.panneaux; trackBy: trackByIndex">
-                <div class="panneau" [class.panneau--BLEU]="panneau.BLEU" [class.panneau--JAUNE]="panneau.JAUNE"></div>
+                <div class="panneau"
+                     [class.panneau--BLEU]="panneauIsBleu(panneau)"
+                     [class.panneau--JAUNE]="panneauIsJaune(panneau)"></div>
             </div>
         </div>
         <div class="row">
-            <span class="col">Jardinières</span>
-        </div>
-        <div class="row">
             <div class="col">
+                <strong>Jardinières</strong>
                 <ng-container
                     *ngTemplateOutlet="
                         plantes;
-                        context: { jardiniere: 'LH', plantes: mainPosition?.gameStatus?.jardinieres?.LH }
+                        context: { title: 'N', plantes: mainPosition?.gameStatus?.jardinieres?.NORD }
                     "
                 ></ng-container>
                 <ng-container
                     *ngTemplateOutlet="
                         plantes;
-                        context: { jardiniere: 'L1', plantes: mainPosition?.gameStatus?.jardinieres?.L1 }
+                        context: { title: 'M', plantes: mainPosition?.gameStatus?.jardinieres?.MILIEU }
                     "
                 ></ng-container>
                 <ng-container
                     *ngTemplateOutlet="
                         plantes;
-                        context: { jardiniere: 'L2', plantes: mainPosition?.gameStatus?.jardinieres?.L2 }
+                        context: { title: 'S', plantes: mainPosition?.gameStatus?.jardinieres?.SUD }
                     "
                 ></ng-container>
             </div>
             <div class="col">
+                <strong>Aires de dépose</strong>
                 <ng-container
                     *ngTemplateOutlet="
                         plantes;
-                        context: { jardiniere: 'RH', plantes: mainPosition?.gameStatus?.jardinieres?.RH }
+                        context: { title: 'N', plantes: mainPosition?.gameStatus?.airesDepose?.NORD }
                     "
                 ></ng-container>
                 <ng-container
                     *ngTemplateOutlet="
                         plantes;
-                        context: { jardiniere: 'R1', plantes: mainPosition?.gameStatus?.jardinieres?.R1 }
+                        context: { title: 'M', plantes: mainPosition?.gameStatus?.airesDepose?.MILIEU }
                     "
                 ></ng-container>
                 <ng-container
                     *ngTemplateOutlet="
                         plantes;
-                        context: { jardiniere: 'R2', plantes: mainPosition?.gameStatus?.jardinieres?.R2 }
+                        context: { title: 'S', plantes: mainPosition?.gameStatus?.airesDepose?.SUD }
                     "
                 ></ng-container>
             </div>
@@ -86,13 +87,15 @@
     </div>
 </div>
 
-<ng-template #plantes let-jardiniere="jardiniere" let-plantes="plantes">
+<ng-template #plantes let-title="title" let-plantes="plantes">
     <div class="d-flex">
-        <div class="flex-grow-0 mr-1">{{ jardiniere }}</div>
-        <div
-            *ngFor="let plante of plantes; trackBy: trackByIndex"
-            [class]="'plante plante--' + plante.type"
-            [class.plante--pot]="plante.pot"
-        ></div>
+        <div class="flex-grow-0 mr-1">{{ title }}</div>
+        <ng-container *ngFor="let plante of plantes; trackBy: trackByIndex">
+            <div
+                *ngIf="plante"
+                [class]="'plante plante--' + plante.type"
+                [class.plante--pot]="plante.dansPot"
+            ></div>
+        </ng-container>
     </div>
 </ng-template>

@@ -1,7 +1,7 @@
 import { Point } from 'app/models/Point';
 import Konva from 'konva';
 import { TABLE } from '../../../constants/constants';
-import { AireDepose, DistribPot, GameStatus, PlanteEnPot, TypePlante } from '../../../models/farmingMars/GameStatus';
+import { Emplacement, CouleurPanneauSolaire, StockPotsId, GameStatus, Plante, TypePlante, Team } from '../../../models/farmingMars/GameStatus';
 
 function mapLinear(x: number, a1: number, a2: number, b1: number, b2: number): number {
     return b1 + ((x - a1) * (b2 - b1)) / (a2 - a1);
@@ -30,22 +30,26 @@ const DISTRIBS_PLANTES: Point[] = [
     { x: 2000, y: 1300 },
 ];
 
-const DISTRIBS_POTS: Record<DistribPot, Point & { dir: number }> = {
-    L1: { x: 35, y: 1387.5, dir: 0 },
-    L2: { x: 35, y: 612.5, dir: 0 },
-    LB: { x: 1000, y: 35, dir: Math.PI / 2 },
-    R1: { x: 2965, y: 1387.5, dir: Math.PI },
-    R2: { x: 2965, y: 612.5, dir: Math.PI },
-    RB: { x: 2000, y: 35, dir: Math.PI / 2 },
+const DISTRIBS_POTS: Record<StockPotsId, Point & { dir: number }> = {
+    BLEU_NORD: { x: 35, y: 1387.5, dir: 0 },
+    BLEU_MILIEU: { x: 35, y: 612.5, dir: 0 },
+    BLEU_SUD: { x: 1000, y: 35, dir: Math.PI / 2 },
+    JAUNE_NORD: { x: 2965, y: 1387.5, dir: Math.PI },
+    JAUNE_MILIEU: { x: 2965, y: 612.5, dir: Math.PI },
+    JAUNE_SUD: { x: 2000, y: 35, dir: Math.PI / 2 },
 };
 
-const AIRES_DEPOSE: Record<AireDepose, Point & { dir: number }> = {
-    L1: { x: 35, y: 1775, dir: 1 },
-    L2: { x: 35, y: 1000, dir: 1 },
-    L3: { x: 35, y: 225, dir: 1 },
-    R1: { x: 3000 - 35, y: 1775, dir: -1 },
-    R2: { x: 3000 - 35, y: 1000, dir: -1 },
-    R3: { x: 3000 - 35, y: 225, dir: -1 },
+const AIRES_DEPOSE: Record<Team, Record<Emplacement, Point & { dir: number }>> = {
+    BLEU: {
+        NORD: { x: 35, y: 1880, dir: 1 },
+        MILIEU: { x: 3000 - 35, y: 1105, dir: -1 },
+        SUD: { x: 35, y: 330, dir: 1 },
+    },
+    JAUNE: {
+        NORD: { x: 3000 - 35, y: 1880, dir: -1 },
+        MILIEU: { x: 35, y: 1105, dir: 1 },
+        SUD: { x: 3000 - 35, y: 330, dir: -1 },
+    },
 };
 
 export class GameStatusManager {
@@ -92,7 +96,7 @@ export class GameStatusManager {
         this.plantes.destroy();
     }
 
-    update(status: Partial<GameStatus>, team: string) {
+    update(status: Partial<GameStatus>, team: Team) {
         this.plantes.destroyChildren();
         this.pots.destroyChildren();
 
@@ -100,25 +104,21 @@ export class GameStatusManager {
             this.addPlante(plante);
         });
 
-        status.distribsPlantes?.forEach((count, i) => {
-            this.addDistribPlantes(count, i);
-        });
-
-        Object.entries(status.distribsPots ?? {}).forEach(([distrib, count]) => {
-            this.addDistribPots(count, distrib as DistribPot);
+        Object.entries(status.stocksPots ?? {}).forEach(([distrib, present]) => {
+            this.addStockPots(present, distrib as StockPotsId);
         });
 
         Object.entries(status.airesDepose ?? {}).forEach(([aire, plante]) => {
-            this.addAireDepose(plante, aire as AireDepose);
+            this.addAireDepose(plante, aire as Emplacement, team);
         });
 
-        status.panneaux?.forEach(({ BLEU, JAUNE }, i) => {
+        status.panneaux?.forEach(({ color }, i) => {
             const panneau = this.panneaux.children.at(i);
-            if (BLEU && JAUNE) {
+            if (color === CouleurPanneauSolaire.JAUNE_ET_BLEU) {
                 panneau.rotation(180);
-            } else if (BLEU) {
+            } else if (color === CouleurPanneauSolaire.BLEU || color === CouleurPanneauSolaire.TEMP_BLEU) {
                 panneau.rotation(90);
-            } else if (JAUNE) {
+            } else if (color === CouleurPanneauSolaire.JAUNE || color === CouleurPanneauSolaire.TEMP_JAUNE) {
                 panneau.rotation(-90);
             } else {
                 panneau.rotation(0);
@@ -126,11 +126,11 @@ export class GameStatusManager {
         });
     }
 
-    private addPlante(plante: PlanteEnPot) {
+    private addPlante(plante: Plante) {
         this.plantes.add(
             new Konva.Circle({
-                x: plante.pt.x * TABLE.imageRatio,
-                y: (TABLE.height - plante.pt.y) * TABLE.imageRatio,
+                x: plante.x * TABLE.imageRatio,
+                y: (TABLE.height - plante.y) * TABLE.imageRatio,
                 radius: 25 * TABLE.imageRatio - 2,
                 strokeWidth: 4,
                 fill: plante.type === TypePlante.FRAGILE ? 'white' : '#9b6aa6',
@@ -138,8 +138,8 @@ export class GameStatusManager {
             }),
         );
 
-        if (plante.pot) {
-            this.addPot(plante.pt);
+        if (plante.dansPot && plante.x && plante.y) {
+            this.addPot(plante as Point);
         }
     }
 
@@ -156,56 +156,31 @@ export class GameStatusManager {
         );
     }
 
-    private addDistribPlantes(count: number, i: number) {
-        if (count > 0) {
-            this.addPlante({
-                type: TypePlante.RESISTANTE,
-                pot: false,
-                pt: DISTRIBS_PLANTES[i],
-            });
-        }
-
-        for (let k = 1; k < count; k++) {
-            const angle = mapLinear(k, 1, count, 0, Math.PI * 2);
-            const dx = 70 * Math.cos(angle);
-            const dy = 70 * Math.sin(angle);
-            this.addPlante({
-                type: k === 2 ? TypePlante.RESISTANTE : TypePlante.FRAGILE,
-                pot: false,
-                pt: {
-                    x: DISTRIBS_PLANTES[i].x + dx,
-                    y: DISTRIBS_PLANTES[i].y + dy,
-                },
-            });
-        }
-    }
-
-    private addDistribPots(count: number, distrib: DistribPot) {
-        if (count > 0) {
+    private addStockPots(present: boolean, distrib: StockPotsId) {
+        if (present) {
             this.addPot(DISTRIBS_POTS[distrib]);
-        }
 
-        // le deuxième n'est pas affiché
+            // le deuxième n'est pas affiché
 
-        for (let k = 2; k < count; k++) {
-            const angle = mapLinear(k, 2, count - 1, -Math.PI / 2, Math.PI / 2) + DISTRIBS_POTS[distrib].dir;
-            const dx = 70 * Math.cos(angle);
-            const dy = 70 * Math.sin(angle);
-            this.addPot({
-                x: DISTRIBS_POTS[distrib].x + dx,
-                y: DISTRIBS_POTS[distrib].y + dy,
-            });
+            for (let k = 2; k < 6; k++) {
+                const angle = mapLinear(k, 2, 5, -Math.PI / 2, Math.PI / 2) + DISTRIBS_POTS[distrib].dir;
+                const dx = 70 * Math.cos(angle);
+                const dy = 70 * Math.sin(angle);
+                this.addPot({
+                    x: DISTRIBS_POTS[distrib].x + dx,
+                    y: DISTRIBS_POTS[distrib].y + dy,
+                });
+            }
         }
     }
 
-    private addAireDepose(plantes: PlanteEnPot[], aire: AireDepose) {
+    private addAireDepose(plantes: Plante[], aire: Emplacement, team: Team) {
+        const config = AIRES_DEPOSE[team][aire];
         plantes.forEach((plante, i) => {
             this.addPlante({
                 ...plante,
-                pt: {
-                    x: AIRES_DEPOSE[aire].x + Math.floor(i / 6) * 70 * AIRES_DEPOSE[aire].dir,
-                    y: AIRES_DEPOSE[aire].y + ((i % 6) - 2.5) * 70,
-                },
+                x: config.x + Math.floor(i / 3) * 70 * config.dir,
+                y: config.y + ((i % 3) - 2.5) * 70,
             });
         });
     }

@@ -17,6 +17,7 @@ import { Robot, SelectedRobot } from '../../models/Robot';
 import { CapteursService } from '../../services/capteurs.service';
 import { MouvementsService } from '../../services/mouvements.service';
 import { selectSelectedRobots } from '../../store/robots.selector';
+import { Team } from '../../models/farmingMars/GameStatus';
 
 @Component({
     templateUrl: './map.component.html',
@@ -72,7 +73,7 @@ export class MapComponent extends AbstractComponent implements OnInit {
     mainRobot$: Observable<SelectedRobot>;
     mainPosition: Position;
 
-    team = '';
+    team: Team;
 
     targetPosition: MapPosition;
 
@@ -102,7 +103,7 @@ export class MapComponent extends AbstractComponent implements OnInit {
                 takeUntil(this.ngDestroy$),
             )
             .subscribe((capteurs) => {
-                this.team = capteurs.text.Equipe;
+                this.team = Team[capteurs.text.Equipe];
             });
 
         interval(200)

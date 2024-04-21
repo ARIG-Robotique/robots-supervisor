@@ -33,4 +33,10 @@ export class BrasService {
 
         return this.http.get<AnglesBras>(`http://${robot.host}/bras/${bras}/compute`, { params: search });
     }
+
+    executeMacro(robot: Robot, name: string): Observable<void> {
+        const search = new HttpParams().set('name', name);
+
+        return this.http.post<void>(`http://${robot.host}/bras/macro`, {}, { params: search });
+    }
 }

@@ -19,6 +19,7 @@ import { Robot } from '../../../models/Robot';
 import { MouvementsService } from '../../../services/mouvements.service';
 import { AbstractComponent } from '../../abstract.component';
 import { GameStatusManager } from './game-status.manager';
+import { Team } from '../../../models/farmingMars/GameStatus';
 
 const GREEN = '#00bc8c';
 const RED = '#e74c3c';
@@ -29,7 +30,7 @@ const RED = '#e74c3c';
     styleUrls: ['./map-input.component.scss'],
 })
 export class MapInputComponent extends AbstractComponent implements OnChanges, OnDestroy, AfterViewInit {
-    @Input() team: string;
+    @Input() team: Team;
     @Input() mainRobot: Robot;
 
     @Output() positionChanged = new EventEmitter<Pick<MapPosition, 'x' | 'y'>>();

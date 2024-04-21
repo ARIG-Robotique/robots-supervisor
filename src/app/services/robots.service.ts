@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 import { httpurl } from '../constants/httpurl.constants';
 import { Exec } from '../models/Exec';
 import { Robot } from '../models/Robot';
@@ -20,6 +21,18 @@ export class RobotsService {
     getRobots(): Observable<Robot[]> {
         const url = buildUrl(httpurl.robot);
         return this.http.get<Robot[]>(url).pipe(
+            catchError((err) => {
+                if (environment.production) {
+                    throw err;
+                } else {
+                    return of([{
+                        id: 1,
+                        host: 'nerell:8080',
+                        name: 'Nerell',
+                        simulateur: false,
+                    }]);
+                }
+            }),
             map((robots) =>
                 robots.sort((a, b) => {
                     if (a.simulateur === b.simulateur) {

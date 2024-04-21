@@ -1,4 +1,3 @@
-import { Point } from '../Point';
 
 export enum Team {
     BLEU = 'BLEU',
@@ -8,47 +7,48 @@ export enum Team {
 export enum TypePlante {
     FRAGILE = 'FRAGILE',
     RESISTANTE = 'RESISTANTE',
+    INCONNU = 'INCONNU',
 }
 
-export enum DistribPot {
-    L1 = 'L1',
-    L2 = 'L2',
-    LB = 'LB',
-    R1 = 'R1',
-    R2 = 'R2',
-    RB = 'RB',
+export enum StockPotsId {
+    BLEU_NORD = 'BLEU_NORD',
+    BLEU_MILIEU = 'BLEU_MILIEU',
+    BLEU_SUD = 'BLEU_SUD',
+    JAUNE_NORD = 'JAUNE_NORD',
+    JAUNE_MILIEU = 'JAUNE_MILIEU',
+    JAUNE_SUD = 'JAUNE_SUD'
 }
 
-export enum AireDepose {
-    L1 = 'L1',
-    L2 = 'L2',
-    L3 = 'L3',
-    R1 = 'R1',
-    R2 = 'R2',
-    R3 = 'R3',
+export enum Emplacement {
+    NORD = 'NORD',
+    MILIEU = 'MILIEU',
+    SUD = 'SUD',
 }
 
-export enum Jardiniere {
-    LH = 'LH',
-    L1 = 'L1',
-    L2 = 'L2',
-    RH = 'RH',
-    R1 = 'R1',
-    R2 = 'R2',
+export enum CouleurPanneauSolaire {
+    TEMP_JAUNE = 'TEMP_JAUNE',
+    TEMP_BLEU = 'TEMP_BLEU',
+    JAUNE = 'JAUNE',
+    BLEU = 'BLEU',
+    JAUNE_ET_BLEU = 'JAUNE_ET_BLEU',
+    AUCUNE = 'AUCUNE'
 }
 
-export interface PlanteEnPot {
+export interface Plante {
     type: TypePlante;
-    pot: boolean;
-    pt?: Point;
+    dansPot: boolean;
+    id?: unknown;
+    x?: number;
+    y?: number;
 }
 
-export type PanneauSolaire = Record<Team, boolean>;
+export interface PanneauSolaire {
+    color: CouleurPanneauSolaire;
+}
 export interface GameStatus {
-    distribsPlantes: number[]; // 6 élements à partir du haut en sens trigo
-    distribsPots: Record<DistribPot, number>;
-    airesDepose: Record<AireDepose, PlanteEnPot[]>;
-    jardinieres: Record<Jardiniere, PlanteEnPot[]>;
-    plantes: PlanteEnPot[];
+    stocksPots: Record<StockPotsId, boolean>;
+    airesDepose: Record<Emplacement, Plante[]>;
+    jardinieres: Record<Emplacement, Plante[]>;
+    plantes: Plante[];
     panneaux: PanneauSolaire[]; // 9 élements de gauche à droite
 }

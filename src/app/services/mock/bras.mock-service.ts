@@ -127,6 +127,10 @@ export class BrasMockService extends BrasService {
         return of(this.calculerAnglesInternal(robot, bras, pt));
     }
 
+    executeMacro(robot: Robot, name: string): Observable<void> {
+        return of(null);
+    }
+
     calculerAnglesInternal(robot: Robot, bras: BRAS, { x, y, a, invertA1 }: PointBras, enableLog = true): AnglesBras {
         const configBras = this.config[bras].config;
 

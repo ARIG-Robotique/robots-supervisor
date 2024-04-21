@@ -122,7 +122,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
         this.robot = await firstValueFrom(this.store.select(selectMainRobot).pipe(first()));
         this.config = await firstValueFrom(this.brasService.getConfig(this.robot));
 
-        this.selectedBras = this.names[0];
+        this.selectedBras = 'AVANT_DROIT';
 
         const servos = await firstValueFrom(this.servosService.getServos(this.robot));
         this.pinces = {
@@ -322,6 +322,13 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
             this.needsUpdateSym = false;
         }
         this.updateSymRAF = requestAnimationFrame(() => this.updateSym());
+    }
+
+    executeMacro(name: string) {
+        this.brasService.executeMacro(this.robot, name)
+            .subscribe(() => {
+                this.updateCurrent();
+            });
     }
 
     setBrasByName(selectedBras: BRAS, name: string) {
