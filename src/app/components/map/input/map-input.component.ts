@@ -126,7 +126,7 @@ export class MapInputComponent extends AbstractComponent implements OnChanges, O
                 this.drawPoints(position);
                 this.drawMouvement(position);
 
-                if (this.statusManager && position?.gameStatus) {
+                if (this.statusManager && position?.gameStatus && this.team) {
                     this.statusManager.update(position.gameStatus, this.team);
                 }
             }
