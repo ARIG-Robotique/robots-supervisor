@@ -45,6 +45,14 @@
     border-radius: 50%;
     border: 3px solid transparent;
 
+    &--AUCUNE {
+        border-color: #333;
+        background-color: #333;
+    }
+    &--INCONNU {
+        background-color: orange;
+        border-color: orangered;
+    }
     &--FRAGILE {
         background-color: white;
         border-color: #005b32;

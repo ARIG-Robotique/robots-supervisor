@@ -25,12 +25,14 @@ export class RobotsService {
                 if (environment.production) {
                     throw err;
                 } else {
-                    return of([{
-                        id: 1,
-                        host: 'nerell:8080',
-                        name: 'Nerell',
-                        simulateur: false,
-                    }]);
+                    return of([
+                        {
+                            id: 1,
+                            host: 'nerell:8080',
+                            name: 'Nerell',
+                            simulateur: false,
+                        },
+                    ]);
                 }
             }),
             map((robots) =>

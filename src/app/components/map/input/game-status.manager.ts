@@ -1,7 +1,16 @@
 import { Point } from 'app/models/Point';
 import Konva from 'konva';
 import { TABLE } from '../../../constants/constants';
-import { Emplacement, CouleurPanneauSolaire, StockPotsId, GameStatus, Plante, TypePlante, Team } from '../../../models/farmingMars/GameStatus';
+import {
+    CouleurPanneauSolaire,
+    Emplacement,
+    GameStatus,
+    Plante,
+    StockPots,
+    StockPotsId,
+    Team,
+    TypePlante,
+} from '../../../models/farmingMars/GameStatus';
 
 function mapLinear(x: number, a1: number, a2: number, b1: number, b2: number): number {
     return b1 + ((x - a1) * (b2 - b1)) / (a2 - a1);
@@ -104,8 +113,8 @@ export class GameStatusManager {
             this.addPlante(plante);
         });
 
-        Object.entries(status.stocksPots ?? {}).forEach(([distrib, present]) => {
-            this.addStockPots(present, distrib as StockPotsId);
+        status.stocksPots?.forEach((stock) => {
+            this.addStockPots(stock);
         });
 
         Object.entries(status.airesDepose ?? {}).forEach(([aire, plante]) => {
@@ -116,9 +125,9 @@ export class GameStatusManager {
             const panneau = this.panneaux.children.at(i);
             if (color === CouleurPanneauSolaire.JAUNE_ET_BLEU) {
                 panneau.rotation(180);
-            } else if (color === CouleurPanneauSolaire.BLEU || color === CouleurPanneauSolaire.TEMP_BLEU) {
+            } else if (color === CouleurPanneauSolaire.BLEU || color === CouleurPanneauSolaire.WIP_BLEU) {
                 panneau.rotation(90);
-            } else if (color === CouleurPanneauSolaire.JAUNE || color === CouleurPanneauSolaire.TEMP_JAUNE) {
+            } else if (color === CouleurPanneauSolaire.JAUNE || color === CouleurPanneauSolaire.WIP_JAUNE) {
                 panneau.rotation(-90);
             } else {
                 panneau.rotation(0);
@@ -143,7 +152,7 @@ export class GameStatusManager {
         }
     }
 
-    private addPot(pt: Point) {
+    private addPot(pt: Point, rouge = false) {
         this.pots.add(
             new Konva.Circle({
                 x: pt.x * TABLE.imageRatio,
@@ -151,25 +160,28 @@ export class GameStatusManager {
                 radius: 35 * TABLE.imageRatio - 2,
                 strokeWidth: 4,
                 fill: '#3d3d3d',
-                stroke: '#686868',
+                stroke: rouge ? 'red' : '#686868',
             }),
         );
     }
 
-    private addStockPots(present: boolean, distrib: StockPotsId) {
-        if (present) {
-            this.addPot(DISTRIBS_POTS[distrib]);
+    private addStockPots(stock: StockPots) {
+        if (stock.present) {
+            this.addPot(DISTRIBS_POTS[stock.id], stock.bloque);
 
             // le deuxième n'est pas affiché
 
             for (let k = 2; k < 6; k++) {
-                const angle = mapLinear(k, 2, 5, -Math.PI / 2, Math.PI / 2) + DISTRIBS_POTS[distrib].dir;
+                const angle = mapLinear(k, 2, 5, -Math.PI / 2, Math.PI / 2) + DISTRIBS_POTS[stock.id].dir;
                 const dx = 70 * Math.cos(angle);
                 const dy = 70 * Math.sin(angle);
-                this.addPot({
-                    x: DISTRIBS_POTS[distrib].x + dx,
-                    y: DISTRIBS_POTS[distrib].y + dy,
-                });
+                this.addPot(
+                    {
+                        x: DISTRIBS_POTS[stock.id].x + dx,
+                        y: DISTRIBS_POTS[stock.id].y + dy,
+                    },
+                    stock.bloque,
+                );
             }
         }
     }

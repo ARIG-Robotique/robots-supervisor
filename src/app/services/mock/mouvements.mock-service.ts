@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { MapPosition } from '../../models/MapPosition';
 import { Position } from '../../models/Position';
 import { Robot } from '../../models/Robot';
-import { CouleurPanneauSolaire, TypePlante } from '../../models/farmingMars/GameStatus';
+import { ContenuBras, CouleurPanneauSolaire, StockPotsId, TypePlante } from '../../models/farmingMars/GameStatus';
 import { MouvementsService } from '../mouvements.service';
 import { MockData } from './mock.utils';
 
@@ -69,14 +69,38 @@ export class MouvementsMockService extends MouvementsService {
                 Bar: 15,
             },
             gameStatus: {
-                stockPots: {
-                    BLEU_NORD: true,
-                    BLEU_MILIEU: true,
-                    BLEU_SUD: true,
-                    JAUNE_NORD: true,
-                    JAUNE_MILIEU: true,
-                    JAUNE_SUD: true,
-                },
+                stocksPots: [
+                    {
+                        id: StockPotsId.BLEU_NORD,
+                        present: true,
+                        bloque: false,
+                    },
+                    {
+                        id: StockPotsId.BLEU_MILIEU,
+                        present: true,
+                        bloque: false,
+                    },
+                    {
+                        id: StockPotsId.BLEU_SUD,
+                        present: true,
+                        bloque: true,
+                    },
+                    {
+                        id: StockPotsId.JAUNE_NORD,
+                        present: false,
+                        bloque: false,
+                    },
+                    {
+                        id: StockPotsId.JAUNE_MILIEU,
+                        present: true,
+                        bloque: false,
+                    },
+                    {
+                        id: StockPotsId.JAUNE_SUD,
+                        present: true,
+                        bloque: false,
+                    },
+                ],
                 airesDepose: {
                     NORD: [
                         { type: TypePlante.FRAGILE, dansPot: true },
@@ -132,13 +156,23 @@ export class MouvementsMockService extends MouvementsService {
                 panneaux: [
                     { color: CouleurPanneauSolaire.AUCUNE },
                     { color: CouleurPanneauSolaire.AUCUNE },
-                    { color: CouleurPanneauSolaire.TEMP_BLEU },
+                    { color: CouleurPanneauSolaire.WIP_BLEU },
                     { color: CouleurPanneauSolaire.BLEU },
                     { color: CouleurPanneauSolaire.JAUNE_ET_BLEU },
                     { color: CouleurPanneauSolaire.JAUNE },
-                    { color: CouleurPanneauSolaire.TEMP_JAUNE },
+                    { color: CouleurPanneauSolaire.WIP_JAUNE },
                     { color: CouleurPanneauSolaire.AUCUNE },
                     { color: CouleurPanneauSolaire.AUCUNE },
+                ],
+                brasAvant: [
+                    { type: TypePlante.FRAGILE, dansPot: false },
+                    { type: TypePlante.RESISTANTE, dansPot: false },
+                    { type: TypePlante.INCONNU, dansPot: false },
+                ],
+                brasArriere: [
+                    { type: TypePlante.AUCUNE, dansPot: false },
+                    { type: TypePlante.AUCUNE, dansPot: true },
+                    { type: TypePlante.FRAGILE, dansPot: true },
                 ],
             },
             gameFlags: {

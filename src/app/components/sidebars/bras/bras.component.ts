@@ -325,10 +325,9 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
     }
 
     executeMacro(name: string) {
-        this.brasService.executeMacro(this.robot, name)
-            .subscribe(() => {
-                this.updateCurrent();
-            });
+        this.brasService.executeMacro(this.robot, name).subscribe(() => {
+            this.updateCurrent();
+        });
     }
 
     setBrasByName(selectedBras: BRAS, name: string) {

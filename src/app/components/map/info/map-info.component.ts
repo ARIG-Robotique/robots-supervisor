@@ -18,10 +18,18 @@ export class MapInfoComponent extends AbstractComponent {
     trackByIndex = (i: number, value: any) => i;
 
     panneauIsBleu(panneau: PanneauSolaire) {
-        return [CouleurPanneauSolaire.BLEU, CouleurPanneauSolaire.TEMP_BLEU, CouleurPanneauSolaire.JAUNE_ET_BLEU].includes(panneau.color);
+        return [
+            CouleurPanneauSolaire.BLEU,
+            CouleurPanneauSolaire.WIP_BLEU,
+            CouleurPanneauSolaire.JAUNE_ET_BLEU,
+        ].includes(panneau.color);
     }
 
     panneauIsJaune(panneau: PanneauSolaire) {
-        return [CouleurPanneauSolaire.JAUNE, CouleurPanneauSolaire.TEMP_JAUNE, CouleurPanneauSolaire.JAUNE_ET_BLEU].includes(panneau.color);
+        return [
+            CouleurPanneauSolaire.JAUNE,
+            CouleurPanneauSolaire.WIP_JAUNE,
+            CouleurPanneauSolaire.JAUNE_ET_BLEU,
+        ].includes(panneau.color);
     }
 }

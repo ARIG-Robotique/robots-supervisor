@@ -17,7 +17,12 @@ export class BrasService {
     }
 
     setBras(robot: Robot, bras: BRAS, { x, y, a, invertA1 }: PointBras, speed: number): Observable<boolean> {
-        const search = new HttpParams().set('x', x).set('y', y).set('a', a).set('invertA1', invertA1).set('speed', speed);
+        const search = new HttpParams()
+            .set('x', x)
+            .set('y', y)
+            .set('a', a)
+            .set('invertA1', invertA1)
+            .set('speed', speed);
 
         return this.http.post<boolean>(`http://${robot.host}/bras/${bras}`, {}, { params: search });
     }
