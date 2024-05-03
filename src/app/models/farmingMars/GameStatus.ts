@@ -70,4 +70,5 @@ export interface GameStatus {
     panneaux: PanneauSolaire[];
     brasAvant: Plante[];
     brasArriere: Plante[];
+    stock: Plante[];
 }

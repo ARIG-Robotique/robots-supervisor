@@ -174,6 +174,11 @@ export class MouvementsMockService extends MouvementsService {
                     { type: TypePlante.AUCUNE, dansPot: true },
                     { type: TypePlante.FRAGILE, dansPot: true },
                 ],
+                stock: [
+                    { type: TypePlante.FRAGILE, dansPot: false },
+                    { type: TypePlante.RESISTANTE, dansPot: false },
+                    { type: TypePlante.INCONNU, dansPot: false },
+                ],
             },
             gameFlags: {
                 foo: true,
