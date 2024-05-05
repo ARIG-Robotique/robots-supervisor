@@ -78,7 +78,7 @@ export class SidebarBrasComponent extends AbstractSidebarContainer implements Af
 
     groupMode = false;
     selectedBras: BRAS;
-    speed = 50;
+    speed = 20;
 
     logs = '';
 

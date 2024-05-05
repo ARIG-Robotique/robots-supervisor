@@ -3,9 +3,20 @@
         <arig-pumps-control [robot]="robot"></arig-pumps-control>
 
         <div class="card mb-3">
-            <h5 class="card-header">
-                <fa-icon icon="arrows-alt"></fa-icon>
-                Mouvements
+            <h5 class="card-header d-flex justify-content-between">
+                <span>
+                    <fa-icon icon="arrows-alt"></fa-icon>
+                    Mouvements
+                </span>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary btn-sm" (click)="calage('AVANT')">
+                        Calage bordure avant
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm" (click)="calage('ARRIERE')">
+                        Calage bordure arrière
+                    </button>
+                </div>
             </h5>
 
             <div class="list-group list-group-flush">
