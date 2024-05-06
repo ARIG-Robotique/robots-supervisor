@@ -80,6 +80,9 @@ export class MapInputComponent extends AbstractComponent implements OnChanges, O
         this.robots['nerell'] = this.buildRobot('nerell');
         this.mainLayer.add(this.robots['nerell']);
 
+        this.robots['pami △'] = this.buildRobot('pami △');
+        this.mainLayer.add(this.robots['pami △']);
+
         this.points = new Konva.Group();
         this.mainLayer.add(this.points);
 
@@ -407,16 +410,20 @@ export class MapInputComponent extends AbstractComponent implements OnChanges, O
             visible: false,
         });
 
+        const isPami = name.startsWith("pami");
+        const robotSize = isPami ? TABLE.pamiSize : TABLE.robotSize;
+
         const imageLoader = new Image();
+
 
         imageLoader.onload = () => {
             robot.add(
                 new Konva.Image({
-                    x: -(TABLE.robotSize * TABLE.imageRatio) / 2,
-                    y: -(TABLE.robotSize * TABLE.imageRatio) / 2,
+                    x: -(robotSize * TABLE.imageRatio) / 2,
+                    y: -(robotSize * TABLE.imageRatio) / 2,
                     image: imageLoader,
-                    width: TABLE.robotSize * TABLE.imageRatio,
-                    height: TABLE.robotSize * TABLE.imageRatio,
+                    width: robotSize * TABLE.imageRatio,
+                    height: robotSize * TABLE.imageRatio,
                     shadowColor: 'black',
                     shadowOpacity: 1,
                     shadowBlur: 20,
@@ -424,7 +431,11 @@ export class MapInputComponent extends AbstractComponent implements OnChanges, O
             );
         };
 
-        imageLoader.src = `assets/robots/${name}.png`;
+        if (isPami) {
+            imageLoader.src = `assets/robots/pami.png`;
+        } else {
+            imageLoader.src = `assets/robots/${name}.png`;
+        }
 
         return robot;
     }
