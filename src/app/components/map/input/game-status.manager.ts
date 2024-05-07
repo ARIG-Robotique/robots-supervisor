@@ -142,8 +142,8 @@ export class GameStatusManager {
                 y: (TABLE.height - plante.y) * TABLE.imageRatio,
                 radius: 25 * TABLE.imageRatio - 2,
                 strokeWidth: 4,
-                fill: plante.type === TypePlante.FRAGILE ? 'white' : '#9b6aa6',
-                stroke: plante.type === TypePlante.FRAGILE ? '#005b32' : '#8cce06',
+                fill: plante.type === TypePlante.FRAGILE ? 'white' : plante.type === TypePlante.RESISTANTE ? '#9b6aa6' : 'orange',
+                stroke: plante.type === TypePlante.FRAGILE ? '#005b32' : plante.type === TypePlante.RESISTANTE ? '#8cce06' : 'orangered',
             }),
         );
 
