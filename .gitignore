@@ -1,4 +1,8 @@
 /.angular/cache
+
+# OSX
+.DS_Store
+
 # IDE
 *.iml
 .idea/
