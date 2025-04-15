@@ -18,8 +18,8 @@ import { IconDefinition, IconName, IconPrefix } from '@fortawesome/fontawesome-s
             </div>
 
             <div class="row">
-                <div class="col-3"><img class="d-block m-auto" src="assets/3d/2024_robot.png" /></div>
-                <div class="col-3"><img class="d-block m-auto" src="assets/3d/2024_pami.png" /></div>
+                <div class="col-3"><img class="d-block m-auto" src="assets/3d/2025_robot.png" /></div>
+                <div class="col-3"><img class="d-block m-auto" src="assets/3d/2025_pami.png" /></div>
             </div>
         </div>
 

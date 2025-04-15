@@ -1,5 +1,5 @@
 export const TABLE = {
-    name: 'farming_mars',
+    name: 'the_show_must_go_on',
     width: 3000, // taille totale en mm
     height: 2000,
     robotSize: 303, // taille des images des robots en mm
