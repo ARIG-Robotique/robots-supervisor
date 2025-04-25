@@ -20,7 +20,7 @@ export class CapteursService {
      */
     setTirette(robot: Robot, present: boolean): Observable<unknown> {
         if (!robot.simulateur) {
-            return throwError('Action on permise sur robot réel');
+            return throwError(() => new Error('Action non permise sur robot réel'));
         }
         return this.http.post(`http://${robot.host}/capteurs/tirette`, present, {
             headers: new HttpHeaders().append('Content-Type', 'application/json'),
@@ -32,7 +32,7 @@ export class CapteursService {
      */
     setAu(robot: Robot, present: boolean): Observable<unknown> {
         if (!robot.simulateur) {
-            return throwError('Action on permise sur robot réel');
+            return throwError(() => new Error('Action non permise sur robot réel'));
         }
         return this.http.post(`http://${robot.host}/capteurs/au`, present, {
             headers: new HttpHeaders().append('Content-Type', 'application/json'),
