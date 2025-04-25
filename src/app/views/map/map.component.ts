@@ -32,13 +32,13 @@ export class MapComponent extends AbstractComponent implements OnInit {
             component: SidebarServosComponent,
             size: 'half',
         },
-        {
+        /*{
             label: 'Bras',
             code: 'bras',
             icon: 'robot-arm',
             component: SidebarBrasComponent,
             size: 'full',
-        },
+        },*/
         {
             label: 'Mouvements',
             code: 'mouvements',
