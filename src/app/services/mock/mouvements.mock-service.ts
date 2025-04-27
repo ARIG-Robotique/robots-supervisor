@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { MapPosition } from '../../models/MapPosition';
 import { Position } from '../../models/Position';
 import { Robot } from '../../models/Robot';
-import { ContenuBras, CouleurPanneauSolaire, StockPotsId, TypePlante } from '../../models/farmingMars/GameStatus';
+import { GradinBrutId, } from '../../models/showMustGoOn/GameStatus';
 import { MouvementsService } from '../mouvements.service';
 import { MockData } from './mock.utils';
 
@@ -69,116 +69,47 @@ export class MouvementsMockService extends MouvementsService {
                 Bar: 15,
             },
             gameStatus: {
-                stocksPots: [
-                    {
-                        id: StockPotsId.BLEU_NORD,
-                        present: true,
-                        bloque: false,
-                    },
-                    {
-                        id: StockPotsId.BLEU_MILIEU,
-                        present: true,
-                        bloque: false,
-                    },
-                    {
-                        id: StockPotsId.BLEU_SUD,
-                        present: true,
-                        bloque: true,
-                    },
-                    {
-                        id: StockPotsId.JAUNE_NORD,
-                        present: false,
-                        bloque: false,
-                    },
-                    {
-                        id: StockPotsId.JAUNE_MILIEU,
-                        present: true,
-                        bloque: false,
-                    },
-                    {
-                        id: StockPotsId.JAUNE_SUD,
-                        present: true,
-                        bloque: false,
-                    },
+                gradinBrutStock: [
+                    { x: 825, y: 1725, id: GradinBrutId.JAUNE_RESERVE, present: true, bloque: false },
+                    { x: 75, y: 1325, id: GradinBrutId.JAUNE_HAUT_GAUCHE, present: true, bloque: false },
+                    { x: 1100, y: 950, id: GradinBrutId.JAUNE_MILIEU_CENTRE, present: true, bloque: false },
+                    { x: 75, y: 400, id: GradinBrutId.JAUNE_BAS_GAUCHE, present: true, bloque: false },
+                    { x: 775, y: 250, id: GradinBrutId.JAUNE_BAS_CENTRE, present: true, bloque: false },
+                    { x: 2175, y: 1725, id: GradinBrutId.BLEU_RESERVE, present: true, bloque: false },
+                    { x: 2925, y: 1325, id: GradinBrutId.BLEU_HAUT_DROITE, present: true, bloque: false },
+                    { x: 1900, y: 950, id: GradinBrutId.BLEU_MILIEU_CENTRE, present: true, bloque: false },
+                    { x: 2925, y: 400, id: GradinBrutId.BLEU_BAS_DROITE, present: true, bloque: false },
+                    { x: 2225, y: 250, id: GradinBrutId.BLEU_BAS_CENTRE, present: true, bloque: false }
                 ],
-                airesDepose: {
-                    NORD: [
-                        { type: TypePlante.FRAGILE, dansPot: true },
-                        { type: TypePlante.RESISTANTE, dansPot: true },
-                        { type: TypePlante.RESISTANTE, dansPot: false },
-                        { type: TypePlante.FRAGILE, dansPot: false },
-                        { type: TypePlante.FRAGILE, dansPot: false },
-                        { type: TypePlante.FRAGILE, dansPot: false },
+
+                airesConstruction: {
+                    grandEquipe: [
+                        [ false, false, false ],
+                        [ false, false, false ],
+                        [ false, false, false ],
                     ],
-                    MILIEU: [
-                        { type: TypePlante.FRAGILE, dansPot: false },
-                        { type: TypePlante.FRAGILE, dansPot: true },
-                        { type: TypePlante.FRAGILE, dansPot: false },
-                        { type: TypePlante.FRAGILE, dansPot: false },
-                        { type: TypePlante.FRAGILE, dansPot: false },
+                    petitAdverse: [
+                        [ false, false, false ],
                     ],
-                    SUD: [
-                        { type: TypePlante.FRAGILE, dansPot: true },
-                        { type: TypePlante.RESISTANTE, dansPot: true },
-                        { type: TypePlante.RESISTANTE, dansPot: false },
-                        { type: TypePlante.FRAGILE, dansPot: false },
-                        { type: TypePlante.FRAGILE, dansPot: false },
-                        { type: TypePlante.FRAGILE, dansPot: false },
+                    petitEquipe: [
+                        [ false, false, false ],
                     ],
+                    grandAdverse: [
+                        [ false, false, false ],
+                        [ false, false, false ],
+                        [ false, false, false ],
+                    ]
                 },
-                jardinieres: {
-                    NORD: [
-                        { type: TypePlante.FRAGILE, dansPot: true },
-                        { type: TypePlante.RESISTANTE, dansPot: true },
-                        { type: TypePlante.RESISTANTE, dansPot: false },
-                        { type: TypePlante.FRAGILE, dansPot: false },
-                        { type: TypePlante.FRAGILE, dansPot: false },
-                        { type: TypePlante.FRAGILE, dansPot: true },
-                    ],
-                    MILIEU: [
-                        { type: TypePlante.FRAGILE, dansPot: false },
-                        { type: TypePlante.FRAGILE, dansPot: true },
-                        { type: TypePlante.FRAGILE, dansPot: false },
-                    ],
-                    SUD: [
-                        { type: TypePlante.FRAGILE, dansPot: true },
-                        { type: TypePlante.RESISTANTE, dansPot: true },
-                        { type: TypePlante.RESISTANTE, dansPot: false },
-                        { type: TypePlante.FRAGILE, dansPot: false },
-                        { type: TypePlante.FRAGILE, dansPot: false },
-                    ],
+
+                tiroirs: {
+                    avant: { haut: false, bas: false },
+                    arriere: { haut: false, bas: false },
                 },
-                plantes: [
-                    { type: TypePlante.FRAGILE, dansPot: true, x: 2580, y: 1060 },
-                    { type: TypePlante.FRAGILE, dansPot: false, x: 2500, y: 1100 },
-                    { type: TypePlante.RESISTANTE, dansPot: false, x: 2500, y: 1000 },
-                ],
-                panneaux: [
-                    { color: CouleurPanneauSolaire.AUCUNE },
-                    { color: CouleurPanneauSolaire.AUCUNE },
-                    { color: CouleurPanneauSolaire.WIP_BLEU },
-                    { color: CouleurPanneauSolaire.BLEU },
-                    { color: CouleurPanneauSolaire.JAUNE_ET_BLEU },
-                    { color: CouleurPanneauSolaire.JAUNE },
-                    { color: CouleurPanneauSolaire.WIP_JAUNE },
-                    { color: CouleurPanneauSolaire.AUCUNE },
-                    { color: CouleurPanneauSolaire.AUCUNE },
-                ],
-                brasAvant: [
-                    { type: TypePlante.FRAGILE, dansPot: false },
-                    { type: TypePlante.RESISTANTE, dansPot: false },
-                    { type: TypePlante.INCONNU, dansPot: false },
-                ],
-                brasArriere: [
-                    { type: TypePlante.AUCUNE, dansPot: false },
-                    { type: TypePlante.AUCUNE, dansPot: true },
-                    { type: TypePlante.FRAGILE, dansPot: true },
-                ],
-                stock: [
-                    { type: TypePlante.FRAGILE, dansPot: false },
-                    { type: TypePlante.RESISTANTE, dansPot: false },
-                    { type: TypePlante.INCONNU, dansPot: false },
-                ],
+
+                pinces: {
+                    avant: { gauche: false, droite: false, },
+                    arriere: { gauche: false, droite: false, },
+                },
             },
             gameFlags: {
                 foo: true,

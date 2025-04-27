@@ -19,7 +19,7 @@ import { Robot } from '../../../models/Robot';
 import { MouvementsService } from '../../../services/mouvements.service';
 import { AbstractComponent } from '../../abstract.component';
 import { GameStatusManager } from './game-status.manager';
-import { Team } from '../../../models/farmingMars/GameStatus';
+import { Team } from '../../../models/showMustGoOn/GameStatus';
 
 const GREEN = '#00bc8c';
 const RED = '#e74c3c';

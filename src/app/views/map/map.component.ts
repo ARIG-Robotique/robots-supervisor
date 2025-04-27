@@ -17,7 +17,7 @@ import { Robot, SelectedRobot } from '../../models/Robot';
 import { CapteursService } from '../../services/capteurs.service';
 import { MouvementsService } from '../../services/mouvements.service';
 import { selectSelectedRobots } from '../../store/robots.selector';
-import { Team } from '../../models/farmingMars/GameStatus';
+import { Team } from '../../models/showMustGoOn/GameStatus';
 
 @Component({
     templateUrl: './map.component.html',
