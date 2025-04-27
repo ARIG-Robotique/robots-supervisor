@@ -1,6 +1,5 @@
 <arig-sidebar-container [sidebarButtons]="sidebarButtons">
     <ng-container *ngIf="robot$ | async as robot">
-        <arig-pumps-control [robot]="robot"></arig-pumps-control>
 
         <div class="card mb-3">
             <h5 class="card-header d-flex justify-content-between">

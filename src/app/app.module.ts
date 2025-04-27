@@ -50,7 +50,7 @@ import { AppToastsComponent } from './components/misc/app-toasts/app-toasts.comp
 import { AsservInputComponent } from './components/misc/asserv-input/asserv-input.component';
 import { MouvementInputComponent } from './components/misc/mouvement-input/mouvement-input.component';
 import { NoRobotComponent } from './components/misc/no-robot/no-robot.component';
-import { PumpsControlComponent } from './components/misc/pumps-control/pumps-control.component';
+//import { PumpsControlComponent } from './components/misc/pumps-control/pumps-control.component';
 import { ServoBatchControlComponent } from './components/misc/servo-batch-control/servo-batch-control.component';
 import { ServoControlComponent } from './components/misc/servo-control/servo-control.component';
 import { SidebarBrasComponent } from './components/sidebars/bras/bras.component';
@@ -100,7 +100,7 @@ registerLocaleData(localeFr);
         MapInfoComponent,
         MapPositionComponent,
         MapScoreComponent,
-        PumpsControlComponent,
+        //PumpsControlComponent,
 
         // modals
         ImportLogsModalComponent,
