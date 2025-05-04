@@ -39,5 +39,6 @@ export interface Position {
     actions: Action[];
     gameStatus: Partial<GameStatus>;
     gameFlags: { [K: string]: boolean };
+    gameConfigs: { [K: string]: boolean };
     scoreStatus: { [K: string]: number };
 }

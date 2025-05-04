@@ -115,6 +115,10 @@ export class MouvementsMockService extends MouvementsService {
                 foo: true,
                 bar: false,
             },
+            gameConfigs: {
+                option1: true,
+                option2: false,
+            }
         });
     }
 

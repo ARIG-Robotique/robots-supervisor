@@ -20,6 +20,20 @@
         </div>
         <div class="row">
             <span class="col">Etats</span>
+        <div class="row">
+            <span class="col">Options match :</span>
+        </div>
+        <div style="columns: 2">
+            <div
+                *ngFor="let item of mainPosition?.gameConfigs | keyvalue; trackBy: trackByIndex"
+                class="badge badge-big d-block mb-1"
+                [ngClass]="{ 'bg-success': item.value, 'bg-danger': !item.value }"
+            >
+                {{ item.key }}
+            </div>
+        </div>
+        <div class="row">
+            <span class="col">Etats :</span>
         </div>
         <div style="columns: 2">
             <div
