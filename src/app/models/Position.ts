@@ -36,6 +36,7 @@ export interface Position {
     matchTime: number;
     score: number;
     currentAction: string;
+    strategy: string;
     actions: Action[];
     gameStatus: Partial<GameStatus>;
     gameFlags: { [K: string]: boolean };

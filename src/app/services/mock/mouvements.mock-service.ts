@@ -42,6 +42,7 @@ export class MouvementsMockService extends MouvementsService {
             trajetAtteint: true,
             trajetEnApproche: false,
             typeAsserv: 'DIST,ANGLE',
+            strategy: 'Qualification',
             pointsLidar: range(20).map((i) => ({ x: 500 + i * 20, y: 500 + i * 20 })),
             collisions: [
                 {
