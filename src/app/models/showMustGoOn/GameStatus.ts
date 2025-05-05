@@ -25,24 +25,13 @@ export interface GradinBrut {
     bloque?: boolean;
 }
 
-export interface Tiroir {
-    haut: boolean;
-    bas: boolean;
-}
-
-export interface Tiroirs {
-    avant: Tiroir;
-    arriere: Tiroir;
-}
-
-export interface Pince {
-    gauche: boolean;
-    droite: boolean;
-}
-
-export interface Pinces {
-    avant: Pince;
-    arriere: Pince;
+export interface StockFace {
+    pinceGauche: boolean;
+    pinceDroite: boolean;
+    centreGauche: boolean;
+    centreDroite: boolean;
+    tiroirHaut: boolean;
+    tiroirBas: boolean;
 }
 
 export interface AiresConstruction {
@@ -55,6 +44,6 @@ export interface AiresConstruction {
 export interface GameStatus {
     gradinBrutStock: GradinBrut[];
     airesConstruction: AiresConstruction;
-    tiroirs: Tiroirs;
-    pinces: Pinces;
+    faceAvantStock: StockFace;
+    faceArriereStock: StockFace;
 }

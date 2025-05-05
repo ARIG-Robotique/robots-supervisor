@@ -102,14 +102,22 @@ export class MouvementsMockService extends MouvementsService {
                     ]
                 },
 
-                tiroirs: {
-                    avant: { haut: false, bas: false },
-                    arriere: { haut: false, bas: false },
+                faceAvant: {
+                    pinceGauche: false,
+                    pinceDroite: false,
+                    centreGauche: false,
+                    centreDroite: false,
+                    tiroirHaut: false,
+                    tiroirBas: false,
                 },
 
-                pinces: {
-                    avant: { gauche: false, droite: false, },
-                    arriere: { gauche: false, droite: false, },
+                faceArriere: {
+                    pinceGauche: false,
+                    pinceDroite: false,
+                    centreGauche: false,
+                    centreDroite: false,
+                    tiroirHaut: false,
+                    tiroirBas: false,
                 },
             },
             gameFlags: {
