@@ -105,8 +105,8 @@ export class MouvementsMockService extends MouvementsService {
                 faceAvant: {
                     pinceGauche: false,
                     pinceDroite: false,
-                    centreGauche: false,
-                    centreDroite: false,
+                    solGauche: false,
+                    solDroite: false,
                     tiroirHaut: false,
                     tiroirBas: false,
                 },
@@ -114,8 +114,8 @@ export class MouvementsMockService extends MouvementsService {
                 faceArriere: {
                     pinceGauche: false,
                     pinceDroite: false,
-                    centreGauche: false,
-                    centreDroite: false,
+                    solGauche: false,
+                    solDroite: false,
                     tiroirHaut: false,
                     tiroirBas: false,
                 },

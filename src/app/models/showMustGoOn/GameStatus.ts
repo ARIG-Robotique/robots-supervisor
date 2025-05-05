@@ -28,8 +28,8 @@ export interface GradinBrut {
 export interface StockFace {
     pinceGauche: boolean;
     pinceDroite: boolean;
-    centreGauche: boolean;
-    centreDroite: boolean;
+    solGauche: boolean;
+    solDroite: boolean;
     tiroirHaut: boolean;
     tiroirBas: boolean;
 }
@@ -44,6 +44,6 @@ export interface AiresConstruction {
 export interface GameStatus {
     gradinBrutStock: GradinBrut[];
     airesConstruction: AiresConstruction;
-    faceAvantStock: StockFace;
-    faceArriereStock: StockFace;
+    faceAvant: StockFace;
+    faceArriere: StockFace;
 }
