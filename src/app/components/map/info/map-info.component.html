@@ -10,7 +10,7 @@
                 <span
                     class="badge badge-big"
                     [style.background]="team === 'BLEU' ? '#4E84A2' : team === 'JAUNE' ? '#DA9A14' : '#555'"
-                    >{{ team }}</span
+                >{{ team }}</span
                 >
             </div>
             <div class="col">
@@ -37,6 +37,28 @@
             </div>
         </div>
         <div class="row">
+            <strong class="col">Stock Avt. :</strong>
+            <strong class="col">Stock Arr. :</strong>
+        </div>
+        <div class="row">
+            <div class="col">
+                <ng-container
+                    *ngTemplateOutlet="
+                        stock;
+                        context: { stockFace: mainPosition?.gameStatus?.faceAvant }
+                    "
+                ></ng-container>
+            </div>
+            <div class="col">
+                <ng-container
+                    *ngTemplateOutlet="
+                        stock;
+                        context: { stockFace: mainPosition?.gameStatus?.faceArriere }
+                    "
+                ></ng-container>
+            </div>
+        </div>
+        <div class="row">
             <span class="col">Etats :</span>
         </div>
         <div style="columns: 2">
@@ -50,3 +72,41 @@
         </div>
     </div>
 </div>
+
+<ng-template #stock let-stockFace="stockFace">
+    <div class="d-flex flex-column" *ngIf="stockFace">
+        <div>
+            <div
+                class="planche"
+                [class.planche--PRESENTE]="stockFace.tiroirHaut"
+                style="margin-bottom: 0"
+            ></div>
+        </div>
+        <div>
+            <div
+                class="planche"
+                [class.planche--PRESENTE]="stockFace.tiroirBas"
+            ></div>
+        </div>
+        <div class="d-flex flex-row">
+            <div
+                class="conserve"
+                [class.conserve--PRESENTE]="stockFace.pinceGauche"
+            ></div>
+            <div
+                class="conserve"
+                [class.conserve--PRESENTE]="stockFace.pinceDroite"
+            ></div>
+        </div>
+        <div class="d-flex flex-row">
+            <div
+                class="conserve"
+                [class.conserve--PRESENTE]="stockFace.solGauche"
+            ></div>
+            <div
+                class="conserve"
+                [class.conserve--PRESENTE]="stockFace.solDroite"
+            ></div>
+        </div>
+    </div>
+</ng-template>
