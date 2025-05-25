@@ -71,15 +71,15 @@ export class MouvementsMockService extends MouvementsService {
             },
             gameStatus: {
                 gradinBrutStock: [
-                    { x: 825, y: 1725, id: GradinBrutId.JAUNE_RESERVE, present: true, bloque: false },
-                    { x: 75, y: 1325, id: GradinBrutId.JAUNE_HAUT_GAUCHE, present: true, bloque: false },
+                    { x: 825, y: 1725, id: GradinBrutId.JAUNE_RESERVE, present: false, bloque: false },
+                    { x: 75, y: 1325, id: GradinBrutId.JAUNE_HAUT_GAUCHE, present: true, bloque: true },
                     { x: 1100, y: 950, id: GradinBrutId.JAUNE_MILIEU_CENTRE, present: true, bloque: false },
                     { x: 75, y: 400, id: GradinBrutId.JAUNE_BAS_GAUCHE, present: true, bloque: false },
                     { x: 775, y: 250, id: GradinBrutId.JAUNE_BAS_CENTRE, present: true, bloque: false },
                     { x: 2175, y: 1725, id: GradinBrutId.BLEU_RESERVE, present: true, bloque: false },
                     { x: 2925, y: 1325, id: GradinBrutId.BLEU_HAUT_DROITE, present: true, bloque: false },
-                    { x: 1900, y: 950, id: GradinBrutId.BLEU_MILIEU_CENTRE, present: true, bloque: false },
-                    { x: 2925, y: 400, id: GradinBrutId.BLEU_BAS_DROITE, present: true, bloque: false },
+                    { x: 1900, y: 950, id: GradinBrutId.BLEU_MILIEU_CENTRE, present: true, bloque: true },
+                    { x: 2925, y: 400, id: GradinBrutId.BLEU_BAS_DROITE, present: false, bloque: false },
                     { x: 2225, y: 250, id: GradinBrutId.BLEU_BAS_CENTRE, present: true, bloque: false }
                 ],
 
