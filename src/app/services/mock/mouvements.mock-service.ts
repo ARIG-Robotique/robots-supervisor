@@ -85,20 +85,20 @@ export class MouvementsMockService extends MouvementsService {
 
                 airesConstruction: {
                     grandEquipe: [
-                        [ false, false, false ],
-                        [ false, false, false ],
-                        [ false, false, false ],
+                        [ true, true, true ],
+                        [ true, true, false ],
+                        [ true, false, false ],
                     ],
                     petitAdverse: [
-                        [ false, false, false ],
+                        [ true, true, false ],
                     ],
                     petitEquipe: [
-                        [ false, false, false ],
+                        [ true, false, false ],
                     ],
                     grandAdverse: [
                         [ false, false, false ],
-                        [ false, false, false ],
-                        [ false, false, false ],
+                        [ true, false, false ],
+                        [ true, true, false ],
                     ]
                 },
 
