@@ -1,7 +1,6 @@
 import Konva from 'konva';
 import {TABLE} from '../../../constants/constants';
 import {GameStatus, GradinBrut, GradinBrutId, Team,} from '../../../models/showMustGoOn/GameStatus';
-import {start} from "@popperjs/core";
 
 export class GameStatusManager {
     gradinsBruts: Konva.Group;
@@ -32,8 +31,8 @@ export class GameStatusManager {
 
         this.addAireConstruction(status.airesConstruction?.petitEquipe, team === Team.JAUNE ? 550 : 2000)
         this.addAireConstruction(status.airesConstruction?.grandEquipe, team === Team.JAUNE ? 1000 : 1550)
-        this.addAireConstruction(status.airesConstruction?.petitAdverse, team === Team.JAUNE ? 2000 : 550)
-        this.addAireConstruction(status.airesConstruction?.grandAdverse, team === Team.JAUNE ? 1550 : 1000)
+        this.addAireConstruction(status.airesConstruction?.petitAdverse, team === Team.JAUNE ? 2550 : 0)
+        this.addAireConstruction(status.airesConstruction?.grandAdverse, team === Team.JAUNE ? 3000 : 450, true, team === Team.BLEU)
     }
 
     private addGradinBrut(gradinBrut: GradinBrut) {
@@ -64,14 +63,14 @@ export class GameStatusManager {
         planche.moveToBottom()
 
         const plancheText = new Konva.Text({
-            text: gradinBrut.id.split('_').slice(1, 3).join(' '),
+            text: gradinBrut.id.replaceAll('_', ' '),
             x: 0,
             y: 0,
             width: 400,
             height: 100,
             align: 'center',
             verticalAlign: 'middle',
-            fontSize: 40,
+            fontSize: 35,
             fontStyle: 'bold',
             fill: 'black',
             stroke: 'white',
@@ -84,20 +83,27 @@ export class GameStatusManager {
         this.gradinsBruts.add(plancheGroup)
     }
 
-    private addAireConstruction(aireConstruction: boolean[][], startX: number) {
-        aireConstruction.forEach((gradinConstruit, index) => this.addGradinConstruit(gradinConstruit, startX, index))
+    private addAireConstruction(aireConstruction: boolean[][], startX: number, vertical = false, reversed = false) {
+        if (reversed) {
+            aireConstruction.slice().reverse().forEach((gradinConstruit, index) =>
+                this.addGradinConstruit(gradinConstruit, startX, index, vertical))
+        } else {
+            aireConstruction.forEach((gradinConstruit, index) =>
+                this.addGradinConstruit(gradinConstruit, startX, index, vertical))
+        }
     }
 
-    private addGradinConstruit(gradinConstruit: boolean[], startX: number, index: number) {
+    private addGradinConstruit(gradinConstruit: boolean[], startX: number, index: number, vertical: boolean) {
         if (!gradinConstruit[0]) return;
 
         const gradinGroup = new Konva.Group({
-            x: (startX + 25) * TABLE.imageRatio,
-            y: (TABLE.height - 150 - index * 125) * TABLE.imageRatio,
+            x: (vertical ? startX - 150 - index * 125 : (startX + 25)) * TABLE.imageRatio,
+            y: (vertical ? (TABLE.height - 675) : TABLE.height - 150 - index * 125) * TABLE.imageRatio,
             width: 400,
             height: 100,
             scaleX: TABLE.imageRatio,
             scaleY: TABLE.imageRatio,
+            rotation: vertical ? -90 : 0,
         })
 
         const gradin = new Konva.Rect({
