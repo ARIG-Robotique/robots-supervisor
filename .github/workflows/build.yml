@@ -104,3 +104,58 @@ jobs:
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  rebase-branches:
+    if: >-
+      github.repository == 'ARIG-Robotique/robots-supervisor-private' &&
+      github.event_name == 'push' && github.ref == 'refs/heads/dev' && !github.event.deleted
+    runs-on: ubuntu-latest
+    concurrency: rebase-branches
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout latest dev and fetch all branches
+        uses: actions/checkout@v7
+        with:
+          ref: dev
+          fetch-depth: 0
+
+      - name: Rebase branches onto dev
+        shell: bash
+        env:
+          GIT_EDITOR: 'true'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          base=$(git rev-parse refs/remotes/origin/dev)
+          branches=$(git for-each-ref --format='%(objectname) %(refname:lstrip=3)' refs/remotes/origin/)
+          failed=0
+
+          while read -r tip branch; do
+            case "$branch" in
+              HEAD|dev|dependabot/*) continue ;;
+            esac
+
+            if git merge-base --is-ancestor "$base" "$tip"; then
+              printf '%s is already based on dev\n' "$branch"
+              continue
+            fi
+
+            git switch --detach "$tip"
+            if ! git rebase --rebase-merges "$base"; then
+              echo "::error::Could not rebase $branch onto dev; leaving the remote branch unchanged"
+              git rebase --abort
+              failed=1
+              continue
+            fi
+
+            if ! git push --force-with-lease="refs/heads/$branch:$tip" origin "HEAD:refs/heads/$branch"; then
+              echo "::error::Could not push rebased branch $branch"
+              failed=1
+            fi
+          done <<< "$branches"
+
+          exit "$failed"
