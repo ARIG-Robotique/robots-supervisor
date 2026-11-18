@@ -1,6 +1,6 @@
 import Konva from 'konva';
-import {TABLE} from '../../../constants/constants';
-import {GameStatus, GradinBrut, GradinBrutId, Team,} from '../../../models/showMustGoOn/GameStatus';
+import { TABLE } from '../../../constants/constants';
+import { GameStatus, GradinBrut, GradinBrutId, Team } from '../../../models/showMustGoOn/GameStatus';
 
 export class GameStatusManager {
     gradinsBruts: Konva.Group;
@@ -17,22 +17,27 @@ export class GameStatusManager {
     }
 
     destroy() {
-        this.gradinsBruts.destroy()
-        this.airesConstruction.destroy()
+        this.gradinsBruts.destroy();
+        this.airesConstruction.destroy();
     }
 
     update(status: Partial<GameStatus>, team: Team) {
-        this.gradinsBruts.destroyChildren()
-        this.airesConstruction.destroyChildren()
+        this.gradinsBruts.destroyChildren();
+        this.airesConstruction.destroyChildren();
 
         status.gradinBrutStock?.forEach((gradinBrut) => {
             this.addGradinBrut(gradinBrut);
         });
 
-        this.addAireConstruction(status.airesConstruction?.petitEquipe, team === Team.JAUNE ? 550 : 2000)
-        this.addAireConstruction(status.airesConstruction?.grandEquipe, team === Team.JAUNE ? 1000 : 1550)
-        this.addAireConstruction(status.airesConstruction?.petitAdverse, team === Team.JAUNE ? 2550 : 0)
-        this.addAireConstruction(status.airesConstruction?.grandAdverse, team === Team.JAUNE ? 3000 : 450, true, team === Team.BLEU)
+        this.addAireConstruction(status.airesConstruction?.petitEquipe, team === Team.JAUNE ? 550 : 2000);
+        this.addAireConstruction(status.airesConstruction?.grandEquipe, team === Team.JAUNE ? 1000 : 1550);
+        this.addAireConstruction(status.airesConstruction?.petitAdverse, team === Team.JAUNE ? 2550 : 0);
+        this.addAireConstruction(
+            status.airesConstruction?.grandAdverse,
+            team === Team.JAUNE ? 3000 : 450,
+            true,
+            team === Team.BLEU,
+        );
     }
 
     private addGradinBrut(gradinBrut: GradinBrut) {
@@ -48,7 +53,7 @@ export class GameStatusManager {
             scaleX: TABLE.imageRatio,
             scaleY: TABLE.imageRatio,
             rotation: isVertical ? -90 : 0,
-        })
+        });
 
         const planche = new Konva.Rect({
             x: 0,
@@ -57,10 +62,10 @@ export class GameStatusManager {
             height: 100,
             strokeWidth: gradinBrut.bloque ? 10 : 0,
             fill: '#a97a57',
-            stroke: '#ff0000'
-        })
-        plancheGroup.add(planche)
-        planche.moveToBottom()
+            stroke: '#ff0000',
+        });
+        plancheGroup.add(planche);
+        planche.moveToBottom();
 
         const plancheText = new Konva.Text({
             text: gradinBrut.id.replaceAll('_', ' '),
@@ -76,20 +81,23 @@ export class GameStatusManager {
             stroke: 'white',
             strokeWidth: 5,
             fillAfterStrokeEnabled: true,
-        })
-        plancheGroup.add(plancheText)
-        plancheText.moveToTop()
+        });
+        plancheGroup.add(plancheText);
+        plancheText.moveToTop();
 
-        this.gradinsBruts.add(plancheGroup)
+        this.gradinsBruts.add(plancheGroup);
     }
 
     private addAireConstruction(aireConstruction: boolean[][], startX: number, vertical = false, reversed = false) {
         if (reversed) {
-            aireConstruction.slice().reverse().forEach((gradinConstruit, index) =>
-                this.addGradinConstruit(gradinConstruit, startX, index, vertical))
+            aireConstruction
+                .slice()
+                .reverse()
+                .forEach((gradinConstruit, index) => this.addGradinConstruit(gradinConstruit, startX, index, vertical));
         } else {
             aireConstruction.forEach((gradinConstruit, index) =>
-                this.addGradinConstruit(gradinConstruit, startX, index, vertical))
+                this.addGradinConstruit(gradinConstruit, startX, index, vertical),
+            );
         }
     }
 
@@ -97,14 +105,14 @@ export class GameStatusManager {
         if (!gradinConstruit[0]) return;
 
         const gradinGroup = new Konva.Group({
-            x: (vertical ? startX - 150 - index * 125 : (startX + 25)) * TABLE.imageRatio,
-            y: (vertical ? (TABLE.height - 675) : TABLE.height - 150 - index * 125) * TABLE.imageRatio,
+            x: (vertical ? startX - 150 - index * 125 : startX + 25) * TABLE.imageRatio,
+            y: (vertical ? TABLE.height - 675 : TABLE.height - 150 - index * 125) * TABLE.imageRatio,
             width: 400,
             height: 100,
             scaleX: TABLE.imageRatio,
             scaleY: TABLE.imageRatio,
             rotation: vertical ? -90 : 0,
-        })
+        });
 
         const gradin = new Konva.Rect({
             x: 0,
@@ -112,9 +120,9 @@ export class GameStatusManager {
             width: 400,
             height: 100,
             fill: '#a97a57',
-        })
-        gradinGroup.add(gradin)
-        gradin.moveToBottom()
+        });
+        gradinGroup.add(gradin);
+        gradin.moveToBottom();
 
         const gradinText = new Konva.Text({
             text: (gradinConstruit.lastIndexOf(true) + 1).toString(),
@@ -130,17 +138,18 @@ export class GameStatusManager {
             stroke: 'white',
             strokeWidth: 5,
             fillAfterStrokeEnabled: true,
-        })
-        gradinGroup.add(gradinText)
-        gradinText.moveToTop()
+        });
+        gradinGroup.add(gradinText);
+        gradinText.moveToTop();
 
-        this.gradinsBruts.add(gradinGroup)
+        this.gradinsBruts.add(gradinGroup);
     }
 
-    private isGradinVertical = (id: GradinBrutId): boolean => ([
-        GradinBrutId.JAUNE_HAUT_GAUCHE,
-        GradinBrutId.JAUNE_BAS_GAUCHE,
-        GradinBrutId.BLEU_HAUT_DROITE,
-        GradinBrutId.BLEU_BAS_DROITE,
-    ].includes(id))
+    private isGradinVertical = (id: GradinBrutId): boolean =>
+        [
+            GradinBrutId.JAUNE_HAUT_GAUCHE,
+            GradinBrutId.JAUNE_BAS_GAUCHE,
+            GradinBrutId.BLEU_HAUT_DROITE,
+            GradinBrutId.BLEU_BAS_DROITE,
+        ].includes(id);
 }

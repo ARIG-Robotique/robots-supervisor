@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { FaIconLibrary, FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { IconDefinition, IconName, IconPrefix } from '@fortawesome/fontawesome-svg-core';
+import { NgFor, JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'arig-no-robot',
@@ -34,6 +35,7 @@ import { IconDefinition, IconName, IconPrefix } from '@fortawesome/fontawesome-s
             </ul>
         </div>
     `,
+    imports: [NgFor, FaIconComponent, JsonPipe],
 })
 export class NoRobotComponent {
     icons: [IconPrefix, IconName][] = [];

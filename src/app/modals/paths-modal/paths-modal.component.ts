@@ -2,10 +2,14 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Exec } from '../../models/Exec';
 import { ExecsService } from '../../services/execs.service';
+import { NgIf, NgFor } from '@angular/common';
+import { NgbCarousel, NgbSlide } from '@ng-bootstrap/ng-bootstrap/carousel';
+import { ArigExecPipe } from '../../pipes/exec';
 
 @Component({
     templateUrl: 'paths-modal.component.html',
     styleUrls: ['paths-modal.component.scss'],
+    imports: [NgIf, NgbCarousel, NgFor, NgbSlide, ArigExecPipe],
 })
 export class PathsModalComponent {
     idRobot: number;

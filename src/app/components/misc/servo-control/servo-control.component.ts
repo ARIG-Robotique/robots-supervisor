@@ -2,10 +2,14 @@ import { Component, Input } from '@angular/core';
 import { Robot } from '../../../models/Robot';
 import { Servo, ServoPosition } from '../../../models/Servo';
 import { ServosService } from '../../../services/servos.service';
+import { FormsModule } from '@angular/forms';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { NgFor } from '@angular/common';
 
 @Component({
     selector: 'arig-servo-control',
     templateUrl: './servo-control.component.html',
+    imports: [FormsModule, FaIconComponent, NgFor],
 })
 export class ServoControlComponent {
     @Input() servo: Servo;

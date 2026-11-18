@@ -2,11 +2,15 @@ import { Component, Input, OnInit } from '@angular/core';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { Robot } from '../../../models/Robot';
 import { MouvementsService } from '../../../services/mouvements.service';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { NgFor, KeyValuePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'arig-mouvement-input',
     templateUrl: './mouvement-input.component.html',
     styleUrls: ['./mouvement-input.component.scss'],
+    imports: [FaIconComponent, NgFor, FormsModule, KeyValuePipe],
 })
 export class MouvementInputComponent implements OnInit {
     @Input() robot: Robot;

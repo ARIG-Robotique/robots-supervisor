@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { MapPosition } from '../../models/MapPosition';
 import { Position } from '../../models/Position';
 import { Robot } from '../../models/Robot';
-import { GradinBrutId, } from '../../models/showMustGoOn/GameStatus';
+import { GradinBrutId } from '../../models/showMustGoOn/GameStatus';
 import { MouvementsService } from '../mouvements.service';
 import { MockData } from './mock.utils';
 
@@ -80,26 +80,22 @@ export class MouvementsMockService extends MouvementsService {
                     { x: 2925, y: 1325, id: GradinBrutId.BLEU_HAUT_DROITE, present: true, bloque: false },
                     { x: 1900, y: 950, id: GradinBrutId.BLEU_MILIEU_CENTRE, present: true, bloque: true },
                     { x: 2925, y: 400, id: GradinBrutId.BLEU_BAS_DROITE, present: false, bloque: false },
-                    { x: 2225, y: 250, id: GradinBrutId.BLEU_BAS_CENTRE, present: true, bloque: false }
+                    { x: 2225, y: 250, id: GradinBrutId.BLEU_BAS_CENTRE, present: true, bloque: false },
                 ],
 
                 airesConstruction: {
                     grandEquipe: [
-                        [ true, true, true ],
-                        [ true, true, false ],
-                        [ true, false, false ],
+                        [true, true, true],
+                        [true, true, false],
+                        [true, false, false],
                     ],
-                    petitAdverse: [
-                        [ true, true, false ],
-                    ],
-                    petitEquipe: [
-                        [ true, false, false ],
-                    ],
+                    petitAdverse: [[true, true, false]],
+                    petitEquipe: [[true, false, false]],
                     grandAdverse: [
-                        [ true, true, true ],
-                        [ true, false, false ],
-                        [ true, true, false ],
-                    ]
+                        [true, true, true],
+                        [true, false, false],
+                        [true, true, false],
+                    ],
                 },
 
                 faceAvant: {
@@ -127,7 +123,7 @@ export class MouvementsMockService extends MouvementsService {
             gameConfigs: {
                 option1: true,
                 option2: false,
-            }
+            },
         });
     }
 

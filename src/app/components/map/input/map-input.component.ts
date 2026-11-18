@@ -419,11 +419,10 @@ export class MapInputComponent extends AbstractComponent implements OnChanges, O
             visible: false,
         });
 
-        const isPami = name.startsWith("pami");
+        const isPami = name.startsWith('pami');
         const robotSize = isPami ? TABLE.pamiSize : TABLE.robotSize;
 
         const imageLoader = new Image();
-
 
         imageLoader.onload = () => {
             robot.add(

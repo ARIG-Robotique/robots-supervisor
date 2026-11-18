@@ -1,4 +1,4 @@
-import { KeyValue } from '@angular/common';
+import { KeyValue, NgIf, NgFor, AsyncPipe, KeyValuePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, of, timer } from 'rxjs';
@@ -7,11 +7,13 @@ import { Capteurs } from '../../../models/Capteurs';
 import { Robot } from '../../../models/Robot';
 import { CapteursService } from '../../../services/capteurs.service';
 import { selectMainRobot } from '../../../store/robots.selector';
-import { AbstractSidebarContainer } from '../container/sidebar-container.component';
+import { AbstractSidebarContainer, SidebarContainerComponent } from '../container/sidebar-container.component';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 @Component({
     selector: 'arig-sidebar-capteurs',
     templateUrl: 'capteurs.component.html',
+    imports: [SidebarContainerComponent, NgIf, FaIconComponent, NgFor, AsyncPipe, KeyValuePipe],
 })
 export class SidebarCapteursComponent extends AbstractSidebarContainer implements OnInit {
     robot$: Observable<Robot>;

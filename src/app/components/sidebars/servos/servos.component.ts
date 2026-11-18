@@ -6,11 +6,24 @@ import { Robot } from '../../../models/Robot';
 import { Servos } from '../../../models/Servo';
 import { ServosService } from '../../../services/servos.service';
 import { selectMainRobot } from '../../../store/robots.selector';
-import { AbstractSidebarContainer } from '../container/sidebar-container.component';
+import { AbstractSidebarContainer, SidebarContainerComponent } from '../container/sidebar-container.component';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { ServoBatchControlComponent } from '../../misc/servo-batch-control/servo-batch-control.component';
+import { ServoControlComponent } from '../../misc/servo-control/servo-control.component';
 
 @Component({
     selector: 'arig-sidebar-servos',
     templateUrl: 'servos.component.html',
+    imports: [
+        SidebarContainerComponent,
+        NgIf,
+        NgFor,
+        FaIconComponent,
+        ServoBatchControlComponent,
+        ServoControlComponent,
+        AsyncPipe,
+    ],
 })
 export class SidebarServosComponent extends AbstractSidebarContainer implements OnInit {
     robot$: Observable<Robot>;

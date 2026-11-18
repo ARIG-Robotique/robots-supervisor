@@ -5,9 +5,7 @@ import { environment } from '../../../environments/environment';
 import { httpurl } from '../../constants/httpurl.constants';
 import { Robot } from '../../models/Robot';
 
-@Component({
-    templateUrl: './import-logs-modal.component.html',
-})
+@Component({ templateUrl: './import-logs-modal.component.html' })
 export class ImportLogsModalComponent implements OnInit {
     @Input()
     robot: Robot;

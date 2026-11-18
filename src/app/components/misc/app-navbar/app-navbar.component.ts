@@ -6,11 +6,16 @@ import { Robot } from '../../../models/Robot';
 import { setMainRobot, toggleRobot } from '../../../store/robots.actions';
 import { selectRobots, selectRobotsStatusState, selectSelectedRobotsState } from '../../../store/robots.selector';
 import { AbstractComponent } from '../../abstract.component';
+import { RouterLink } from '@angular/router';
+import { NgFor, NgIf, AsyncPipe } from '@angular/common';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 @Component({
     selector: 'arig-app-navbar',
     templateUrl: './app-navbar.component.html',
     styleUrls: ['app-navbar.component.scss'],
+    imports: [RouterLink, NgFor, NgIf, NgbTooltip, FaIconComponent, AsyncPipe],
 })
 export class AppNavbarComponent extends AbstractComponent implements OnInit {
     robots$: Observable<{ robot: Robot; selected: boolean; main: boolean; online: boolean }[]>;

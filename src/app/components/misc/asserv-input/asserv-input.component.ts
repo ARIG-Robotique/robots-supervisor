@@ -2,11 +2,14 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { Asserv } from '../../../models/Asserv';
 import { Robot } from '../../../models/Robot';
 import { AsservissementService } from '../../../services/asservissement.service';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'arig-asserv-input',
     templateUrl: './asserv-input.component.html',
     styleUrls: ['../mouvement-input/mouvement-input.component.scss'],
+    imports: [FaIconComponent, FormsModule],
 })
 export class AsservInputComponent implements OnInit, OnChanges {
     @Input() type: 'ANGLE' | 'DIST';

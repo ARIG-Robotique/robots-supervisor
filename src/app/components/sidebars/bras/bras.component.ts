@@ -11,8 +11,11 @@ import { BrasService } from '../../../services/bras.service';
 import { ServosService } from '../../../services/servos.service';
 import { AppToastService } from '../../../services/toast.service';
 import { selectMainRobot } from '../../../store/robots.selector';
-import { AbstractSidebarContainer } from '../container/sidebar-container.component';
-import { KeyValue } from '@angular/common';
+import { AbstractSidebarContainer, SidebarContainerComponent } from '../container/sidebar-container.component';
+import { KeyValue, NgIf, NgFor, DecimalPipe, KeyValuePipe } from '@angular/common';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FormsModule } from '@angular/forms';
+import { SortPipe } from '../../../pipes/sort';
 
 function toRadians(degrees) {
     return (degrees / 180) * Math.PI;
@@ -56,6 +59,16 @@ const GROUPE_ARRIERE = ['ARRIERE_GAUCHE', 'ARRIERE_CENTRE', 'ARRIERE_DROIT'];
     selector: 'arig-sidebar-bras',
     templateUrl: 'bras.component.html',
     styleUrls: ['bras.component.scss'],
+    imports: [
+        SidebarContainerComponent,
+        FaIconComponent,
+        FormsModule,
+        NgIf,
+        NgFor,
+        DecimalPipe,
+        KeyValuePipe,
+        SortPipe,
+    ],
 })
 export class SidebarBrasComponent extends AbstractSidebarContainer implements AfterViewInit, OnDestroy {
     readonly COLORS = COLORS;

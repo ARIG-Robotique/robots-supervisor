@@ -6,6 +6,8 @@ Monitoring et réglage des robots.
 
 ## Pour développer en local :
 
+Node.js `^22.22.3`, `^24.15.0` ou `>=26.0.0` est requis.
+
 ```bash
 $ yarn --production=false
 $ yarn start

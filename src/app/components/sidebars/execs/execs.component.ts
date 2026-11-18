@@ -8,11 +8,16 @@ import { ExecsService } from '../../../services/execs.service';
 import { RobotsUiService } from '../../../services/robots-ui.service';
 import { RobotsService } from '../../../services/robots.service';
 import { selectMainRobot } from '../../../store/robots.selector';
-import { AbstractSidebarContainer } from '../container/sidebar-container.component';
+import { AbstractSidebarContainer, SidebarContainerComponent } from '../container/sidebar-container.component';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip';
+import { ArigExecPipe } from '../../../pipes/exec';
 
 @Component({
     selector: 'arig-sidebar-execs',
     templateUrl: 'execs.component.html',
+    imports: [SidebarContainerComponent, NgIf, FaIconComponent, NgbTooltip, NgFor, AsyncPipe, ArigExecPipe],
 })
 export class SidebarExecsComponent extends AbstractSidebarContainer implements OnInit {
     robot$: Observable<Robot>;

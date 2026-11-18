@@ -4,10 +4,13 @@ import { Observable } from 'rxjs';
 import { Exec } from '../../models/Exec';
 import { Log } from '../../models/Log';
 import { ExecsService } from '../../services/execs.service';
+import { NgFor, AsyncPipe } from '@angular/common';
+import { ArigExecPipe } from '../../pipes/exec';
 
 @Component({
     templateUrl: 'logs-modal.component.html',
     styleUrls: ['logs-modal.component.scss'],
+    imports: [NgFor, AsyncPipe, ArigExecPipe],
 })
 export class LogsModalComponent {
     idRobot: number;

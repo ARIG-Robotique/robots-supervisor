@@ -1,6 +1,8 @@
 import { Component, Directive, Input, TemplateRef } from '@angular/core';
 import { NgbActiveOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { AbstractComponent } from 'app/components/abstract.component';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Directive()
 export class AbstractSidebarContainer extends AbstractComponent {
@@ -10,6 +12,7 @@ export class AbstractSidebarContainer extends AbstractComponent {
 @Component({
     selector: 'arig-sidebar-container',
     templateUrl: 'sidebar-container.component.html',
+    imports: [FaIconComponent, NgTemplateOutlet],
 })
 export class SidebarContainerComponent {
     @Input()

@@ -18,10 +18,30 @@ import { CapteursService } from '../../services/capteurs.service';
 import { MouvementsService } from '../../services/mouvements.service';
 import { selectSelectedRobots } from '../../store/robots.selector';
 import { Team } from '../../models/showMustGoOn/GameStatus';
+import { NoRobotComponent } from '../../components/misc/no-robot/no-robot.component';
+import { NgIf, NgTemplateOutlet, NgFor, AsyncPipe } from '@angular/common';
+import { MapPositionComponent } from '../../components/map/position/map-position.component';
+import { MapInfoComponent } from '../../components/map/info/map-info.component';
+import { MapActionsComponent } from '../../components/map/actions/map-actions.component';
+import { MapScoreComponent } from '../../components/map/score/map-score.component';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 @Component({
     templateUrl: './map.component.html',
     styleUrls: ['./map.component.scss'],
+    imports: [
+        NoRobotComponent,
+        NgIf,
+        MapInputComponent,
+        NgTemplateOutlet,
+        MapPositionComponent,
+        MapInfoComponent,
+        MapActionsComponent,
+        MapScoreComponent,
+        NgFor,
+        FaIconComponent,
+        AsyncPipe,
+    ],
 })
 export class MapComponent extends AbstractComponent implements OnInit {
     readonly Buttons = [
