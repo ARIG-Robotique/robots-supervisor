@@ -37,6 +37,7 @@ import robotArm from '../assets/icons/robotArm.json';
 import { environment } from '../environments/environment';
 import { AppRoutes } from './app.routes';
 import { servicesMockProviders } from './services/mock/services.mock-providers';
+import { RobotsUiService } from './services/robots-ui.service';
 import { RobotsService } from './services/robots.service';
 import { servicesProviders } from './services/services.providers';
 import { loadRobots, toggleRobot } from './store/robots.actions';
@@ -102,6 +103,7 @@ export const appConfig: ApplicationConfig = {
         importProvidersFrom(FontAwesomeModule, NgbModule),
         ...(environment.mock ? servicesMockProviders : servicesProviders),
         { provide: LOCALE_ID, useValue: 'fr-FR' },
+        RobotsUiService,
         provideAppInitializer(initializeApp),
     ],
 };
