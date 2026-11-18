@@ -1,15 +1,6 @@
-FROM node:18-alpine as final
+FROM nginx:alpine
 
-RUN <<EOF
-npm install -g http-server
-npm cache clean --force
-EOF
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY dist/ /usr/share/nginx/html/
 
 EXPOSE 80
-
-ENV NODE_ENV production
-
-WORKDIR /www
-COPY dist/ .
-
-CMD ["http-server", "/www", "-p 80"]
