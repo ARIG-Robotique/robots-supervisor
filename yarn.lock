@@ -2426,10 +2426,10 @@ keyv@^5.6.0:
   dependencies:
     "@keyv/serialize" "^1.1.1"
 
-konva@^9.2.1:
-  version "9.2.1"
-  resolved "https://registry.yarnpkg.com/konva/-/konva-9.2.1.tgz#e4b373dd6ddc8de013ea6c558b67ab8fc7ab8cf7"
-  integrity sha512-/D9mZttzjqrkjVPlWyJirdBjFJ/uafrFFR5BD41PsFUX+ctqmoFZjcnjs/ag6YnZNEVsU4/E9dRaH5FH9Y4cLw==
+konva@^10.9.1:
+  version "10.9.1"
+  resolved "https://registry.yarnpkg.com/konva/-/konva-10.9.1.tgz#6d55808af5bffae05552a10a437bc46d34a276a1"
+  integrity sha512-m49x+GatSxEUSvqahYhxpTjgKbtrLtw4P4o4B4iux953ZFpceaK52Ea+CFsAsd7W4I0Y5u6mMoRUsY/eltNZmw==
 
 levn@^0.4.1:
   version "0.4.1"
